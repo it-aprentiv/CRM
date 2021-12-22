@@ -1634,3 +1634,6 @@ c82c8f,172.18.0.1,GET,http://localhost/contact/56426/getadresse,1640165417,,200
 2d1e8b,172.18.0.1,GET,http://localhost/resources/demos/style.css,1640165418,,404
 6c03c8,172.18.0.1,GET,http://localhost/facture/4963/print,1640165427,d90f72,200
 d90f72,172.18.0.1,GET,http://localhost/facture/4963/print,1640165427,,500
+54a481,172.18.0.1,GET,http://localhost/contact,1640170386,,200
+25eb72,172.18.0.1,GET,http://localhost/resources/demos/style.css,1640170386,4b95ac,200
+4b95ac,172.18.0.1,GET,http://localhost/resources/demos/style.css,1640170386,,404
