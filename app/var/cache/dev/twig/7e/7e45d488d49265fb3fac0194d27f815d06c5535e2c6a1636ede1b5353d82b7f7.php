@@ -97,7 +97,7 @@ La formation est dispensée selon les conditions générales ci-dessous :<br/>
     </li>
     <li>
 <span style=\"font-family: Arial Black;font-size: 10px\">PARTICIPANTS :</span><br/>
-Le nombre de participant est de : ";
+Le nombre de participant(s) est de : ";
         // line 37
         (((twig_length_filter($this->env, (isset($context["stagiaires"]) || array_key_exists("stagiaires", $context) ? $context["stagiaires"] : (function () { throw new RuntimeError('Variable "stagiaires" does not exist.', 37, $this->source); })())) > 0)) ? (print (twig_escape_filter($this->env, twig_length_filter($this->env, (isset($context["stagiaires"]) || array_key_exists("stagiaires", $context) ? $context["stagiaires"] : (function () { throw new RuntimeError('Variable "stagiaires" does not exist.', 37, $this->source); })())), "html", null, true))) : (print ("")));
         echo "<br/>
@@ -212,7 +212,7 @@ La formation est dispensée selon les conditions générales ci-dessous :<br/>
     </li>
     <li>
 <span style=\"font-family: Arial Black;font-size: 10px\">PARTICIPANTS :</span><br/>
-Le nombre de participant est de : {{ stagiaires | length > 0 ? stagiaires | length : '' }}<br/>
+Le nombre de participant(s) est de : {{ stagiaires | length > 0 ? stagiaires | length : '' }}<br/>
 L’organisme de formation accueillera : <br/>
 {% if stagiaires | length > 0 %}
     {% for stagiaire in stagiaires %}
