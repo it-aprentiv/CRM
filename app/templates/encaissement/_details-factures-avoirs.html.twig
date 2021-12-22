@@ -1,0 +1,79 @@
+{% if source is not defined or (source is defined and source == 'dossier') %}
+    <fieldset>
+        <legend>REGLEMENT CLIENT</legend>
+        
+        <div class="form-group col-md-4">
+            {{ form_row(encaissement_form.typereglclient) }}
+        </div>
+        
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                {{ form_row(encaissement_form.chequeattencaiss) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_row(encaissement_form.numcheque) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_row(encaissement_form.datecheque) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                {{ form_row(encaissement_form.mntantReglementclient) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_row(encaissement_form.dtvalidite) }}
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="row">
+        <div class="col-md-6">
+            <fieldset>
+                <legend>DETAILS ENCAISSEMENT</legend>
+                {{ form_row(encaissement_form.montantHTEncaisse,{'attr':{'readonly': 'readonly'}}) }}
+                {{ form_row(encaissement_form.montantTTCEncaisse,{'attr':{'readonly': 'readonly'}}) }}
+                {{ form_row(encaissement_form.dateReelleEncaiss) }}
+                {{ form_row(encaissement_form.restedu,{'attr':{'readonly': 'readonly'}}) }}
+            </fieldset>
+        </div>
+        <div class="col-md-6">
+            <fieldset>
+                <legend>Commission</legend>
+                {{ form_row(encaissement_form.taux_commission) }}
+                {{ form_row(encaissement_form.montant_commission) }}
+                {{ form_row(encaissement_form.statut_paiement_commission) }}
+            </fieldset>
+        </div>
+    </div>
+
+    <fieldset>
+        <legend>REGLEMENT OPCA</legend>
+        <div class="form-row">
+            {{ form_row(encaissement_form.typereglopca) }}
+        </div>
+    </fieldset>
+{% else  %}
+    {# Retour APR-79 : Formulaire pour encaissement domiciliation/location #}
+    <div class="row">
+        <div class="col-md-6">
+            <fieldset>
+                <legend>DETAILS ENCAISSEMENT</legend>
+                {{ form_row(encaissement_form.montantHTEncaisse) }}
+                {{ form_row(encaissement_form.montantTTCEncaisse) }}
+                {{ form_row(encaissement_form.dateReelleEncaiss) }}
+                {{ form_row(encaissement_form.restedu,{'attr':{'readonly': 'readonly'}}) }}
+            </fieldset>
+        </div>
+        <div class="col-md-6">
+            <fieldset>
+                <legend>REGLEMENT CLIENT</legend>
+                <div class="form-group">
+                    {{ form_row(encaissement_form.typereglclient) }}
+                </div>
+            </fieldset> 
+        </div>
+    </div>
+
+{% endif %}

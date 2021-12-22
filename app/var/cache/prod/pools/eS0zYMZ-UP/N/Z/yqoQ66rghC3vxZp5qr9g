@@ -1,0 +1,133 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'App\\Entity\\SocieteLiee',
+            ],
+            'namespace' => [
+                'App\\Entity',
+            ],
+            'rootEntityName' => [
+                'App\\Entity\\SocieteLiee',
+            ],
+            'customRepositoryClassName' => [
+                'App\\Repository\\SocieteLieRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id',
+                        'id' => true,
+                    ],
+                    'idContact' => [
+                        'fieldName' => 'idContact',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'id_contact',
+                    ],
+                    'idSociete1' => [
+                        'fieldName' => 'idSociete1',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'id_societe1',
+                    ],
+                    'idSociete2' => [
+                        'fieldName' => 'idSociete2',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'id_societe2',
+                    ],
+                    'idSociete3' => [
+                        'fieldName' => 'idSociete3',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'id_societe3',
+                    ],
+                    'idSociete4' => [
+                        'fieldName' => 'idSociete4',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'id_societe4',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'id_contact' => 'idContact',
+                    'id_societe1' => 'idSociete1',
+                    'id_societe2' => 'idSociete2',
+                    'id_societe3' => 'idSociete3',
+                    'id_societe4' => 'idSociete4',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'idContact' => 'id_contact',
+                    'idSociete1' => 'id_societe1',
+                    'idSociete2' => 'id_societe2',
+                    'idSociete3' => 'id_societe3',
+                    'idSociete4' => 'id_societe4',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => '9_societe_liee',
+                    'indexes' => [
+                        'id_contact' => [
+                            'columns' => [
+                                'id_contact',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

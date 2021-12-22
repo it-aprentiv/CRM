@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Encaissements Edit - CRM Aprentiv v2.0{% endblock %}
+
+{% set textButton = 'MAJ encaissement' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{{ path('Liste_Encaissement_Controller') }}" title="Liste des encaissements">Liste des
+                        encaissements</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Encaissement</li>
+            </ol>
+
+            <div>
+                {% if is_granted('edit', 'Encaissements') %}
+                    <a href="javascript:void(0)" class="update">
+                        <i class="fas fa-edit"></i>
+                        Modifier l'encaissement
+                    </a>
+                    <a href="javascript:void(0)" class="text-danger cancel-update d-none">
+                        <i class="fas fa-ban"></i>
+                        Annuler la modification
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">DETAILS ENCAISSEMENTS</h2>
+
+    {% include 'encaissement/form_encaissement.html.twig' %}
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+
+    {% include 'Common/commentaire-js.html.twig' %}
+
+    <script>
+        $(function() {
+            {# Utilisation date picker pour les filtres de type date #}
+            $('.js-datepicker').each(function() {
+                $(this).datepicker({
+                    'format': 'dd/mm/yyyy',
+                    'autoclose': true,
+                    'clearBtn': true,
+                    'language': 'fr',
+                });
+            });
+
+            {# Autocompletion recherche societe -->> #}
+            $('#encaissement_societes').select2({
+                placeholder: '--Sélectionnez--',
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.dossier.client.asynch-search') }}',
+                    data: function(params) {
+                        var query = {
+                            search: params.term,
+                            byid: true,
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    },
+                },
+            });
+
+            let societeData = {};
+            {% for societe in societes_liees %}
+            societeData = {
+                id: "{{ societe.idSociete }}",
+                text: '{{ societe.societe }}',
+            };
+
+            var newOption = new Option(societeData.text, societeData.id, true, true);
+            $('#encaissement_societes').append(newOption).trigger('change');
+            {% endfor %}
+            {# Autocompletion recherche commercical <<-- #}
+
+            $('#encaissement_opca').select2({
+                placeholder: '--Sélectionnez--',
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.opca.list-asynch') }}',
+                    data: function(params) {
+                        var query = {
+                            search: params.term,
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    },
+                },
+            });
+            {% if encaissement_infos.opca_id is not null %}
+            let opcaData = {
+                id: "{{ encaissement_infos.opca_id }}",
+                text: '{{ encaissement_infos.opca_nom_str }}',
+            };
+
+            var newOption = new Option(opcaData.text, opcaData.id, true, true);
+            $('#encaissement_opca').append(newOption).trigger('change');
+            {% endif %}
+
+            $('#autocomplete-facture').select2({
+                placeholder: '-- Sélectionnez une référence facture --',
+                minimumInputLength: 2,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.facture.asynch-search') }}',
+                    data: function(params) {
+                        var query = {
+                            search: params.term,
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    },
+                },
+            });
+
+            {#  Ajout de nouvelle facture --> #}
+            $('#add-facture-avoir').on('click', function(e) {
+                e.preventDefault();
+                const facId = $('#autocomplete-facture').val();
+
+                if (facId) {
+                    // Récupérer le form
+                    let factureAvoirInfosRequest = $.ajax({
+                        url: '{{ path('crm.encaissement.factures-avoirs-infos') }}',
+                        method: 'POST',
+                        data: {fid: facId},
+                    });
+
+                    factureAvoirInfosRequest.done(function(response) {
+                        $(response).appendTo($('#factures-wrapper'));
+                    });
+                    // Ajouter le form facture/avoir
+                }
+            });
+            {#  Ajout de nouvelle facture <-- #}
+
+            $(document).on('click', '.remove-facture-liee',function () {
+                let $factureItem = $(this).closest('fieldset');
+                $factureItem.remove();
+            });
+            
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.date-until-now').datepicker(
+                {
+                    'format':'dd/mm/yyyy',
+                    'autoclose': true,
+                    'endDate': '+0d',
+                    'language': 'fr',
+                }
+            );
+    
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,40 @@
+<table>
+    <tr>
+        <td>{% for i in range(1,110) %}&nbsp;{% endfor %}</td>
+        <td style="font-family: Calibri;font-size: 15px;">
+            <p style="font-weight: bold">{{ contact.contact.nomSociete | replace({'&' : '&amp;'}) }}</p><p style="font-weight: bold">A l'attention de {{ contact.contact.interlocuteur }}</p><p>{{ contact.adresse.adresse}}</p><p>{{ contact.adresse.codePostal}} {{ contact.adresse.ville}}</p><p><br/>Paris le, {{ datejour }}</p>
+        </td>
+    </tr>
+</table>
+<br/>
+<p style="font-family: Calibri;font-size: 15px;font-weight: bold">OBJET : DOCUMENTS DE CLÔTURE A RETOURNER</p>
+<br/>
+<div style="margin-left: 20px; font-family: Calibri; font-size: 15px">
+<p style="font-family: Calibri;font-size: 15px;">Madame, Monsieur,</p>
+{% if target == 'FIFPL' %}
+<p style="font-family: Calibri;font-size: 15px;">Afin de procéder à la clôture administrative de votre dossier, je vous prie de bien vouloir trouver ci-joint une facture de …………… € TTC, un avoir de …………… € TTC ainsi que les autres documents à nous retourner signés.</p>
+<p style="font-family: Calibri;font-size: 15px;">Nous vous remercions de bien vouloir nous adresser votre règlement par chèque, à notre ordre, pour le montant correspondant à la différence entre la facture et l’avoir, soit …………… €.</p>
+<p style="font-family: Calibri;font-size: 15px;">Nous attirons votre attention sur le fait que votre courrier devra nous parvenir au plus tard le .. / .. / {{ "now"|date("Y") }}.</p>
+<p style="font-family: Calibri;font-size: 15px;">A réception de celui-ci, nous acquitterons la facture auprès de {{ opca is defined and opca ? opca.nomStr | replace({'&' : '&amp;'}) : '' }} afin que vous obteniez le remboursement. Compte tenu du délai de traitement de votre OPCA, la date d’encaissement de votre chèque se fera vers le .. /.. /{{ "now"|date("Y") }}. Sous réserve de votre confirmation de la réception du remboursement.</p>
+{% elseif target == 'FIFPL-2' %}
+<p style="font-family: Calibri;font-size: 15px;">Afin de procéder à la clôture administrative de votre dossier formation, vous trouverez ci-joint la facture à nous régler par chèque ainsi que les documents à nous retourner signés aux endroits indiqués.</p>
+<p style="font-family: Calibri;font-size: 15px;">A réception de celui-ci, nous acquitterons la facture auprès de {{ opca is defined and opca ? opca.nomStr | replace({'&' : '&amp;'}) : '' }} afin que vous obteniez le remboursement. Compte tenu du délai de traitement de votre OPCA, la date d’encaissement de votre chèque se fera vers le .. /.. /{{ "now"|date("Y") }}. Sous réserve de votre confirmation de la réception du remboursement.</p>
+{% else %}
+<p style="font-family: Calibri;font-size: 15px;">Afin de procéder à la clôture administrative de votre dossier, vous trouverez ci-joint la facture à nous régler par chèque ainsi que les documents à nous retourner signés aux endroits indiqués.</p>
+<p style="font-family: Calibri;font-size: 15px;">Nous attirons votre attention sur le fait que votre courrier devra nous parvenir au plus tard le .. / .. / {{ "now"|date("Y") }}.</p>
+<p style="font-family: Calibri;font-size: 15px;">A réception de celui-ci, nous acquitterons la facture auprès de {{ opca is defined and opca ? opca.nomStr | replace({'&' : '&amp;'}) : "" }} afin que vous obteniez le remboursement. Compte tenu du délai de traitement de votre OPCO, la date d’encaissement de votre chèque se fera vers le .. /.. /{{ "now"|date("Y") }}.</p>
+{% endif %}
+{#<p style="color: red"><b>Charge à vous de nous contacter au cas où vous n’auriez pas encore reçu ce remboursement</b></p>#}
+<p style="font-family: Calibri;font-size: 15px;">Restant à votre disposition pour tout renseignement complémentaire, recevez, Madame, Monsieur, l’expression de nos salutations distinguées.</p>
+<br/><br/>
+<table>
+<tr>
+<td>{% for i in range(1,123) %}&nbsp;{% endfor %}</td>
+<td style="font-family: Calibri;font-size: 15px;">
+<p>Véronique LOUBAUD</p>
+<p>Attachée de Direction</p>
+</td>
+</tr>
+</table>
+
+</div>

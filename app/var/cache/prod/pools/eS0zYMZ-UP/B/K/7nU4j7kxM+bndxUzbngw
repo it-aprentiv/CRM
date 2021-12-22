@@ -1,0 +1,88 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Query\\ParserResult'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ParserResult')),
+        clone ($p['Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor')),
+        clone ($p['Doctrine\\ORM\\Query\\ResultSetMapping'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ResultSetMapping')),
+    ],
+    null,
+    [
+        'Doctrine\\ORM\\Query\\ParserResult' => [
+            '_sqlExecutor' => [
+                $o[1],
+            ],
+            '_resultSetMapping' => [
+                $o[2],
+            ],
+            '_parameterMappings' => [
+                [
+                    'user' => [
+                        0,
+                    ],
+                    'userBis' => [
+                        1,
+                    ],
+                    'dpid' => [
+                        2,
+                    ],
+                ],
+            ],
+        ],
+        'Doctrine\\ORM\\Query\\Exec\\AbstractSqlExecutor' => [
+            '_sqlStatements' => [
+                1 => 'SELECT t0_.id_table AS id_table_0, n1_.nomtable AS nomtable_1, t0_.id AS id_2, t2_.nom_str AS nom_str_3, t0_.nom_con AS nom_con_4, t0_.date_add AS date_add_5, t0_.texte_note AS texte_note_6, IF((t0_.id_user_add IS NULL), u3_.NOMUTILISATEUR, u4_.NOMUTILISATEUR) AS sclr_7, IF((t0_.id_user_add IS NULL), u3_.PRENOMUTILISATEUR, u4_.PRENOMUTILISATEUR) AS sclr_8, u5_.NOMUTILISATEUR AS NOMUTILISATEUR_9, u6_.IDUTILISATEUR AS IDUTILISATEUR_10, t7_.nom_action AS nom_action_11, t0_.date_action AS date_action_12, t8_.action_statut AS action_statut_13, t9_.nom_str AS nom_str_14, t2_.nom AS nom_15, t2_.prenom AS prenom_16, l10_.societe AS societe_17, l10_.nom AS nom_18, l10_.prenom AS prenom_19 FROM 1_note t0_ LEFT JOIN note_nom_table n1_ ON (t0_.id = n1_.id_note) LEFT JOIN 1_contact t2_ ON (t0_.id_table = t2_.id) LEFT JOIN 1_formation_dossier t11_ ON (t0_.id_table = t11_.id) LEFT JOIN 1_contact t9_ ON (t11_.id_client = t9_.id) LEFT JOIN lead l10_ ON (t0_.id_table = l10_.id) LEFT JOIN 5_note_action t7_ ON (t7_.id = t0_.id_nom_action) LEFT JOIN 5_note_action_statut t8_ ON (t8_.id = t0_.id_action_statut) LEFT JOIN utilisateur u5_ ON (u5_.IDUTILISATEUR = t0_.id_user_action) LEFT JOIN utilisateur u6_ ON (u6_.IDUTILISATEUR = t0_.rappelleur) LEFT JOIN utilisateur u4_ ON (u4_.IDUTILISATEUR = t0_.id_user_add) LEFT JOIN utilisateur u3_ ON (u3_.IDUTILISATEUR = t0_.id_user_action) WHERE ((u4_.IDUTILISATEUR = ? OR (t0_.id_user_add IS NULL AND u3_.IDUTILISATEUR = ?)) AND t0_.id_table IS NOT NULL AND t0_.deleted_at IS NULL AND t0_.id IN (?)) AND t0_.nom_table IN (\'1_domiciliation\', \'1_contact\', \'1_formation_dossier\', \'1_contact_formateur\', \'1_dossier\', \'1_encaissement\', \'1_facture\', \'1_facture_domiciliation\', \'1_doc_dossier\', \'1_devis\', \'1_formation_catalogue\', \'lead\') ORDER BY t0_.id DESC',
+            ],
+        ],
+        'stdClass' => [
+            'scalarMappings' => [
+                2 => [
+                    'id_table_0' => 'idTable',
+                    'nomtable_1' => 'nomTable',
+                    'id_2' => 'id',
+                    'nom_str_3' => 'contact',
+                    'nom_con_4' => 'nomCon',
+                    'date_add_5' => 'date',
+                    'texte_note_6' => 'noteCommentaire',
+                    'sclr_7' => 'createurNom',
+                    'sclr_8' => 'createurPrenom',
+                    'NOMUTILISATEUR_9' => 'idUserAction',
+                    'IDUTILISATEUR_10' => 'rappelleur',
+                    'nom_action_11' => 'action',
+                    'date_action_12' => 'dateAction',
+                    'action_statut_13' => 'statutAction',
+                    'nom_str_14' => 'client',
+                    'nom_15' => 'nom',
+                    'prenom_16' => 'prenom',
+                    'societe_17' => 'societe',
+                    'nom_18' => 'nomLead',
+                    'prenom_19' => 'prenomLead',
+                ],
+            ],
+            'typeMappings' => [
+                2 => [
+                    'id_table_0' => 'integer',
+                    'nomtable_1' => 'string',
+                    'id_2' => 'integer',
+                    'nom_str_3' => 'string',
+                    'nom_con_4' => 'string',
+                    'date_add_5' => 'datetime',
+                    'texte_note_6' => 'text',
+                    'sclr_7' => 'string',
+                    'sclr_8' => 'string',
+                    'NOMUTILISATEUR_9' => 'string',
+                    'IDUTILISATEUR_10' => 'integer',
+                    'nom_action_11' => 'string',
+                    'date_action_12' => 'datetime',
+                    'action_statut_13' => 'string',
+                    'nom_str_14' => 'string',
+                    'nom_15' => 'string',
+                    'prenom_16' => 'string',
+                    'societe_17' => 'text',
+                    'nom_18' => 'string',
+                    'prenom_19' => 'string',
+                ],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

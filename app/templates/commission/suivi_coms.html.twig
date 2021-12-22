@@ -1,0 +1,394 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suivi-Commission - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Suivi des commission</li>
+        </ol>
+    </nav>
+
+    {#<!-- APR-217 : Duplication bouton extraction : @TODO code à factoriser  -->#}
+    <div class="modal fade no-disabled" id="extract-modal" tabindex="-1" role="dialog" aria-labelledby="extract-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="extract-modal-title">Extractions</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="container-fluid" target="_blank" action="{{ path('crm.dossier.extract') }}" method="post">
+                        <div class="row">
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossenattaccord-modal" >Dossier en attente d'accord</button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#suiviencaiss-modal" >Suivi des encaissements</button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossfactopca-modal" >Dossiers facturé OPCO</button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dosslocation-modal" >Gestion des dossiers de location</button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossfactclient-modal" >Dossiers facturé Client</button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="button" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#suivicom-modal" >Gestion et Suivis des comissions </button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#customextract-modal" ><b>Extraction des dossiers personnalisé</b></button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossprospere-modal" >Gestion des Dossiers PROSPERE </button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossproform-modal" >Gestion des Dossiers PROFORM </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal extraction dossier en attente accord -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dossenattaccord',
+            titleModal: 'Extraction dossier en attente accord',
+            status: {},
+            displayColumns: dossierEnattenteExtractColumns,
+            typeExtract: constant('DOSSIER_EN_ATTENTE_ACCORD', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier en attente accord  -->
+
+    <!-- Modal extraction suivi encaissement -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'suiviencaiss',
+            titleModal: 'Extraction suivi des encaissements',
+            status: {},
+            displayColumns: suiviencaissExtractColumns,
+            typeExtract: constant('SUIVI_ENCAISSEMENT', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction suivi encaissement  -->
+
+    <!-- Modal extraction dossier facturé opca -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dossfactopca',
+            titleModal: 'Extraction dossiers facturé OPCO',
+            status: {},
+            displayColumns: dossFactOpcaExtractColumns,
+            typeExtract: constant('DOSSIER_FACT_OPCA', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier facturé opca  -->
+
+    <!-- Modal extraction dossier facturé client -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dossfactclient',
+            titleModal: 'Extraction dossiers facturés Client',
+            status: {},
+            displayColumns: dossFactClientExtractColumns,
+            typeExtract: constant('DOSSIER_FACT_CLIENT', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier facturé client  -->
+
+    <!-- Modal extraction dossier location -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dosslocation',
+            titleModal: 'Extraction gestion des dossiers de location',
+            status: {},
+            displayColumns: gestionlocExtractColumns,
+            typeExtract: constant('GESTION_DOSSIER_LOC', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier location  -->
+
+    <!-- Modal extraction dossier prospère -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dossprospere',
+            titleModal: 'Extraction gestion des dossiers PROSPERE',
+            status: {},
+            displayColumns: dossprospereExtractColumns,
+            typeExtract: constant('GESTION_DOSSIER_PROS', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier prospère  -->
+
+    <!-- Modal extraction dossier proform -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dossproform',
+            titleModal: 'Extraction gestion des dossiers PROFORM',
+            status: {},
+            displayColumns: dossproformExtractColumns,
+            typeExtract: constant('GESTION_DOSSIER_PROFORM', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier proform  -->
+
+    <!-- Modal extraction suivi commissions -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'suivicom',
+            titleModal: 'Extraction gestion des dossiers et suivis des commissions',
+            datePaiement: true,
+            status: comStatuts,
+            displayColumns: suivicomColumns,
+            typeExtract: constant('GESTION_SUIVI_COM', extractConst),
+            allCommercials: commercials
+        }
+    %}
+    <!-- fin Modal extraction suivi commissions -->
+
+    <!-- Modal extraction personnalité -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'customextract',
+            titleModal: 'Extraction des dossiers personnalisés',
+            anneeDebutFin: true,
+            status: dossierStatut,
+            displayColumns: customextractColumns,
+            typeExtract: constant('EXTRACTION_PERSONNALISE', extractConst)
+        }
+    %}
+    {#<!-- Fin Modal extraction personnalité -->#}
+            
+            
+            
+    <h2 class="text-center mt-2 text-primary">SUIVI DES COMMISSIONS</h2>
+
+    <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(form_filter,{'attr' : {'class':'list-filter'}}) }}
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                {{ form_widget(form_filter.clientID, { attr: {'placeholder' : 'Client',  'class' : 'w-100'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                <p>{{ form_widget(form_filter.refDossier, { attr: {'placeholder' : 'Reference Dossier',  'class' : 'w-100'} }) }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.societe) }}#}
+                <p>{{ form_widget(form_filter.montantAccorde, { attr : {'placeholder' : 'Montant accordé',  'class' : 'w-100' } } ) }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.nom) }}#}
+                {{ form_widget(form_filter.montantCom, { attr: {'class' : 'w-100', placeholder : 'Montant de la commission'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.prenom) }}#}
+                {{ form_widget(form_filter.montantDemande, { attr: {'class' : 'w-100', placeholder : 'Montant demandé'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(form_filter.adresse) }}#}
+                {{ form_widget(form_filter.montantFacture, { attr: {'class' : 'w-100', placeholder : 'Montant Facture'} } ) }}
+            </div>
+        </div>
+        <div class="form-row clearfix">
+            <div class="col-md-2">
+                {{ form_widget(form_filter.montantEncaisse, { attr: { 'class' : 'w-100', placeholder : 'Montant en Caisse'} } ) }}
+            </div>
+            <div class="col-md-2">
+                {#{{ form_label(form_filter.codePostal) }}#}
+                {{ form_widget(form_filter.dateSign, { attr: { placeholder: 'Date de signature'} } ) }}
+            </div>
+            <div class="col-md-2">
+                {#{{ form_label(form_filter.telephone) }}#}
+                {{ form_widget(form_filter.tauxComm, { attr: { 'class' : 'w-100', placeholder : 'Taux de commission'} } ) }}
+            </div>
+             {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DIRECTION')  %}
+                 {# APR-168 : Filtre #} 
+                <div class="col-md-2">
+                    {#{{ form_label(form_filter.opca) }}#}
+                    {{ form_widget(form_filter.cial, { attr: { 'class' : 'w-100', placeholder : 'Commercial'} }) }}
+                </div>
+            {% endif %}
+            
+           
+            <div class="col-md-2">
+                {#{{ form_label(form_filter.commercial) }}#}
+                {{ form_widget(form_filter.statutCom, { attr: { 'class' : 'w-100'} }) }}
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+                <a href="{{ path('Suivi_Commissions_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(form_filter, { render_rest : false } ) }}
+    </fieldset>
+
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr class="bg-info text-light">
+                <th>Ref_DOSSIER</th>
+                <th>Client</th>
+                <th> Date signature</th>
+                <th>Montant demandé</th>
+                <th>Montant accordé</th>
+                <th>Montant HT Facture</th>
+                <th>Montant Encaisse TTC</th>
+                <th>Taux de commission</th>
+                <th>Montant de la commission</th>
+                <th>Commercial</th>
+                <th>Statut_comm</th>
+                <th>Date paiement_comm</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commission in pagination %}
+                <tr>
+                    <td>
+                        {% if commission.form_dossier_id %}
+                            <a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id : commission.form_dossier_id}) }}" target="_blank">
+                                {{ commission.num_intern }}
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>{{ commission.nomclient }}</td>
+                    <td>{{ commission.datesign|date('m-Y') }}</td>
+                    <td>{{ commission.mntsigne|number_format(2, ',', ' ') }}</td>
+                    <td>{{ commission.mntaccorde|number_format(2, ',', ' ') }}</td>
+                    <td>{{ commission.mntfacture|number_format(2, ',', ' ') }}</td>
+                    <td>{{ commission.mntTtc|number_format(2, ',', ' ') }}</td>
+                    <td>{{ commission.tauxCom }}</td>
+                    <td>{{ commission.tauxCom > 0 ? (commission.mntfacture * commission.tauxCom / 100) |number_format(2, ',', ' ') : '' }}</td>
+                    <td>{{ commission.com }}</td>
+                    <td>{{ commission.statut }}</td>
+                    <td>{{ commission.dateReelleEncaiss |date('m-Y') }} {# Uniformisation avec V1 : date paiement comm = mois de date Reelle Encaissement #}</td>
+                    <td>
+                        <a href="{{ path('Suivi_Commissions_Detail', {'id': commission.id}) }}"
+                           class="action-com" data-formtitle="Detail de la commission" data-mod="#gen">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="{{ path('Suivi_Commissions_Supprimer',  {'id': commission.id}) }}"
+                           class="action-com" data-formtitle="Supprimer la commission" data-mod="#gen">
+                            <i class="fas fa-trash-alt text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="6" class="text-align-middle pt-3">
+                    <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+                </td>
+                <td colspan="6" class="text-align-middle pt-3">
+                    {{ knp_pagination_render(pagination) }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+                
+    <div class="d-flex justify-content-center my-4 no-disabled">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#extract-modal"><b>Extractions</b></button>
+    </div>
+                
+    {% include 'partial/modal.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+
+    <script type="text/javascript">
+        /**
+         * Action pour les boutton avec modal
+         */
+        $(document).on('click', '.action-com', function (e) {
+            e.preventDefault();
+            var titre = $(this).attr('data-formTitle');
+            var modal = $(this).attr('data-mod');
+            $(modal + "_modal_title").html(titre);
+            $(modal + "_modal_save").hide();
+            $(modal + "_modal_discard").hide();
+            $(modal + "_modal").modal("show");
+            chargement({selecteur: modal + "_modal_body"});
+            $(modal + '_modal').modal('show');
+            var url = $(this).attr("href");
+            var texte = null;
+            $.get(url, function (data) {
+                texte = data;
+            }).done(function () {
+                $(modal + "_modal_save").show();
+                $(modal + "_modal_discard").show();
+                $(modal + "_modal_body").html(texte);
+            });
+        });
+
+        /**
+         * Action quand on valide un formulaire venant du modal general
+         */
+        $(document).on('click', '#gen_modal_save', function () {
+            var form = $('#gen_modal_body').find('form');
+            /*console.log(cible);*/
+
+            var url = form.attr('action');
+            var dataForm = form.serializeArray();
+
+            chargement({selecteur: '#gen_modal_body'});
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: dataForm,
+                dataType: 'json', // tell jQuery not to process the data
+                success: function (data) {
+                    $('#gen_modal_save').show();
+                    $('#gen_modal_discard').show();
+                    if (typeof data === 'string') {
+                        $('#gen_modal_body').html(data);
+                    } else {
+                        $('#gen_modal').modal('hide');
+                        $('.modal').modal('hide');
+                        if (data.success) {
+                            location.reload(true);
+                        }
+                    }
+                }
+            });
+        });
+
+        $(".js-datepicker").each(function () {
+            $(this).datepicker({
+                'format': 'dd/mm/yyyy',
+                'autoclose': true,
+                'clearBtn': true,
+                'language': 'fr',
+            });
+        });
+    </script>
+
+    {# Debut APR-217 : Duplication du bouton : Extraction  #}
+    {% include 'dossier/part/custom-extract-js.html.twig' %}
+    {# Fin APR-217 : Duplication du bouton : Extraction   #}
+{% endblock %}

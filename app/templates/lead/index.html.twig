@@ -1,0 +1,211 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu - CRM Aprentiv v2.0{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+ <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des leads</li>
+        </ol>
+    </nav>
+
+     <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(form)  }}
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.societe) }}#}
+                <p>{{ form_widget(form.societe, { attr : {'class' : 'w-100 py-3'} } )  }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.nom) }}#}
+                {{ form_widget(form.nom, { attr: {'class' : 'w-100', placeholder : '-- Nom --'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.prenom) }}#}
+                {{ form_widget(form.prenom, { attr: {'class' : 'w-100', placeholder : '-- Prénom --'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(form.ville, { attr: {'class' : 'w-100', placeholder : '-- Ville --'} } ) }}
+            </div>
+            <div class="col-md-2">
+                {#{{ form_label(contact_filter_form.commercial) }}#}
+                {{ form_widget(form.commercial, { attr: { 'class' : 'w-100', placeholder : '-- Commercial --'} }) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_widget(form.statut, { attr: { 'class' : 'w-100', placeholder : '-- Statut lead --'} }) }}
+            </div>
+            <div class="col-md-2">
+                {#{{ form_label(contact_filter_form.opca) }}#}
+                {{ form_widget(form.origine, { attr: { 'class' : 'w-100', placeholder : '-- Origine du lead --'} }) }}
+            </div>
+
+            <div class="col-md-2 mt-2">
+                <button type="submit" class="btn btn-info py-1">Rechercher</button>
+                <a href="{{ path('Liste_Lead_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        {{ form_end(form)  }}
+    </fieldset>
+    <div class="page-content">
+        {% for flash_message in app.session.flashBag.get('error') %}
+            <div class="note note-warnning">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+        {% for flash_message in app.session.flashBag.get('success') %}
+            <div class="note note-success">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <h2 class="text-center mt-2 text-nmary">LEADS</h2>
+     <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-sm mb-0 table-striped">
+                <thead>
+                <tr class="bg-info text-light">
+                    <th>Societe</th>
+                    <th>Statut</th>
+                    <th>Commercial</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Ville</th>
+                    <th>Origine</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for lead in leadPage %}
+                    <tr data-lead-id="{{ lead.id }}" data-href="{{ path('Fiche_lead_Controller/editLead', { id : lead.id} ) }}">
+                        <td>{{ lead.societe }}</td>
+                        <td>{{ lead.statut }}</td>
+                        <td>{{ lead.commercial }}</td>
+                        <td>{{ lead.nom }}</td>
+                        <td> {{ lead.prenom}} </td>
+                        <td> {{ lead.ville }} </td>
+                        <td> {{ lead.origine}}</td>
+                        <td>
+                            {% if can_view is defined and can_view %}
+                                <a href="{{ path('Fiche_lead_Controller/editLead', { id : lead.id} ) }}">
+                                    <i class="fas fa-eye fa-2x"></i>
+                                </a>
+                            {% endif %}
+                            {% if can_edit is defined and can_edit %}
+                                <a onClick="deleteLead($(this))">
+                                    <i class="fas fa-trash-alt text-danger fa-2x"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr >
+                    <td colspan="6" class="text-align-middle pt-3">
+                        <strong>Total : </strong> {{ leadPage.getTotalItemCount }}
+                    </td>
+                    <td colspan="6" class="text-align-middle pt-3">
+                        {{ knp_pagination_render(leadPage) }}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+            <div class="col-sm-12 text-center">
+                <a class="btn btn-primary" href="{{ path('Fiche_lead_Controller/ajoutLead') }}">Ajouter lead</a>
+                {% if app.user.idutilisateur == '29'%}
+            <div class="btn-group mr-2" role="group" aria-label="Third group">
+                <a href="{{ path("export_lead") }}" class="btn btn-primary btn-block">Exporter lead</a>
+            </div>
+            {% endif %}
+            </div>
+            
+            </table>
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script>
+        function deleteLead(elem)
+        {
+            var lead_id = elem.closest('tr').attr('data-lead-id');
+            var deleteLink = '{{ path('Lead_Delete', {'id':'lead_id'}) }}';
+            deleteLink = deleteLink.replace('lead_id', lead_id);
+            swal({
+                title: "Confirmation!",
+                text: "Voulez vous supprimer cette ligne?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "GET",
+                            url: deleteLink,
+                        })
+                            .done(function(data){
+                                if (data.status == "Success") {
+                                    swal("Supprimé avec succés!", {
+                                        icon: "success",
+                                    }).then((ok) => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    swal({
+                                        title: "Error!",
+                                        text: data.message,
+                                        icon: "warning",
+                                        buttons: false,
+                                        dangerMode: true,
+                                    });
+                                }
+                            });
+                    }
+                });
+        }
+          $(function () {
+            $('#societe').select2({
+                placeholder: "-- Société --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.lead.societe.asynch-search') }}',
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    }
+                }
+            });
+
+            {% if app.request.query.get('societe') %}
+                    var data = {
+                        id: "{{ app.request.query.get('societe') }}",
+                        text: '{{ app.request.query.get('societe')|e('js') }}'
+                    };
+
+                    var newOption = new Option(data.text, data.id, true, true);
+                    $('#societe').append(newOption).trigger('change');
+
+            {% endif  %}
+            });
+
+    </script>
+{% endblock %}

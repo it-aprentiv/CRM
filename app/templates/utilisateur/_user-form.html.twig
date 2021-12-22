@@ -1,0 +1,43 @@
+{{ form_start(user_form, { attr : {id : 'user-form'} }) }}
+
+    <fieldset>
+        <legend>Informations utilisateur</legend>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                {{ form_label(user_form.nomutilisateur, 'Nom') }}
+                {{ form_widget(user_form.nomutilisateur) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_label(user_form.username, 'Prénom(s)') }}
+                {{ form_widget(user_form.username) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_label(user_form.newPassword, 'Mot de passe') }}
+                {{ form_widget(user_form.newPassword) }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form_label(user_form.isAdmin, 'Est admin ?') }}
+                {{ form_widget(user_form.isAdmin) }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form_label(user_form.poste, 'Poste') }}
+                {{ form_widget(user_form.poste) }}
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Gestion des droits d'accès aux menus</legend>
+        <div class="form-row">
+            {% for menu in menus %}
+                <div class="form-group col-md-3">
+                    <strong>{{ form_label(user_form['menu' ~ menu.idmenu]) }}</strong>
+                    {{ form_widget(user_form['menu' ~ menu.idmenu]) }}
+                </div>
+            {% endfor %}
+        </div>
+    </fieldset>
+{{ form_end(user_form) }}

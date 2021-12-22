@@ -1,0 +1,177 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OPCA - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">OPCO</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">LISTE DES OPCO</h2>
+    {#<fieldset class="mb-3">#}
+    {#<legend>Filtre</legend>#}
+    {#{{ form_start(opca_filter_form)  }}#}
+    {#<div class="form-row">#}
+    {#<div class="form-group col-md-2">#}
+    {#{{ form_widget(opca_filter_form.opca, {attr: {'class' : 'w-100', placeholder : 'OPCA'} }) }}#}
+    {#</div>#}
+    {#<div class="form-group col-md-1">#}
+    {#<p>{{ form_widget(opca_filter_form.telephone, {attr: {'class' : 'w-100', placeholder : 'Téléphone'} }) }}</p>#}
+    {#</div>#}
+    {#&#123;&#35;<div class="form-group col-md-1">&#35;&#125;#}
+    {#&#123;&#35;&#123;&#35;{{ form_label(contact_filter_form.societe) }}&#35;&#125;&#35;&#125;#}
+    {#&#123;&#35;<p>{{ form_widget(opca_filter_form.fax, { attr : {'class' : 'w-100', placeholder : 'Fax' } } )  }}</p>&#35;&#125;#}
+    {#&#123;&#35;</div>&#35;&#125;#}
+    {#<div class="form-group col-md-1">#}
+    {#&#123;&#35;{{ form_label(contact_filter_form.nom) }}&#35;&#125;#}
+    {#{{ form_widget(opca_filter_form.email, { attr: {'class' : 'w-100', placeholder : 'Email'} } ) }}#}
+    {#</div>#}
+    {#&#123;&#35;<div class="form-group col-md-1">&#35;&#125;#}
+    {#&#123;&#35;&#123;&#35;{{ form_label(contact_filter_form.prenom) }}&#35;&#125;&#35;&#125;#}
+    {#&#123;&#35;{{ form_widget(opca_filter_form.siteWeb, { attr: {'class' : 'w-100', placeholder : 'Site Web'} } ) }}&#35;&#125;#}
+    {#&#123;&#35;</div>&#35;&#125;#}
+    {#<div class="form-group col-md-2">#}
+    {#&#123;&#35;{{ form_label(contact_filter_form.adresse) }}&#35;&#125;#}
+    {#{{ form_widget(opca_filter_form.adresse, { attr: {'class' : 'w-100', placeholder : 'Adresse'} } ) }}#}
+    {#</div>#}
+    {#<div class="form-group col-md-1">#}
+    {#&#123;&#35;{{ form_label(contact_filter_form.adresse) }}&#35;&#125;#}
+    {#{{ form_widget(opca_filter_form.compAdresse, { attr: {'class' : 'w-100', placeholder : 'Complément d \'adresse'} } ) }}#}
+    {#</div>#}
+    {#<div class="form-group col-md-1">#}
+    {#&#123;&#35;{{ form_label(contact_filter_form.adresse) }}&#35;&#125;#}
+    {#{{ form_widget(opca_filter_form.codePostal, { attr: {'class' : 'w-100', placeholder : 'Code Postal'} } ) }}#}
+    {#</div>#}
+    {#<div class="form-group col-md-1">#}
+    {#&#123;&#35;{{ form_label(contact_filter_form.adresse) }}&#35;&#125;#}
+    {#{{ form_widget(opca_filter_form.ville, { attr: {'class' : 'w-100', placeholder : 'Ville'} } ) }}#}
+    {#</div>#}
+    {#<div class="form-group col-md-1">#}
+    {#<button type="submit" class="btn btn-info">Rechercher</button>#}
+    {#</div>#}
+    {#</div>#}
+    {#{{ form_end(opca_filter_form)  }}#}
+    {#</fieldset>#}
+    <table class="table table-sm list-filter table-striped">
+        <thead>
+            {{ form_start(opca_filter_form)  }}
+            <tr>
+                <td> {{ form_widget(opca_filter_form.opca, {attr: {'class' : 'w-100', placeholder : 'OPCO'} }) }}</td>
+                <td>{{ form_widget(opca_filter_form.telephone, {attr: {'class' : 'w-100', placeholder : 'Téléphone'} }) }}</td>
+                <td>{{ form_widget(opca_filter_form.email, { attr: {'class' : 'w-100', placeholder : 'Email'} } ) }}</td>
+                <td>{{ form_widget(opca_filter_form.adresse, { attr: {'class' : 'w-100', placeholder : 'Adresse'} } ) }}</td>
+                <td>{{ form_widget(opca_filter_form.compAdresse, { attr: {'class' : 'w-100', placeholder : 'Complément d \'adresse'} } ) }}</td>
+                <td>{{ form_widget(opca_filter_form.codePostal, { attr: {'class' : 'w-100', placeholder : 'Code Postal'} } ) }}</td>
+                <td>{{ form_widget(opca_filter_form.ville, { attr: {'class' : 'w-100', placeholder : 'Ville'} } ) }}</td>
+                <td>
+                    <button type="submit" class="btn btn-info">Rechercher</button>
+                    <a href="{{ path('OPCA_Controller') }}" class="text-warning" title="Réinitialiser le filtre"><i class="fas fa-undo"></i></a>
+                </td>
+            </tr>
+            {{ form_end(opca_filter_form)  }}
+            <tr class="bg-info text-light">
+                <th>OPCO</th>
+                <th>Téléphone</th>
+                    {#<th>Fax</th>#}
+                <th>E-mail</th>
+                    {#<th>Site Web</th>#}
+                <th>Adresse</th>
+                <th>Complément d'adresse</th>
+                <th>Code postale</th>
+                <th>Ville</th>
+                <th colspan="2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for opca in pagination %}
+                <tr data-opca-id="{{ opca.contact_id }}" data-href="{{ path('OPCA_Controller/showOpca', {idOpca:opca.contact_id}) }}">
+                    <td>{{ opca.opca }}</td>
+                    <td>{{ opca.telephone }}</td>
+                    {#<td>{{ opca.fax }}</td>#}
+                    <td>{{ opca.email }}</td>
+                    {#<td>{{ opca.site_web }}</td>#}
+                    <td>{{ opca.adresse }}</td>
+                    <td>{{ opca.compAdresse }}</td>
+                    <td>{{ opca.code_postal }}</td>
+                    <td>{{ opca.ville }}</td>
+                    <td>
+                        <a href="{{ path('OPCA_Controller/showOpca', {idOpca:opca.contact_id}) }}">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a onclick="deleteOpca($(this))">
+                            <i class="fas fa-trash-alt text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+        <tfoot>
+            <tr >
+                <td colspan="6" class="text-align-middle pt-3">
+                    <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+                </td>
+                <td colspan="6" class="text-align-middle pt-3">
+                    {{ knp_pagination_render(pagination) }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="text-center my-3 list-filter">
+        <a href="{{ path('opca_create') }}" class="btn btn-primary" >Ajouter un OPCO</a>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function deleteOpca(elem)
+        {
+            var opca_id = elem.closest('tr').attr('data-opca-id');
+            var deleteLink = '{{ path('OPCA_Controller/deleteOpca', {'idOpca':'opcaId'}) }}';
+            deleteLink = deleteLink.replace('opcaId', opca_id);
+            swal({
+                title: "Confirmation!",
+                text: "Voulez vous supprimer cette ligne?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        url: deleteLink,
+                    })
+                    .done(function (data) {
+                        if (data.status == "Success") {
+                            swal("Supprimé avec succés!", {
+                                icon: "success",
+                            }).then((ok) => {
+                                location.reload();
+                            });
+                        } else {
+                            swal({
+                                title: "Error!",
+                                text: data.message,
+                                icon: "warning",
+                                buttons: false,
+                                dangerMode: true,
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+{% endblock %}

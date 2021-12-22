@@ -1,0 +1,103 @@
+{# /!\ Ce template gère 2 types d'encaissement selon le type de facture (source) : facture dossier ou facture domiciliation/location #}
+
+{% if(type is defined) %}
+    {{ form_start(encaissement_form,{ 'attr' : { 'class': 'list-filter'  }}) }}
+{% else %}
+    {{ form_start(encaissement_form) }}
+{% endif %}
+<fieldset>
+    <legend>Informations générales</legend>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            {{ form_row(encaissement_form.structure) }}
+        </div>
+        <div class="form-group col-md-3">
+            {{ form_label(encaissement_form.societes, "Client") }}
+            {{ form_widget(encaissement_form.societes) }}
+        </div>
+        {% if source is not defined or source is defined and source == 'dossier' %}
+            <div class="form-group col-md-2">
+                {{ form_row(encaissement_form.payeur) }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form_row(encaissement_form.opca) }}
+            </div>
+        {% endif %} 
+        <div class="form-group col-md-2">
+            {{ form_row(encaissement_form.commercial) }}
+        </div>
+    </div>
+</fieldset>
+
+<div class="row">
+    <div class="col-md-4">
+       {# <fieldset>
+            <legend>Sociétés</legend>
+            {{ form_row(encaissement_form.societes) }}
+        </fieldset>#}
+
+        <fieldset>
+            <legend class="d-flex justify-content-between">
+                <span>Factures / Avoirs</span>
+            </legend>
+
+            {# <div class="form-row">
+                <div class="form-group col-md-9">
+                    <select id="autocomplete-facture" class="w-100" ></select>
+                </div>
+                <div class="form-group col-md-3">
+                    <button class="btn btn-primary" id="add-facture-avoir">Ajouter</button>
+                </div>
+            </div> #}
+
+            {% set num_facture_princ = null %}
+
+            {% if facture_principale is defined %}
+
+                {% if context is defined and context == 'dom/loc' %}
+                    {% set num_facture_princ = facture_principale.numero %}
+                {% else %}
+                    {% set num_facture_princ = facture_principale.ref %}
+                {% endif %}
+            {% endif %}
+
+
+            {%  include '/encaissement/_factures-avoirs.html.twig' with { 
+                    facture : facture_principale is defined ? facture_principale : null,
+                    context : context is defined ? context : "",
+                    deletable : false
+                }
+            %}
+
+            {% for facture in factures_liees %}
+                {% if facture.ref != encaissement_infos.num_facture  and facture.ref != num_facture_princ %}
+                    {%  include '/encaissement/_factures-avoirs.html.twig' with { facture : facture } %} 
+                {% endif %}
+            {% endfor %}
+
+            {# Liste des factures et avoirs liés : à récupérer dynamiquement --> #}
+            <div id="factures-wrapper"></div>
+            {# Liste des factures et avoirs liés <-- #}
+
+        </fieldset>
+    </div>
+    <div class="col-md-8">
+        {% include 'encaissement/_details-factures-avoirs.html.twig' with { encaissement_form : encaissement_form, source : source is defined ? source : 'dossier' } %}
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        {% include 'Common/commentaire-bloc.html.twig' with { prototype: encaissement_form.commentaires.vars.prototype, commentaires: encaissement_form.commentaires } %}
+        {# pour empecher l'application d'afficher un bloc commentaire à la fin #}
+        {% do encaissement_form.commentaires.setRendered %}
+    </div>
+</div>
+
+<p class="text-center mt-3">
+    {% if is_granted('edit', 'Encaissements') %}
+        <button class="btn btn-warning" id="enc_submit_button">{{ textButton }}</button>
+    {% endif %}
+</p>
+{{ form_end(encaissement_form) }}

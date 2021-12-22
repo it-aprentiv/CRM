@@ -1,0 +1,106 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Table'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Table')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Index'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Index')),
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone ($p['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                '1_contact',
+                'prenom',
+                'id',
+                'id_opca',
+                'idb',
+                'idb_opca',
+                'nom',
+                'no_naf',
+                'statut_rst',
+                'id_commercial',
+                'id_type',
+                'idb_commercial',
+                'idb_type',
+                'nom_str',
+            ],
+            'indexes' => [
+                [
+                    $o[1],
+                    $o[2],
+                    $o[3],
+                    $o[4],
+                    $o[5],
+                    $o[6],
+                    $o[7],
+                    $o[8],
+                    $o[9],
+                    $o[10],
+                    $o[11],
+                    $o[12],
+                    $o[13],
+                ],
+            ],
+            'columns' => [
+                1 => [
+                    'prenom',
+                ],
+                [
+                    'id',
+                ],
+                [
+                    'id_opca',
+                ],
+                [
+                    'idb',
+                ],
+                [
+                    'idb_opca',
+                ],
+                [
+                    'nom',
+                ],
+                [
+                    'no_naf',
+                ],
+                [
+                    'statut_rst',
+                ],
+                [
+                    'id_commercial',
+                ],
+                [
+                    'id_type',
+                ],
+                [
+                    'idb_commercial',
+                ],
+                [
+                    'idb_type',
+                ],
+                [
+                    'nom_str',
+                ],
+            ],
+            'repositoryClass' => [
+                14 => 'App\\Repository\\ContactRepository',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[14],
+    ],
+    []
+); }];

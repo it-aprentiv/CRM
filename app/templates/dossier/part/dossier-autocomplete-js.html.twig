@@ -1,0 +1,87 @@
+<!-- Autocomplétion Note dossier -->
+<script type="text/javascript">
+
+    var $listAutocomplete = {{ listAutocomplete|json_encode|raw }};
+
+    function getNjourApres(limit){
+
+        var dateNow = new Date();
+        dateNow.setDate(dateNow.getDate() + limit);
+        if(dateNow.getDay() == 6){
+            dateNow.setDate(daty.getDate() + 2);
+        }else if(dateNow.getDay() == 0){
+            dateNow.setDate(dateNow.getDate() + 1);
+        }
+
+        var month = (dateNow.getMonth()+1).toString().padStart(2, '0');
+        var date = dateNow.getDate().toString().padStart(2, 0);
+
+        return date + "/" + month + "/"+ dateNow.getFullYear();
+    }
+
+    function getDateByAutocomplete(id){
+        var date = null;
+        switch (id) {
+            case {{ constant('\\App\\Constants\\DossierNote::AUTOID_EMARG_A_ENVOYER') }}:
+            case {{ constant('\\App\\Constants\\DossierNote::AUTOID_FACT_CLT_A_FAIRE') }}:
+            case {{ constant('\\App\\Constants\\DossierNote::AUTOID_ENC_CHQ_EN_ATT') }}:
+                date = $('#{{ datefin }}').val();
+                break;
+            case {{ constant('\\App\\Constants\\DossierNote::AUTOID_EMARG_A_RECLAMER') }}:
+            case {{ constant('\\App\\Constants\\DossierNote::AUTOID_DOCS_A_RECLAMER') }}:
+                date = getNjourApres(10);
+                break;
+            case {{ constant('\\App\\Constants\\DossierNote::AUTOID_RELANCE_FOPCA') }}:
+                date = getNjourApres(42);
+                break;
+            default:
+                date = '';
+        }
+
+        return date;
+    }
+
+    /**
+     * handler for config autocomplete for note row
+     *
+     * @param tr
+     */
+    {# use this function name as property addAutocomplete in commentaire-bloc.html.twig to set autocomplétion #}
+    function addAutocomplete(tr) {
+        if (!$.fn.autocomplete) {
+            console.log('module autocomplete not defined');
+            return;
+        }
+
+        var comment = tr.find('.note-texte');
+        var action = tr.find('.note-action');
+        var dateAction = tr.find('.note-date-action');
+        var statutAction = tr.find('.note-action-statut');
+
+        comment.autocomplete({
+            source: function (request, response) {
+                var searchTerm = ['a', 'e', 'r', 'd'];
+                var lowertext = request.term.toLowerCase();
+                var datas = searchTerm.includes(lowertext) ? $listAutocomplete : [];
+
+                response(datas);
+            },
+            minLength: 1,
+            select: function(event, ui) {
+
+                if(ui.item){
+                    var opca = $('#{{ opcaId }}').find('option:selected').text();
+                    var numInterne = $('#{{ numInterne }}').val();
+                    var textComment = ui.item.info.replace('__OPCA__', opca);
+                    textComment = textComment.replace('__num_dossier__', numInterne);
+                    comment.val(textComment);
+                    action.val(ui.item.action);
+                    statutAction.val(ui.item.statut);
+                    dateAction.val(getDateByAutocomplete(ui.item.id));
+                }
+                return false;
+            }
+
+        });
+    }
+</script>

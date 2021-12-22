@@ -1,0 +1,185 @@
+{% extends 'base.html.twig' %}
+{% block title %}Note - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste notes et actions</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">LISTE DES NOTES ET ACTIONS</h2>
+
+    <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(note_filter) }}
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                {{ form_widget(note_filter.nomTable, {attr: {'class' : 'w-100', placeholder : 'Module'} }) }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form_widget(note_filter.nomStr, {attr: {'class' : 'w-100', placeholder : 'Contact'} }) }}
+            </div>
+            <div class="form-group col-md-3">
+                {#{{ form_widget(note_filter.dateAdd, {attr: {'class' : 'w-100', placeholder : 'Date'} }) }}#}
+                {{ form_widget(note_filter.dateAdd, { attr: { placeholder : 'Date '} }) }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form_widget(note_filter.author, {attr: {'class' : 'w-100', placeholder : 'Auteur'} }) }}
+            </div>
+        </div>
+        <div class="form-row mt-2">
+            {#<div class="form-group col-md-1">
+            {{ form_widget(note_filter.nomutilisateur, {attr: {'class' : 'w-100', placeholder : 'Créateur'} }) }}
+            </div>#}
+
+            <div class="form-group col-md-3">
+                {{ form_widget(note_filter.texteNote, {attr: {'class' : 'w-100', placeholder : 'Note/Commentaire'} }) }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form_widget(note_filter.nomAction, {attr: {'class' : 'w-100', placeholder : 'Action'} }) }}
+            </div>
+            <div class="form-group col-md-3">
+                {#{{ form_widget(note_filter.dateAction, {attr: {'class' : 'w-100 date-picker', placeholder : 'Date Action'} }) }}#}
+                {{ form_widget(note_filter.dateAction, { attr: { placeholder : 'Date Action'} }) }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form_widget(note_filter.rappelleur, {attr: {'class' : 'w-100', placeholder : 'Responsable'} }) }}
+            </div>
+            {#CHAMP AJOUTé POUR LE FILTRE DE RECHERCHE PAR STATUT#}
+            <div class="form-group col-md-3 mt-2">
+                {{ form_widget(note_filter.actionStatut, {attr: {'class' : 'w-100', placeholder : 'statut'} }) }}
+            </div>
+
+            {#<div class="form-group col-md-1">
+            {{ form_widget(note_filter.username, {attr: {'class' : 'w-100', placeholder : 'Username'} }) }}
+        </div>#}
+            <div class="form-group col-md-2 mt-3">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+                <a href="{{ path('Liste_notes_actions_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+
+
+        {{ form_end(note_filter) }}
+    </fieldset>
+
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr class="bg-info text-light">
+                <th>Module</th>
+                <th>Contact</th>
+                <th>Date</th>
+                <th>Auteur</th>
+                <th>Note/Commentaire</th>
+                <th>Action</th>
+                <th>Status action</th>
+                <th>Date Action</th>
+                <th>Responsable</th>
+                <th colspan="2">Voir</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for note in notes %}
+                <tr data-href="{{ path('Liste_notes_actions_Controller/showNote', {id:note.id}) }}">
+                    <td>{{ noteConstant.getTableLibelle(note.nomTable) }}</td>
+                    {% if note.nomTable == '1_formation_dossier' %}
+                    <td>{{ note.client }}</td>
+                    {% elseif note.nomTable == 'lead' and note.societe is empty %}
+                    <td>{{ note.nomLead | ucwords}} {{ note.prenomLead | ucwords }}</td>
+                    {% elseif note.nomTable == 'lead' %}
+                    <td>{{ note.societe }}</td>
+                    {% elseif note.nomTable == '1_contact' and note.contact is empty %}
+                    <td>{{ note.nom | ucwords}} {{ note.prenom | ucwords }}</td>      
+                    {% elseif note.nomTable == '1_contact' %}
+                    <td>{{ note.contact }}</td>
+                    {% else %}
+                    <td>{{note.nonCon}}</td>
+                    {% endif %}
+                    <td>{{ note.date|date('d/m/Y') }}</td>
+                    <td>{{ note.createurNom }} {{ note.createurPrenom }}</td>
+                    <td>{{ note.noteCommentaire }}</td>
+                    <td>{{ note.action }}</td>
+                    <td>{{ note.statutAction }}</td>
+                    <td>{% if note.dateAction.timestamp  %}
+                        {{ note.dateAction|date('d/m/Y') }}
+                    {% else %}
+
+                        {% endif %} </td>
+                        <td>{{ note.idUserAction }}</td>
+                        <td>
+                            <a href="{{ path('Liste_notes_actions_Controller/showNote', {id:note.id}) }}" target="_blank">
+                                <i class="fas fa-eye fa-2x"  style="margin-right: 10px;"></i>
+                            </a>
+                            <a onclick="deleteNote('{{ path('Liste_notes_actions_Controller/deleteNote', {id:note.id}) }}')">
+                                <i class="fas fa-trash-alt text-danger fa-2x"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr >
+                            <td colspan="6" class="text-align-middle pt-3">
+                                <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+                            </td>
+                            <td colspan="6" class="text-align-middle pt-3">
+                                {{ knp_pagination_render(pagination) }}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                
+                {% endblock %}
+
+                    {% block javascripts %}
+                        {{ parent() }}
+
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+                        <script type="text/javascript">
+                                function deleteNote(deleteLink)
+                                {
+                                    swal({
+                                        title: "Confirmation!",
+                                        text: "Voulez vous supprimer cette ligne?",
+                                        icon: "warning",
+                                        buttons: true,
+                                        dangerMode: true,
+                                    })
+                                            .then((willDelete) => {
+                                                if (willDelete) {
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        url: deleteLink,
+                                                    })
+                                                            .done(function (data) {
+                                                                if (data.status == "Success") {
+                                                                    swal("Supprimé avec succés!", {
+                                                                        icon: "success",
+                                                                    }).then((ok) => {
+                                                                        location.reload();
+                                                                    });
+                                                                } else {
+                                                                    swal("Erreur", "Cette ligne n'a pas pu être supprimé!", "error");
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                }
+                                $(document).ready(function () {
+                                    $('.js-datepicker').datepicker({
+                                        format: 'dd/mm/yyyy',
+                                        'autoclose': true,
+                                        'language': 'fr',
+                                    });
+                                });
+                        </script>
+                    {% endblock %}

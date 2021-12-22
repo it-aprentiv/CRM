@@ -1,0 +1,34 @@
+<table>
+    <tr>
+        <td>{% for i in range(1,110) %}&nbsp;{% endfor %}</td>
+        <td style="font-family: Calibri;font-size: 15px;">
+            <p style="font-weight: bold">{{ contact.contact.nomSociete | replace({'&' : '&amp;'}) }}</p><p style="font-weight: bold">A l'attention de {{ contact.contact.interlocuteur }}</p><p>{{ contact.adresse.adresse}}</p><p>{{ contact.adresse.codePostal}} {{ contact.adresse.ville}}</p><p><br/>Paris le, {{ datejour }}</p>
+        </td>
+    </tr>
+</table>
+<br/>
+<p style="font-family: Calibri;font-size: 15px;font-weight: bold">OBJET : DOCUMENTS DE CLOTURE A RETOURNER</p>
+<br/><br/>
+<p style="font-family: Calibri;font-size: 15px;">Madame, Monsieur,</p>
+<p style="font-family: Calibri;font-size: 15px;">Afin de procéder à la clôture administrative 
+{# APR-137 : Retour #}
+{% if dossier.dispositif == 'CPF'  %}
+de votre dossier,  
+{% else %}
+du dossier de formation de : 
+    {% for stagiaire in dossier.stagiaires %}
+{{ stagiaire.stagiaire.prenom }} {{ stagiaire.stagiaire.nom }}, 
+    {% endfor %} 
+{% endif %}
+nous vous prions de bien vouloir trouver <b>ci-joint les documents, à nous renvoyer complétés et signés aux endroits indiqués par retour du courrier.</b></p>
+<p style="font-family: Calibri;font-size: 15px;">Dans cette attente, nous restons à votre disposition pour tout renseignement complémentaire et vous prions d’agréer, Madame, Monsieur, l’expression de nos salutations distinguées.</p>
+<br/><br/>
+<table>
+<tr>
+<td>{% for i in range(1,110) %}&nbsp;{% endfor %}</td>
+<td style="font-family: Calibri;font-size: 15px;">
+<p>Véronique LOUBAUD</p>
+<p>Attachée de Direction</p>
+</td>
+</tr>
+</table>

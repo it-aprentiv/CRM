@@ -1,0 +1,40 @@
+<p style="font-family:Arial;font-size: 12px">
+    Est conclue la convention de formation professionnelle suivante, en application du Livre III du chapitre 6 du code du Travail sur la Formation Professionnelle Continue.
+</p>
+<ol style="font-family:Arial;font-size: 12px">
+    <li>
+<span style="font-family: Arial Black;font-size: 10px">OBJET DE LA CONVENTION :</span><br/>
+L’intitulé du stage de formation est : {{ propal ?  propal.formation |replace({'&' : "&amp;"})  }}<br/>
+Nature de l’action : 1. Adaptation poste de travail - 2. Evolution/Maintien dans l’emploi - 3. Développement des compétences<br/>
+Modalité de sanction : Attestation d’assiduité et de fin de stage + feuille(s) d’émargement</li><li>
+<span style="font-family: Arial Black;font-size: 10px">DATE, DURÉE ET LIEU :</span><br/>
+La formation a une durée de {{ propal ? propal.durrej | round : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }} jours (soit {{ propal ? propal.durreh : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }}h) et se tiendra du {% if propal.datedebutpropal is not empty %}{{ propal ? propal.datedebutpropal | date('d/m/Y') : '...' }}{% else %}                
+    {% endif %} au {% if propal.datefinpropal is not empty %}{{ propal ? propal.datefinpropal | date('d/m/Y')  : '...' }}{% else %}
+        {% endif %}<br/>
+Elle se déroulera au : {{ propal ? propal.lieupropal : '' }}</li><li>
+<span style="font-family: Arial Black;font-size: 10px">MOYENS PEDAGOGIQUES ET TECHNIQUES :</span><br/>
+Le Programme de l’action de formation est joint en annexe.<br/>
+La formation est dispensée selon les conditions générales ci-dessous :<br/>
+                - En entreprise (intra)                                          &#9744;     Hors entreprise (inter)       &#9744;<br/>
+                - Formation en présentielle                                 &#9744;     Formation à distance	 &#9744;<br/>
+- Salle de cours : six stagiaires maximum, animée par un formateur ;<br/>
+- Cours de langue : Supports variés sous forme de CD audio, vidéo et ouvrages pédagogiques ; mises en situations authentiques et jeux de rôles<br/>
+- Stages bureautique : chaque stagiaire travaillant individuellement sur un micro-ordinateur est guidé par un support de cours ;<br/>
+- Les formateurs ont plusieurs années d’expérience dans les domaines qu’ils enseignent.</li><li>
+<span style="font-family: Arial Black;font-size: 10px">ANNEXES :</span><br/>
+&#9679; Le Programme de l’action de formation est joint en annexe,<br/>
+&#9679; Le règlement intérieur figure en annexe, vous voudrez bien le remettre au(x) stagiaire(s).</li><li>
+<span style="font-family: Arial Black;font-size: 10px">PARTICIPANTS :</span><br/>
+Personnes concernée(s) : {{ propal.personnes }}<br/></li><li>
+<span style="font-family: Arial Black;font-size: 10px">COUT ET MODE DE REGLEMENT FORMATION :</span><br/>
+Le prix de l’action est fixé à :  {{propal ? propal.coutht : '' }} € HT.<br/>
+L’entreprise s’engage à verser la totalité du prix susmentionné selon les modalités de paiement suivantes, soit :<br/>
+-Par règlement de {#{{ opca | replace({'&' : '&amp;'}) }}#} à l’organisme de formation (subrogation).<br/>
+-Si l’organisme collecteur, à savoir {#{{ opca | replace({'&' : '&amp;'}) }}#} règle la partie prise en charge à l’entreprise, le contractant en reversera la totalité en fin de stage à l’organisme de formation.<br/>
+-Par règlement direct à l’organisme de formation avec un versement de 50% du montant total à l’inscription et 50% avant le début de la formation.</li><li>
+<span style="font-family: Arial Black;font-size: 10px">DEDIT ET RETRACTATION DE L’ENTREPRISE :</span><br/>
+A compter de la date du présent contrat, le signataire à un délai de 10 jours pour se rétracter. Passé ce délai, en cas de dédit par le client à moins de 15 jours calendaires avant le début de l’action de formation objet de la présente convention, celle-ci sera redevable de 50% du montant total de la prestation à titre de dédommagement. Ce montant sera de 100% à moins de 5 jours de la prestation.</li><li>
+<span style="font-family: Arial Black;font-size: 10px">RECOURS :</span><br/>
+Tout litige dans l’application du présent contrat devra faire l’objet d’une conciliation amiable. En cas d’échec, la juridiction de Paris est la seule compétente pour régler un éventuel litige.</li></ol><br/>
+<br/>
+Fait en double exemplaire à Paris, le :{{ "now"|date("d/m/Y") }}

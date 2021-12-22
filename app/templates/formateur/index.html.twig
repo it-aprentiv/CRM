@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{#{% block title %}Hello FormateurController!{% endblock %}
+{% block body %}
+    {% include '_en-construction.html.twig' %}
+{% endblock %}#}
+{% block title %}Formateurs - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des formateurs</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">LISTE DES FORMATEURS</h2>
+
+    <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(formateur_filter_form) }}
+        <div class="row">
+            <div class="form-group col-md-3">
+                {{ form_widget(formateur_filter_form.nomStr, {attr: {'class' : 'w-100', placeholder : 'Société du formateur ou organisme'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(formateur_filter_form.nom, {attr: {'class' : 'w-100', placeholder : 'Nom'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(formateur_filter_form.prenom, {attr: {'class' : 'w-100', placeholder : 'Prénom'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(formateur_filter_form.competence, {attr: {'class' : 'w-100', placeholder : 'Compétence'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(formateur_filter_form.statut, {attr: {'class' : 'w-100', placeholder : 'Statut'} }) }}
+            </div>
+            <div class="form-group col-md-1">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+                <a href="{{ path('Liste_Formateur_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(formateur_filter_form) }}
+    </fieldset>
+    <table class="table table-xs table-striped">
+        <thead>
+        <tr class="bg-info text-light">
+            <th>Société du formateur ou organisme</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Compétence</th>
+            <th>Statut du formateur</th>
+            <th>Active (oui/non)</th>
+            <th>Potentiel(oui/non)</th>
+            <th>Black listé(oui/non)</th>
+            <th colspan="2">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for formateur in pagination %}
+                <tr data-href="{{ path('Liste_Formateur_Controller/editFormateur', {id:formateur.id}) }}">
+                    <td>{{ formateur.nomStr }}</td>
+                    <td>{{ formateur.nom }}</td>
+                    <td>{{ formateur.prenom }}</td>
+                    <td>{{ formateur.competence }}</td>
+                    <td>{{ formateur.statut }}</td>
+
+                    {% if formateur.statutFmt == 1 %}
+                        <td>Oui</td>
+                    {% else %}
+                        <td>Non</td>
+                    {% endif %}
+                    {% if formateur.statut == 'Potentiel' %}
+                        <td>Oui</td>
+                    {% else %}
+                        <td>Non</td>
+                    {% endif %}
+                    {% if formateur.statut == 'Black listé' %}
+                        <td>Oui</td>
+                    {% else %}
+                        <td>Non</td>
+                    {% endif %}
+                    <td>
+                        <a href="{{ path('Liste_Formateur_Controller/editFormateur', {id:formateur.id}) }}" target="_blank">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a onclick="deleteFormateur('{{ path('Liste_Formateur_Controller/deleteFormateur', {id:formateur.id}) }}')">
+                            <i class="fas fa-trash-alt text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr >
+            <td colspan="6" class="text-align-middle pt-3">
+                <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+            </td>
+            <td colspan="6" class="text-align-middle pt-3">
+                {{ knp_pagination_render(pagination) }}
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+    <div class="text-center form-group col-md-12">
+        <a href="{{ path('Liste_Formateur_Controller/ajoutFormateur') }}" class="btn btn-info">Ajouter un formateur</a>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function deleteFormateur(deleteLink)
+        {
+            swal({
+                title: "Confirmation!",
+                text: "Voulez vous supprimer cette ligne?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "GET",
+                            url: deleteLink,
+                        })
+                            .done(function(data){
+                                if (data.status == "Success") {
+                                    swal("Supprimé avec succés!", {
+                                        icon: "success",
+                                    }).then((ok) => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    swal("Erreur", "Cette ligne n'a pas pu être supprimé!", "error");
+                                }
+                            });
+                    }
+                });
+        }
+    </script>
+{% endblock %}

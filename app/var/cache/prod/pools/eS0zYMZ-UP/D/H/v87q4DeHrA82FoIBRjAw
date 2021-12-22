@@ -1,0 +1,37 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Query\\ParserResult'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ParserResult')),
+        clone ($p['Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor')),
+        clone ($p['Doctrine\\ORM\\Query\\ResultSetMapping'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ResultSetMapping')),
+    ],
+    null,
+    [
+        'Doctrine\\ORM\\Query\\ParserResult' => [
+            '_sqlExecutor' => [
+                $o[1],
+            ],
+            '_resultSetMapping' => [
+                $o[2],
+            ],
+        ],
+        'Doctrine\\ORM\\Query\\Exec\\AbstractSqlExecutor' => [
+            '_sqlStatements' => [
+                1 => 'SELECT count(DISTINCT t0_.id) AS sclr_0 FROM 1_contact t0_ LEFT JOIN 1_structure t1_ ON t0_.id_type_tructure = t1_.id LEFT JOIN 5_contact_type t2_ ON t0_.id_type = t2_.id LEFT JOIN 1_contact t3_ ON t0_.id_opca = t3_.id LEFT JOIN 2_adresse t4_ ON (t4_.id_contact = t0_.id) LEFT JOIN 5_ville t5_ ON (t5_.id = t4_.id_ville) LEFT JOIN 2_telephone t6_ ON (t6_.id_contact = t0_.id AND t6_.id_type_tel = 1) LEFT JOIN 2_mail t7_ ON (t7_.id_contact = t0_.id) LEFT JOIN 1_collaborateur t8_ ON t0_.id_commercial = t8_.id WHERE t2_.id IN (1, 2)',
+            ],
+        ],
+        'stdClass' => [
+            'scalarMappings' => [
+                2 => [
+                    'sclr_0' => 1,
+                ],
+            ],
+            'typeMappings' => [
+                2 => [
+                    'sclr_0' => 'string',
+                ],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

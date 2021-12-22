@@ -1,0 +1,417 @@
+<script language="javascript">
+    var $collectionadresse;
+    var $collectioncomment;
+    var $collectioncontact;
+    var boutonremovecontact = "<button type='button' class='removecontactelement close' type='button'><span aria-hidden='true'>×</span></button>";
+    var boutonremoveadresse = "<button type='button' class='removeaddresseelement close' type='button'><span aria-hidden='true'>×</span></button>";
+    var boutonremovecomment = "<button type='button' class='removecommentelement close'><span aria-hidden='true'>×</span></button>";
+
+    $(".js-datepicker,.js-datepicker-note").each(function(){
+        $(this).datepicker({
+            'format':'dd/mm/yyyy',
+            'autoclose': true,
+            'language': 'fr'
+        });
+    });
+    function listencheckboxradio()
+    {
+        $(".checkbox-c").unbind("change").bind("change",function(){
+            if($(this).is(':checked')){
+                $(".checkbox-c").not($(this)).prop('checked', false);
+            }
+        });
+    }
+    // Fonction pour l'ajout du formulaire d'ajout adresse dans la page client/prospect
+    function addnewadresseform(){
+        var prototype = $collectionadresse.data("prototype");
+        let index = $collectionadresse.data("index");
+        let newform = prototype;
+        newform = newform.replace(/__name__/g, index);
+        let row = '<div class="row col-sm-12 pr-0 form_adresse">';
+        row = row + boutonremoveadresse + newform;
+        row = row + '</div>';
+        $collectionadresse.append(row);
+        $collectionadresse.data("index",index+1);
+        $(".removeaddresseelement").bind('click',function(event){
+            $(this).parents(".form_adresse").remove();
+        });
+        listencheckboxradio();
+        $('#contact_adresses_'+index+'_idVille').select2({
+            placeholder: "-- ville --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.opca.ville.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+    }
+    // Fonction pour l'ajout du formulaire d'ajout de contact dans la page client/prospect
+    function addnewcontact()
+    {
+        var prototype = $collectioncontact.data("prototype");
+        let index = $collectioncontact.data("index");
+        let newform = prototype;
+        newform = newform.replace(/__name__/g, index+1);
+        let row = '<div class="row contact_added">';
+        row = row + boutonremovecontact + newform;
+        row = row + '</div>';
+        $collectioncontact.append(row);
+        $collectioncontact.data("index",index+1);
+        $('.telephone-format').on('keypress keyup blur', function (event) {
+            common.allowDecimalCharOnly(event);
+            common.telephoneFormat(this);
+        });
+        $(".removecontactelement").bind('click',function(event){
+            $(this).parents(".contact_added").remove();
+        });
+    }
+    // Fonction pour l'ajout du formulaire d'ajout de commentaire dans la page client/prospect
+    function addnewcommentaire()
+    {
+        var prototype = $collectioncomment.data("prototype");
+        let newcomment = prototype;
+        newcomment = newcomment.replace(/__name__/g, $collectioncomment.find("tr").length+1);
+        let tr = "<tr><th colspan='6'><div class='row'>";
+        tr = tr + "<div class=\"comment_contains\">";
+        tr = tr + boutonremovecomment +newcomment;
+        tr = tr + "</div></div></th></tr>";
+        $collectioncomment.append(tr);
+        $collectioncomment.find("tr:last-child").find(".js-datepicker-note").each(function(){
+            $(this).datepicker({
+                'format':'dd/mm/yyyy',
+                'autoclose': true,
+                'language': 'fr'
+            });
+        });
+        $(".removecommentelement").bind('click',function(event){
+            $(this).parents(".comment_contains").parents("tr").remove();
+        });
+    }
+
+    $(document).ready(function(){
+        // Getting the form prototype adresse set in the attibute of form adresse content
+        $collectionadresse = $("#contact_adresse");
+        $collectioncomment = $("#commentaires_collection");
+        $collectioncontact = $("#contactadded");
+        $collectionadresse.data("index", $collectionadresse.find('.form_adresse').length);
+        $collectioncontact.data("index", $collectioncontact.find('.contact_added').length);
+        // Le select ville dans le modal opca et celui de adresse de 0 dans la page a le même id au départ, il faut changer
+        // celui du modal pour affecter une nouvel id pour activer le select2
+        $("#modalopcaadd").find("#contact_adresses_0_idVille").removeAttr("id").attr("id","select_ville_opca_modal");
+
+        // Lancer la fonction pour le comportement du checkbox principal comme bouton radio non checkbox
+        listencheckboxradio();
+        //
+        $("#ajoutadresse").click(function(event){
+            addnewadresseform();
+        });
+        //
+        $("#ajcom").click(function(){
+            addnewcommentaire();
+        });
+        //
+        $("#adcontact").click(function(){
+            addnewcontact();
+        });
+
+        $("#opcamodaladd").submit(function(e){
+            e.preventDefault();
+            var url = "{{ path('opca.modal.add') }}";
+            var data = $(this).serialize();
+            $.ajax({
+                type:'POST',
+                data:data,
+                url:url,
+                success: function(response){
+                    if(response.code_success){
+                        $(".contact_opca_added").append(new Option(response.oopca,response.lastinsertion_id,true,true))
+                    }
+                }
+            });
+            $("#modalopcaadd").modal('hide');
+        });
+        
+        
+        $("#addqualiteform").submit(function(e){
+            e.preventDefault();
+            var url = "{{ path('qualite_add') }}";
+            var data = $(this).serialize();
+            $.ajax({
+                type:'POST',
+                data:data,
+                url:url,
+                success: function(response){
+                    if(response.code_success){
+                        $(".qualite_added_new").each(function(){
+                            var qualite = response.oqualite;
+                            $(this).append(new Option(qualite.nomQualite, qualite.id,true,true));
+                        });
+                    }
+                }
+            });
+            $("#modalQualiteAdd").modal('hide');
+        });
+        
+        {# Debut : Modal > Ville > Enregistrer #}
+        $("#add_ville_form").on('submit', function(e) {
+            e.preventDefault();
+            var url = "{{ path('ville_add') }}";
+            var data = $(this).serialize();
+            $.ajax({
+                type:'POST',
+                data:data,
+                url:url,
+                
+                success: function(response){
+                    if(response.code_success){
+                        var ville = response.ville;
+                        $('#contact_adresses_0_idVille').append(new Option(ville.nomVille, ville.nomVille,true,true)).trigger('change');
+                    }
+                }
+            });
+            
+            $("#modal-ville-add").modal('hide');
+        });
+        {# Fin : Modal > Ville > Enregistrer #}
+        
+        //triggered when modal is about to be shown
+        $('#modalActiviteAdd').on('show.bs.modal', function(e) {
+            //get data-id attribute of the clicked element
+            var forselect = $(e.relatedTarget).data('forselect');
+            $(e.currentTarget).find('input[id="secteur_activite_forselect"]').val(forselect);
+        });
+        $("#addsecteuractiviteform").submit(function(e){
+            e.preventDefault();
+            var url = "{{ path('secteur_activite_add') }}";
+            var data = $(this).serialize();
+            var forselect = ($(this).find('input[id="secteur_activite_forselect"]').val());
+            $.ajax({
+                type:'POST',
+                data:data,
+                url:url,
+                success:function(response){
+                    if(response.code_success){
+                        var secteur = response.oactivite;
+                        $(".activite_secteur."+forselect).append(new Option(secteur.secteur, secteur.id,true,true));
+                    }
+                }
+            });
+            $("#modalActiviteAdd").modal('hide');
+        });
+
+        // Quand on ferme une boite de dialog, a sa fermeture on reset le formulaire dans la boite de dialog
+        $('.modal').on('hidden.bs.modal', function(){
+            $(this).find('form')[0].reset();
+        });
+
+        // Ajout des options pour les select societées liées
+        $('.sosieteliee').each(function(){
+            $(this).select2({
+                placeholder: "-- Société --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.contact.societe.asynch-search') }}',
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    },
+                    success: function (response) {
+                        $.map((response) => function (item) {
+                            var newoption = new Option(item.id,item.name,true,true);
+                            $(this).append(newoption).trigger("change");
+                        });
+                    }
+                }
+            });
+            $(this).change(function(){
+                $(this).find('option[value="'+$(this).val()+'"]').attr("selected",true);
+            });
+        });
+        $("#contact_adresses_0_idVille").select2({
+            placeholder: "-- ville --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.opca.ville.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+        $("#contact_adresses_0_idVille").on('change',function(){
+        });
+        $("#select_ville_opca_modal").select2({
+            placeholder: "-- ville --",
+            minimumInputLength: 3,
+            allowClear: true,
+            dropdownParent: $("#modalopcaadd"),
+            ajax: {
+                url: '{{ path('crm.opca.ville.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+        // AUTO COMPLETE CHAMP OPCA
+        $('#contact_opca').select2({
+            placeholder: "-- OPCO --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.dossier.opca.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        byid: true
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+
+        {% if app.request.query.get('opca') %}
+        var data = {
+            id: "{{ app.request.query.get('opca') }}",
+            text: '{{ app.request.query.get('opca')|e('js') }}'
+        };
+
+        var newOption = new Option(data.text, data.id, true, true);
+        $('#contact_opca').append(newOption).trigger('change');
+
+        {% endif  %}
+
+        $('#contact_idOpcaTns').select2({
+            placeholder: "-- OPCO TNS --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.dossier.opca.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        byid: true
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+
+        {% if app.request.query.get('opca') %}
+
+
+        var data2 = {
+            id: "{{ app.request.query.get('opca') }}",
+            text: '{{ app.request.query.get('opca')|e('js') }}'
+        };
+
+        var newOption2 = new Option(data2.text, data2.text, true, true);
+        $('#contact_idOpcaTns').append(newOption2).trigger('change');
+
+        {% endif  %}
+        
+        {# APR-121 : Rendre Activite entreprise en autocompletion #}
+        $('#contact_idSecteur').select2({
+            placeholder: "-- Secteur --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.secteur_activite.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+        $('#opca_idSecteur').select2({
+            placeholder: "-- Secteur --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.secteur_activite.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+        $('#contact_activiteTns').select2({
+            placeholder: "-- Secteur --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.secteur_activite.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+        {# APR-121 : Rendre Activite entreprise en autocompletion #}
+    
+        {# APR-125 : Mettre une pour renseigner une adresse si type contact = client (2) #}
+            $('#contact_id_type').on('change', function(e) {
+                let contactTypeId = $(this).val();
+                let $adresseLine0 = $('#contact_adresses_0_adresse');
+                let $codePostalLine0 = $('#contact_adresses_0_codePostal');
+                let $adresseTypeLine0 = $('#contact_adresses_0_type_adresse');
+                
+                if (contactTypeId == 2) {
+                    $adresseLine0.prop('required', true);
+                    $adresseLine0.prev('label').addClass('required');
+                    
+                    $codePostalLine0.prop('required', true);
+                    $codePostalLine0.prev('label').addClass('required');
+                    
+                    $adresseTypeLine0.prop('required', true);
+                    $adresseTypeLine0.prev('label').addClass('required');
+                } else {
+                    $adresseLine0.prop('required', false);
+                    $adresseLine0.prev('label').removeClass('required');
+                    
+                    $codePostalLine0.prop('required', false);
+                    $codePostalLine0.prev('label').removeClass('required');
+                    
+                    $adresseTypeLine0.prop('required', false);
+                    $adresseTypeLine0.prev('label').removeClass('required');
+                }
+                
+            })
+        {# Fin APR-125 #}
+            
+        {# Debut APR-203#}
+            //$(function() {
+           //     $('#contact_interlocuteur').val('non');
+           // });
+        {# Fin APR-203#}
+    });
+</script>

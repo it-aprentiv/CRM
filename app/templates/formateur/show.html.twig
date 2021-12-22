@@ -1,0 +1,192 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formateurs - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des formateurs</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">DETAILS FORMATEURS</h2>
+    <div class="row form-group">
+        <div class="col-md-8">
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>Statut</legend>
+                    <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="" id=""
+                                   value="{{ detail_formateur.idStatutFmt }}" {% if detail_formateur.idStatutFmt == 1 %} checked="checked"{% endif %}>
+                            <label class="form-check-label font-weight-bold" for="">Actif</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input font-weight-bold" type="radio" name="" id=""
+                                   value="{{ detail_formateur.idStatutFmt }}" {% if detail_formateur.idStatutFmt == 2 %} checked="checked"{% endif %}>
+                            <label class="form-check-label font-weight-bold" for="">Inactif</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input font-weight-bold" type="radio" name="" id=""
+                                   value="{{ detail_formateur.idStatutFmt }}" {% if detail_formateur.idStatutFmt == 3 %} checked="checked"{% endif %}>
+                            <label class="form-check-label font-weight-bold" for="">Black listé</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="" id=""
+                                   value="{{ detail_formateur.idStatutFmt }}" {% if detail_formateur.idStatutFmt == 4 %} checked="checked"{% endif %}>
+                            <label class="form-check-label font-weight-bold" for="">Potentiel</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-10">
+                <fieldset>
+                    <legend>Société</legend>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Société ou organisme:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.nomStr }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">N° SIRET:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.noSiret }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">N° Sécurité Sociale:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.nsecuritesocial }}" readonly>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-10">
+                <fieldset>
+                    <legend>Coordonnées</legend>
+                    <div class="row form-group">
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Piéce d'identité :</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.pieceIdentite }}"
+                                   readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Validité :</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.validite }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Nom :</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.nom }}" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Prénom:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.prenom }}" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Site web:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.siteweb }}" readonly>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row form-group">
+                        <div class="col-md-1">
+                            <label class="font-weight-bold">N°:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.numero }}" readonly>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="font-weight-bold">Voie:</label>
+                            <input type="text" class="form-control" value="" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Adresse:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.adresse }}" readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="font-weight-bold">Code postale:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.codePostal }}" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Ville:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.ville }}" readonly>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row form-group">
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Téléphone :</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.telephone }}" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Email:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.email }}" readonly>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row form-group">
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Portable:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.portable }}" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="font-weight-bold">Fax:</label>
+                            <input type="text" class="form-control" value="{{ detail_formateur.fax }}" readonly>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="col-md-12"><br></div>
+            <div class="col-md-12">
+                <fieldset>
+                    <legend>Commentaire/Disponibilité</legend>
+                    <div class="row">
+                        <div class="text-center col-md-6">
+                            <label class="font-weight-bold" for="fax9">Commentaires</label>
+                            <textarea style="height: 200px;" id="" name="" class="form-control"></textarea>
+                        </div>
+                        <div class="text-center col-md-6">
+                            <label class="font-weight-bold" for="">Disponibilités</label>
+                            <textarea style="height: 200px;" id="" name=""
+                                      class="form-control"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        {% include 'Common/commentaire-bloc.html.twig' with { prototype: formateur_commentaire.commentaires.vars.prototype, commentaires: formateur_commentaire.commentaires } %}
+        {# pour empecher l'application d'afficher un bloc commentaire à la fin #}
+        {% do formateur_commentaire.commentaires.setRendered %}
+    </div>
+    <div class="col-md-12 row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Mise à jour</button>
+        </div>
+        <div class="col-md-5"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'Common/commentaire-js.html.twig' %}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                'autoclose': true,
+                'language': 'fr',
+            });
+        });
+    </script>
+{% endblock %}

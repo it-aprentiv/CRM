@@ -1,0 +1,202 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lead - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active"><a href="{{ path('Liste_Lead_Controller') }}">Liste des Leads</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Création lead</li>
+        </ol>
+    </nav>
+
+    <div class="page-content">
+        {% for flash_message in app.session.flashBag.get('error_message') %}
+            <div class="note note-warnning">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+        {% for flash_message in app.session.flashBag.get('success_message') %}
+            <div class="note note-success">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form_start(form,{'attr':{'class':'list-filter'}}) }}
+               <div class="row col-md-12">
+               </div>
+               <h2 class="text-center mt-2 text-nmary">FICHE LEAD</h2>
+	<div class="row">
+		{{ form_start(form) }}
+
+		<div class="row col-md-12">
+			<fieldset class="col-sm-12 p-3 m-3 well">
+				<legend>LEAD</legend>
+
+					<div class="row">
+						<div class="form-group col-md-2 text-center">
+							{{ form_label(form.societe, 'Société', {
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+							{{ form_widget(form.societe) }}
+						</div>
+						<div class="col-sm-1 text-center">
+							{{ form_label(form.civilite, 'Civilité',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+							{{ form_widget(form.civilite) }}
+						</div>
+
+						<div class="col-sm-1 text-center">
+							{{ form_label(form.nom, 'Nom',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+							{{ form_widget(form.nom) }}
+						</div>
+						<div class="col-sm-1 text-center">
+							{{ form_label(form.prenom, 'Prenom',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+							{{ form_widget(form.prenom) }}
+						</div>
+							<div class="text-center col-sm-2">
+								{{ form_label(form.telephone, 'Téléphone',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+								{{ form_widget(form.telephone) }}
+							</div>			
+							<div class="text-center col-sm-2">
+								{{ form_label(form.email, 'Email',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+								{{ form_widget(form.email) }}
+							</div>
+						<div class="text-center col-sm-2">
+								{{ form_label(form.ville, 'Ville',{
+                            			'label_attr': {'class': 'font-weight-bold text-center'}
+                            			}) }}
+								{{ form_widget(form.ville) }}
+							</div>							
+						<div class="text-center col-sm-2">
+							{{ form_label(form.commercial, 'Commercial',{
+                                    'label_attr': {'class': 'font-weight-bold required'}
+                                }) }}
+							{{ form_widget(form.commercial, { attr: {autocomplete : 'off'} } ) }}
+						</div>
+						<div class="text-center col-sm-2">
+							{{ form_label(form.origine, 'Origine du lead',{
+                                'label_attr': {'class': 'font-weight-bold required'}
+                            }) }}
+							{{ form_widget(form.origine) }}
+						</div>
+						<div class="text-center col-sm-1">
+							{{ form_label(form.statut, 'Statut du lead',{
+                                'label_attr': {'class': 'font-weight-bold required'}
+                            }) }}
+							{{ form_widget(form.statut) }}
+						</div>
+					</div>
+				</div>
+			</fieldset>
+
+            <fieldset class="col-sm-12 p-3 m-3 well">
+                <legend>COMMENTAIRES</legend>
+                <a href="javascript:void(0)" id="ajcom" class="row plus-link" title="Ajouter un nouveau commentaire">
+                    <span class="fa-stack fa-1x">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                <div class="col-sm-12 p-3 mt-3 well">
+                    <table class="table table-striped table-borderless col-sm-12 mt-3">
+                        <thead class="">
+                        <tr class="row">
+                            <th class="col-sm-2">Date création</th>
+                            <th class="col-sm-2">Commentaires</th>
+                            <th class="col-sm-2">Action</th>
+                            <th class="col-sm-2">Date Action</th>
+                            <th class="col-sm-2">Qui</th>
+                            <th class="col-sm-2">Statut action</th>
+                        </tr>
+                            <tbody id="commentaires_collection" data-prototype="{{ form_widget(form.commentaires.vars.prototype)|e('html_attr') }}">
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </fieldset>
+
+            <div class="col-sm-12 p-3 " id="content_bouton">
+                <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2" role="group" aria-label="Third group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Ajouter</button>
+                    </div>
+                     
+            </div>
+            {{ form_end(form,{'render_rest': false}) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block modal %}
+            {#  Modal : Ajouter une nouvelle ville #}
+                <div class="modal fade" id="modal-ville-add" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content list-filter">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Ajouter une nouvelle ville</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {{ render(controller('App\\Controller\\VilleController::create')) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# Fin modal ajouter une nouvelle ville #}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    
+
+    <script> 
+
+       
+            window.onload = function() {
+                    jQuery(document).ready(function () {
+            var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+
+                today = dd + '/' + mm + '/' + yyyy;
+                document.getElementById("ajcom").click();
+                document.getElementById('commentaires_1_texteNote').value = "Définir un commercial";
+                document.getElementById('commentaires_1_idAction').value = 68;
+                document.getElementById('commentaires_1_dateAction').value = today;
+                document.getElementById('commentaires_1_idUserAction').value = 56;
+                document.getElementById('commentaires_1_idActionStatut').value = 1;
+                    });
+            };
+
+
+          
+
+        </script>
+    {% include 'contact/Parts/contact.js.html.twig' %}
+{% endblock %}

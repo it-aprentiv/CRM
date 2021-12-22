@@ -1,0 +1,38 @@
+<script type="text/javascript">
+    /**
+     * get current reference for reference in collection of div
+     *
+     * @param collectionDiv
+     * @param referenceDefault
+     * @param numberLength
+     * @returns {string}
+     */
+    function getNumberReference(collectionDiv, referenceDefault, numberLength) {
+        var numReferences = [];
+        var refLength = referenceDefault.length;
+        var prefixLength = refLength - numberLength;
+        var prefix = referenceDefault.substring(0, prefixLength);
+        // for each input with reference value
+        collectionDiv.find('.reference-in-collection').each(function () {
+            var ref = $(this).val();
+            var refString = String(ref);
+            console.log('id ' + $(this).attr('id'), ref);
+            // check if ref is not null or undefined, and if is a correct reference
+            var isReference = ref && (refString.length === refLength) && (refString.search(prefix) === 0);
+            if (isReference) {
+                // get last 4 characters for reference
+                var numberRef = parseInt(refString.substring(prefixLength - 1));
+                numReferences.push(numberRef);
+            }
+        });
+        var defaultNumberRef = parseInt(referenceDefault.substring(prefixLength - 1));
+        var numberRef = numReferences.length == 0 ? 0 : numReferences.reduce(function(a,b) {
+            return Math.max(a, b);
+        });
+        
+        numberRef += 1;
+        numberRef = numberRef > defaultNumberRef ? numberRef : defaultNumberRef;
+
+        return prefix + String(numberRef).padStart(numberLength, '0');
+    }
+</script>

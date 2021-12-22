@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/wickedpicker.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+
+
+
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active"><a href="{{ path('Liste_Factures_Avoirs_Controller') }}">Liste Factures et Avoirs</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Détails facture/avoir</li>
+            </ol>
+
+            <div>
+                {% if is_granted('edit', 'Factures / Avoirs dossiers') %}
+                    <a href="javascript:void(0)" class="update">
+                        <i class="fas fa-edit"></i>
+                        Modifier
+                    </a>
+                    <a href="javascript:void(0)" class="text-danger cancel-update d-none">
+                        <i class="fas fa-ban"></i>
+                        Annuler la modification
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+    </nav>
+
+    <h2 class="text-center my-3 text-primary" id="heading-title">DETAIL DE LA FACTURE ET AVOIR</h2>
+    {% include 'facture/form.html.twig' with {'montant_htn_htn1' : montant_htn_htn1 is defined ? montant_htn_htn1 : null } %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'Common/commentaire-js.html.twig' %}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    {% include 'facture/Parts/facture_avoirs_dossier.js.html.twig' %}
+    <script>
+        // $(document).on('click', '.delete-comment', function () {
+        // removeComment(this);
+        // });
+
+        $(document).ready(function () {
+            calculatettlht($(".mnthtnfact").first());
+            calculatettlhtav($(".mnthtnfactavoir").first());
+            toogleInputs(true);
+            $('#btnajoutcom').hide();
+            $('.delete-comment').hide();
+            $('#subFactAvoir').val('Valider').hide();
+            $('.modif-btn').prop("disabled", false);
+
+            $("#facture_avoir_dateCreation").on("change", function () {
+                var date = $(this).val();
+                var tab = date.split("/");
+                var dd = tab[1] + "/" + tab[0] + "/" + tab[2];
+                var dat = new Date(dd);
+                dat.setMonth(dat.getMonth() + 3);
+                $("#datapayementestime").datepicker('setDate', dat);
+            });
+
+            $("#facture_avoir_dateCreation").trigger('change');
+
+            // Ajout valeur par défaut des societés liées selon leur valeur pourle contact
+            var societec = {{ societe|json_encode|raw }};
+            for (let key in societec){
+                if(societec.hasOwnProperty(key)){
+                    if(societec[key] != null){
+                        var dataselect = {
+                            id: key,
+                            text: societec[key]
+                        }
+                        var newOption = new Option(dataselect.text, dataselect.id, true, true);
+                        $('#facture_avoir_idContact').append(newOption).trigger('change');
+                    }
+                }
+            }
+            // Ajout valeur par défaut des societés liées selon leur valeur pourle contact
+            var opcac = {{ opca|json_encode|raw }};
+            for (let key in opcac){
+                if(opcac.hasOwnProperty(key)){
+                    if(opcac[key] != null){
+                        var dataselect = {
+                            id: key,
+                            text: opcac[key]
+                        }
+                        var newOption = new Option(dataselect.text, dataselect.id, true, true);
+                        $('#facture_avoir_idOpca').append(newOption).trigger('change');
+                    }
+                }
+            }
+        });
+
+        $(document).on('click', '.modif-btn', function () {
+            toogleInputs(false);
+            $('#subFactAvoir').show();
+            $('#btnajoutcom').show();
+            $('.delete-comment').show();
+            disablePrototypeInputs();
+            $('.annule-modif').show();
+            $(this).hide();
+        });
+
+        $('.js-datepicker-note,.js-datepicker').datepicker({
+            'format': 'dd/mm/yyyy',
+            'autoclose': true,
+            'language': 'fr',
+        });
+
+
+        $('#facture_avoir_idOpca').select2({
+            placeholder: "-- OPCO --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.dossier.opca.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        byid: true
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+
+        $('#facture_avoir_idContact').select2({
+            placeholder: "--Sélectionnez--",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.dossier.client.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        byid: true
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+
+        // gestion activation et desactivation des inputs
+        function toogleInputs(value)
+        {
+            if (value === undefined) {
+                value = false;
+            }
+            var inputs = document.getElementsByTagName('input');
+            var inputsSelect = document.getElementsByTagName('select');
+            var textArea = document.getElementsByTagName('textarea');
+            var i;
+            for (i = 0; i < inputs.length; i++)
+            {
+                inputs[i].disabled = value;
+            }
+            for (i = 0; i < inputsSelect.length; i++)
+            {
+                inputsSelect[i].disabled = value;
+            }
+            for (i = 0; i < textArea.length; i++)
+            {
+                textArea[i].disabled = value;
+            }
+        }
+
+        function disablePrototypeInputs() {
+            var inputs = $('#commentaire_prototype :input');
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].disabled = true;
+            }
+        }
+    </script>
+{% endblock %}

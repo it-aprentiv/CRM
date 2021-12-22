@@ -1,0 +1,223 @@
+{% if(type is defined) %}
+    {{ form_start(form,{ 'attr' : {'class': 'popUp-ajout list-filter' , 'method' : 'post' }  }) }}
+{% else %}
+    {{ form_start(form,{ 'attr' : {'class': 'popUp-ajout' , 'method' : 'post' }  }) }}
+{% endif %}
+
+{#  Entete de filtre generale  #}
+<fieldset>
+    <legend>Informations générales</legend>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="form-group text-center">
+                {{ form_label(form.idContact, 'Societe', {
+                'label_attr': {'class': 'font-weight-bold required'}
+            }) }} 
+            
+            {% if client is defined %}
+                <a href="{{ path('Fiche_client_prospect_Controller/editClient', { id : client.id} ) }}" target="_blank" title="Fiche client : {{ client.nomStr }}"><i class="fas fa-user"></i></a>
+            {% endif %}
+            
+                {{ form_widget(form.idContact) }}
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group text-center">
+                {{ form_label(form.dest1, 'Destination', {
+                'label_attr': {'class': 'font-weight-bold required'}
+            }) }}
+                {{ form_widget(form.dest1) }}
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                {{ form_label(form.idStructure , 'Struture ',{
+                'label_attr': {'class': 'font-weight-bold required'}
+            }) }}
+                {{ form_widget(form.idStructure) }}
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-row">
+                <div class="form-group text-center">
+                    {{ form_label(form.idResponsable , 'Commercial ',{
+                    'label_attr': {'class': 'font-weight-bold required'}
+                }) }}
+                    {{ form_widget(form.idResponsable) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group text-center">
+                {{ form_label(form.idOpca, 'OPCO', {
+                'label_attr': {'class': 'font-weight-bold required'}
+            }) }}
+                {{ form_widget(form.idOpca) }}
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="form-row">
+                <div class="form-group text-center">
+                    {{ form_label(form.idStatut , 'Statut ',{
+                    'label_attr': {'class': 'font-weight-bold required'}
+                }) }}
+                    {{ form_widget(form.idStatut) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<div class="row">
+    <div class="col-sm-6">
+        <fieldset class="form-group">
+            <legend>Facture</legend>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        {#<label for="">N° facture</label>
+                        <input class="form-control" type="text" name="" id="#num-facture"
+                               value="{{ form.vars.value.ref | default('') }}" readonly>#}
+                        {{ form_row(form.ref) }}
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.dateCreation) }}
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="">Date paiement estimé</label>
+                        <input readonly class="js-datepicker text-center form-control" type="text" name="" id="datapayementestime" data-date-format="dd/mm/yyyy">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.totalHt, { attr : { 'value' : montant_htn_htn1 is defined and montant_htn_htn1 is not null ? montant_htn_htn1['HTN'] | number_format(2, ',', ' ') : (facture is defined ? facture.totalHt : "") } }  ) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.resteARegler, { attr : { 'value' : montant_htn_htn1 is defined and montant_htn_htn1 is not null ? montant_htn_htn1['HTN+1'] | number_format(2, ',', ' ') : (facture is defined ? facture.resteARegler : "") } }) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.totalRegleHt) }}
+                </div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    {{ form_row(form.pourcentageTva) }}
+                </div>
+                <div class="col-sm-4">{{ form_row(form.mntTva) }}</div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">{{ form_row(form.totalRegle) }}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_row(form.intituleFacture) }}
+                </div>
+            </div>
+                
+            <div class="row">
+                <div class="col-md-12 text-center mt-3 pt-3 border-top">
+                    {% if facture is defined %}
+                        <a href="{{ path("facture_avoirs_print", { id : facture.id}) }}" class="btn btn-primary btn-lg" id="etitFact"> 
+                            <i class="fas fa-file-excel"></i> Editer Facture 
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-sm-6">
+        <fieldset class="form-group">
+            <legend>Avoir</legend>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        {#<label for="">N° Avoir</label>
+                        <input class="form-control" type="text" name="" id=""
+                               value="{{ form.idAvoirLiee.vars.value.ref | default('') }}" readonly>#}
+                        {{ form_row(form.idAvoirLiee.ref) }}
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.idAvoirLiee.dateCreation) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.idAvoirLiee.natureAvoir) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.idAvoirLiee.montantHTN) }}
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="">HT N+1</label>
+                        <input class="form-control money-format mnthtnfactavoir" type="text" name="" id="" data-ttlht='ttlhtfctavr' {{ type is defined and type == 'create' ? '' : ''}}>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.idAvoirLiee.totalHt) }}
+                    {{ form_row(form.idAvoirLiee.mntTtc) }}
+                </div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    {{ form_row(form.idAvoirLiee.pourcentageTva) }}
+                </div>
+                <div class="col-sm-4">{{ form_row(form.idAvoirLiee.mntTva) }}</div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">{{ form_row(form.idAvoirLiee.totalTtc) }}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_row(form.idAvoirLiee.intituleFacture) }}
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12 text-center mt-3 pt-3 border-top">
+                    {% if facture is defined and facture.idAvoirLiee is not empty %}
+                        <a href="{{ path("editer_avoirs", { id : facture.idAvoirLiee.id }) }}" class="btn btn-primary btn-lg" id="etitFact"> 
+                            <i class="fas fa-file-excel"></i> Editer Avoir 
+                        </a>
+                    {% else %}
+                        <a href="javascript:void(0)" class="btn btn-primary btn-lg" id="etitFact"> 
+                            <i class="fas fa-file-excel"></i> Editer Avoir 
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+                
+        </fieldset>
+    </div>
+</div>
+{#About Commentaire#}
+<div class="row">
+    <div class="col-sm-12">
+        {#        {% include 'Common/facture_commentaires.html.twig' with { prototype: form.commentaires.vars.prototype, commentaires: form.commentaires } %}#}
+        {% include 'Common/commentaire-bloc.html.twig' with { prototype: form.commentaires.vars.prototype, commentaires: form.commentaires } %}
+        {# pour empecher l'application d'afficher un bloc commentaire à la fin #}
+        {% do form.commentaires.setRendered %}
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4 text-center">
+        <button class="btn btn-warning btn-lg">
+            {% if facture is defined %}
+                Mettre à jour
+            {% else %}
+                Enregistrer
+            {% endif %}
+        </button>
+    </div>
+    <div class="col-sm-4 text-center">
+        {% if facture is defined %}
+            <a href="{{ path('encaissement_create_from_facture', {'id': facture.id}) }}"
+               class="btn btn-primary btn-lg" id="encFact">
+                Encaissement
+            </a>
+        {% endif %}
+    </div>
+</div>
+{{ form_end(form) }}

@@ -1,0 +1,53 @@
+<div class="testForm">
+    {{ form_start(data, { 'attr' : {'class': 'tagForm list-filter'}  }) }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4 ">
+                <label class="title">{{ form_label(data.competence, 'Intitulé', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                </label>
+            </div>
+            <div class="col-sm-4 ">
+                <label class="title">{{ form_label(data.themeformation, '	Thème formation', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                </label>
+            </div>
+            <div class="col-sm-4 ">
+                <label class="title">{{ form_label(data.themegenerale, '	Thème générale', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 small-input required-field">
+                {{ form_widget(data.competence) }}
+                {{ form_errors(data.competence) }}
+            </div>
+            <div class="col-sm-4 small-input required-field">
+                {{ form_widget(data.themeformation) }}
+                {{ form_errors(data.themeformation) }}
+            </div>
+            <div class="col-sm-4 small-input required-field">
+                {{ form_widget(data.themegenerale) }}
+                {{ form_errors(data.themegenerale) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label class="title">{{ form_label(data.catalogueprogramme, 'Programme', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {{ form_widget(data.catalogueprogramme) }}
+            </div>
+        </div>
+    </div>
+    {{ form_end(data) }}
+</div>

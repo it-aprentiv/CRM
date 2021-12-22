@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    $('#ajout_type_btn').on('click', function () {
+        var libelle = $('#ajout_type_libelle').val();
+        var select = $('#' + $(this).attr('select-tag-id'));
+
+        if (libelle === '') {
+            alert('Veuillez donner la désignation du noubeau type !');
+            return false;
+        }
+
+        var btnAdd = $('#ajout_type_btn');
+        btnAdd.prop('disabled', true);
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ path('crm.domiciliation.ajout_categorie', {categorie: 'type'})|escape('js') }}",
+            data: {libelle: libelle},
+            success: function (response) {
+                if (response.success) {
+                    select.append('<option value="' + response.data.id + '" >' + response.data.libelle + '</option>');
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert('Erreur inattendue. Veuillez recommencez SVP !');
+            },
+            complete: function () {
+                $('#modalType').modal('hide');
+                btnAdd.removeAttr('disabled');
+            }
+
+        });
+    });
+</script>

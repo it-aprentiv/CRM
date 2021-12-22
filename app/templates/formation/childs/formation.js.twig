@@ -1,0 +1,86 @@
+<script>
+const APRENTIV = "1";
+const PROFORM = "2";
+const PROSPERE = "3";
+const PREFIX_APRENTIV_OM = 'AC/OM';
+const PREFIX_PROFORM_OM = 'Pro/OM';
+const PREFIX_PROSPERE_OM = 'PRS/OM';
+
+$(document).ready(function(e){
+
+    /******** Gestion adresse ********/
+    const addressVivienne = "{{ constant('App\\Constants\\AddressFormation::VIVIENNE_ADDRESS') }}";
+    var prototype = $('input#formation_lieu');
+
+    $('a.nav-item.nav-link').on('shown.bs.tab', function (e) {
+        let href = e.target.attributes.href.value;
+        let contentTab = $(`${href}`);
+
+        if('#p2' != href) {
+            contentTab.html('');
+            if('#p1' == href) {
+                let proto = $(prototype).attr('placeholder', addressVivienne);
+                contentTab.html(proto);
+            } else {
+                let proto = $(prototype);
+                proto.removeAttr('placeholder');
+                proto.attr('value', '');
+                contentTab.html(proto);
+            }
+        } else {
+            //Supprimer les inputs pour ne pas envoyer un lieu de stage
+            // car le lieu de stage pour du client(onglet) correspond à l'adresse de la société
+            $('#p1, #p2, #p3').html('');
+            addressClient = $('#address_client').val();
+            contentTab.append('<input type="text" class="form-control" placeholder="'+addressClient+'" />');
+        }
+    });
+
+    /******** Fin Gestion adresse ********/
+
+    /*************** Chargement adresse client ********/
+    var addressClient = "";
+    $('#formation_idClient').change(function () {
+        var idClient = this.value;
+        $.ajax({
+            url: "{{ path('formation_get_address_client') }}",
+            type: 'GET',
+            data: {'idClient': idClient},
+            dataType: 'JSON',
+            success: function (response) {
+            console.log(response.address);
+            //Initialisation d l'adresse client
+            $('input#address_client').val(response.address);
+        }
+        });
+    });
+
+    /***************Fin chargement adresse client ******/
+
+
+    $('#formation_idStructure').change(function(){
+        var structureTypeSelected = this.value;
+        var targetInput = $('#formation_ref');
+        // get next id formation
+        $.ajax({
+            url: "{{ path('next_insert_id_formation') }}",
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (data) {
+                let nextId = data.nextId;
+
+                // add N° OM
+                if(APRENTIV === structureTypeSelected) {
+                    targetInput.val(`${PREFIX_APRENTIV_OM}${nextId}`);
+                } else if(PROFORM === structureTypeSelected) {
+                    targetInput.val(`${PREFIX_PROFORM_OM}${nextId}`);
+                } else if(PROSPERE === structureTypeSelected) {
+                    targetInput.val(`${PREFIX_PROSPERE_OM}${nextId}`);
+                } else {
+                    targetInput.val('');
+                }
+            }
+        });
+    });
+});
+</script>

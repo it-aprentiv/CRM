@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/wickedpicker.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+
+
+
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+             <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{ path('Domiciliation_Location_Controller/factures') }}">liste des
+                        factures domiciliation</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Visualiser</li>
+            </ol>
+
+            <div>
+                {% if is_granted('edit', 'Factures Domiciliation / Location') %}
+                    <a href="javascript:void(0)" class="modif-btn not-disabling">
+                        <i class="fa fa-pen"></i>
+                        Modifier
+                    </a>
+                    <a href="{{ path('Facture_Domiciliation_Voir', {'idFactDom': facture.idfacturedom}) }}"
+                       class="text-danger float-right annule-modif not-disabling"
+                        style="display: none"
+                    >
+                        <i class="fa fa-ban"></i>
+                        Annuler la modification
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    {% include 'facture/editDom.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'Common/commentaire-js.html.twig' %}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    {% include 'Common/client-ajax-js.html.twig' with { attrs: form.domiciliation.client.vars|merge({ 'structure': 'proform' }) } %}
+
+    <script>
+        // $(document).on('click', '.delete-comment', function () {
+        // removeComment(this);
+        // });
+
+        $(document).ready(function() {
+            $('#btnajoutcom').hide();
+            $('.delete-comment').hide();
+        });
+
+        $(document).on('click', '.modif-btn', function() {
+            toogleInputs(false);
+            $('#btnajoutcom').show();
+            $('.delete-comment').show();
+            $('.annule-modif').show();
+            $(this).hide();
+        });
+
+        $(document).on('keyup', '.taux-tva', function() {
+            loadMntValue($(this));
+        });
+
+        $(document).on('blur', '.taux-tva', function() {
+            loadMntValue($(this));
+        });
+
+        $('.js-datepicker-note').datepicker({
+            'format': 'dd/mm/yyyy',
+            'autoclose': true,
+            'language': 'fr',
+        });
+        
+        // APR-223
+        $('.taux-tva').trigger('keyup');
+        
+        function loadMntValue(element) {
+            var value = element.val();
+
+            //var valueField = elt.val().replace(/[^0-9\.]/g, '');
+            value = value.replace(',', '.');
+
+            value = value.replace(/[^0-9\.]/g, '');
+
+            element.val(value);
+
+            value = (value === '') ? 0 : value;
+            var brutHT = $(element.attr('data-ht')).val();
+            brutHT = brutHT.replace(/\s/g, '');
+            brutHT = brutHT.replace(',', '.');
+            brutHT = (brutHT === '') ? 0 : brutHT;
+            var htField = parseFloat(brutHT);
+            var tvaField = $(element.attr('data-tva'));
+            var ttcField = $(element.attr('data-ttc'));
+            var mntTva = parseFloat(value) * htField / 100;
+            var mntTTC = htField + mntTva;
+            tvaField.val(mntTva);
+            ttcField.val(mntTTC);
+
+        }
+
+        // gestion activation et desactivation des inputs
+        function toogleInputs(value) {
+            if (value === undefined) {
+                value = false;
+            }
+            var btnNotToogle = '.not-disabling, #commentaire_prototype :input';
+            if (value) {
+                common.disableFormFields(btnNotToogle);
+            } else {
+                common.enableFormFields(btnNotToogle);
+            }
+        }
+        
+        // APR-223 
+        $('#editer-facture, #encaisser-facture').on('click', function(e) {
+            common.enableFormFields();
+            
+            setTimeout(function() {
+                document.location.reload();
+            }, 1000);
+        });
+
+    </script>
+{% endblock %}

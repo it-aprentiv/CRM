@@ -1,0 +1,68 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+  adresse_apprentiv: "47 Rue Vivienne"
+  file_template_dir: '%kernel.project_dir%/files_template'
+  docprint_template: '%kernel.project_dir%/public/DocPrint/Templates'
+  catalogue_dossier_dir: '%kernel.project_dir%/catalogues_dir'
+  #APR-141
+  facturation.legal_mode: false
+
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  # makes classes in src/ available to be used as services
+  # this creates a service per class whose id is the fully-qualified class name
+  App\:
+    resource: '../src/*'
+    exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+  # controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class
+  App\Controller\:
+    resource: '../src/Controller'
+    tags: ['controller.service_arguments']
+
+  # add more service definitions when explicit configuration is needed
+  # please note that last definitions always *replace* previous ones
+  
+  App\Controller\ExceptionController:
+      public: true
+      arguments:
+          $debug: '%kernel.debug%'
+
+  crm.app.service.excel:
+    public: true
+    class: App\Service\ExcelService
+    arguments:
+      $excelService: '@phpoffice.spreadsheet'
+  App\Service\FileUploader:
+    arguments:
+      $targetDirectory: '%catalogue_dossier_dir%'
+      
+#  Twig\Extensions\IntlExtension:  
+#    class: Twig_Extensions_Extension_Intl
+#    tags:
+#        - { name: twig.extension }
+  monolog.dbHandler:
+    class: App\Utility\DbHandler
+
+  monolog.dbProcessor:
+        class: App\Utility\DbProcessor
+        tags:
+            - {name: monolog.processor, handler: dbHandler}
+  
+  doctrine.doctrineSuscriber:
+        class: App\EventListener\DoctrineSuscriber
+        tags:
+            - {name: doctrine.event_subscriber}
+  
+  App\EventListener\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.authentication.success' }

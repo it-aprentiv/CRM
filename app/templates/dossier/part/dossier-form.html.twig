@@ -1,0 +1,511 @@
+{% import _self as formMacros %}
+
+{% macro printFactureRow(form) %}
+    <div class="col-sm-12 form_facture">
+        <div class="col-sm-12">
+            {{ form_label(form.dateCreation, 'Date',{
+                    'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                }) }}
+            {{ form_widget(form.dateCreation,{ 'attr': {'class': 'datetimepick'} }) }}
+        </div>
+        <div class="col-sm-12">
+            {{ form_label(form.ref, 'N° Facture',{
+                    'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                }) }}
+            {{ form_widget(form.ref) }}
+        </div>
+        <div class="col-sm-12">
+            {{ form_label(form.totalHt, 'Montant',{
+                    'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                }) }}
+            {{ form_widget(form.totalHt) }}
+        </div>
+        <div class="col-sm-12" style="margin-bottom: 2%;">
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_widget(form.opcaClt) }}
+                </div>
+                <div class="col-sm-6">
+                    <input type="hidden" value ='{{ form.vars.value.id }}' class="facture-id" disabled/>
+                    <button type="button" class ="btn btn-warning btn-edit-facture">Editer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+{% macro printAvoirRow(form) %}
+    <div class="col-sm-12 form_avoir">
+        <div class="col-sm-12">
+            {{ form_label(form.dateCreation, 'Date',{
+                    'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                }) }}
+            {{ form_widget(form.dateCreation,{ 'attr': {'class': 'datetimepick'} }) }}
+        </div>
+        <div class="col-sm-12">
+            {{ form_label(form.ref, 'N° Avoir',{
+                    'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                }) }}
+            {{ form_widget(form.ref) }}
+        </div>
+        <div class="col-sm-12">
+            {{ form_label(form.totalHt, 'Montant',{
+                    'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                }) }}
+            {{ form_widget(form.totalHt) }}
+        </div>
+        <div class="col-sm-12" style="margin-bottom: 2%;">
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_widget(form.opcaClt) }}
+                </div>
+                <div class="col-sm-6">
+                    {#<input type="hidden" value ='{{ form.vars.value.id }}' class="avoir-id" disabled/>#}
+                    {#<button type="button" class ="btn btn-warning btn-edit-avoir">Editer</button>#}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{{ form_start(doc_form,{ 'attr' : {'class': 'popUp-ajout' , 'method' : 'post', 'onsubmit': 'checkRequireField();' }  }) }}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="col-sm-12">
+            <div class="row p-3 mb-3 well">
+                <div class="col-sm-4">
+                    <div class="form-row">
+                        <div class="form-group col-md-6 text-center">
+                            {{ form_label(doc_form.idClient, 'client', {
+                                    'label_attr': {'class': 'font-weight-bold required'}
+                                }) }} 
+                            {% if dossier.idClient %}
+                                {# APR-140 : Lien vers fiche client #}
+                                <a href="{{ path('Fiche_client_prospect_Controller/editClient', { id : dossier.idClient.id} ) }}" title="Voir fiche client" target="_blank">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                </a>
+                            {% endif %}
+                            {{ form_widget(doc_form.idClient) }}
+                        </div>
+                        <div class="form-group col-md-6 text-center">
+                            {{ form_label(doc_form.idStructure, 'Structure ',{
+                                    'label_attr': {'class': 'font-weight-bold required'}
+                                }) }}
+                            {{ form_widget(doc_form.idStructure) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-row">
+                        <div class="form-group col-md-6 text-center">
+                            {{ form_label(doc_form.dossierType, 'Type ', {
+                                    'label_attr': {'class': 'font-weight-bold required'}
+                                }) }}
+                            {{ form_widget(doc_form.dossierType) }}
+                        </div>
+                        <div class="form-group col-md-6 text-center">
+                            {{ form_label(doc_form.idCommercial , 'Commercial ',{
+                                    'label_attr': {'class': 'font-weight-bold required'}
+                                }) }}
+                            {{ form_widget(doc_form.idCommercial) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-row">
+                        <div class="form-group col-md-6 text-center">
+                            {{ form_label(doc_form.idStatut , 'Statut ',{
+                                    'label_attr': {'class': 'font-weight-bold required'}
+                                }) }}
+                            {{ form_widget(doc_form.idStatut) }}
+                        </div>
+                        <div class="form-group col-md-6 text-center">
+                            {{ form_label(doc_form.datesigntext , 'Mois de signature ',{
+                                    'label_attr': {'class': 'font-weight-bold', 'required': ''}
+                                }) }}
+                            {{ form_widget(doc_form.datesigntext) }}  
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{#OPCA& add formation date#}
+<div class="row row p-3 mb-3 ">
+    <div class="col-sm-4 well">
+        <div class="row">
+            <div class="form-group col-md-6 text-right">
+                {{ form_label(doc_form.idOpca, 'OPCO', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+            </div>
+            <div class="col-md-6"> {{ form_widget(doc_form.idOpca) }}</div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6 text-right">
+                {{ form_label(doc_form.dispositif, 'Dispositif', {
+                        'label_attr': {'class': 'font-weight-bold required'}
+                    }) }}
+            </div>
+            <div class="col-md-6"> {{ form_widget(doc_form.dispositif) }}</div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6 text-right">
+                {{ form_label(doc_form.ref, 'N° dossier interne', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+            </div>
+            <div class="col-md-6">{{ form_widget(doc_form.ref) }}</div>
+        </div>
+        <div class="row">
+            <div class=" col-md-6 text-right">
+                {{ form_label(doc_form.mntDemande, 'Montant HT', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+            </div>
+            <div class="col-md-6">{{ form_widget(doc_form.mntDemande, {'attr': {'id': 'montant'}}) }}</div>
+        </div>
+        <div class="row">
+            <div class=" col-md-6 text-right">{{ form_label(doc_form.durparjour, 'Durée par jour', {
+                        'label_attr': {'class': 'font-weight-bold required'}
+                    }) }}</div>
+            <div class="col-md-6">{{ form_widget(doc_form.durparjour) }}</div>
+        </div>
+    </div>
+
+    <div class="col-sm-8">
+        <div class="col-sm-12 table-wrapper-scroll-y my-custom-scrollbar">
+            {% include 'dossier/part/calendrier-principal.html.twig' with { formation_dates : formated_formation_dates is defined ? formated_formation_dates : [] } %}
+        </div>
+    </div>
+</div>
+
+{#Dates du stage#}
+<div class="row p-3 mb-3 ">
+    <div class="col-md-6">
+        <fieldset>
+            <legend><b> Dates du stage </b></legend>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="form-group col-md-6 text-center">
+                            {{ form_label(doc_form.dateDebutPeriode, 'du', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+
+                            {{ form_widget(doc_form.dateDebutPeriode,{ 'attr': {'class': 'datetimepick text-center'} }) }}
+                        </div>
+                        <div class="form-group col-sm-6 text-center">
+                            {{ form_label(doc_form.dateFinPeriode, 'au', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                            {{ form_widget(doc_form.dateFinPeriode, { 'attr': {'class': 'datetimepick text-center'} }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-4 text-center"></div>
+                        <div class="col-sm-4 text-center font-weight-bold">N</div>
+                        <div class="col-sm-4text-center font-weight-bold">N+1</div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-sm-4 text-right font-weight-bold">Nbr J </div>
+                        <div class="col-sm-4 text-center font-weight-bold"><input type="text " class="form-control" name="nbrj" id="nbrj" value="{{ formated_formation_dates is defined ? formated_formation_dates.total_jours_n : 0 }}" readonly=""></div>
+                        <div class="col-sm-4 text-center font-weight-bold"><input type="text" class="form-control" id="nbrj2" name="nbrj2" value="{{ formated_formation_dates is defined ? formated_formation_dates.total_jours_n1 : 0 }}"  readonly=""></div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-sm-4 text-right font-weight-bold">Nbr H </div>
+                        <div class="col-sm-4 text-center"><input type="text" class="form-control" name="nbrh" id="nbrh" value="{{ formated_formation_dates is defined ? formated_formation_dates.total_heures_n : 0 }}"  readonly=""></div>
+                        <div class="col-sm-4 text-center"><input type="text" class="form-control" id="nbrh2" name="nbrh2" value="{{ formated_formation_dates is defined ? formated_formation_dates.total_heures_n1 : 0 }}"  readonly=""></div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+
+    <div class="col-md-6">
+        <fieldset>
+            <legend><b>Commission Commercial</b>       <a class="btn btn-info btn-portail" href="#" onclick="btnlegend($(this))">LEGENDE</a></legend>
+            <div class="row">
+                <div class="col-sm-2 text-right">
+                    {{ form_label(doc_form.tauxCom, '%', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}</div>
+                <div class="col-sm-4">{{ form_widget(doc_form.tauxCom,{'attr': {'id': 'pourcent'}}) }}</div>
+                <div class="col-sm-2 text-right">
+                    {{ form_label(doc_form.mntMarge, 'Montant ', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}</div>
+                <div class="col-sm-4">{{ form_widget(doc_form.mntMarge,{'attr': {'id': 'montantcom'}}) }}</div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+{#Lieu de stage#}
+<div class="row">
+    <div class="col-md-4">
+        <fieldset>
+            <legend>Lieu de stage</legend>
+
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link {{ iddossier is not defined ? "active" }}" id="btn-vivienne" data-toggle="tab" href="#nav-aprentiv" role="tab" aria-controls="nav-aprentiv" aria-selected="true">Vivienne</a>
+                    <a class="nav-item nav-link" id="btn-client" data-toggle="tab" href="#nav-client" role="tab" aria-controls="nav-client" aria-selected="false">Client</a>
+                    <a class="nav-item nav-link" id="btn-autre" data-toggle="tab" href="#nav-autre" role="tab" aria-controls="nav-autre" aria-selected="false">Autre</a>
+                </div>
+            </nav>
+
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane {{ iddossier is not defined ? "active" }}" id="nav-aprentiv" role="tabpanel" aria-labelledby="nav-aprentiv-tab">
+                    <input value="47 rue Vivienne 75002 Paris" class="form-control" name ="lieu[vivienne]">
+                    <input id="adresseVivienne" name ="dossier[adresseVivienne]" type="hidden" value="1" class="form-control" />
+                </div>
+                <div class="tab-pane fade lieudossier adrsoc" id="nav-client" role="tabpanel" aria-labelledby="nav-client-tab">
+                    <input value="{{ adresse is defined ? adresse : '' }}" class="form-control" name ="lieu[client]" />
+                    <input type="hidden" id="adresseClient" name ="dossier[adresseClient]" value="0" class="form-control" />
+                </div>
+                <div class="tab-pane fade" id="nav-autre" role="tabpanel" aria-labelledby="nav-autre-tab">
+                    {{ form_widget(doc_form.lieu) }}
+                    <input type="hidden" id="adresseAutre" name ="dossier[adresseAutre]" value="0" class="form-control" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    {#accord#}
+    <div class="col-md-3">
+        <fieldset>
+            <legend>ACCORD</legend>
+            <div class="row">
+                <div class=" col-md-12 text-center">{{ form_label(doc_form.dateAccord, 'Date estimée de réception', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                    <div class="col-md-12">{{ form_widget(doc_form.dateAccord,{ 'attr': {'class': 'datetimepick'} }) }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class=" col-md-12 text-center">{{ form_label(doc_form.mntAccorde, 'Montant accordé', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                    <div class="col-md-12">{{ form_widget(doc_form.mntAccorde) }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class=" col-md-12 text-center">{{ form_label(doc_form.datesDossier, 'Date de réception', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                    <div class="col-md-12">{{ form_widget(doc_form.datesDossier,{ 'attr': {'class': 'datetimepick'} }) }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class=" col-md-12 text-center">{{ form_label(doc_form.ndossopca, 'N° dossier OPCO', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                    <div class="col-md-12">{{ form_widget(doc_form.ndossopca) }}</div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    {#facturation#}
+    <div class="col-sm-5">
+        <fieldset>
+            <legend>FACTURATION</legend>
+            <div class="col-sm-12 well tableFixHead">
+                <div class="row" >
+                    <div class="col-sm-6" >
+                        <span><b><h4 ><u>  Facturation </u>
+                                    <input type="button" name="factbtn[]" id="factbtn" onclick="ajfactonglet()" value="+"></h4></b></span>
+                        <div  id="ajout_facture" class="row" data-prototype="{{ form_widget(doc_form.factures.vars.prototype)|e('html_attr') }}">
+                            {% for factureForm in doc_form.factures %}
+                                {{ formMacros.printFactureRow(factureForm ) }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% do doc_form.factures.setRendered %}
+                    <div class="col-sm-6">
+                        <span><b><h4 style="width: 100%;margin-right: 0%;"><u>  Avoir </u>
+                                    <input type="button" name="factavoir" id="factavoir" value="+">
+                                </h4></b></span> <span></span>
+                        <div id="ajout_avoir" class="row" data-prototype="{{ form_widget(doc_form.avoirs.vars.prototype)|e('html_attr') }}">
+                            {% for avoirForm in doc_form.avoirs %}
+                                {{ formMacros.printAvoirRow(avoirForm ) }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% do doc_form.avoirs.setRendered %}
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+</div>
+{#About Stagiaire#}
+<br>
+<div class="row">
+    <div class="col-sm-12">
+        <fieldset>
+            <legend>Information stage</legend>
+            <div class="col-sm-12">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <a href="javascript:void(0)" id="btnajoutStage" data-toggle="modal" data-target="#popupAddStage">
+                                <span class="fa-stack fa-1x">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                            {{ form_label(doc_form.nom, 'Intitulé de stage', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                        </div>
+
+                        <div class="col-sm-4"><label class="font-weight-bold required">Thème formation</label></div>
+                        <div class="col-sm-4"><label class="font-weight-bold required"> Thème générale</label></div>
+                    </div>
+                    <div class="row Addstage">
+                        <div class="col-sm-4">
+                            {{ form_widget(doc_form.nom) }}
+                            <span class="d-none" id="dossier-nom-text">{{ nom is defined ? nom : dossier.nom }}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            {{ form_widget(doc_form.themeformation) }}
+                        </div>
+                        <div class="col-sm-4">
+                            {{ form_widget(doc_form.themegeneral) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-5 mb-3">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                {%  set param = constant('\\App\\Constants\\ParamDossierStagiaire::FORMATION_DOSSIER_STAGIAIRE') %}
+                                {% include 'Common/stagiaire-bloc.html.twig' with { prototype: doc_form.stagiaires.vars.prototype, stagiaires: doc_form.stagiaires, data: dataComplementaire is defined ? dataComplementaire : null , param_dossier_stagiaire: param } %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    {# BLOCK COMMENTAIRE #}
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-md-12">
+                {% include 'Common/commentaire-bloc.html.twig' with { prototype: doc_form.commentaires.vars.prototype, commentaires: doc_form.commentaires } %}
+                {% do doc_form.commentaires.setRendered %}
+            </div>
+        </div>
+    </div>
+    {# FIN BLOC COMMENTAIRE#}
+    <div style="display:none;">
+        {{ form_widget(doc_form.dureeHeures) }}
+        {{ form_widget(doc_form.dureeJours) }}
+        {{ form_widget(doc_form.dateEnvoi) }}
+        {{ form_widget(doc_form.dateSignature) }}
+    </div>
+
+    <div class="col-sm-12 p-3 " id="content_bouton">
+        <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+            {% if dossier is defined and dossier.id is not null %}
+                {# CONTEXT = MAJ : le dossier a déjà été créé #}
+
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <a name="editerdocument" data-toggle="modal" data-target="#modaldossierimpre" class="btn btn-primary btn-block text-white">Editer courrier</a>
+                </div>
+
+                <div class="btn-group mr-2" role="group" aria-label="Third group">
+                    <a href="{{ path('Formation_Dossier_Devis_Papier', {'id': dossier ? dossier.id : 0}) }}" class="btn btn-primary btn-block">Devis papier</a>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="Third group">
+                    <a href="{{ path('Formation_Dossier_ConvProform', {'id': dossier ? dossier.id : 0}) }}" class="btn btn-primary btn-block">Convocation</a>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="Fourth group">
+                    <a name="emmargementpapier" data-toggle="modal" data-target="#emmargementpapier" class="btn btn-primary btn-block" style="color:white;">Emmargement papier</a>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="Fourth group">
+                    <a href="javascript:void(0)" id="pagedegarde" class="btn btn-primary btn-block">Page de garde dossier</a>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="Fourth group">
+                    {% if competence is defined and competence is not null and competence is not empty %}
+                        <a href="{{ path("download_programme_dossier",{'fichier':competence}) }}" class="btn btn-primary btn-block">Programme</a>
+                    {% else %}
+                        <a href="#" class="btn btn-primary btn-block disabled">Programme non disponible</a>
+                    {% endif %}
+                </div>
+                {# Retour APR-102 #}
+                {% if client_non_exists is defined and client_non_exists %}
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <a href="#" class="btn btn-primary btn-block disabled" title="Client non disponible">Convention papier</a>
+                    </div>
+                {% else %}
+
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <a href="{{ path("client_prospect_printdocument", { id : dossier.idClient.id, type: 2, did: dossier.id }) }}" class="btn btn-primary btn-block">Convention papier</a>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="col-sm-12 mt-3" style="">
+        <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group mr-2 " role="group" aria-label="First group">
+                <button class="btn btn-danger" type="button" style="display:none"  id="bntCancel">Annuler</button>
+            </div>
+            <div class="btn-group mr-2 " role="group" aria-label="First group">
+                <button class="btn btn-primary" type="submit" style="border-radius: 5%;" id="save">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# APR-211 #}
+<script>
+
+     var myhtml = document.createElement("div");
+                     myhtml.innerHTML = "<table class='table'><thead class='thead'><tr><th scope='col'>CLIENT</th><th scope='col'>TAUX</th></tr></thead><tbody><tr><td>NOUVEAU</td><td>4%</td></tr><tr><td>EXISTANT</td><td>2%</td></tr></tbody></table><p><i class='fas fa-exclamation-triangle' style='margin-right:3px;'></i>Pour les clients (principalement sécurité) émanant de LEADS ou du site internet (entrants) TAUX à 2%.</p>";
+
+         function btnlegend(elem)
+         {
+                    swal({
+                    content: myhtml,
+                    icon: 'warning',
+                    width: 2000,
+                        })
+        }
+</script>
+
+{{ form_end(doc_form,{'render_rest': false}) }}
+
+{# BEGIN MODAL #}
+<!-- POPUP ADD STAGE -->
+<div class="modal fade " id="popupAddStage" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content list-filter">
+            <div class="modal-header">
+                <h5 class="modal-title edit-rdv">
+                    Nouveau Intitulé
+                </h5>
+                <button type="button" class="fas close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ render(path('ajout_competence')) }}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="tag-form-submit" class="btn btn-primary addNewStage" data-dismiss="modal">Ajouter</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{# END BEGIN MODAL #}
+

@@ -1,0 +1,62 @@
+<div class="testForm">
+    {{ form_start(data, { 'attr' : {'class': 'popUp-ajout-stagiaire list-filter' }  }) }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="form-group col-12 ">
+                <label class="title">{{ form_label(data.nom, 'Nom', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                </label>
+                <div class="small-input required-field">
+                    {{ form_widget(data.nom) }}
+                </div>
+            </div>
+            <div class="form-group col-12 ">
+                <label class="title">{{ form_label(data.prenom, '	Prénom', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                </label>
+                <div class="small-input required-field">
+                    {{ form_widget(data.prenom) }}
+                </div>
+            </div>
+            <div class="form-group col-12 ">
+                <label class="title">{{ form_label(data.email, '	Email', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                </label>
+                <div class="small-input required-field">
+                    {{ form_widget(data.email) }}
+                </div>
+            </div>
+            <div class="form-group col-12 ">
+                <label class="title">{{ form_label(data.date_naissance, '	Date de naissance', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                </label>
+                <div class="small-input required-field">
+                    {{ form_widget(data.date_naissance) }}
+                </div>
+            </div>
+            <div class="form-group col-12 ">
+                <label class="title">{{ form_label(data.niveauetude, "Niveau d'étude", {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                </label>
+                <div class="small-input required-field">
+                    {{ form_widget(data.niveauetude) }}
+                </div>
+            </div>
+            <div class="form-group col-12 ">
+                <label class="title">{{ form_label(data.nsecuritesocial, '	Numéro de sécurité sociale', {
+                    'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                </label>
+                <div class="small-input required-field">
+                    {{ form_widget(data.nsecuritesocial) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(data) }}
+</div>

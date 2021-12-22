@@ -1,0 +1,285 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client/Prospect - CRM Aprentiv v2.0
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{ path('home.index') }}">
+					<i class="fas fa-home"></i>
+				</a>
+			</li>
+			<li class="breadcrumb-item active">
+				<a href="{{ path('Liste_Lead_Controller') }}">Liste des leads</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">Création</li>
+		</ol>
+	</nav>
+
+	<div class="page-content">
+		{% for flash_message in app.session.flashBag.get('error_message') %}
+			<div class="note note-warnning">
+				<p>{{ flash_message }}</p>
+			</div>
+		{% endfor %}
+		{% for flash_message in app.session.flashBag.get('success_message') %}
+			<div class="note note-success">
+				<p>{{ flash_message }}</p>
+			</div>
+		{% endfor %}
+	</div>
+	<h2 class="text-center mt-2 text-nmary">FICHE LEAD</h2>
+	<div class="row">
+		{{ form_start(form) }}
+
+		<div class="row col-md-12">
+			<fieldset class="col-sm-12 p-3 m-3 well">
+				<legend>LEAD</legend>
+
+					<div class="row">
+						<div class="form-group col-md-2 text-center">
+							{{ form_label(form.societe, 'Société', {
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+							{{ form_widget(form.societe) }}
+						</div>
+						<div class="col-sm-1 text-center">
+							{{ form_label(form.civilite, 'Civilité',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+							{{ form_widget(form.civilite) }}
+						</div>
+
+						<div class="col-sm-1 text-center">
+							{{ form_label(form.nom, 'Nom',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+							{{ form_widget(form.nom) }}
+						</div>
+						<div class="col-sm-1 text-center">
+							{{ form_label(form.prenom, 'Prenom',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+							{{ form_widget(form.prenom) }}
+						</div>
+							<div class="text-center col-sm-2">
+								{{ form_label(form.telephone, 'Téléphone',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+								{{ form_widget(form.telephone) }}
+							</div>			
+							<div class="text-center col-sm-2">
+								{{ form_label(form.email, 'Email',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+								{{ form_widget(form.email) }}
+							</div>
+						<div class="text-center col-sm-2">
+								{{ form_label(form.ville, 'Ville',{
+                            			'label_attr': {'class': 'font-weight-bold text-center'}
+                            			}) }}
+								{{ form_widget(form.ville) }}
+							</div>							
+						<div class="text-center col-sm-2">
+							{{ form_label(form.commercial, 'Commercial',{
+                                    'label_attr': {'class': 'font-weight-bold required'}
+                                }) }}
+							{{ form_widget(form.commercial, { attr: {autocomplete : 'off'} } ) }}
+						</div>
+						<div class="text-center col-sm-2">
+							{{ form_label(form.origine, 'Origine du lead',{
+                                'label_attr': {'class': 'font-weight-bold required'}
+                            }) }}
+							{{ form_widget(form.origine) }}
+						</div>
+						<div class="text-center col-sm-1">
+							{{ form_label(form.statut, 'Statut du lead',{
+                                'label_attr': {'class': 'font-weight-bold required'}
+                            }) }}
+							{{ form_widget(form.statut) }}
+						</div>
+					</div>
+			</fieldset>
+			<fieldset class="col-sm-12 p-3 m-3 well">
+				<legend>COMMENTAIRES</legend>
+				<a href="javascript:void(0)" id="ajcom" class="row plus-link" title="Ajouter un nouveau commentaire">
+					<span class="fa-stack fa-1x">
+						<i class="fas fa-circle fa-stack-2x"></i>
+						<i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+				{#<center>
+				                <input type="button" class="btn btn-warning" style="border-radius: 5%;" name="ajcom" id="ajcom" value="Ajouter un commentaire">
+				                </center>#}
+				<table class="table table-striped table-borderless col-sm-12 mt-3">
+					<thead class="">
+						<tr class="row">
+							<th class="col-sm-2">Date création</th>
+							<th class="col-sm-2">Commentaires</th>
+							<th class="col-sm-2">Action</th>
+							<th class="col-sm-2">Date Action</th>
+							<th class="col-sm-2">Qui</th>
+							<th class="col-sm-2">Statut action</th>
+						</tr>
+					</thead>
+					<tbody id="commentaires_collection" data-prototype="{{ form_widget(form.commentaires.vars.prototype)|e('html_attr') }}">
+						{% for comment in form.commentaires %}
+							<tr>
+								<th colspan="6">
+									<div class="row">
+										<div class="comment_contains">
+											<button type="button" class="removecommentelement close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<div id="lead_commentaires_{{ loop.index }}" class="comment_contains_form">
+												<div class="col-sm-2 form-group">
+													{{ form_widget(comment.children["dateAdd"]) }}
+												</div>
+												<div class="col-sm-2 form-group">
+													{{ form_widget(comment.children["texteNote"]) }}
+												</div>
+												<div class="col-sm-2 form-group">
+													{{ form_widget(comment.children["idAction"]) }}
+												</div>
+												<div class="col-sm-2 form-group">
+													{{ form_widget(comment.children["dateAction"]) }}
+												</div>
+												<div class="col-sm-2 form-group">
+													{{ form_widget(comment.children["idUserAction"]) }}
+												</div>
+												<div class="col-sm-2 form-group">
+													{{ form_widget(comment.children["idActionStatut"]) }}
+												</div>
+											</div>
+										</div>
+									</div>
+								</th>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</thead>
+			</table>
+		</fieldset>
+		{% set Nom = form.nom %}
+		{% set Prenom = form.prenom %}
+		{% set NomPrenom = Nom.vars.value ~ ' ' ~ Prenom.vars.value %}
+		<div class="col-sm-12 p-3 " id="content_bouton">
+			<div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+				<div class="btn-group mr-2" role="group" aria-label="Third group">
+					<button type="button" id="editthis" class="btn btn-primary btn-block">MAJ Fiche</button>
+				</div>
+				<div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
+					{% if form.societe.vars.value == null %}
+						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 2, nom:form.nom.vars.value, prenom:form.prenom.vars.value, tel:form.telephone.vars.value, mail:form.email.vars.value, id_civilite:form.civilite.vars.value, id_commercial:form.commercial.vars.value, nomprenom:NomPrenom}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutClient()">
+							Ajouter Client
+						</a>
+					{% else %}
+						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 2, nom:form.nom.vars.value, prenom:form.prenom.vars.value, tel:form.telephone.vars.value, mail:form.email.vars.value, id_civilite:form.civilite.vars.value, id_commercial:form.commercial.vars.value, societe:form.societe.vars.value}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutClient()">
+							Ajouter Client
+						</a>
+					{% endif %}
+				</div>
+
+				<div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
+					{% if form.societe.vars.value == null %}
+						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 1, nom:form.nom.vars.value, prenom:form.prenom.vars.value, tel:form.telephone.vars.value, mail:form.email.vars.value, id_civilite:form.civilite.vars.value, id_commercial:form.commercial.vars.value, nomprenom:NomPrenom}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutProspect()">
+							Ajouter Prospect
+						</a>
+					{% else %}
+						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 1, nom:form.nom.vars.value, prenom:form.prenom.vars.value, tel:form.telephone.vars.value, mail:form.email.vars.value, id_civilite:form.civilite.vars.value, id_commercial:form.commercial.vars.value, societe:form.societe.vars.value}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutProspect()">
+							Ajouter Prospect
+						</a>
+					{% endif %}
+				</div>
+
+			</div>
+		</div>
+		<div class="col-sm-12 p-3">
+			<div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+				<div id="saveedit" class="btn-group mr-2 d-none" role="group" aria-label="First group">
+					<button type="submit" class="btn btn-danger btn-block" id="SaveBtn">Mettre à jour</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{ form_end(form,{'render_rest': false}) }}
+	</div>
+</div>
+{% endblock %}
+{% block javascripts %}
+
+{{ parent() }}
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+<script>
+	
+    function statutClient() 
+            {
+                document.getElementById("editthis").click();
+                document.getElementById('statut').value = "Devenu client";
+                document.getElementById("SaveBtn").click();
+            }
+               function statutProspect() 
+            {
+                document.getElementById("editthis").click();
+                document.getElementById('statut').value = "Devenu prospect";
+                document.getElementById("SaveBtn").click();
+            }
+    </script>
+    {% include 'contact/Parts/contact.js.html.twig' %}
+    <script language="javascript">
+        $(document).ready( function() {
+            $("#contactgenerale *").prop("disabled", true);
+            $("#content_bouton .btn").prop("disabled", false);
+            $("#editthis").click(function(){
+                $("#contactgenerale *").prop("disabled", false);
+                $("#saveedit").removeClass("d-none");
+                $("#saveedit").find('button').prop("disabled", false);
+                $("#ajcom").prop("disabled", false);
+            });
+
+            // Mise à jour de la valeur pour un champ d'autocompletion
+            function setSelectValue(key,data) {
+                var opcaSelect = $('#contact_'+key);
+                // create the option and append to Select2
+                var option = new Option(data['text'], data['id'], true, true);
+                opcaSelect.append(option).trigger('change');
+                // manually trigger the `select2:select` event
+                opcaSelect.trigger({
+                    type: 'select2:select',
+                    params: {
+                        data: data
+                    }
+                });
+            }
+
+            $(".removecontactelement").bind('click',function(event){
+                $(this).parents(".contact_added").remove();
+            });
+            $(".removecommentelement").bind('click',function(event){
+                $(this).parents(".comment_contains").parents("tr").remove();
+            });
+
+			$('#saveedit').on('click', function(e){
+                e.preventDefault();
+                let commercialId = $('#contact_id_commercial').val();
+                let contactType = $('#contact_id_type').val();
+                $('#contact_id_commercial').val(commercialId);
+                $('#contact_id_type').val(contactType);
+                $('#contactgenerale').submit();
+            });
+            });
+			
+		</script> 
+
+{% endblock %}

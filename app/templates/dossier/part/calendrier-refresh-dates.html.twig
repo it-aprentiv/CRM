@@ -1,0 +1,33 @@
+{% for date in dates %}
+    {% if context == 'update' %}
+        <tr class="text-center" data-id="{{ date.id }}">
+            <td><input type="checkbox" name="" class="format-date-item" value=""></td>
+            <td>{{ date.dateD | date('d/m/Y') }}</td>
+            <td>{{ date.dateD | date('H:i') }}</td>
+            <td>{{ date.dateF | date('H:i') }}</td>
+            <td class="formation_date_nb_h">{{ date.nbH | number_format(2, '.') }}</td>
+            <td><a href="#" class="delete-formation-date" alt="Supprimer la date"><i class="fas fa-trash-o">Supprimer</i></a></td>
+        </tr>
+    {% elseif context == 'create' %}
+        {% set heureDebut = date.d_heure_m ? date.d_heure_m | replace({' ': ''}) : date.d_heure_am | replace({' ': ''}) %}
+        {% set heureFin = date.f_heure_m ? date.f_heure_m | replace({' ': ''}) : date.f_heure_am | replace({' ': ''}) %}
+        <tr class="text-center" data-id="0" 
+            data-date_debut="{{ date.date_debut }}" 
+            data-d_heure_m="{{ date.d_heure_m }}" 
+            data-f_heure_m="{{ date.f_heure_m }}" 
+            data-d_heure_am="{{ date.d_heure_am }}"
+            data-f_heure_am="{{ date.f_heure_am }}"
+            data-duree="{{ date.duree }}"
+        >
+            <td>
+                <input type="checkbox" name="delete-item" class="format-date-item" />
+                <input type="hidden" name="dossier[formation_date_item][]" value="{{ date.date_debut }}|{{ heureDebut }}|{{ heureFin }}|{{ date.duree }}" />
+            </td>
+            <td>{{ date.date_debut }}</td>
+            <td>{{ heureDebut  }}</td>
+            <td>{{ heureFin  }}</td>
+            <td class="formation_date_nb_h">{{ date.duree }}</td>
+            <td><a href="#" class="delete-formation-date" alt="Supprimer la date"><i class="fas fa-trash-o">Supprimer</i></a></td>
+        </tr>
+    {% endif %}
+{% endfor %}

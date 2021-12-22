@@ -1,0 +1,320 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OPCO - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active"><a href="{{ path('OPCA_Controller') }}">Liste des OPCO</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Création</li>
+        </ol>
+    </nav>
+
+    <div class="page-content">
+        {% for flash_message in app.session.flashBag.get('error_message') %}
+            <div class="note note-warnning">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+        {% for flash_message in app.session.flashBag.get('success_message') %}
+            <div class="note note-success">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <h2 class="text-center mt-2 text-nmary">FICHE D'AJOUT OPCO</h2>
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form_start(opca_form,{id : 'opca-create', 'attr':{'class':'list-filter'}}) }}
+            <div class="col-sm-12">
+                <div class="row p-3">
+                    <div class="col-sm-9">
+                        <fieldset>
+                            <legend class="font-weight-bold">Informations OPCO</legend>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="form-group col-sm-6 text-center">
+                                        {{ form_label(opca_form.nomStr, 'OPCO', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(opca_form.nomStr) }}
+                                    </div>
+                                    <div class="form-group col-sm-6 text-center">
+                                        {{ form_label(opca_form.idSecteur, 'Activité adhérents ',{
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalActiviteAdd" data-forselect="ctn"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                                            {{ form_widget(opca_form.idSecteur) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        {{ form_label(opca_form.adresses.children[0].children["adresse"], 'N°,voie',{
+                                            'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                                        }) }}
+                                        {{ form_widget(opca_form.adresses.children[0].children["adresse"]) }}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{ form_label(opca_form.adresses.children[0].children["codePostal"], 'Code postale',{
+                                            'label_attr': {'class': 'font-weight-bold  col-sm-12 text-center'}
+                                        }) }}
+                                        {{ form_widget(opca_form.adresses.children[0].children["codePostal"]) }}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{ form_label(opca_form.adresses.children[0].children["idVille"], 'Ville',{
+                                            'label_attr': {'class': 'font-weight-bold  col-sm-12 text-center'}
+                                        }) }}
+                                        {{ form_widget(opca_form.adresses.children[0].children["idVille"]) }}
+                                        {{ form_widget(opca_form.adresses.children[0].children["idVille"]) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-3">
+                        <fieldset>
+                            <legend class="font-weight-bold">Note</legend>
+                            <div class="col-sm-12">
+                                {{ form_widget(opca_form.commentaires.children[0].children["texteNote"],{'attr':{'required':false}}) }}
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 mb-3 mt-3">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="col-sm-12">
+                            <fieldset>
+                                <legend class="font-weight-bold">Coordonnées OPCO</legend>
+                                <div class="col-sm-12">
+                                    {#<div class="row justify-content-center">
+                                        <div class="col-sm-8">
+                                            {{ form_label(opca_form.adresses.children[0].children["comp_adresse"], 'N°,voie,nom de la voie',{
+                                            'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                                        }) }}
+                                            {{ form_widget(opca_form.adresses.children[0].children["comp_adresse"]) }}
+                                        </div>
+                                    </div>#}
+                                    <div class="row">
+                                        <div class="text-center col-sm-6">
+                                            {{ form_label(opca_form.Telephone, 'Telephone',{
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                            {{ form_widget(opca_form.Telephone) }}
+                                        </div>
+                                        <div class="text-center col-sm-6">
+                                            {{ form_label(opca_form.Email, 'Email',{
+                                            'label_attr': {'class': 'font-weight-bold text-center'}
+                                        }) }}
+                                            {{ form_widget(opca_form.Email) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="text-center col-sm-6">
+                                            {{ form_label(opca_form.Fax, 'Fax',{
+                                            'label_attr': {'class': 'font-weight-bold text-center'}
+                                        }) }}
+                                            {{ form_widget(opca_form.Fax) }}
+                                        </div>
+                                        <div class="text-center col-sm-6">
+                                            {{ form_label(opca_form.siteweb, 'Site web:',{
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">http://</div>
+                                                </div>
+                                                {{ form_widget(opca_form.siteweb) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <fieldset>
+                            <legend class="font-weight-bold">Critères de financement</legend>
+                            <a href="javascript:void(0)" class="plus-link" id="addInputsCritere">
+                                <span class="fa-stack fa-1x">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                            <table class="table" id="critereTable">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Dispositif</th>
+                                    <th>Commentaires</th>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="row">
+                    <fieldset class="col-md-12">
+                        <legend>Contact</legend>
+                        <a href="javascript:void(0)" class="plus-link" id="adcontact">
+                            <span class="fa-stack fa-1x">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+
+                        <div class="col-sm-12 p-3 mb-3 well" id="contactadded" data-prototype="{{ form_widget(opca_form.contactsoc.vars.prototype)|e('html_attr') }}">
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-12 p-3 " id="content_bouton">
+                <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2" role="group" aria-label="Third group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(opca_form,{'render_rest': false}) }}
+        </div>
+    </div>
+        
+        
+    {% block modal %}
+        {# APR-167 : Fix champ Activité adhérents #}
+        <div class="modal fade" id="modalActiviteAdd" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Ajout activité</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="forselect" id="forselect" />
+                        {{ render(controller('App\\Controller\\SecteurActiviteController::SecteurActiviteForm')) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    
+    {# APR-167 : Fix bug : activité adhérents #}
+    {% include 'contact/Parts/contact.js.html.twig' %}
+    
+    <script>
+        var $collectioncontact;
+        var boutonremovecontact = "<button type='button' class='removecontactelement close' type='button'><span aria-hidden='true'>×</span></button>";
+        $(document).ready(function () {
+            $collectioncontact = $("#contactadded");
+            $collectioncontact.data("index", $collectioncontact.find('.contact_added').length);
+        })
+        //
+        $("#adcontact").click(function () {
+            addnewcontact();
+        });
+        // Fonction pour l'ajout du formulaire d'ajout de contact dans la page client/prospect
+        function addnewcontact()
+        {
+            var prototype = $collectioncontact.data("prototype");
+            console.log(prototype);
+            let index = $collectioncontact.data("index");
+            let newform = prototype;
+            newform = newform.replace(/__name__/g, index + 1);
+            let row = '<div class="row contact_added">';
+            row = row + boutonremovecontact + newform;
+            row = row + '</div>';
+            $collectioncontact.append(row);
+            $collectioncontact.data("index", index + 1);
+            $(".removecontactelement").bind('click', function (event) {
+                $(this).parents(".contact_added").remove();
+            });
+        }
+        //Adding field Critere de financement
+        $('#addInputsCritere').click(function (e) {
+            e.preventDefault();
+            createCritereForm();
+        });
+        function createCritereForm() {
+            var elem = document.getElementById('critereTable');
+            var lastIndex = $('#critereTable tr').length;
+            var index = Number(lastIndex) + 1;
+            var currentRow = elem.insertRow(-1);
+            var inputId = document.createElement('input');
+            inputId.type = 'hidden';
+            inputId.setAttribute('name', 'critere[' + index + '][id]');
+            currentRow.appendChild(inputId);
+            var date = document.createElement('input');
+            date.type = 'text';
+            date.setAttribute('name', 'critere[' + index + '][date]');
+            date.setAttribute('class', 'js-datepicker form-control');
+            date.setAttribute('placeholder', 'date');
+            $(date).datepicker({
+                'format': 'dd-mm-yyyy',
+                'autoclose': true,
+                'clearBtn': true,
+                'language': 'fr',
+            });
+            var dispositif = document.createElement('input');
+            dispositif.type = 'text';
+            dispositif.setAttribute('name', 'critere[' + index + '][dispositif]');
+            dispositif.setAttribute('class', 'form-control');
+            dispositif.setAttribute('placeholder', 'Dispositif');
+            var commentaire = document.createElement('input');
+            commentaire.type = 'text';
+            commentaire.setAttribute('name', 'critere[' + index + '][commentaire]');
+            commentaire.setAttribute('class', 'form-control');
+            commentaire.setAttribute('placeholder', 'Commentaire');
+            var close = document.createElement('a');
+            close.type = 'button';
+            close.setAttribute('value', 'x');
+            close.setAttribute('class', 'btn btn-danger removeInputCritere');
+            $(close).bind('click', function () {
+                $(this).closest('tr').remove();
+            })
+
+            var currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(date);
+            currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(dispositif);
+            currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(commentaire);
+            currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(close);
+        }
+        $("#contact_adresses_0_idVille").select2({
+            placeholder: "-- ville --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.opca.ville.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+    </script>
+{% endblock %}

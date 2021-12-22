@@ -1,0 +1,76 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Query\\ParserResult'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ParserResult')),
+        clone ($p['Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor')),
+        clone ($p['Doctrine\\ORM\\Query\\ResultSetMapping'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ResultSetMapping')),
+    ],
+    null,
+    [
+        'Doctrine\\ORM\\Query\\ParserResult' => [
+            '_sqlExecutor' => [
+                $o[1],
+            ],
+            '_resultSetMapping' => [
+                $o[2],
+            ],
+        ],
+        'Doctrine\\ORM\\Query\\Exec\\AbstractSqlExecutor' => [
+            '_sqlStatements' => [
+                1 => 'SELECT t0_.id AS id_0, t0_.idb AS idb_1, t0_.nom_action AS nom_action_2, t0_.date_add AS date_add_3, t0_.id_user_add AS id_user_add_4, t0_.date_maj AS date_maj_5, t0_.id_user_maj AS id_user_maj_6, t0_.statut_rst AS statut_rst_7, t0_.action AS action_8 FROM 5_note_action t0_',
+            ],
+        ],
+        'stdClass' => [
+            'aliasMap' => [
+                2 => [
+                    'e' => 'App\\Entity\\NoteAction',
+                ],
+            ],
+            'fieldMappings' => [
+                2 => [
+                    'id_0' => 'id',
+                    'idb_1' => 'idb',
+                    'nom_action_2' => 'nomAction',
+                    'date_add_3' => 'dateAdd',
+                    'id_user_add_4' => 'idUserAdd',
+                    'date_maj_5' => 'dateMaj',
+                    'id_user_maj_6' => 'idUserMaj',
+                    'statut_rst_7' => 'statutRst',
+                    'action_8' => 'action',
+                ],
+            ],
+            'entityMappings' => [
+                2 => [
+                    'e' => null,
+                ],
+            ],
+            'columnOwnerMap' => [
+                2 => [
+                    'id_0' => 'e',
+                    'idb_1' => 'e',
+                    'nom_action_2' => 'e',
+                    'date_add_3' => 'e',
+                    'id_user_add_4' => 'e',
+                    'date_maj_5' => 'e',
+                    'id_user_maj_6' => 'e',
+                    'statut_rst_7' => 'e',
+                    'action_8' => 'e',
+                ],
+            ],
+            'declaringClasses' => [
+                2 => [
+                    'id_0' => 'App\\Entity\\NoteAction',
+                    'idb_1' => 'App\\Entity\\NoteAction',
+                    'nom_action_2' => 'App\\Entity\\NoteAction',
+                    'date_add_3' => 'App\\Entity\\NoteAction',
+                    'id_user_add_4' => 'App\\Entity\\NoteAction',
+                    'date_maj_5' => 'App\\Entity\\NoteAction',
+                    'id_user_maj_6' => 'App\\Entity\\NoteAction',
+                    'statut_rst_7' => 'App\\Entity\\NoteAction',
+                    'action_8' => 'App\\Entity\\NoteAction',
+                ],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

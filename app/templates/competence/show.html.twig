@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails Competence{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/wickedpicker.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active"><a href="{{ path('competence_index') }}">Liste des competences</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Création</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">DETAILS INTITULE DE STAGE</h2>
+    <div class="row list-filter">
+        <div class="col-sm-12">
+            {{ include('competence/parts/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

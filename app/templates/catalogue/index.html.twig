@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue de Formation - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Catalogue de formation</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">CATALOGUE DE FORMATION</h2>
+
+    <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(form_filter,{'attr' : {'class':'list-filter'}}) }}
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                {{ form_widget(form_filter.nomFormation) }}
+            </div>
+            <div class="form-group col-md-5">
+                <p>{{ form_widget(form_filter.type) }}</p>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+                <a href="{{ path('Catalogue_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(form_filter) }}
+    </fieldset>
+
+    <table class="table table-sm">
+        <thead>
+        <tr class="bg-info text-light">
+            <!--th class="align-middle">Structure</th-->
+            <th>Type</th>
+            <th>Nom de formation</th>
+            <th> Durrée(J)</th>
+            <th>Durrée(H)</th>
+            <th>Tarif/heure</th>
+            <th>Tarif/jour</th>
+            <th>Tarif demi-journée</th>
+            <th>Date de debut</th>
+            <th>Date de fin</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for catalogue in pagination %}
+            <tr data-href="{{ path('cataloge_voir', {'id': catalogue.id}) }}">
+                <td>{{ catalogue.type is null?'':catalogue.type == 'A'?'INTRA':'INTER'}}</td>
+                <td>{{ catalogue.nomFormation }}</td>
+                <td>{{ catalogue.dureeJ }}</td>
+                <td>{{ catalogue.dureeH }}</td>
+                <td>{{ catalogue.tarHtH|number_format(2, ',', '.') }}</td>
+                <td>{{ catalogue.tarJ|number_format(2, ',', '.') }}</td>
+                <td>{{ catalogue.tarHtDj|number_format(2, ',', '.') }}</td>
+                <td>{{ (( (catalogue.dateDebut | date('d-m-Y')) == '31-12-1969') or ((catalogue.dateDebut | date('d-m-Y')) == '01-01-1970') or ((catalogue.dateDebut | date('d-m-Y')) == '30-11--0001')) ? '' : catalogue.dateDebut | date('d-m-Y') }}</td>
+                <td>{{ (( (catalogue.dateFin | date('d-m-Y')) == '31-12-1969') or ((catalogue.dateFin | date('d-m-Y')) == '01-01-1970') or ((catalogue.dateFin | date('d-m-Y')) == '30-11--0001')) ? '' : catalogue.dateFin | date('d-m-Y') }}</td>
+                <td>
+                    <a href="{{ path('cataloge_voir', {'id': catalogue.id}) }}">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a data-url="{{ path('catalogue_delete',  {'id': catalogue.id}) }}"
+                       onclick="deleteLine($(this))">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+        <tfoot>
+        <tr>
+            <td colspan="6" class="text-align-middle pt-3">
+                <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+            </td>
+            <td colspan="6" class="text-align-middle pt-3">
+                {{ knp_pagination_render(pagination) }}
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-center">
+                <div class="col-sm-3">
+                    <a class="nav-link btn btn-info" href="{{ path('create_formation_catalogue', {'typeFormation': constant('\\App\\Constants\\FormationType::FORMATION_INTRA')}) }}">Catalogue des formations INTRA</a>
+                </div>
+                <div class="col-sm-3">
+                    <a class="nav-link btn btn-info" href="{{ path('create_formation_catalogue', {'typeFormation': constant('\\App\\Constants\\FormationType::FORMATION_INTER')}) }}">Catalogue des formations INTER</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+
+    <script>
+        function deleteLine(elem) {
+            var deleteLink = elem.attr('data-url');
+            swal({
+                title: "Confirmation!",
+                text: "Voulez vous supprimer cette ligne?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        url: deleteLink,
+                    })
+                    .done(function (data) {
+                        if (data.status == "Success") {
+                            swal("Supprimé avec succés!", {
+                                icon: "success",
+                            }).then((ok) => {
+                                location.reload();
+                            });
+                        } else {
+                            swal({
+                                title: "Error!",
+                                text: data.message,
+                                icon: "warning",
+                                buttons: false,
+                                dangerMode: true,
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

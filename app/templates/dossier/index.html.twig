@@ -1,0 +1,479 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dossiers- CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+    <link href="{{ asset('assets/css/dossier.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des dossiers {{ app.request.query.get('client') is not empty ? 'de '~app.request.query.get('client') : '' }}</li>
+        </ol>
+    </nav>
+
+    <!-- Modal extraction -->
+    <div class="modal fade no-disabled" id="extract-modal" tabindex="-1" role="dialog" aria-labelledby="extract-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="extract-modal-title">Extractions</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="container-fluid" target="_blank" action="{{ path('crm.dossier.extract') }}" method="post">
+                        <div class="row">
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossenattaccord-modal" >Dossier en attente d'accord</button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#suiviencaiss-modal" >Suivi des encaissements</button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossfactopca-modal" >Dossiers facturé OPCO</button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dosslocation-modal" >Gestion des dossiers de location</button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossfactclient-modal" >Dossiers facturé Client</button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="button" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#suivicom-modal" >Gestion et Suivis des comissions </button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#customextract-modal" ><b>Extraction des dossiers personnalisé</b></button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossprospere-modal" >Gestion des Dossiers PROSPERE </button>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossproform-modal" >Gestion des Dossiers PROFORM </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal extraction dossier en attente accord -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dossenattaccord',
+            titleModal: 'Extraction dossier en attente accord',
+            status: {},
+            displayColumns: dossierEnattenteExtractColumns,
+            typeExtract: constant('DOSSIER_EN_ATTENTE_ACCORD', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier en attente accord  -->
+
+    <!-- Modal extraction suivi encaissement -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'suiviencaiss',
+            titleModal: 'Extraction suivi des encaissements',
+            status: {},
+            displayColumns: suiviencaissExtractColumns,
+            typeExtract: constant('SUIVI_ENCAISSEMENT', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction suivi encaissement  -->
+
+    <!-- Modal extraction dossier facturé opca -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dossfactopca',
+            titleModal: 'Extraction dossiers facturé OPCO',
+            status: {},
+            displayColumns: dossFactOpcaExtractColumns,
+            typeExtract: constant('DOSSIER_FACT_OPCA', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier facturé opca  -->
+
+    <!-- Modal extraction dossier facturé client -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dossfactclient',
+            titleModal: 'Extraction dossiers facturés Client',
+            status: {},
+            displayColumns: dossFactClientExtractColumns,
+            typeExtract: constant('DOSSIER_FACT_CLIENT', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier facturé client  -->
+
+    <!-- Modal extraction dossier location -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dosslocation',
+            titleModal: 'Extraction gestion des dossiers de location',
+            status: {},
+            displayColumns: gestionlocExtractColumns,
+            typeExtract: constant('GESTION_DOSSIER_LOC', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier location  -->
+
+    <!-- Modal extraction dossier prospère -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dossprospere',
+            titleModal: 'Extraction gestion des dossiers PROSPERE',
+            status: {},
+            displayColumns: dossprospereExtractColumns,
+            typeExtract: constant('GESTION_DOSSIER_PROS', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier prospère  -->
+
+    <!-- Modal extraction dossier proform -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'dossproform',
+            titleModal: 'Extraction gestion des dossiers PROFORM',
+            status: {},
+            displayColumns: dossproformExtractColumns,
+            typeExtract: constant('GESTION_DOSSIER_PROFORM', extractConst),
+        }
+    %}
+    <!-- fin Modal extraction dossier proform  -->
+
+    <!-- Modal extraction suivi commissions -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'suivicom',
+            titleModal: 'Extraction gestion des dossiers et suivis des commissions',
+            datePaiement: true,
+            status: comStatuts,
+            displayColumns: suivicomColumns,
+            typeExtract: constant('GESTION_SUIVI_COM', extractConst),
+            allCommercials: commercials
+        }
+    %}
+    <!-- fin Modal extraction suivi commissions -->
+
+    <!-- Modal extraction personnalité -->
+    {% include 'dossier/part/custom-extract-modal.html.twig' with
+        {
+            id: 'customextract',
+            titleModal: 'Extraction des dossiers personnalisés',
+            anneeDebutFin: true,
+            status: dossierStatut,
+            displayColumns: customextractColumns,
+            typeExtract: constant('EXTRACTION_PERSONNALISE', extractConst)
+        }
+    %}
+    <!-- Fin Modal extraction personnalité -->
+
+    <h2 class="text-center mt-2 text-primary">LISTE DES DOSSIERS {{ app.request.query.get('client') is not empty ? 'de '~app.request.query.get('client') : '' }}</h2>
+    <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(formation_dossier_filter_form)  }}
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                {{ form_widget(formation_dossier_filter_form.structure, {attr: {'class' : 'w-100', placeholder : 'Structure'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                <p>{{ form_widget(formation_dossier_filter_form.moisSignature, {attr: {'class' : 'w-100', placeholder : 'Mois de signature'} }) }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.societe) }}#}
+                <p>{{ form_widget(formation_dossier_filter_form.anneeSignature, { attr : {'class' : 'w-100', placeholder : 'Année de signature' } } )  }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.nom) }}#}
+                {{ form_widget(formation_dossier_filter_form.dateCreation, { attr: {placeholder : 'Date de création'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.prenom) }}#}
+                {{ form_widget(formation_dossier_filter_form.numInterne, { attr: {'class' : 'w-100', placeholder : 'N° interne'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(formation_dossier_filter_form.client, { attr: {'class' : 'w-100', placeholder : 'Client'} } ) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(formation_dossier_filter_form.intituleStage, { attr: {'class' : 'w-100', placeholder : 'Intitulé du stage'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(formation_dossier_filter_form.dateFinStage, { attr: {placeholder : 'Date de fin de stage'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(formation_dossier_filter_form.dateEstimeRecep, { attr: {placeholder : 'Date estimé pour recep accord'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(formation_dossier_filter_form.montantSigne, { attr: {'class' : 'w-100', placeholder : 'Montant signé'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.prenom) }}#}
+                {{ form_widget(formation_dossier_filter_form.montantAccorde, { attr: {'class' : 'w-100', placeholder : 'Montant accordé'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(formation_dossier_filter_form.dateEstimeCloture, { attr: {placeholder : 'Date estimé pour clôture'} } ) }}
+            </div>
+        </div>
+        <br>
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(formation_dossier_filter_form.statusDossier, { attr: {'class' : 'w-100', placeholder : 'Status du dossier'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(formation_dossier_filter_form.opca, { attr: {'class' : 'w-100', placeholder : 'OPCO'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(formation_dossier_filter_form.commercial, { attr: {'class' : 'w-100', placeholder : 'Commercial'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+                <a href="{{ path('Liste_Dossiers_Controller') }}" class="text-warning" title="Réinitialiser le filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(formation_dossier_filter_form)  }}
+    </fieldset>
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr class="bg-info text-light">
+                <th>Structure</th>
+                <th>Mois de signature</th>
+                <th>Année de signature</th>
+                <th>Date de création</th>
+                <th>N° interne</th>
+                <th>Client</th>
+                <th>Intitulé du stage</th>
+                <th>Date fin stage</th>
+                <th>Date estimée pour récépt accord</th>
+                <th>Montant signé</th>
+                <th>Montant accordé</th>
+                <th>Date estimée pour clôture</th>
+                <th>Statut</th>
+                <th>OPCO</th>
+                <th>Commercial</th>
+                <th> >Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for dossier in pagination %}
+                <tr data-id="{{ dossier.id }}" data-href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id:dossier.id}) }}">
+                    <td>{{ dossier.structure }}</td>
+                    <td>{{ dossier.mois | month_letter }}</td>
+                    <td>{{ dossier.annee }}</td>
+                    <td>{{ (( (dossier.dateEnvoi | date('d-m-Y')) == '31-12-1969') or ((dossier.dateEnvoi | date('d-m-Y')) == '01-01-1970') or ((dossier.dateEnvoi | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateEnvoi | date('d-m-Y') }}</td>
+                    <td>{{ dossier.numInterne }}</td>
+                    <td>{{ dossier.client }}</td>
+                    <td>{{ dossier.intituleStage }}</td>
+                    <td>{{ (( (dossier.dateFinPeriode | date('d-m-Y')) == '31-12-1969') or ((dossier.dateFinPeriode | date('d-m-Y')) == '01-01-1970') or ((dossier.dateFinPeriode | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateFinPeriode | date('d-m-Y')}}</td>
+                    <td>
+                        {% if dossier.dateAccord is not empty %}
+                            {{ (( (dossier.dateAccord | date('d-m-Y')) == '31-12-1969') or ((dossier.dateAccord | date('d-m-Y')) == '01-01-1970') or ((dossier.dateAccord | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateAccord | date('d-m-Y')}}
+                        {% else %}
+                            {{ dossier.dateEnvoi | date_modify('+3 month') | date('d-m-Y') }}
+                        {% endif %}
+                    </td>
+                    <td>{{ dossier.montantSigne |number_format(2, ',', ' ') }}</td>
+                    <td>{{ dossier.montantAccorde |number_format(2, ',', ' ') }}</td>
+{#                    <td>  {{ (( (dossier.dateFinPeriode | date('d-m-Y')) == '31-12-1969') or ((dossier.dateFinPeriode | date('d-m-Y')) == '01-01-1970') or ((dossier.dateFinPeriode | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateFinPeriode | date('d-m-Y')}}</td>#}
+                    {# APR-194 : Date estimee pour clôtre = date de création du dossier + 6 mois #}
+                    <td>{{ dossier.dateEnvoi | date_modify('+6 month') | date('d-m-Y') }}</td>
+                    <td>{{ dossier.statut }}</td>
+                    <td>{{ dossier.opca }}</td>
+                    <td>{{ dossier.commercial }}</td>
+                    <td>
+                        <a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id:dossier.id}) }}">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a onclick="deleteDossier($(this))">
+                            <i class="fas fa-trash-alt text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+        <tfoot>
+            <tr >
+                <td colspan="6" class="text-align-middle pt-3">
+                    <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+                </td>
+                <td colspan="6" class="text-align-middle pt-3">
+                    {{ knp_pagination_render(pagination) }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="d-flex justify-content-center my-4 no-disabled">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#extract-modal"><b>Extractions</b></button>
+        
+        <a href="{{ path('Liste_Dossiers_Controller/ajoutdossier', {client : app.request.query.get('client')} ) }}" class="ml-3 btn btn-primary">Créer</a>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script>
+                            function deleteDossier(elem)
+                            {
+                                //get dossier id
+                                var dossier_id = elem.closest('tr').attr('data-id');
+                                //handle link
+                                var deleteLink = '{{ path('Liste_Dossier_Controller/deleteDossier', {'idDossier':'dossierId'}) }}';
+                                deleteLink = deleteLink.replace('dossierId', dossier_id);
+                                // show dialog
+                                swal({
+                                    title: "Confirmation!",
+                                    text: "Voulez vous supprimer ce dossier?",
+                                    icon: "warning",
+                                    buttons: true,
+                                    dangerMode: true,
+                                })
+                                        .then((willDelete) => {
+                                            if (willDelete) {
+                                                $.ajax({
+                                                    type: "GET",
+                                                    url: deleteLink,
+                                                })
+                                                        .done(function (data) {
+                                                            if (data.status == "Success") {
+                                                                swal("Supprimé avec succés!", {
+                                                                    icon: "success",
+                                                                }).then((ok) => {
+                                                                    location.reload();
+                                                                });
+                                                            } else {
+                                                                swal("Erreur", "Cette ligne n'a pas pu être supprimé!", "error");
+                                                            }
+                                                        });
+                                            }
+                                        });
+                            }
+
+                            $(function () {
+                                $('#client').select2({
+                                    placeholder: "-- client --",
+                                    minimumInputLength: 3,
+                                    allowClear: true,
+                                    ajax: {
+                                        url: '{{ path('crm.dossier.client.asynch-search') }}',
+                                        data: function (params) {
+                                            var query = {
+                                                search: params.term
+                                            };
+                                            // Query parameters will be ?search=[term]&type=public
+                                            return query;
+                                        }
+                                    }
+                                });
+
+        {% if app.request.query.get('client') %}
+                var data = {
+                    id: "{{ app.request.query.get('client') }}",
+                    text: '{{ app.request.query.get('client')|e('js') }}'
+                };
+
+                var newOption = new Option(data.text, data.id, true, true);
+                $('#client').append(newOption).trigger('change');
+
+        {% endif  %}
+            });
+
+            $(function () {
+                $('#opca').select2({
+                    placeholder: "-- OPCO --",
+                    minimumInputLength: 3,
+                    allowClear: true,
+                    ajax: {
+                        url: '{{ path('crm.dossier.opca.asynch-search') }}',
+                        data: function (params) {
+                            var query = {
+                                search: params.term
+                            };
+                            // Query parameters will be ?search=[term]&type=public
+                            return query;
+                        }
+                    }
+                });
+
+        {% if app.request.query.get('opca') %}
+                var data = {
+                    id: "{{ app.request.query.get('opca') }}",
+                    text: '{{ app.request.query.get('opca')|e('js') }}'
+                };
+
+                var newOption = new Option(data.text, data.id, true, true);
+                $('#opca').append(newOption).trigger('change');
+
+        {% endif  %}
+            });
+            //filre commercial
+            $(function () {
+                $('#commercial').select2({
+                    placeholder: "-- commercial --",
+                    minimumInputLength: 3,
+                    allowClear: true,
+                    ajax: {
+                        url: '{{ path('crm.dossier.commercial.asynch-search') }}',
+                        data: function (params) {
+                            var query = {
+                                search: params.term
+                            };
+                            // Query parameters will be ?search=[term]&type=public
+                            return query;
+                        }
+                    }
+                });
+
+        {% if app.request.query.get('commercial') %}
+                var data = {
+                    id: "{{ app.request.query.get('commercial') }}",
+                    text: '{{ app.request.query.get('commercial') }}'
+                };
+
+                var newOption = new Option(data.text, data.id, true, true);
+                $('#commercial').append(newOption).trigger('change');
+
+        {% endif  %}
+            });
+            $(".js-datepicker").each(function () {
+                $(this).datepicker({
+                    'format': 'dd/mm/yyyy',
+                    'autoclose': true,
+                    'clearBtn': true,
+                    'language': 'fr',
+                });
+            });
+
+
+
+
+    </script>
+    {% include 'dossier/part/custom-extract-js.html.twig' %}
+{% endblock %}

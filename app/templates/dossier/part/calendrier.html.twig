@@ -1,0 +1,150 @@
+<div class="modal fade" id="formationModal" role="dialog">
+    <div class="modal-dialog no-disabled modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title edit-rdv text-center">
+                    Ajout dates formation
+                </h5>
+                <button type="button" class="fas close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="listeSelection">
+                    <table class="table table-striped table-time">
+                        <thead>
+                            <tr>
+                                <th >Date début</th>
+                                <th >Date fin</th>
+
+                                <th class="text-center"><input type="checkbox" onchange="cocherMatin(this)" id="h_matin" name="h_matin" />Matin</th>
+                                <th class="text-center"><input type="checkbox" onchange="cocherAM(this)" id="h_am" name="h_am" />AM</th>
+                            </tr>
+                        </thead>
+
+                        <tr>
+                            <td><input type="text" class="datetimepick form-control" name="debut" id="debutEDT"  readonly="true" value="" /></td>
+                            <td><input type="text" class="datetimepick form-control" name="fin" id="finEDT"  readonly="true" value="" /></td>
+                            <td class="group-input">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control mr-2" name="matin" id="d_heure_m"  placeholder="09:30" disabled="true"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" name="am" id="f_heure_m"  placeholder="13:00" disabled="true" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="group-input">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control mr-2" name="matin" id="d_heure_am"  placeholder="14:00" disabled="true" {% if edt is defined  %}value="{{ edt.d_heure_am }}" {% endif %}/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" name="am" id="f_heure_am"  placeholder="17:30" disabled="true" {% if edt is defined  %}value="{{ edt.f_heure_am }}" {% endif %}/>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <table class="table table-striped table-days">
+                        <thead>
+                            <tr>
+                                <th ><span>Lundi  </span></th>
+                                <th ><span>Mardi  </span></th>
+                                <th ><span>Mercredi  </span></th>
+                                <th ><span>Jeudi  </span></th>
+                                <th ><span>Vendredi  </span></th>
+                                <th ><span>Samedi  </span></th>
+                                <th ><span>Dimanche  </span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" id="jour1" name="jours" class="jours" value="1" />&nbsp;</td>
+                                <td><input type="checkbox" id="jour2" name="jours" class="jours" value="2" />&nbsp;</td>
+                                <td><input type="checkbox" id="jour3" name="jours" class="jours" value="3" />&nbsp;&nbsp;</td>
+                                <td><input type="checkbox" id="jour4" name="jours" class="jours" value="4" />&nbsp;</td>
+                                <td><input type="checkbox" id="jour5" name="jours" class="jours" value="5" />&nbsp;&nbsp;</td>
+                                <td><input type="checkbox" id="jour6" name="jours" class="jours" value="6" />&nbsp;</td>
+                                <td><input type="checkbox" id="jour7" name="jours" class="jours" value="0" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div align="center" style="width:90%;height:25px;margin:15px;">
+                        <input type="hidden" name="duree_jours" name="duree_jours"/>
+                        <button type="button" id="calculerEDT" class="btn btn-primary">Calculer</button>
+                    </div>
+
+                </div>
+            </div>
+
+
+            {#  Résumé dates et heures formation #}
+            <div align="center" id="divEmploiDuTemps">
+                <div class="table-wrapper-scroll-y my-custom-scrollbar" >
+                    <table class="table table-striped table-calcul"   >
+                        <thead>
+                            <tr>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Début</th>
+                                <th class="text-center">Fin</th>
+                                <th class="text-center">Durée</th>
+                            </tr>
+                        <thead>
+                        <tbody id="tableEDT"></tbody>
+                    </table>
+                </div>
+                <div align="center">
+                    <table class="table table-striped ">
+                        <tr>
+                            <th>Nombre d'heures</th>
+                            <th id="nbH"></th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div align="center">
+                    <button type="button" id="ajouterEDT" class="btn btn-primary" onclick="ajouterDateFormation()" >Ajouter</button>
+                    <button class="popup-date-formation btn btn-secondary" type="button"  data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+const date_spliter = (fakedate) => {
+    let date = fakedate.split("/");
+    let real_date = new Date(`${date[2]}-${parseInt(date[1])}-${parseInt(date[0])}`)
+    return real_date;
+}
+let date_debut_edt = document.getElementById("debutEDT")
+let current_set_date_edt = date_debut_edt.value;
+let date_debut = document.getElementById("dossier_dateDebutPeriode")
+let current_set_date = date_debut.value;
+setInterval(()=>{
+    if(current_set_date_edt === date_debut_edt.value){
+
+    }else{
+        current_set_date_edt = date_debut_edt.value;
+        $('#finEDT').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true
+}).datepicker("update",date_spliter(current_set_date_edt)).datepicker('fill'); // setDate()
+    }
+      if(current_set_date === date_debut.value){
+
+    }else{
+        current_set_date = date_debut.value;
+        $('#dossier_dateFinPeriode').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true
+}).datepicker("update",date_spliter(current_set_date)).datepicker('fill'); // setDate()
+    }
+},500)
+</script>

@@ -1,0 +1,167 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\AssignedGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\AssignedGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'App\\Entity\\Tva',
+            ],
+            'namespace' => [
+                'App\\Entity',
+            ],
+            'rootEntityName' => [
+                'App\\Entity\\Tva',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                    'idb',
+                ],
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id',
+                        'id' => true,
+                    ],
+                    'idb' => [
+                        'fieldName' => 'idb',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'idb',
+                        'id' => true,
+                    ],
+                    'libTva' => [
+                        'fieldName' => 'libTva',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 20,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'lib_tva',
+                    ],
+                    'tauxTva' => [
+                        'fieldName' => 'tauxTva',
+                        'type' => 'decimal',
+                        'scale' => 4,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 6,
+                        'options' => [
+                            'default' => '0.0000',
+                        ],
+                        'columnName' => 'taux_tva',
+                    ],
+                    'dateAdd' => [
+                        'fieldName' => 'dateAdd',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'options' => [
+                            'default' => 'CURRENT_TIMESTAMP',
+                        ],
+                        'columnName' => 'date_add',
+                    ],
+                    'idUserAdd' => [
+                        'fieldName' => 'idUserAdd',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'id_user_add',
+                    ],
+                    'dateMaj' => [
+                        'fieldName' => 'dateMaj',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'date_maj',
+                    ],
+                    'idUserMaj' => [
+                        'fieldName' => 'idUserMaj',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'id_user_maj',
+                    ],
+                    'statutRst' => [
+                        'fieldName' => 'statutRst',
+                        'type' => 'boolean',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'statut_rst',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'idb' => 'idb',
+                    'lib_tva' => 'libTva',
+                    'taux_tva' => 'tauxTva',
+                    'date_add' => 'dateAdd',
+                    'id_user_add' => 'idUserAdd',
+                    'date_maj' => 'dateMaj',
+                    'id_user_maj' => 'idUserMaj',
+                    'statut_rst' => 'statutRst',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'idb' => 'idb',
+                    'libTva' => 'lib_tva',
+                    'tauxTva' => 'taux_tva',
+                    'dateAdd' => 'date_add',
+                    'idUserAdd' => 'id_user_add',
+                    'dateMaj' => 'date_maj',
+                    'idUserMaj' => 'id_user_maj',
+                    'statutRst' => 'statut_rst',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => '5_tva',
+                ],
+            ],
+            'isIdentifierComposite' => [
+                true,
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

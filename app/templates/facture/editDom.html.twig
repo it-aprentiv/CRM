@@ -1,0 +1,144 @@
+{{ form_start(form,{ 'attr' : {'class': 'popUp-ajout' , 'method' : 'post' }  }) }}
+{#  Entete de filtre generale  #}
+<fieldset>
+    <legend>REF dossier : <a class="small" href="{{ path('crm.domiciliation.fiche', {id : facture.domiciliation.id }) }}" target="_blank">{{ facture.domiciliation.ref }} <i class="fas fa-external-link-alt"></i></a></legend>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group text-center">
+                {{ form_label(form.domiciliation.client, 'Client', {
+                'label_attr': {'class': 'font-weight-bold'}
+            }) }}
+                {{ form_widget(form.domiciliation.client) }}
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                {{ form_label(form.structure , 'Struture ',{
+                'label_attr': {'class': 'font-weight-bold'}
+            }) }}
+                {{ form_widget(form.structure) }}
+            </div>
+        </div>
+        {#<div class="col-sm-2">
+            <div class="form-row">
+                <div class="form-group text-center">
+                    {{ form_label(form.payeur , 'Payeur ',{
+                    'label_attr': {'class': 'font-weight-bold'}
+                }) }}
+                    {{ form_widget(form.payeur) }}
+                </div>
+            </div>
+        </div>#}
+
+        <div class="col-sm-2">
+            <div class="form-row">
+                <div class="form-group text-center">
+                    {{ form_label(form.domiciliation.commercial , 'Commercial ',{
+                    'label_attr': {'class': 'font-weight-bold'}
+                }) }}
+                    {{ form_widget(form.domiciliation.commercial) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="form-row">
+                <div class="form-group text-center">
+                    {{ form_label(form.statut , 'Statut ',{
+                    'label_attr': {'class': 'font-weight-bold'}
+                }) }}
+                    {{ form_widget(form.statut) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</fieldset>
+
+
+<fieldset class="form-group">
+    <legend>Facture</legend>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form_row(form.numero) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.date) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.dateestimepaiement) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            {{ form_row(form.montant) }}
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                {{ form_label(form.tva) }}
+                <div class="input-group">
+                    {{ form_widget(form.tva, {
+                                'attr': {
+                                    'data-tva': '#'~form.tvaTotal.vars.id,
+                                    'data-ttc': '#'~form.ttc.vars.id,
+                                    'data-ht': '#'~form.ht.vars.id
+                                }
+                            }) }}
+                    <div class="input-group-append">
+                        <span class="input-group-text"> %</span>
+                    </div>
+                </div>
+                {{ form_errors(form.tva) }}
+            </div>
+        </div>
+        <div class="col-sm-4">
+            {{ form_row(form.ht) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4"></div>
+        
+        <div class="col-sm-4">{{ form_row(form.tvaTotal) }}</div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">{{ form_row(form.ttc) }}</div>
+    </div>
+</fieldset>
+
+
+{#About Commentaire#}
+<div class="row">
+    <div class="col-sm-12">
+        {#        {% include 'Common/facture_commentaires.html.twig' with { prototype: form.commentaires.vars.prototype, commentaires: form.commentaires } %}#}
+        {% include 'Common/commentaire-bloc.html.twig' with { prototype: form.commentaires.vars.prototype, commentaires: form.commentaires } %}
+        {# pour empecher l'application d'afficher un bloc commentaire à la fin #}
+        {% do form.commentaires.setRendered %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+    </div>
+</div>
+<br>
+<div class="row action-btn-div">
+    <div class="col-sm-4 text-center">
+        <a class="btn btn-primary btn-lg" href="{{ path('facture_domiciliation_print', { 'id': facture.idfacturedom }) }}">
+            Editer facture
+        </a>
+    </div>
+    <div class="col-sm-4 text-center" >
+        <button class="btn btn-warning btn-lg" type="submit">
+            <i class="fa fa-check"></i>
+            Enregistrer
+        </button>
+    </div>
+    <div class="col-sm-4 text-center">
+        <a class="btn btn-primary btn-lg" href="{{ path('facture.dom_loc.encaisser', {'id': facture.idfacturedom}) }}">
+            Encaissement
+        </a>
+    </div>
+</div>
+{{ form_end(form) }}

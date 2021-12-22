@@ -1,0 +1,239 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}?v={{ asset_version }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des formations mise en place</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">LISTE FORMATIONS MISE EN PLACE</h2>
+
+<fieldset class="mb-3 list-filter">
+    <legend>Filtre</legend>
+    {{ form_start(formation_filter_form) }}
+    <div class="form-row">
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.entite, { 'placeholder' : '-- Entité --' }) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.mois, { 'placeholder' : '-- Mois --' }) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.dateOM, { attr: { 'placeholder' : '-- Date OM --' , 'type': 'date'}}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.formateurOrganisme, { 'placeholder' : 'Formateur/Organisme' }) }}
+        </div>
+        {#<div class="form-group col-md">
+            {{ form_widget(formation_filter_form.statutFormateur, { 'placeholder' : 'Statut formateur' }) }}
+        </div>#}
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.cial, { attr: { 'placeholder' : '-- Commercial --' }}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.client, {'placeholder' : '-- Client --' }) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.intitule, { attr: { 'placeholder' : '-- Intitulé --' }}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.type, { 'placeholder' : '-- Type --' }) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.domaineCompetence, { attr: { 'placeholder' : 'Domaine comtpétence' }}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.dureeEnJour, { attr: { 'placeholder' : '-- Durée en jour --' }}) }}
+        </div>
+    </div>
+    <br>
+    <div class="form-row">
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.dureeEnHeure, { attr: { 'placeholder' : '-- Durée en heure --' }}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.nbStagiaire, { attr: { 'placeholder' : '-- Nb stagiaire --' }}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.demandeur, { attr: { 'placeholder' : '-- Demandeur --' }}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.montantAchatHT, { attr: { 'placeholder' : '-- Montant achat HT --' }}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.montantVenteHT, { attr: { 'placeholder' : '-- Montant Vente HT --' }}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.diffAchatVente, { attr: { 'placeholder' : '-- Diff Achat/Vnete --' }}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.pourcentage, { attr: { 'placeholder' : '-- Pourcentage --' }}) }}
+        </div>
+        <div class="form-group col-md">
+            {{ form_widget(formation_filter_form.pourcentageAchatHT, { attr: { 'placeholder' : '-- Poucentage Achat HT --' }}) }}
+        </div>
+        <div class="form-group col-md">
+            <button type="submit" class="btn btn-info py-1">Rechercher</button>
+            <a href="{{ path('Liste_Formation_Mise_Place_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+        </div>
+    </div>
+    {{ form_end(formation_filter_form) }}
+</fieldset>
+
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr class="bg-info text-light">
+                <th>Entité</th>
+                <th>Mois</th>
+                <th>Date OM</th>
+                <th>Formateur ou organisme</th>
+                {#<th>Statut formateur</th>#}
+                <th>Cial</th>
+                <th>Client</th>
+                <th>Intitulé</th>
+                <th>Type</th>
+                <th>Domaine de compétence</th>
+                <th>Durée en jours</th>
+                <th>Durée en heures</th>
+                <th>Nb stagiaires</th>
+                <th>Demandeur</th>
+                <th>Montant Achat HT</th>
+                <th>Montant Vente HT</th>
+                <th>Diff Achat/Vente HT</th>
+                <th>%</th>
+                <th>% Achat HT</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for formation in pagination %}
+            <tr data-formation-id="{{ formation.idFormation }}" data-href="{{ path('edit_formation', {'id': formation.idFormation}) }}">
+                {% set trans_month_hash = {"01": "Janvier", "02": "Fevrier", "03": "Mars", "04": "Avril", "05": "Mai", "06": "Juin", "07": "Juilllet", "08" : "Aout", "09": "Septembre", "10": "Octobre", "11": "Novembre", "12": "Décembre" } %}
+                <td>{{ formation.entite? formation.entite : '' }}</td>
+                <td> {{ trans_month_hash[formation.dateOM|date('m')] }}</td>
+                <td>{{ formation.dateOM|date('d/m/Y') }}</td>
+                <td>{{ formation.formateur? formation.formateur : '' }} </td>
+                {#<td>{{ formation.OMStatut? formation.OMStatut| striptags | slice(0, 12) ~ '...'  : '' }} </td>#}
+                <td> {{ formation.commercial }}  </td>
+                <td>{{ formation.client? formation.client: '' }}</td>
+                <td>{{ formation.intitule }}</td>
+                <td>{{ formation.type|translateLetterToWord }} </td>
+                <td>{#formation.domaineCompetence #}</td>
+                 <td>{{ formation.dureeEnJour }}</td>
+                 <td>{{ formation.dureeEnHeure }}</td>
+                 <td>{{ formation.nbStagiaires }}</td>
+                 <td>{# formation.demandeur #}</td>
+                <td>{{ formation.pfmteurTotalHt|number_format(2, ',', '.') }}</td>
+                <td> {{ formation.pvTotalHt|number_format(2, ',', '.') }}</td>
+                {% set diff = formation.pvTotalHt|float - formation.pfmteurTotalHt|float %}
+                <td>{{ diff|number_format(2, ',', '.') }} </td>
+                {% set pourcentage = 0 %}
+                {% if formation.pvTotalHt|float > 0 %}
+                   {% set pourcentage = (diff/formation.pvTotalHt|float) * 100 %}
+                {% endif %}
+                <td>{{ pourcentage|number_format(2, ',', '.') }}</td>
+                <td>{# % achat HT #}</td>
+
+                <td>
+                    <a target="_blank" href="{{ path('edit_formation', {'id': formation.idFormation}) }}">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    {% if is_granted('edit', 'Formations') %}
+                        <a onclick="deleteFormation($(this))">
+                            <i class="fas fa-trash-alt text-danger"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+        <tfoot>
+            <tr >
+                <td colspan="6" class="text-align-middle pt-3">
+                    <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+                </td>
+                <td colspan="6" class="text-align-middle pt-3">
+                    {{ knp_pagination_render(pagination) }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</fieldset>
+
+<div class="row">
+    <div class="col-sm-12">
+        <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-center">
+            <div class="col-sm-3">
+                <a class="nav-link btn btn-info" target="_blank" href="{{ path('create_formation', {'typeFormation': constant('\\App\\Constants\\FormationType::FORMATION_INTRA')}) }}">Ajouter formation intra</a>
+            </div>
+            <div class="col-sm-3">
+                <a class="nav-link btn btn-info" target="_blank" href="{{ path('create_formation', {'typeFormation': constant('\\App\\Constants\\FormationType::FORMATION_INTER')}) }}">Ajouter formation inter</a>
+            </div>
+            <div class="col-sm-3">
+                <a class="nav-link btn btn-info" target="_blank" href="{{ path('create_formation', {'typeFormation': constant('\\App\\Constants\\FormationType::FORMATION_SOUS_TRAITANCE')}) }}">Ajouter formation sous-traitance</a>
+            </div>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+<script>
+    $('.js-datepicker').datepicker({
+        'format': 'dd/mm/yyyy',
+        'autoclose': true,
+        language: 'fr'
+    });
+
+    function deleteFormation(elem)
+    {
+        var formation_id = elem.closest('tr').attr('data-formation-id');
+        var deleteLink = '{{ path('formation_delete', {'id':'formation_id'}) }}';
+        deleteLink = deleteLink.replace('formation_id', formation_id);
+        swal({
+            title: "Confirmation!",
+            text: "Voulez vous supprimer cette ligne?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        url: deleteLink,
+                    })
+                        .done(function(data){
+                            if (data.status == "Success") {
+                                swal("Supprimé avec succés!", {
+                                    icon: "success",
+                                }).then((ok) => {
+                                    location.reload();
+                                });
+                            } else {
+                                swal("Erreur", "Cette ligne n'a pas pu être supprimé!", "error");
+                            }
+                        });
+                }
+            });
+    }
+</script>
+
+{% endblock %}

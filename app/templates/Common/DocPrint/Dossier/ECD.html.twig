@@ -1,0 +1,29 @@
+<table>
+    <tr>
+        <td>{% for i in range(1,110) %}&nbsp;{% endfor %}</td>
+        <td style="font-family: Calibri;font-size: 15px;">
+            <p style="font-weight: bold">{{ contact.contact.nomSociete | replace({'&' : '&amp;'}) }}</p><p style="font-weight: bold">A l'attention de {{ contact.contact.interlocuteur }}</p><p>{{ contact.adresse.adresse}}</p><p>{{ contact.adresse.codePostal}} {{ contact.adresse.ville}}</p><p><br/>Paris le, {{ datejour }}</p>
+        </td>
+    </tr>
+</table>
+
+<br/><br/>
+<p style="font-family: Calibri;font-size: 15px;font-weight: bold">OBJET : COPIES DE DOSSIER(S)</p>
+<p style="font-family: Calibri;font-size: 15px;">Madame, Monsieur,</p>
+<p style="font-family: Calibri;font-size: 15px;">Suite à votre récent entretien avec Monsieur/Madame {{ contact.contact.commercial }}, je vous remercie de l’accueil que vous lui avez réservé ainsi que de votre confiance.</p>
+<p style="font-family: Calibri;font-size: 15px;">Vous trouverez, ci-joint, copies des documents transmis à "{{ opca is not null ? opca.nomStr | replace({'&' : '&amp;'}) : '' }}" afin d’obtenir le financement de votre formation.</p>
+<p style="font-family: Calibri;font-size: 15px;">Je vous confirme prendre le relais pour le suivi de votre dossier. N’hésitez pas à me contacter, par téléphone  au 01.42.96.37.35, ou par mail : veronique@aprentiv.com</p>
+<p style="font-family: Calibri;font-size: 15px;color: blue">D’autre part, pour le bon suivi de vos dossiers, je vous remercie de bien vouloir me tenir informée dès réception d’un courrier de votre OPCO et de m’en adresser copie par tout moyen à votre convenance (mail ou fax)</p>
+<p style="font-family: Calibri;font-size: 15px;">Dans l’attente de nos prochains contacts, recevez, Madame, Monsieur, l’expression de mes sincères salutations.</p>
+<br/><br/>
+
+<table>
+<tr>
+<td>{% for i in range(1,110) %}&nbsp;{% endfor %}</td>
+<td style="font-family: Calibri;font-size: 15px;">
+<p>Véronique LOUBAUD</p>
+<p>Attachée de Direction</p>
+</td>
+</tr>
+</table>
+

@@ -1,0 +1,154 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\AssignedGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\AssignedGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'App\\Entity\\FormateurStatut',
+            ],
+            'namespace' => [
+                'App\\Entity',
+            ],
+            'rootEntityName' => [
+                'App\\Entity\\FormateurStatut',
+            ],
+            'customRepositoryClassName' => [
+                'App\\Repository\\FormateurStatutRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id',
+                        'id' => true,
+                    ],
+                    'idb' => [
+                        'fieldName' => 'idb',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'idb',
+                    ],
+                    'statut' => [
+                        'fieldName' => 'statut',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 25,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'statut',
+                    ],
+                    'dateAdd' => [
+                        'fieldName' => 'dateAdd',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'date_add',
+                    ],
+                    'dateMaj' => [
+                        'fieldName' => 'dateMaj',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'date_maj',
+                    ],
+                    'idUserAdd' => [
+                        'fieldName' => 'idUserAdd',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'id_user_add',
+                    ],
+                    'idUserMaj' => [
+                        'fieldName' => 'idUserMaj',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'id_user_maj',
+                    ],
+                    'statutRst' => [
+                        'fieldName' => 'statutRst',
+                        'type' => 'boolean',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'statut_rst',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'idb' => 'idb',
+                    'statut' => 'statut',
+                    'date_add' => 'dateAdd',
+                    'date_maj' => 'dateMaj',
+                    'id_user_add' => 'idUserAdd',
+                    'id_user_maj' => 'idUserMaj',
+                    'statut_rst' => 'statutRst',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'idb' => 'idb',
+                    'statut' => 'statut',
+                    'dateAdd' => 'date_add',
+                    'dateMaj' => 'date_maj',
+                    'idUserAdd' => 'id_user_add',
+                    'idUserMaj' => 'id_user_maj',
+                    'statutRst' => 'statut_rst',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => '5_formateur_statut',
+                    'indexes' => [
+                        'statut' => [
+                            'columns' => [
+                                'statut',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

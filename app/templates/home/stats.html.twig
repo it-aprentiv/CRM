@@ -1,0 +1,255 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu - CRM Aprentiv v2.0{% endblock %}
+
+{% block body %}
+ 
+    <div class="row">
+ 
+ 
+        <div class="col-md-12">
+            <canvas id="stats-by-month"></canvas>
+        </div>
+        
+        <div class="col-md-6">
+            <canvas id="stats-by-years"></canvas>
+        </div>   
+        <div class="col-md-6">
+          <p>
+            <label for="amount">Entre :</label>
+            <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+          </p> 
+        <div id="slider-range"></div>
+      </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js" integrity="sha256-D2tkh/3EROq+XuDEmgxOLW1oNxf0rLNlOwsPIUX+co4=" crossorigin="anonymous"></script>        
+<script>
+let labels = []
+{% for stats in statsDossiersMonth %}
+{% if stats.montantAccorde or stats.montantSigne %}
+{% if stats.year == 0 %}
+{% else %}
+labels.push({
+    label: `{{ stats.month }}/{{ stats.year }}`,
+    year: {{ stats.year }},
+    {% if stats.montantAccorde %}
+mntAccord: parseInt(`{{ stats.montantAccorde }}`),
+    {% else %}
+mntAccord: 0,
+    {% endif %}
+{% if stats.montantSigne %}
+mntSigne: parseInt(`{{ stats.montantSigne }}`),
+    {% else %}
+mntSigne: 0,
+    {% endif %}
+{% if stats.montantFacture %}
+mntFacture: parseInt(`{{ stats.montantFacture }}`)
+{% else %}
+mntFacture: 0
+{% endif %}
+})
+{% endif %}
+
+{% endif %}
+{% endfor %}
+const ctx = document.getElementById('stats-by-month').getContext('2d');
+const month = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels.map(d => d.label),
+        datasets: [{
+            label: 'Montant signé HT',
+            data: labels.map(d => d.mntSigne),
+            fill: false,
+            backgroundColor: [
+                'rgb(75, 64, 192)',
+            ],
+            borderColor: 'rgb(75, 64, 192)',
+            tension: 0.1
+        }, {
+            label: 'Montant accordé HT',
+            data: labels.map(d => d.mntAccord),
+            fill: false,
+            backgroundColor: [
+                'rgb(75, 192, 192)',
+            ],
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }, {
+            label: 'Montant facturé HT',
+            data: labels.map(d => d.mntFacture),
+            fill: false,
+            backgroundColor: [
+                'rgb(75, 140, 192)',
+            ],
+            borderColor: 'rgb(75, 140, 192)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'CA mensuel',
+                fullSize: true
+            },
+        }
+    }
+});
+
+let labelsyear = [];
+{% for stats in statsDossiersYear %}
+{% if stats.montantAccorde or stats.montantSigne or stats.montantFacture %}
+{% if stats.year == 0 %}
+
+{% else %}
+labelsyear.push({
+    year: parseInt(`{{ stats.year }}`),
+    {% if stats.montantAccorde %}
+mntAccord: parseInt(`{{ stats.montantAccorde }}`),
+    {% else %}
+mntAccord: 0,
+    {% endif %}
+{% if stats.montantSigne %}
+mntSigne: parseInt(`{{ stats.montantSigne }}`),
+    {% else %}
+mntSigne: 0,
+    {% endif %}
+{% if stats.montantFacture %}
+mntFacture: parseInt(`{{ stats.montantFacture }}`)
+{% else %}
+mntFacture: 0
+{% endif %}
+  })
+{% endif %}
+{% endif %}
+{% endfor %}
+const ctx2 = document.getElementById('stats-by-years').getContext('2d');
+const years = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: labelsyear.map(d => d.year),
+        datasets: [{
+            label: 'Montant signé HT',
+            data: labelsyear.map(d => d.mntSigne),
+            fill: false,
+            backgroundColor: [
+                'rgb(75, 64, 192)',
+            ],
+            borderColor: 'rgb(75, 64, 192)',
+            tension: 0.1
+        }, {
+            label: 'Montant accordé HT',
+            data: labelsyear.map(d => d.mntAccord),
+            fill: false,
+            backgroundColor: [
+                'rgb(75, 192, 192)',
+            ],
+
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }, {
+            label: 'Montant facturé HT',
+            data: labelsyear.map(d => d.mntFacture),
+            fill: false,
+            backgroundColor: [
+                'rgb(75, 140, 192)',
+            ],
+            borderColor: 'rgb(75, 140, 192)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'CA Annuel',
+                fullSize: true
+            },
+        }
+    }
+});
+
+setTimeout(() => {
+    let numbersYear = labelsyear.filter(d => Number(d.year)).map(d => d.year)
+    $(function () {
+        $("#slider-range").slider({
+            range: true,
+            min: Math.min(...numbersYear),
+            max: Math.max(...numbersYear),
+            values: [Math.min(...numbersYear), Math.max(...numbersYear)],
+            slide: function (event, ui) {
+                years.data.labels = labelsyear.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(d => d.year)
+                years.data.datasets = [{
+                    label: 'Montant signé HT',
+                    data: labelsyear.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(d => d.mntSigne),
+                    fill: false,
+                    backgroundColor: [
+                        'rgb(75, 64, 192)',
+                    ],
+                    borderColor: 'rgb(75, 64, 192)',
+                    tension: 0.1
+                }, {
+                    label: 'Montant accordé HT',
+                    data: labelsyear.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(d => d.mntAccord),
+                    fill: false,
+                    backgroundColor: [
+                        'rgb(75, 192, 192)',
+                    ],
+
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }, {
+                    label: 'Montant facturé HT',
+                    data: labelsyear.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(d => d.mntFacture),
+                    fill: false,
+                    backgroundColor: [
+                        'rgb(75, 140, 192)',
+                    ],
+                    borderColor: 'rgb(75, 140, 192)',
+                    tension: 0.1
+                }]
+                years.update()
+
+                month.data.labels = labels.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(d => d.label)
+                month.data.datasets = [{
+                    label: 'Montant signé HT',
+                    data: labels.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(d => d.mntSigne),
+                    fill: false,
+                    backgroundColor: [
+                        'rgb(75, 64, 192)',
+                    ],
+                    borderColor: 'rgb(75, 64, 192)',
+                    tension: 0.1
+                }, {
+                    label: 'Montant accordé HT',
+                    data: labels.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(d => d.mntAccord),
+                    fill: false,
+                    backgroundColor: [
+                        'rgb(75, 192, 192)',
+                    ],
+
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }, {
+                    label: 'Montant facturé HT',
+                    data: labels.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(d => d.mntFacture),
+                    fill: false,
+                    backgroundColor: [
+                        'rgb(75, 140, 192)',
+                    ],
+                    borderColor: 'rgb(75, 140, 192)',
+                    tension: 0.1
+                }]
+                month.update()
+
+                $("#amount").val(ui.values[0] + " - " + ui.values[1]);
+            }
+        });
+        $("#amount").val($("#slider-range").slider("values", 0) +
+            " - " + $("#slider-range").slider("values", 1));
+    });
+}, 500)
+
+        </script>
+{% endblock %}

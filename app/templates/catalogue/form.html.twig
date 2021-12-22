@@ -1,0 +1,182 @@
+{{ form_start(formation_form,{'attr':{'class':'list-filter'}}) }}
+<fieldset>
+    <div class="row">
+        <div class="col-sm">
+            <div class="form-group text-center">
+                {{ form_label(formation_form.nomFormation, 'Intitulé du stage', {
+                    'label_attr': {'class': 'font-weight-bold'}
+                }) }}
+                {{ form_widget(formation_form.nomFormation) }}
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="form-group text-center">
+                {{ form_label(formation_form.intraInter, 'Type', {
+                    'label_attr': {'class': 'font-weight-bold'}
+                }) }}
+                {{ form_widget(formation_form.intraInter) }}
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="form-group text-center">
+                {{ form_label(formation_form.dureeJ, 'Durée stage en J', {
+                    'label_attr': {'class': 'font-weight-bold'}
+                }) }}
+                {{ form_widget(formation_form.dureeJ) }}
+            </div>
+        </div>
+        <div class="col-sm">
+            {{ form_label(formation_form.dureeH, 'Durée stage en H', {
+                'label_attr': {'class': 'font-weight-bold'}
+            }) }}
+            {{ form_widget(formation_form.dureeH) }}
+        </div>
+
+    </div>
+</fieldset>
+<br>
+<fieldset>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group text-center">
+                                <label class="font-weight-bold">Lieu de stage</label>
+                                <nav class="nav nav-tabs">
+                                    {% set address_vivienne = constant('App\\Constants\\AddressFormation::VIVIENNE_ADDRESS') %}
+                                    {% set address_societe = (address_societe is defined)? address_societe : '' %}
+                                    {% if 'A' == type_formation %}
+                                        <a class="nav-item nav-link active" href="#p1" data-toggle="tab">Vivienne</a>
+                                    {% elseif 'R' == type_formation %}
+                                        <a class="nav-item nav-link active" href="#p1" data-toggle="tab">Autre</a>
+                                    {% endif %}
+                                </nav>
+                                <div class="tab-content">
+                                    {% set address_vivienne = constant('App\\Constants\\AddressFormation::VIVIENNE_ADDRESS') %}
+                                    {% if 'A' == type_formation %}
+                                        <div class="tab-pane active" id="p1">
+                                            {{ form_widget(formation_form.lieuFormation, { 'attr': {
+                                                'placeholder': address_vivienne ,
+                                                'value': address_vivienne ,
+                                                'readonly': 'readonly',
+                                            }
+                                            })
+                                            }}
+                                        </div>
+                                    {% elseif 'R' == type_formation %}
+                                        <div class="tab-pane active" id="p1">
+                                            <div class="tab-pane" id="p1">
+                                                {{ form_widget(formation_form.lieuFormation) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <input type="hidden" id="address_client" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-header">
+                    Date de Formation
+                </div>
+                <div class="card-body">
+                    <div class="form-group text-center">
+                        {{ form_label(formation_form.dateDebut, 'Date debut', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                        {{ form_widget(formation_form.dateDebut) }}
+                    </div>
+                    <div class="form-group text-center">
+                        {{ form_label(formation_form.dateFin, 'Date fin', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                        {{ form_widget(formation_form.dateFin) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header font-weight-bold">Prix vente HT</div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                {{ form_label(formation_form.tarJ, 'Tarif par J', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(formation_form.tarJ) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(formation_form.tarHtDj, 'Tarif par 1/2 J', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(formation_form.tarHtDj) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(formation_form.tarHtH, 'Tarif par H', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(formation_form.tarHtH) }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header font-weight-bold">Coût formateur HT</div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                {{ form_label(formation_form.coutJ, 'Tarif par J', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(formation_form.coutJ) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(formation_form.coutDemiJ, 'Tarif par 1/2 J', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(formation_form.coutDemiJ) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(formation_form.coutH, 'Tarif par H', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(formation_form.coutH) }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</fieldset>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row">
+            {% block commentaires %}
+                {% include 'Common/commentaire-bloc.html.twig' with { prototype: formation_form.commentaires.vars.prototype, commentaires: formation_form.commentaires } %}
+                {% do formation_form.commentaires.setRendered %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-sm-12">
+        <p class="text-center">
+            <button class="btn btn-primary save-catalog" type="submit">{{ catalogue is defined? 'MAJ Catalogue': 'Ajouter' }}</button>
+        </p>
+    </div>
+</div>
+{{ form_end(formation_form) }}

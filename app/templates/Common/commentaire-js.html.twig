@@ -1,0 +1,71 @@
+<!-- note -->
+<script type="text/javascript">
+
+    var $collectioncomment = $("#commentaires_collection");
+
+    /**
+     * fonction pour supprimer une ligne
+     *
+     * @param buttonDelete bouton pour activer suppression
+     */
+    function removeComment(buttonDelete) {
+        var confirmDelete = window.confirm("Etes-vous sur de vouloir supprimer cette note ?");
+
+        if (confirmDelete) {
+            var id = $(buttonDelete).data('idrow');
+            $('tr#' + id).remove();
+        }
+    }
+
+    function addnewcommentaire()
+    {
+        var newcomment = $('#commentaire_prototype').html();
+        newcomment = newcomment.replace(/__name__/g, $collectioncomment.find("tr").length + 1);
+        let tr = $(newcomment);
+        tr.find('[name]').removeAttr('disabled');
+        $collectioncomment.append(tr);
+        var lastTr = $collectioncomment.find("tr:last-child");
+        lastTr.find(".js-datepicker-note").each(function () {
+            $(this).datepicker({
+                'format': 'dd/mm/yyyy',
+                'autoclose': true,
+                'language': 'fr'
+            });
+        });
+
+        lastTr.find('.delete-comment').on('click', function () {
+            removeComment(this);
+        });
+
+        {# call function to set autocompletion config #}
+        {% if addAutocomplete is defined %}
+        {{ addAutocomplete }}(lastTr);
+        {% endif %}
+    }
+
+    $(document).ready(function () {
+        $('#btnajoutcom').click(function (e) {
+            e.preventDefault();
+            addnewcommentaire();
+        });
+
+        $('.js-datepicker-note').datepicker({
+            'format': 'dd/mm/yyyy',
+            'autoclose': true,
+            'language': 'fr',
+        });
+
+        $('#commentaires_collection .delete-comment').on('click', function () {
+            if (!$(this).hasClass('disabled')) {
+                removeComment(this);
+            }
+        });
+
+        {# set autocompletion config #}
+        {% if addAutocomplete is defined %}
+            $collectioncomment.find('tr').each(function () {
+                {{ addAutocomplete }}($(this));
+            });
+        {% endif %}
+    });
+</script>

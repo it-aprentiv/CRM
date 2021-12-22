@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/wickedpicker.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+
+
+
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active"><a href="{{ path('Liste_Factures_Avoirs_Controller') }}">Liste Factures et Avoirs</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Création</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">AJOUT DE FACTURE ET AVOIR</h2>
+    {% include 'facture/form.html.twig' with {'type':'create'} %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'Common/commentaire-js.html.twig' %}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    {% include 'facture/Parts/facture_avoirs_dossier.js.html.twig' %}
+    <script>
+        // $(document).on('click', '.delete-comment', function () {
+        // removeComment(this);
+        // });
+
+        $("#facture_avoir_dateCreation").on("change", function () {
+            var date = $(this).val();
+            var tab = date.split("/");
+            var dd = tab[1] + "/" + tab[0] + "/" + tab[2];
+            var dat = new Date(dd);
+            dat.setMonth(dat.getMonth() + 3);
+            $("#datapayementestime").datepicker('setDate', dat);
+        });
+
+        $("#facture_avoir_dateCreation").trigger('change');
+
+        $('.js-datepicker-note,.js-datepicker').datepicker({
+            'format': 'dd/mm/yyyy',
+            'autoclose': true,
+            'language': 'fr',
+        });
+
+
+        $('#facture_avoir_idOpca').select2({
+            placeholder: "-- opca --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.dossier.opca.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        byid: true
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+
+        $('#facture_avoir_idContact').select2({
+            placeholder: "--Sélectionnez--",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.dossier.client.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        byid: true
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+
+        {# Génération des numéro facture #}
+        {# Si total TTC a changé et > 0 => Mettre à jour numéro facture #}
+            $('#facture_avoir_totalHt, #facture_avoir_resteARegler, #facture_avoir_pourcentageTva, #facture_avoir_idAvoirLiee_idStructure').on('blur change', function () {
+                let sFactTTC = $('#facture_avoir_totalRegle').val();
+                let fFactTTC = common.convertStringToFloat(sFactTTC);
+
+                if (parseFloat(fFactTTC) > 0) {
+                    let getNumFactureQuery = $.ajax({
+                        url: '{{ path('facture_generate_numero') }}',
+                        data: { structure : $('#facture_avoir_idAvoirLiee_idStructure option:selected').html() }
+                    });
+                    
+                    getNumFactureQuery.done(function(response) {
+                        
+                        if (response.error === false) {
+                            // MAJ champ référence facture
+                            $('#facture_avoir_ref').val(response.numero);
+                        }
+                    });
+                } else {
+                    $('#facture_avoir_ref').val('');
+                }
+            });
+        {# Génération numéro facture <-- #}
+        
+        {#Génération numéro avoir #}
+        {# Si total TTC AVOIR a changé et > 0 => Mettre à jour numéro avoir #}
+            $('#facture_avoir_idAvoirLiee_mntTtc, #facture_avoir_idAvoirLiee_pourcentageTva, #facture_avoir_idAvoirLiee_idStructure').on('blur change', function () {
+                let sAvoirTTC = $('#facture_avoir_idAvoirLiee_totalTtc').val();
+                let fAvoirTTC = common.convertStringToFloat(sAvoirTTC);
+                let sFactTTC = $('#facture_avoir_totalRegle').val();
+                let fFactTTC = common.convertStringToFloat(sFactTTC);
+
+                if (fAvoirTTC > 0 && fFactTTC > 0) {
+                    let getNumAvoirQuery = $.ajax({
+                        url: '{{ path('avoir_generate_numero') }}',
+                        data: { structure : $('#facture_avoir_idAvoirLiee_idStructure option:selected').html() }
+                    });
+                    
+                    getNumAvoirQuery.done(function(response) {
+                        
+                        if (response.error === false) {
+                            // MAJ champ référence facture
+                            $('#facture_avoir_idAvoirLiee_ref').val(response.numero);
+                        }
+                    });
+                } else {
+                    // Ne pas générer d'avoir si Total TTC = 0
+                    $('#facture_avoir_idAvoirLiee_ref').val('');
+                }
+            });
+        {# Génération numéro facture #}
+    </script>
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Encaissements - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des encaissements</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">LISTE DES ENCAISSEMENTS</h2>
+
+    <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(encaissement_filter_form)  }}
+        <div class="form-row">
+            <div class="form-group col-md-1">
+                {{ form_widget(encaissement_filter_form.source, {  attr: {'class' : 'w-100', 'placeholder' : '--Source--'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(encaissement_filter_form.numDossier, {  attr: {'class' : 'w-100', 'placeholder' : '-- N°Dossier --'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(encaissement_filter_form.numFacture, { attr: {'class' : 'w-100', 'placeholder' : '-- N°Facture --'} }) }}
+            </div>
+            <div class="form-group col-md-1">
+                {{ form_widget(encaissement_filter_form.payeur, { attr: {'class' : 'w-100', 'placeholder' : '-- Payeur --'} }) }}
+            </div>
+            <div class="form-group col-md-1">
+                {{ form_widget(encaissement_filter_form.dateEncaissement, { attr: {'class' : 'js-datepicker w-100', 'placeholder' : '-- Date encaissement --', 'autocomplete': 'off'} }) }}
+            </div>
+            <div class="form-group col-md-1">
+                {{ form_widget(encaissement_filter_form.tauxCommission, { attr: {'class' : 'w-100', 'placeholder' : '-- Taux commission --'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(encaissement_filter_form.commercial, { attr: {'class' : 'w-100', 'placeholder' : '-- Cial --',} }) }}
+            </div>
+            <div class="form-group col-md-1">
+                {{ form_widget(encaissement_filter_form.statutCommission, { attr: {'class' : 'w-100', 'placeholder' : '-- Statut comm --'} }) }}
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-primary py-1" type="submit">Filtrer</button>
+                <a href="{{ path('Liste_Encaissement_Controller') }}" class="text-warning" title="Réinitialiser le filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(encaissement_filter_form)  }}
+    </fieldset>
+
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr class="bg-info text-light">
+                <th>Source</th>
+                <th>N° dossier</th>
+                <th>N° Facture</th>
+                <th>Payeur</th>
+                <th>Date encaissement</th>
+                <th>Taux commission</th>
+                <th>Cial</th>
+                <th>Statut commission</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for encaissement in pagination %}
+                <tr data-eid="{{ encaissement.id }}" data-fid="{{ encaissement.facture_id }}" 
+                    {% if encaissement.source == 'dossier' %}
+                            data-href="{{ path('encaissement_create_from_facture', { id : encaissement.facture_id }) }}"
+                        {% else %}
+                            data-href="{{ path('facture.dom_loc.encaisser', { id : encaissement.facture_id }) }}"
+                        {% endif %}
+                    >
+                    <td>{{ encaissement.source }}</td>
+                    <td>{{ encaissement.no_dossier_ref }}</td>
+                    <td>{{ encaissement.num_facture }}</td>
+                    <td>{{ encaissement.payeur }}</td>
+                    <td>{{ encaissement.date_encaissement | date('d/m/Y') }}</td>
+                    <td>{{ encaissement.taux_commission }}</td>
+                    <td>{{ encaissement.commercial }}</td>
+                    <td>{{ encaissement.statut_commission }}</td>
+                    <td>
+                        {% if encaissement.source == 'dossier' %}
+                            <a href="{{ path('encaissement_create_from_facture', { id : encaissement.facture_id }) }}" title="Détail encaissment">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('facture.dom_loc.encaisser', { id : encaissement.facture_id }) }}" title="Détail encaissment">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        {% endif %}
+                        {% if can_edit is defined and can_edit %}
+                            <a href="javascript:void(0)" class="delete-encaissement">
+                                <i class="fas fa-trash-alt text-danger"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+        <tfoot>
+            <tr >
+                <td colspan="6" class="text-align-middle pt-3">
+                    <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+                </td>
+                <td colspan="6" class="text-align-middle pt-3">
+                    {{ knp_pagination_render(pagination) }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+
+    <script>
+        $(function () {
+        {# Utilisation date picker pour les filtres de type date #}
+                $(".js-datepicker").each(function () {
+                    $(this).datepicker({
+                        'format': 'dd/mm/yyyy',
+                        'autoclose': true,
+                        'clearBtn': true,
+                        'language': 'fr',
+                    });
+                });
+
+        {# Autocompletion recherche commercical -->> #}
+                $('#commercial').select2({
+                    placeholder: "--Cial--",
+                    minimumInputLength: 3,
+                    allowClear: true,
+                    ajax: {
+                        url: '{{ path('crm.dossier.commercial.asynch-search') }}',
+                        data: function (params) {
+                            var query = {
+                                search: params.term
+                            };
+                            // Query parameters will be ?search=[term]&type=public
+                            return query;
+                        }
+                    }
+                });
+        {% if app.request.query.get('commercial') %}
+                var data = {
+                    id: "{{ app.request.query.get('commercial') }}",
+                    text: '{{ app.request.query.get('commercial') }}'
+                };
+
+                var newOption = new Option(data.text, data.id, true, true);
+                $('#commercial').append(newOption).trigger('change');
+        {% endif %}
+        {# Autocompletion recherche commercical <<-- #}
+
+
+        {# Suppression encaissement -->> #}
+                $('.delete-encaissement').on('click', function (e) {
+                    e.preventDefault();
+                    const encaissementId = $(this).closest('tr').attr('data-eid');
+                    const factureId = $(this).closest('tr').attr('data-fid');
+
+                    swal({
+                        title: "Confirmation!",
+                        text: "Voulez vous supprimer cet encaissement ?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                            .then((willDelete) => {
+                                if (willDelete) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "{{ path('encaissement.delete') }}",
+                                        data: {eid: encaissementId, fid: factureId}
+                                    })
+                                            .done(function (data) {
+                                                if (data.success == true) {
+                                                    swal("Supprimé avec succés!", {
+                                                        icon: "success",
+                                                    }).then((ok) => {
+                                                        location.reload();
+                                                    });
+                                                } else {
+                                                    swal("Erreur", "Cette ligne n'a pas pu être supprimé!", "error");
+                                                }
+                                            });
+                                }
+                            });
+
+                });
+        {# Suppression encaissement <<-- #}
+
+            });
+    </script>
+{% endblock %}

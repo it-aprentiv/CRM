@@ -1,0 +1,69 @@
+<script type="text/javascript">
+
+    var $collectionStagiaire = $("#stagiaires_collection");
+
+    function addStagiaire()
+    {
+        var newcomment = $('#stagiaire_prototype').html();
+        newcomment = newcomment.replace(/__name__/g, $collectionStagiaire.find("tr").length+1);
+        let tr = $(newcomment);
+        tr.find('[name]').removeAttr('disabled');
+        $collectionStagiaire.append(tr);
+        var lastTr = $collectionStagiaire.find("tr:last-child");
+        lastTr.find(".js-datepicker").each(function(){
+            $(this).datepicker({
+                'format':'dd/mm/yyyy',
+                'autoclose': true,
+                'language': 'fr'
+            });
+        });
+
+        lastTr.find('.delete-stagiaire').on('click', function () {
+            removeStagiaire(this);
+        });
+    }
+
+    function removeStagiaire(buttonDelete) {
+        var confirmDelete = window.confirm("Etes-vous sûr de vouloir supprimer ce stagiaire ?");
+
+        if (confirmDelete) {
+            var id = $(buttonDelete).data('idrow');
+            var paramDossier =  $(buttonDelete).attr('data-paramDossier');
+            var idContact = $(`#${id}`).find('input[type=hidden]').val();
+
+            if(idContact && paramDossier) {
+                $.ajax({
+                    url: "{{ path('delete_stagiaire_formation') }}",
+                    type: 'DELETE',
+                    data: {'id': idContact, 'param': paramDossier},
+                    success: function (data) {
+                        $('tr#' + id).remove();
+                        console.log(data);
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+            }
+
+            $('tr#' + id).remove();
+        }
+    }
+
+    $(document).ready(function () {
+        $('#add_stagiaire').click(function () {
+            addStagiaire();
+        });
+
+        $('.js-datepicker').datepicker({
+            'format':'dd/mm/yyyy',
+            'autoclose': true,
+            'language': 'fr',
+        });
+
+        $('.delete-stagiaire').on('click', function () {
+            removeStagiaire(this);
+        });
+    });
+
+</script>

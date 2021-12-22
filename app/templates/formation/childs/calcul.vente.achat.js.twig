@@ -1,0 +1,169 @@
+<script>
+    const jour = 8;
+
+    $(document).ready(function (e) {
+        var dureeJours = $('#formation_dureeJours');
+        var dureeHeures = $('#formation_dureeHeures');
+        var pvTotalHt = $('#formation_pvTotalHt');
+        var pfmteurTotalHt = $('#formation_pfmteurTotalHt');
+        let $tarifVenteJ = $('#formation_pvTarifJ');
+        let $tarifVenteH = $('#formation_pvTarifJ');
+        let $tarifFormateurJ = $('#formation_pfmteurJ');
+        let $tarifFormateurH = $('formation_pfmteurH');
+        let $margeBrute = $('span#marge_brute');
+
+        // Si durée par J modifier
+        $(dureeJours).on('keyup change blur', function (e) {
+            let tarifVenteTotal = 0;
+            let tarifFormateurTotal = 0;
+            
+            if ($tarifVenteJ.val()) {
+                tarifVenteTotal = tarifTotalJour($tarifVenteJ.val(), $(dureeJours).val());
+                $(pvTotalHt).val(tarifVenteTotal);
+            }
+            
+            if ($tarifFormateurJ.val()) {
+                tarifFormateurTotal = tarifTotalJour($tarifFormateurJ.val(), $(dureeJours).val());
+                $(pfmteurTotalHt.val(tarifFormateurTotal));
+            }
+            
+            if ($tarifVenteJ.val() && $tarifFormateurJ.val()) {
+                const margeBrute = parseFloat(tarifVenteTotal - tarifFormateurTotal).toFixed(2);
+                $margeBrute.text(margeBrute);
+            }
+            
+        });
+        
+        // Si durée par J modifier
+        $(dureeHeures).on('keyup change blur', function (e) {
+           {# if ($tarifVenteH.val()) {
+                let tarifCoutFormateurTotal = tarifTotalHeure($tarifVenteH.val(), $(dureeHeures).val());
+                $(pfmteurTotalHt).val(tarifCoutFormateurTotal);
+            }#}
+        });
+
+
+        //Affichage resultat calcul (journalier) dans le champ totalHT (prix de vente)
+        $('#formation_pvTarifJ').on('keyup change blur', function (e) {
+            let dureeJ = dureeJours.val();
+            let tarifJ = $(this).val();
+
+            //Vider les autres champs
+            $('#formation_pvTarifDj, #formation_pvTarifH').val('');
+
+            if (dureeJ && tarifJ) {
+                let tarifTotalVenteHT = tarifTotalJour(dureeJ, tarifJ);
+                pvTotalHt.val(tarifTotalVenteHT);
+            }
+
+            if (pvTotalHt.val() && pfmteurTotalHt.val()) {
+                let marge = margeBrute(pvTotalHt.val(), pfmteurTotalHt.val());
+                $('span#marge_brute').text('');
+                $('span#marge_brute').append(marge);
+            }
+        });
+
+        //Affichage resultat calcul(journalier) coût formateur
+        $('#formation_pfmteurJ').on('keyup change blur', function (e) {
+            let dureeJ = dureeJours.val();
+            let tarifJ = $(this).val();
+
+            //Vider les autres champs
+            $('#formation_pfmteurDj, #formation_pfmteurH').val('');
+
+            if (dureeJ && tarifJ) {
+                let tarifTotalAchatHT = tarifTotalJour(dureeJ, tarifJ);
+                pfmteurTotalHt.val(tarifTotalAchatHT);
+            }
+
+            if (pvTotalHt.val() && pfmteurTotalHt.val()) {
+                let marge = margeBrute(pvTotalHt.val(), pfmteurTotalHt.val());
+                $('span#marge_brute').text('');
+                $('span#marge_brute').append(marge);
+            }
+        });
+
+        //Affichage resultat calcul(horaire) prix de vente
+        $('#formation_pvTarifH').on('keyup blur change', function (e) {
+            let dureeH = dureeHeures.val();
+            let tarifH = $(this).val();
+
+            //Vider les autres champs
+            $('#formation_pvTarifDj, #formation_pvTarifJ').val('');
+
+            if (dureeH && tarifH) {
+                let tarifTotalVenteHT = tarifTotalJour(dureeH, tarifH);
+                pvTotalHt.val(tarifTotalVenteHT);
+            }
+
+            if (pvTotalHt.val() && pfmteurTotalHt.val()) {
+                let marge = margeBrute(pvTotalHt.val(), pfmteurTotalHt.val());
+                $('span#marge_brute').text('');
+                $('span#marge_brute').append(marge);
+            }
+        });
+
+        //Affichage resultat calcul(horaire) coût formateur
+        $('#formation_pfmteurH').on('keyup blur change', function (e) {
+            let dureeH = dureeHeures.val();
+            let tarifH = $(this).val();
+
+            //Vider les autres champs
+            $('#formation_pfmteurDj, #formation_pfmteurJ').val('');
+
+            if (dureeH && tarifH) {
+                let tarifTotalAchatHT = tarifTotalJour(dureeH, tarifH);
+                pfmteurTotalHt.val(tarifTotalAchatHT);
+            }
+
+            if (pvTotalHt.val() && pfmteurTotalHt.val()) {
+                let marge = margeBrute(pvTotalHt.val(), pfmteurTotalHt.val());
+                $('span#marge_brute').text('');
+                $('span#marge_brute').append(marge);
+            }
+        });
+
+        // calcul marge brute pour les formation sous traitance
+    {% if 'S' == typeFormation %}
+            $('#formation_pvTotalHt, #formation_pfmteurTotalHt').blur(function () {
+                let pv = $('#formation_pvTotalHt').val();
+                let pf = $('#formation_pfmteurTotalHt').val();
+                if (pv && pf) {
+                    let marge = margeBrute(pv, pf);
+                    $('span#marge_brute').text('');
+                    $('span#marge_brute').text(marge);
+                }
+            });
+    {% endif %}
+        });
+
+    {# Calcul tarif total par jour #}
+        function tarifTotalJour(dureeJ, tarifJ) {
+            return (convertStringToFloat(dureeJ) * convertStringToFloat(tarifJ));
+        }
+
+    {# Calcul tarif total par heure #}
+        function tarifTotalHeure(dureeH, tarifH) {
+            return ((convertStringToFloat(dureeH)) * convertStringToFloat(tarifH));
+        }
+
+    {# Conversion string en float #}
+        function convertStringToFloat(tarif) {
+            let tarifWithoutComma = tarif.replace(/ /g, "");
+            tarifWithoutComma = tarifWithoutComma.replace(/,/g, ".");
+
+            return parseFloat(tarifWithoutComma).toFixed(2);
+        }
+
+    {# Calcul marge brute #}
+        function margeBrute(pvTotalHT, pfmteurTotalHT) {
+            return (convertStringToFloat(pvTotalHT) - convertStringToFloat(pfmteurTotalHT)).toFixed(2);
+        }
+        
+        function updateMargeBrute (pvTotalHt, pfmteurTotalHt) {
+            let marge = margeBrute(pvTotalHt, pfmteurTotalHt);
+            $('span#marge_brute').text('');
+            $('span#marge_brute').append(marge);
+        }
+
+</script>

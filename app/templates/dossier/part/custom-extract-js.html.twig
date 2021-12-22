@@ -1,0 +1,43 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        // vérification champ à afficher: il doit y avoir au moins un coché
+        $('.submit-extract').on('click', function (e) {
+            var formExtract = $($(this).data('form'));
+            var checkedField = formExtract.find('.display-field:checked');
+            if (checkedField.length === 0) {
+                formExtract.siblings('.check-missing').show();
+            } else {
+                formExtract.submit();
+            }
+        });
+
+        // cocher tout
+        $('.display-all').on('change', function () {
+            var checked = $(this).prop('checked');
+            // mettre la classe column-to-display au bloc liste des champs
+            var columnDiv = $(this).closest('.column-to-display');
+            
+            if (checked) {
+                // chaque champ affichable doit avoir la classe display-field
+                columnDiv.find('.display-field').prop("checked", true);
+            } else {
+                columnDiv.find('.display-field').prop("checked", false);
+            }
+        });
+
+        $('.js-datepicker-month').datepicker({
+            format: "mm",
+            maxViewMode: 2,
+            minViewMode: 1,
+            autoclose: true,
+            'language': 'fr',
+        });
+
+        $('.js-datepicker-year').datepicker({
+            format: "yyyy",
+            minViewMode: 'years',
+            autoclose: true,
+            'language': 'fr',
+        });
+    });
+</script>

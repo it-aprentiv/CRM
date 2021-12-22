@@ -1,0 +1,291 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    {#{% include '_en-construction.html.twig' %}#}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste Factures et Avoirs</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">LISTE DES FACTURES ET AVOIRS</h2>
+    <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(facture_filter_form,{'attr':{'class':'list-filter'}})  }}
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                {{ form_widget(facture_filter_form.structure, {attr: {'class' : 'w-100', placeholder : 'Structure'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                <p>{{ form_widget(facture_filter_form.dateCreation, {attr: {placeholder : 'Date de création'} }) }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                <p>{{ form_widget(facture_filter_form.ref, { attr : {'class' : 'w-100', placeholder : 'N° Facture/Avoir' } } )  }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(facture_filter_form.noDossierRef, { attr: {'class' : 'w-100', placeholder : 'N° Dossier interne'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(facture_filter_form.numDossierOpca, { attr: {'class' : 'w-100', placeholder : 'N° Dossier OPCO'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(facture_filter_form.destinataire, { attr: {'class' : 'w-100', placeholder : 'Destinataire'} } ) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                {{ form_widget(facture_filter_form.client, { attr: {'class' : 'w-100', placeholder : 'client'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(facture_filter_form.opca, { attr: {'class' : 'w-100', placeholder : 'OPCO'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(facture_filter_form.intituleStage, { attr: {'class' : 'w-100', placeholder : 'Intitulé stage'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.adresse) }}#}
+                {{ form_widget(facture_filter_form.commercial, { attr: {'class' : 'w-100', placeholder : 'Commercial'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.prenom) }}#}
+                {{ form_widget(facture_filter_form.statut, { attr: {'class' : 'w-100', placeholder : 'Status'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+                <a href="{{ path('Liste_Factures_Avoirs_Controller') }}" class="text-warning" title="Réinitialiser le filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(facture_filter_form)  }}
+    </fieldset>
+    <table class="table table-sm table-striped">
+        <thead>
+        <tr class="bg-info text-light">
+            <th>Structure</th>
+            <th>Date</th>
+            <th>N°Facture/Avoir</th>
+            <th>N°Dossier interne</th>
+            <th>N°Dossier OPCO</th>
+            <th>Destinataire</th>
+            <th>Client</th>
+            <th>OPCO</th>
+            <th>Intitulé stage (libelle facture)</th>
+            <th>Commercial</th>
+            <th>Statut Facture/Avoir</th>
+            <th>Total HT</th>
+            <th>TVA Collectée</th>
+            <th>Total TTC</th>
+            <th> >Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for facture in pagination %}
+            <tr data-facture-id="{{ facture.factureId }}" data-avoir-id="{{ facture.idAvoirLiee|default('0') }}" data-href="{{ path('Facture_Avoir_Voir', {'id': facture.factureId}) }}">
+                <td>{{ facture.structure }}</td>
+                <td>{{ facture.dateCreation | date('d-m-Y') }}</td>
+                <td>{{ facture.ref }}</td>
+                <td>
+                    <a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id: facture.id_dossier }) }}" target="_black" title="Voir dossier">{{ facture.noDossierRef }}</a>
+                </td>
+                <td>{{ facture.numDossierOpca }}</td>
+                <td>
+                    {% if facture.dest1 == constant('DESTINATAIRE_CLIENT', factureConst) %}
+                        Client
+                    {% elseif facture.dest1 == constant('DESTINATAIRE_OPCA', factureConst) %}
+                        OPCA
+                    {% else %}
+                        Autre
+                    {% endif %}
+                </td>
+                <td>{{ facture.client?facture.client:facture.nomClient }}</td>
+                <td>{{ facture.opca}}</td>
+                <td>{{ facture.intituleFacture}}</td>
+                <td>{{ facture.commercial}}</td>
+                <td>{{ facture.statut }}</td>
+                <td>{{ facture.totalRegleHt |number_format(2, ',', ' ') }}</td>
+                <td>{{ facture.mntTva |number_format(2, ',', ' ') }}</td>
+                <td>{{ (facture.totalRegleHt  + facture.mntTva) |number_format(2, ',', ' ') }}</td>
+                <td>
+                    <a href="{{ path('Facture_Avoir_Voir', {'id': facture.factureId}) }}">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                        
+                    <a onclick="deleteFacture($(this))" href="javascript:void(0)">
+-                        <i class="fas fa-trash-alt text-danger"></i>
+-                   </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+        <tfoot>
+        <tr >
+            <td colspan="6" class="text-align-middle pt-3">
+                <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+            </td>
+            <td colspan="6" class="text-align-middle pt-3">
+                {{ knp_pagination_render(pagination) }}
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script>
+        function deleteFacture(elem)
+        {
+            var facture_id = elem.closest('tr').attr('data-facture-id');
+            var avoir_id = elem.closest('tr').attr('data-avoir-id');
+            var deleteLink = '{{ path('Facture_Controller/deleteFacture', {'idFacture':'factureId', 'idAvoir':'avoirId'}) }}';
+            deleteLink = deleteLink.replace('factureId', facture_id);
+            deleteLink = deleteLink.replace('avoirId', avoir_id);
+            console.log(deleteLink);
+            swal({
+                title: "Confirmation!",
+                text: "Voulez vous supprimer la facture?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                    .then((willDelete) => {
+                if (willDelete) {
+            $.ajax({
+                        type: "GET",
+                        url: deleteLink,
+                    })
+                    .done(function(data){
+                        if (data.status == "Success") {
+                            swal("Supprimé avec succés!", {
+                                icon: "success",
+                            }).then((ok) => {
+                                location.reload();
+                        });
+                        } else {
+                            swal({
+                                title: "Error!",
+                                text: data.message,
+                                icon: "warning",
+                                buttons: false,
+                                dangerMode: true,
+                            });
+                        }
+                    });
+        }
+        });
+        }
+
+        $(function () {
+            $('#client').select2({
+                placeholder: "-- client --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.dossier.client.asynch-search') }}',
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    }
+                }
+            });
+
+            {% if app.request.query.get('client') %}
+            var data = {
+                id: "{{ app.request.query.get('client') }}",
+                text: '{{ app.request.query.get('client')|e('js') }}'
+            };
+
+            var newOption = new Option(data.text, data.id, true, true);
+            $('#client').append(newOption).trigger('change');
+
+            {% endif  %}
+        });
+
+        $(function () {
+            $('#opca').select2({
+                placeholder: "-- OPCO --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.dossier.opca.asynch-search') }}',
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    }
+                }
+            });
+
+            {% if app.request.query.get('opca') %}
+            var data = {
+                id: "{{ app.request.query.get('opca') }}",
+                text: '{{ app.request.query.get('opca')|e('js') }}'
+            };
+
+            var newOption = new Option(data.text, data.id, true, true);
+            $('#opca').append(newOption).trigger('change');
+
+            {% endif  %}
+        });
+        //filre commercial
+        $(function () {
+            $('#commercial').select2({
+                placeholder: "-- commercial --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.dossier.commercial.asynch-search') }}',
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    }
+                }
+            });
+
+            {% if app.request.query.get('commercial') %}
+            var data = {
+                id: "{{ app.request.query.get('commercial') }}",
+                text: '{{ app.request.query.get('commercial') }}'
+            };
+
+            var newOption = new Option(data.text, data.id, true, true);
+            $('#commercial').append(newOption).trigger('change');
+
+            {% endif  %}
+        });
+
+        $(".js-datepicker").each(function(){
+            $(this).datepicker({
+                'format':'dd/mm/yyyy',
+                'autoclose': true,
+                'clearBtn': true,
+                'language': 'fr',
+            });
+        })
+
+    </script>
+{% endblock %}

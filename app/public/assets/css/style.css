@@ -1,0 +1,43 @@
+.wickedpicker {
+    z-index: 10000;
+}
+
+table.formation-table {
+    display: block;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+/********* style for OM word(formation) ***********/
+
+/********* end style for OM word ***********/
+
+.table-days th {
+    width: 14.28%;
+}
+.table-time th {
+    width: 25%;
+}
+.table-days thead th, .table-days th, .table-time thead th, .table-time th,.table-calcul thead th,.table-calcul th {
+    border-bottom: none!important;
+    border-top: none!important;
+}
+
+/*.form_avoir,.facturation_added{
+    border: 1px solid;
+    border-radius: 5px;
+}*/
+.removeavoirelement.close span,.removefacturationelement.close span {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.my-custom-scrollbar {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+}
+.table-wrapper-scroll-y {
+    display: block;
+}
+.tableFixHead { overflow-y: auto; height: 260px; }

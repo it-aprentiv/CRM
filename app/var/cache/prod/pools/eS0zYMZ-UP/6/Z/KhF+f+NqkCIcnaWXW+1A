@@ -1,0 +1,84 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\AssignedGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\AssignedGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'App\\Entity\\Assomenuutilisateur',
+            ],
+            'namespace' => [
+                'App\\Entity',
+            ],
+            'rootEntityName' => [
+                'App\\Entity\\Assomenuutilisateur',
+            ],
+            'identifier' => [
+                [
+                    'idutilisateur',
+                    'idmenu',
+                ],
+            ],
+            'fieldMappings' => [
+                [
+                    'idutilisateur' => [
+                        'fieldName' => 'idutilisateur',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'IDUTILISATEUR',
+                        'id' => true,
+                    ],
+                    'idmenu' => [
+                        'fieldName' => 'idmenu',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'IDMENU',
+                        'id' => true,
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'IDUTILISATEUR' => 'idutilisateur',
+                    'IDMENU' => 'idmenu',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'idutilisateur' => 'IDUTILISATEUR',
+                    'idmenu' => 'IDMENU',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'assomenuutilisateur',
+                    'indexes' => [
+                        'FK_ASSOMENUUTILISATEUR2' => [
+                            'columns' => [
+                                'IDMENU',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'isIdentifierComposite' => [
+                true,
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

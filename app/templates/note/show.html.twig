@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block title %}Note - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste notes et actions</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">DETAILS NOTES ET ACTIONS</h2>
+    <fieldset class="mb-4">
+        <legend>Détails</legend>
+        <table class="table table-bordered">
+            <tr>
+                <td class="bg-info text-light text-center">Module</td>
+                <td>{{ detail_note.nomTable }}</td>
+            </tr>
+            <tr>
+                <td class="bg-info text-light text-center">Contact</td>
+                <td>{{ detail_note.contact }}</td>
+            </tr>
+            <tr>
+                <td class="bg-info text-light text-center">Date</td>
+                <td>{{ detail_note.date| date('d-m-Y') }}</td>
+            </tr>
+            <tr>
+                <td class="bg-info text-light text-center">Créateur</td>
+                <td>{{ detail_note.createurNom }} {{ detail_note.createurPrenom }}</td>
+            </tr>
+            <tr>
+                <td class="bg-info text-light text-center">Note/Commentaire</td>
+                <td>{{ detail_note.noteCommentaire }}</td>
+            </tr>
+            <tr>
+                <td class="bg-info text-light text-center">Action</td>
+                <td>{{ detail_note.action }}</td>
+            </tr>
+            <tr>
+                <td class="bg-info text-light text-center">Date action</td>
+                <td>{{ detail_note.dateAction | date('d-m-Y') }}</td>
+            </tr>
+            <tr>
+                <td class="bg-info text-light text-center">Responsable</td>
+                <td>{{ detail_note.responsable }}</td>
+            </tr>
+            <tr>
+                <td class="bg-info text-light text-center">Action</td>
+                <td>{{ detail_note.action }}</td>
+            </tr>
+            <tr>
+                <td class="bg-info text-light text-center">Status action</td>
+                <td>{{ detail_note.statutAction }}</td>
+            </tr>
+        </table>
+    </fieldset>
+{% endblock %}

@@ -1,0 +1,386 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création formation - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item">
+                    <a href="{{ path('Liste_Formation_Mise_Place_Controller') }}">Formations</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Détails formation</li>
+            </ol>
+        </div>
+    </nav>
+    <h2 class="text-center mt-2 text-primary">CREATION FORMATION {{ type_formation|translateLetterToWord|upper }}</h2>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="col-sm-12">
+        {{ form_start(formation_form,{'attr':{'class':'list-filter'}}) }}
+        <div class="row well">
+            {% if 'A' == (type_formation) or 'S' == (type_formation) %}
+                <div class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_label(formation_form.idClient, 'Société', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                        {{ form_widget(formation_form.idClient) }}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="col-sm">
+                <div class="form-group text-center">
+                    {{ form_label(formation_form.idStructure, 'Structure', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                    {{ form_widget(formation_form.idStructure) }}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group text-center">
+                    {{ form_label(formation_form.ref, 'N° OM', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                    {{ form_widget(formation_form.ref) }}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group text-center">
+                    {{ form_label(formation_form.dateAccord, 'Date OM', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                    {{ form_widget(formation_form.dateAccord) }}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group text-center">
+                    {{ form_label(formation_form.dossierType, 'Type', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                    {{ form_widget(formation_form.dossierType) }}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group text-center">
+                    {{ form_label(formation_form.idStatut, 'Statut OM', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                    {{ form_widget(formation_form.idStatut) }}
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row well">
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group text-center">
+                                    <label class="font-weight-bold">Lieu de stage</label>
+                                    <nav class="nav nav-tabs">
+                                        {% set address_vivienne = constant('App\\Constants\\AddressFormation::VIVIENNE_ADDRESS') %}
+                                        {% set address_societe = (address_societe is defined)? address_societe : '' %}
+                                        {% if 'A' == type_formation %}
+                                            <a class="nav-item nav-link active" href="#p1" data-toggle="tab">Vivienne</a>
+                                            <a class="nav-item nav-link" href="#p2" data-toggle="tab">Client</a>
+                                            <a class="nav-item nav-link" href="#p3" data-toggle="tab">Autre</a>
+                                        {% elseif 'R' == type_formation %}
+                                            <a class="nav-item nav-link active" href="#p1" data-toggle="tab">Vivienne</a>
+                                        {% elseif 'S' == type_formation %}
+                                            <a class="nav-item nav-link" href="#p2" data-toggle="tab">Client</a>
+                                            <a class="nav-item nav-link" href="#p3" data-toggle="tab">Autre</a>
+                                        {% endif %}
+                                    </nav>
+                                    <div class="tab-content">
+                                        {% set address_vivienne = constant('App\\Constants\\AddressFormation::VIVIENNE_ADDRESS') %}
+                                        {% if 'A' == type_formation %}
+                                            <div class="tab-pane active" id="p1">
+                                                {{ form_widget(formation_form.lieu, { 'attr': {
+                                                            'placeholder': address_vivienne ,
+                                                            'value': address_vivienne ,
+                                                        }
+                                                    })
+                                                }}
+                                            </div>
+                                            <div class="tab-pane" id="p2"></div>
+                                            <div class="tab-pane" id="p3"></div>
+                                        {% elseif 'R' == type_formation %}
+                                            <div class="tab-pane active" id="p1">
+                                                <div class="tab-pane" id="p1">
+                                                    {{ form_widget(formation_form.lieu, { 'attr': {
+                                                            'placeholder': address_vivienne ,
+                                                            'value': address_vivienne ,
+                                                        }
+                                                        })
+                                                    }}
+                                                </div>
+                                            </div>
+                                        {% elseif 'S' == type_formation %}
+                                            <div class="tab-pane active" id="p2">
+                                                <input type="text" class="form-control" placeholder="{{ address_societe }}">
+                                            </div>
+                                            <div class="tab-pane" id="p3">
+                                                {{ form_widget(formation_form.lieu)}}
+                                            </div>
+                                        {% endif %}
+                                        <input type="hidden" id="address_client" value="">
+                                    </div>
+                                </div>
+                                {% if 'A' == type_formation or 'R' == type_formation %}
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group text-center">
+                                                {{ form_label(formation_form.dureeJours, 'Durée stage en J', {
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                                {{ form_widget(formation_form.dureeJours) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            {{ form_label(formation_form.dureeHeures, 'Durée stage en H', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                            {{ form_widget(formation_form.dureeHeures) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group text-center">
+                                                {{ form_label(formation_form.dureeHeures, 'Du', {
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                                {{ form_widget(formation_form.dateDebutPeriode) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group text-center">
+                                                {{ form_label(formation_form.dureeHeures, 'Au', {
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                                {{ form_widget(formation_form.dateFinPeriode) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-6">
+                                {% if 'S' == type_formation %}
+                                    <div class="form-group text-center">
+                                        {{ form_label(formation_form.soustraitance, 'Sous-traitant', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formation_form.soustraitance) }}
+                                    </div>
+                                {% endif %}
+
+                                {% if 'A' == type_formation or 'R' == type_formation %}
+                                    <div class="form-group text-center">
+                                        {{ form_label(formation_form.idFormateur, 'Formateur', {
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                        {{ form_widget(formation_form.idFormateur) }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group text-center">
+                                    {{ form_label(formation_form.nom, 'Intitulé du stage', {
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(formation_form.nom) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if 'A' == type_formation or 'R' == type_formation %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {% include 'Common/stagiaire-bloc.html.twig' with { prototype: formation_form.stagiaires.vars.prototype, stagiaires: formation_form.stagiaires } %}
+                            {% do formation_form.stagiaires.setRendered %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-sm-4">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-header font-weight-bold">Prix vente HT</div>
+                                <div class="card-body">
+                                    {% if 'A' == type_formation or 'R' == type_formation %}
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pvTarifJ, 'Tarif par J', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                            {{ form_widget(formation_form.pvTarifJ) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pvTarifDj, 'Tarif par 1/2 J', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                            {{ form_widget(formation_form.pvTarifDj) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pvTarifH, 'Tarif par H', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                            {{ form_widget(formation_form.pvTarifH) }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        {{ form_label(formation_form.pvTotalHt, 'Total HT', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formation_form.pvTotalHt) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-header font-weight-bold">Coût formateur HT</div>
+                                <div class="card-body">
+                                    {% if 'A' == type_formation or 'R' == type_formation %}
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pfmteurJ, 'Tarif par J', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                            {{ form_widget(formation_form.pfmteurJ) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pfmteurDj, 'Tarif par 1/2 J', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                            {{ form_widget(formation_form.pfmteurDj) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pfmteurH, 'Tarif par H', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                            {{ form_widget(formation_form.pfmteurH) }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        {{ form_label(formation_form.pfmteurTotalHt, 'Total HT', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formation_form.pfmteurTotalHt) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <p>Marge brute: <span  id="marge_brute"></span></p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <fieldset>
+                <legend>ORDRES DE MISSION</legend>
+                {% include 'formation/childs/suiviom-bloc.html.twig' with { prototype: formation_form.suiviMissions.vars.prototype, suiviMissions : formation_form.suiviMissions } %}
+                {% do formation_form.suiviMissions.setRendered %}
+            </fieldset>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    {% block commentaires %}
+                        {% include 'Common/commentaire-bloc.html.twig' with { prototype: formation_form.commentaires.vars.prototype, commentaires: formation_form.commentaires } %}
+                        {% do formation_form.commentaires.setRendered %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="text-center">
+                    <button class="btn btn-primary" type="submit">Ajouter</button>
+                </p>
+            </div>
+        </div>
+        {{ form_end(formation_form) }}
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    
+    {{  include ('formation/childs/formation.js.twig') }}
+    {{  include ('Common/commentaire-js.html.twig') }}
+    {{  include ('Common/stagiaire-js.html.twig') }}
+    {{  include ('formation/childs/suiviom-js.twig') }}
+    {%   include 'formation/childs/calcul.vente.achat.js.html.twig' with {'typeFormation': type_formation}  %}
+    <script>
+        $(document).ready(function () {
+            var pathurl = '{{ path('crm.dossier.competence.asynch-search') }}';
+            var dossierNom = $('#formation_nom');
+            dossierNom.select2({
+                placeholder: "-- Intitulé --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: pathurl,
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    },
+                    processResults: function (data) {
+                        var dataResults = data.results !== undefined ? data.results : [];
+                        return {
+                            results: $.map(dataResults, function (item) {
+                                return {
+                                    text: item.text,
+                                    id: item.idid
+                                };
+                            })
+                        };
+                    }
+                }
+            });
+        });
+          const date_spliter = (fakedate) => {
+    let date = fakedate.split("/");
+    let real_date = new Date(`${date[2]}-${parseInt(date[1])}-${parseInt(date[0])}`)
+    return real_date;
+}
+let date_debut = document.getElementById("formation_dateDebutPeriode")
+let current_set_date = date_debut.value;
+
+setInterval(()=>{
+    if(current_set_date === date_debut.value){
+        return;
+    }else{
+        current_set_date = date_debut.value;
+        $('#formation_dateFinPeriode').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true
+}).datepicker("update",date_spliter(current_set_date)).datepicker('fill'); // setDate()
+    }
+},500)
+    </script>
+
+{% endblock %}

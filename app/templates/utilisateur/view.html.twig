@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PROFIL UTILISATEUR{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+
+            {% if app.user.droit == 'superadmin' %}
+                <li class="breadcrumb-item active">
+                    <a href="{{ path('welcome/Liste_utilisateur') }}">
+                        Liste des utilisateurs
+                    </a>
+                </li>
+            {% endif %}
+            <li class="breadcrumb-item active" aria-current="page">Profil</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">PROFIL UTILISATEUR</h2>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            {{ form_start(user_form) }}
+            <div class="form-group">
+                {{ form_label(user_form.nomutilisateur, 'Nom') }}
+                {{ form_widget(user_form.nomutilisateur) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(user_form.username) }}
+                {{ form_widget(user_form.username) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(user_form.newPassword, 'Saisir nouveau mot de passe') }}
+                {{ form_widget(user_form.newPassword) }}
+            </div>
+            
+            <div class="text-center">
+                <button type="submit" class="btn btn-info">Mettre à jour</button>
+            </div>
+            {{ form_end(user_form) }}
+        </div>
+    </div>
+{% endblock %}

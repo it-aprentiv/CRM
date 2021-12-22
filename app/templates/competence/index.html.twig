@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Competence index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Intitulé de stage</li>
+        </ol>
+    </nav>
+    <h2 class="text-center mt-2 text-primary">INTITULE DE STAGE</h2>
+    <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(competence_filter_form)  }}
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                {{ form_widget(competence_filter_form.intitule, { attr: {'class' : 'w-100', 'placeholder' : '-- Intitulé --'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                <button type="submit" class="btn btn-info py-1">Rechercher</button>
+                <a href="{{ path('competence_index') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(competence_filter_form)  }}
+    </fieldset>
+    <table class="table table-sm mb-0">
+        <thead>
+            <tr class="bg-info text-light text-center">
+                <th>Intitulé</th>
+                <th>Théme formation</th>
+                <th>Théme generale</th>
+                <th>Programme de formation</th>
+                <th>Document évaluation</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for competence in pagination %}
+            <tr data-href="{{ path('competence_show', {'id': competence.id}) }}">
+                <td class="text-center">{{ competence.competence }}</td>
+                <td class="text-center">{{ competence.themeformation }}</td>
+                <td class="text-center">{{ competence.themegenerale }}</td>
+                <td class="text-center">
+                    {% if competence.catalogueProgramme is not empty %}
+                        <a href="{{ path("download_programme_dossier",{'fichier':competence.catalogueProgramme}) }}" class="btn btn-primary">
+                            <i class="fa fa-file" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                
+                    {% if competence.evaluation is not empty %}
+                        <a href="{{ path("download_programme_dossier",{'fichier':competence.evaluation}) }}" class="btn btn-primary">
+                            <i class="fa fa-file" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('competence_show', {'id': competence.id}) }}"><i class="fas fa-eye"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="14">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr >
+            <td class="text-align-middle pt-3">
+                <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+            </td>
+            <td colspan="5" class="text-align-middle pt-3">
+                {{ knp_pagination_render(pagination) }}
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+    <div class="d-flex justify-content-center no-disabled">
+        <a href="{{ path('competence_new') }}" class="btn btn-primary">Ajouter</a>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+{% endblock %}

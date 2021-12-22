@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création formation - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('Catalogue_Controller') }}"><i class="fas fa-home"></i>Liste des catalogue</a></li>
+                <li class="breadcrumb-item active" aria-current="page">creation formation catalogue</li>
+            </ol>
+        </div>
+    </nav>
+    <h2 class="text-center mt-2 text-primary">CREATION CATALOGUE</h2>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="col-sm-12">
+        {% include 'catalogue/form.html.twig' %}
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+
+    {{  include ('formation/childs/formation.js.twig') }}
+    {{  include ('Common/commentaire-js.html.twig') }}
+    {{  include ('Common/stagiaire-js.html.twig') }}
+    {{  include ('formation/childs/suiviom-js.twig') }}
+    {%   include 'formation/childs/calcul.vente.achat.js.html.twig' with {'typeFormation': type_formation}  %}
+<script type="text/javascript">
+    $('.datepicker').datepicker(
+        {
+            'format':'dd/mm/yyyy',
+            'autoclose': true,
+            'language': 'fr',
+        }
+    );
+</script>
+{% endblock %}

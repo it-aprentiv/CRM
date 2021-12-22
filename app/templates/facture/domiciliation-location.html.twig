@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture/Domiciliation{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste Factures/Domiciliation</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">LISTE DES FACTURES/DOMICILIATIONS</h2>
+
+    <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(form_filter,{'attr':{'class':'list-filter'}}) }}
+        <div class="form-row">
+            <!--<div class="form-group col-md-2">
+                { { form_widget(form_filter.structure, { attr: {'placeholder' : 'Client',  'class' : 'w-100'} }) }}
+            </div> -->
+            <div class="form-group col-md-2">
+                <p>{{ form_widget(form_filter.client, { attr : {'class' : 'w-100 py-3' } } )  }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                <p>{{ form_widget(form_filter.type, { attr: {'placeholder' : 'Reference Dossier',  'class' : 'w-100'} }) }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.societe) }}#}
+                <p>{{ form_widget(form_filter.reference, { attr : {'placeholder' : 'Réference',  'class' : 'w-100' } } ) }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.nom) }}#}
+                {{ form_widget(form_filter.numFacture, { attr: {'class' : 'w-100', placeholder : 'Numéro de facture'} } ) }}
+            </div>
+            <div class="form-group col-md-2">
+                {#{{ form_label(contact_filter_form.nom) }}#}
+                {{ form_widget(form_filter.dossierStatut, { attr: {'class' : 'w-100'} } ) }}
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+                <a href="{{ path('Domiciliation_Location_Controller/factures') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(form_filter) }}
+    </fieldset>
+
+    <table class="table table-sm table-striped">
+        <thead>
+        <tr class="bg-info text-light">
+            <th>Structure</th>
+            <th>N° facture</th>
+            <th> N° Ref</th>
+            <th>Client</th>
+            <th>Type</th>
+            <th>Partenaire</th>
+            <th>Date facture</th>
+            <th>Date estimée de paiement</th>
+            <th>Montant HT</th>
+            <th>Montant TTC</th>
+            <th>Commercial</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for factureDom in pagination %}
+            <tr>
+                <td>{{ factureDom.structure }}</td>
+                <td>{{ factureDom.numero }}</td>
+                <td><a href="{{ path('crm.domiciliation.fiche', {id : factureDom.idDom}) }}" target="_blank">{{ factureDom.ref }}</a></td>
+                <td>{{ factureDom.nomStr }}</td>
+                <td>{{ factureDom.type }}</td>
+                <td>{% if factureDom.partenaire == 1 %} {{ "Oui" }} {% else %}{{ "Non" }} {% endif %}</td>
+                <td>{{ factureDom.datefacture|date('d-m-Y') }}</td>
+                <td>{{ factureDom.dateestimepaiement|date('d-m-Y') }}</td>
+                <td>{{ factureDom.ht|number_format(2, ',', ' ') }}</td>
+                <td>{{ factureDom.ttc|number_format(2, ',', ' ') }}</td>
+                <td>{{ factureDom.commercial }}</td>
+                <td>{{ factureDom.statut }}</td>
+                <td>
+                    <a href="{{ path('Facture_Domiciliation_Voir', {'idFactDom': factureDom.idfacturedom}) }}"
+                       class="action-com" data-formtitle="Detail de la commission" data-mod="#gen">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <!-- <a href="#"
+                       class="action-com" data-formtitle="Supprimer la commission" data-mod="#gen">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                    </a> -->
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+        <tfoot>
+        <tr>
+            <td colspan="6" class="text-align-middle pt-3">
+                <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+            </td>
+            <td colspan="6" class="text-align-middle pt-3">
+                {{ knp_pagination_render(pagination) }}
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <a class="btn btn-info" href="{{ path('Domiciliation_Location_Controller/creation') }}">
+                <i class="fa fa-plus"></i>
+                Ajouter
+            </a>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#facture_domiciliation_filter_client').select2({
+                placeholder: "-- client --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.dossier.client.asynch-search') }}',
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    }
+                }
+            });
+            {% if app.request.query.get('facture_domiciliation_filter') %}
+
+                var data = {
+                    id: "{{ app.request.query.get('facture_domiciliation_filter')['client']}}",
+                    text: '{{ app.request.query.get('facture_domiciliation_filter')['client'] }}'
+                };
+                var newOption = new Option(data.text, data.id, true, true);
+                $('#facture_domiciliation_filter_client').append(newOption).trigger('change');
+
+            {% endif  %}
+
+        });
+    </script>
+    {#{% include 'Common/client-ajax-js.html.twig' with { attrs: form_filter.client.vars } %}#}
+{% endblock %}

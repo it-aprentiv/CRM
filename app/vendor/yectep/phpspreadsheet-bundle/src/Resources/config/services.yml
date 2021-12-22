@@ -1,0 +1,7 @@
+parameters:
+    phpofficebundle_spreadsheet_class: Yectep\PhpSpreadsheetBundle\Factory
+
+services:
+    phpoffice.spreadsheet:
+        class: '%phpofficebundle_spreadsheet_class%'
+        public: true

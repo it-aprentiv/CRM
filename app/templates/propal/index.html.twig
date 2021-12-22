@@ -1,0 +1,208 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Propal - CRM Aprentiv v2.0{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des propositions commerciales</li>
+        </ol>
+    </nav>
+    <div class="page-content">
+        {% for flash_message in app.session.flashBag.get('error') %}
+            <div class="note note-warnning">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+        {% for flash_message in app.session.flashBag.get('success') %}
+            <div class="note note-success">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <h2 class="text-center mt-2 text-nmary">Propositions Commerciales</h2>
+    <div class="row">
+        <div class="col-sm-12">
+            <fieldset class="mb-3 list-filter">
+                <legend>Filtre</legend>
+                {{ form_start(propal_filter_form)  }}
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        {{ form_widget(propal_filter_form.statutpropal, { 'placeholder' : '-- Status propal --',  attr: {'class' : 'w-100','required': false} }) }}
+                    </div>
+                    <div class="form-group col-md-2">
+                        {{ form_widget(propal_filter_form.entitypropal, { 'placeholder' : '-- Entité --',  attr: {'class' : 'w-100','required': false} }) }}
+                    </div>
+                    <div class="form-group col-md-2">
+                        {{ form_widget(propal_filter_form.commercial, { 'placeholder' : '-- Commercial --',  attr: {'class' : 'w-100','required': false} }) }}
+                    </div>
+                    <div class="form-group col-md-2">
+                        {{ form_widget(propal_filter_form.client, { 'placeholder' : '-- Client --',  attr: {'class' : 'w-100','required': false} }) }}
+                    </div>
+                    <div class="form-group col-md-2">
+                        {{ form_widget(propal_filter_form.type, { 'placeholder' : '-- type --',  attr: {'class' : 'w-100','required': false} }) }}
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-info py-1">Rechercher</button>
+                        <a href="{{ path('Liste_propositions_commerciales_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+                    </div>
+                </div>
+                {{ form_end(propal_filter_form)  }}
+            </fieldset>
+            <table class="table table-sm mb-0 table-striped">
+                <thead>
+                <tr class="bg-info text-light">
+                    <th>Entité</th>
+                    <th>Statut</th>
+                    <th>Commercial</th>
+                    <th>Client</th>
+                    <th>Type</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Coût Ht</th>
+                    <th>Fiabilité</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for propal in pagination %}
+                    <tr data-propal-id="{{ propal.idpropal }}" data-href="{{ path('propal_show', { id : propal.idpropal} ) }}">
+                        <td>{{ propal.entite }}</td>
+                        <td>{{ propal.statut }}</td>
+                        <td>{{ propal.commercial }}</td>
+                        <td>{{ propal.client }}</td>
+                        <td>{% if propal.type == 1 %} Entreprise {% else %} Particulier {% endif %}</td>
+                        <td>{{ propal.nom }}</td>
+                        <td> {{ propal.prenom}} </td>
+                        {% if propal.coutht is not null %}
+                        <td> {{ propal.coutht}} €</td>
+                        {% else %}
+                        <td> {{ propal.coutht}}</td>
+                        {% endif %}
+                        {% if propal.fiabilite == 'Froid' %}
+                        <td class="bg-info text-white"> {{ propal.fiabilite}} </td>
+                        {% elseif propal.fiabilite == 'Chaud' %}
+                        <td class="bg-danger text-white"> {{ propal.fiabilite}} </td>
+                        {% elseif propal.fiabilite == 'Tiede' %}
+                        <td class="bg-warning text-white"> {{ propal.fiabilite}} </td>
+                        {% else %}
+                        <td> {{ propal.fiabilite}} </td>
+                        {% endif %}
+                        <td>
+                            {% if can_view is defined and can_view %}
+                                <a href="{{ path('propal_show', { id : propal.idpropal} ) }}">
+                                    <i class="fas fa-eye fa-2x"  style="margin-right: 10px;"></i>
+                                </a>
+                            {% endif %}
+                            {% if can_edit is defined and can_edit %}
+                                <a onClick="deletePropal($(this))">
+                                    <i class="fas fa-trash-alt text-danger fa-2x"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr >
+                    <td colspan="6" class="text-align-middle pt-3">
+                        <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+                    </td>
+                    <td colspan="6" class="text-align-middle pt-3">
+                        {{ knp_pagination_render(pagination) }}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+            <div class="col-sm-12 text-center">
+                <a class="btn btn-primary" href="{{ path('Liste_propositions_commerciales_Controller/ajoutpropal') }}">
+                    <i class="fa fa-plus"></i> Ajouter
+                </a>
+                <a class="btn btn-primary" href="{{ path('export') }}">Extraire propal</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    {% include 'Common/client-ajax-js.html.twig' with { attrs: propal_filter_form.client.vars } %}
+    <script>
+        function deletePropal(elem)
+        {
+            var propal_id = elem.closest('tr').attr('data-propal-id');
+            var deleteLink = '{{ path('Propal_Delete', {'id':'propal_id'}) }}';
+            deleteLink = deleteLink.replace('propal_id', propal_id);
+            swal({
+                title: "Confirmation!",
+                text: "Voulez vous supprimer cette ligne?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "GET",
+                            url: deleteLink,
+                        })
+                            .done(function(data){
+                                if (data.status == "Success") {
+                                    swal("Supprimé avec succés!", {
+                                        icon: "success",
+                                    }).then((ok) => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    swal({
+                                        title: "Error!",
+                                        text: data.message,
+                                        icon: "warning",
+                                        buttons: false,
+                                        dangerMode: true,
+                                    });
+                                }
+                            });
+                    }
+                });
+        }
+
+        $(function () {
+            $('#client').select2({
+                placeholder: "-- Client --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.contact.societe.asynch-search') }}',
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    }
+                }
+            });
+
+            {% if app.request.query.get('client') %}
+                var data = {
+                    id: "{{ app.request.query.get('client') }}",
+                    text: '{{ app.request.query.get('client')|e('js') }}'
+                };
+                var newOption = new Option(data.text, data.id, true, true);
+                $('#client').append(newOption).trigger('change');
+            {% endif  %}
+        });
+    </script>
+{% endblock %}

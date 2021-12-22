@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Factures Formations{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste facture formations</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">LISTE FACTURES FORMATIONS</h2>
+
+    <fieldset class="mb-3 list-filter">
+        {{ form_start(form_filter,{'attr':{'class':'list-filter'}}) }}
+        <div class="form-row">
+            {% for field_form in form_filter.children|sort((a, b) => a.vars.attr['ordre-field'] <=> b.vars.attr['ordre-field']) %}
+                {% if field_form.vars.attr.class is defined %}
+                    {% set class = field_form.vars.attr.class %}
+                {% else %}
+                    {% set class = '' %}
+                {% endif %}
+                {% if 'money-type' not in class %}
+                    {% set class = class~" w-100" %}
+                {% endif %}
+                <div class="form-group col-md-2">
+                    {% if 'crm-money-type' in class %}
+                        {{ form_widget(field_form, { attr: {'class' : class} }) }}
+                    {% elseif 'number-money-type' in class %}
+                        <div class="input-group">
+                            {{ form_widget(field_form, { attr: {'class' : class} }) }}
+                            <div class="input-group-append">
+                                <span class="input-group-text"> €</span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>{{ form_widget(field_form, { attr: {'class' : class} }) }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+                <a href="{{ path('Facture_formation_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(form_filter) }}
+    </fieldset>
+
+    <table class="table table-sm table-striped">
+        <thead>
+        <tr class="bg-info text-light">
+            <th>ENTITE</th>
+            <th>MOIS</th>
+            <th> Date OM</th>
+            <th>Formateur ou organisme</th>
+            <th>Statut Formateur</th>
+            <th>CIAL</th>
+            <th>CLIENT</th>
+            <th>INTITUL&Eacute;</th>
+            <th>TYPE</th>
+            <th>DUR&Eacute;E EN JOURS</th>
+            <th>DUR&Eacute;E EN HEURES</th>
+            <th>NB STAGIAIRES</th>
+            <th>DEMANDEUR</th>
+            <th>MONTANT ACHAT HT</th>
+            <th>MONTANT VENTE HT</th>
+            <th>DIFF ACHAT/VTE</th>
+            <th>%</th>
+            <th>% ACHAT HT</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for facture in datas %}
+            <tr>
+                <td>{{ facture.entite }}</td>
+                <td>{{ facture.mois }}</td>
+                <td>{{ facture.dateom }}</td>
+                <td>{{ facture.formateur }}</td>
+                <td>{{ facture.statutFormateur }}</td>
+                <td>{{ facture.commercial }}</td>
+                <td>{{ facture.societe }}</td>
+                <td>{{ facture.intitstage }}</td>
+                <td>{{ facture.typeformation }}</td>
+                <td>{{ facture.nbJ }}</td>
+                <td>{{ facture.nbH }}</td>
+                <td>{{ facture.nbStagiaires }}</td>
+                <td>{{ facture.demandeur }}</td>
+                <td>{{ facture.mntAchat }}</td>
+                <td>{{ facture.mntVente }}</td>
+                <td>{{ facture.diffMnt }}</td>
+                <td>{{ facture.percentage }}</td>
+                <td>{{ facture.achatPercentage }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="6" class="text-align-middle pt-3">
+                <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+            </td>
+            <td colspan="6" class="text-align-middle pt-3">
+                {{ knp_pagination_render(pagination) }}
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".js-datepicker").each(function(){
+                $(this).datepicker({
+                    'format':'dd/mm/yyyy',
+                    'autoclose': true,
+                    'clearBtn': true,
+                    'language': 'fr',
+                });
+            })
+        });
+    </script>
+    {% include 'Common/client-ajax-js.html.twig' with { attrs: form_filter.client.vars } %}
+{% endblock %}

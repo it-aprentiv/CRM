@@ -1,0 +1,99 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'App\\Entity\\EncaissementReglOpca',
+            ],
+            'namespace' => [
+                'App\\Entity',
+            ],
+            'rootEntityName' => [
+                'App\\Entity\\EncaissementReglOpca',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id',
+                        'id' => true,
+                    ],
+                    'idEncaissement' => [
+                        'fieldName' => 'idEncaissement',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id_encaissement',
+                    ],
+                    'cheque' => [
+                        'fieldName' => 'cheque',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 90,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'cheque',
+                    ],
+                    'virement' => [
+                        'fieldName' => 'virement',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 90,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'virement',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'id_encaissement' => 'idEncaissement',
+                    'cheque' => 'cheque',
+                    'virement' => 'virement',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'idEncaissement' => 'id_encaissement',
+                    'cheque' => 'cheque',
+                    'virement' => 'virement',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => '1_encaissement_regl_opca',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

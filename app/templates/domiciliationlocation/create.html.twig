@@ -1,0 +1,530 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme domicil_form _self %}
+
+{% block title %}Domiciliation et location - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="{{ asset('assets/css/form.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="{{ path('Domiciliation_Location_Controller') }}" title="Liste des domiciliations/locations">{{ title }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+            </ol>
+            <div>
+                {% if is_granted('edit', 'Dossiers') and is_modif is defined and is_modif %}
+                    <a href="javascript:void(0)" class="update">
+                        <i class="fas fa-edit"></i>
+                        Modifier la fiche
+                    </a>
+                    <a href="javascript:void(0)" class="text-danger cancel-update d-none">
+                        <i class="fas fa-ban"></i>
+                        Annuler la modification
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">FICHE DOMICILIATION/LOCATION</h2>
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form_start(domicil_form,{'attr':{'class':'list-filter'}}) }}
+            <div class="row p-3 mb-3 well">
+                <div class="col-sm-4">
+                    <div class="form-row">
+                        <div class="form-group col-md-4 text-center">
+                            <div class="label-field">{{ form_label(domicil_form.client, 'Client', {
+                                'label_attr': {'class': 'font-weight-bold star-on-required'}
+                            }) }}
+                            </div>
+                            {{ form_widget(domicil_form.client) }}
+                            {{ form_errors(domicil_form.client) }}
+                        </div>
+                        <div class="form-group col-md-4 text-center">
+                            <div class="label-field">
+                                {{ form_label(domicil_form.type, 'Type', {
+                                    'label_attr': {'class': 'font-weight-bold star-on-required'}
+                                }) }}
+                                <a id="typeDom" style="background:#fff;color:green;cursor: pointer" name="typeDom" data-toggle="modal" data-target="#modalType" ><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                            </div>
+                            {{ form_widget(domicil_form.type) }}
+                            {{ form_errors(domicil_form.type) }}
+                        </div>
+                        <div class="form-group col-md-4 text-center">
+                            {{ form_label(domicil_form.partenaire, 'Partenaire', {
+                                'label_attr': {'class': 'font-weight-bold star-on-required'}
+                            }) }}
+                            {{ form_widget(domicil_form.partenaire, {
+                                    'label_attr': {'class': 'font-weight-bold star-on-required'}
+                                })
+                            }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-row">
+                        <div class="form-group col-md-6 text-center">
+                            <div class="label-field">
+                                {{ form_label(domicil_form.ref, 'N° de ref', {
+                                    'label_attr': {'class': 'font-weight-bold star-on-required'}
+                                }) }}
+                            </div>
+                            {{ form_widget(domicil_form.ref) }}
+                            {{ form_errors(domicil_form.ref) }}
+                        </div>
+                        <div class="form-group col-md-6 text-center none-in-domiciliation">
+                            <div class="label-field">
+                                {{ form_label(domicil_form.salle, 'Salles', {
+                                    'label_attr': {'class': 'font-weight-bold star-on-required'}
+                                }) }}
+                            </div>
+                            {{ form_widget(domicil_form.salle, {
+                                'attr': {
+                                    'onchange': 'loadDefaultTarif()'
+                                }
+                            }) }}
+                            {{ form_errors(domicil_form.salle) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="form-group col-md-4 text-center">
+                            <div class="label-field">
+                                {{ form_label(domicil_form.lieu, 'Lieu', {
+                                    'label_attr': {'class': 'font-weight-bold star-on-required'}
+                                }) }}
+                            </div>
+                            {{ form_widget(domicil_form.lieu) }}
+                            {{ form_errors(domicil_form.lieu) }}
+                        </div>
+                        <div class="form-group col-md-4 text-center">
+                            <div class="label-field">
+                                {{ form_label(domicil_form.statut, 'Statut', {
+                                    'label_attr': {'class': 'font-weight-bold star-on-required'}
+                                }) }}
+                            </div>
+                            {{ form_widget(domicil_form.statut) }}
+                            {{ form_errors(domicil_form.statut) }}
+                        </div>
+
+                        <div class="form-group col-md-4 text-center">
+                            <div class="label-field">
+                                {{ form_label(domicil_form.commercial, 'Commercial', {
+                                    'label_attr': {'class': 'font-weight-bold star-on-required'}
+                                }) }}
+                            </div>
+                            {{ form_widget(domicil_form.commercial) }}
+                            {{ form_errors(domicil_form.commercial) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row well p-3">
+                <div class="form-group col-md-2 text-center">
+                    <div class="label-field">
+                        {{ form_label(domicil_form.signature, 'Date signature', {
+                            'label_attr': {'class': 'font-weight-bold star-on-required'}
+                        }) }}
+                    </div>
+                    {{ form_widget(domicil_form.signature) }}
+                    {{ form_errors(domicil_form.signature) }}
+                </div>
+
+                <div class="form-group col-md-2 text-center none-in-domiciliation">
+                    <div class="label-field">
+                        {{ form_label(domicil_form.fixe, 'Montant fixé', {
+                            'label_attr': {'class': 'font-weight-bold star-on-required'}
+                        }) }}
+                    </div>
+                    {{ form_widget(domicil_form.fixe) }}
+                    {{ form_errors(domicil_form.fixe) }}
+                </div>
+
+                <div class="form-group col-md-2 text-center">
+                    <div class="label-field">
+                        {{ form_label(domicil_form.debut, 'Début période', {
+                            'label_attr': {'class': 'font-weight-bold star-on-required'}
+                        }) }}
+                    </div>
+                    {{ form_widget(domicil_form.debut) }}
+                    {{ form_errors(domicil_form.debut) }}
+                </div>
+
+                <div class="form-group col-md-2 text-center">
+                    <div class="label-field">
+                        {{ form_label(domicil_form.fin, 'Fin période', {
+                            'label_attr': {'class': 'font-weight-bold star-on-required'}
+                        }) }}
+                    </div>
+                    {{ form_widget(domicil_form.fin) }}
+                    {{ form_errors(domicil_form.fin) }}
+                </div>
+
+                <div class="form-group col-md-1 text-center none-in-domiciliation">
+                    <div class="label-field">
+                        {{ form_label(domicil_form.nbj, 'Nb J', {
+                            'label_attr': {'class': 'font-weight-bold star-on-required'}
+                        }) }}
+                    </div>
+                    {{ form_widget(domicil_form.nbj) }}
+                    {{ form_errors(domicil_form.nbj) }}
+                </div>
+                <div class="form-group col-md-1 text-center none-in-domiciliation">
+                    <div class="label-field">
+                        {{ form_label(domicil_form.nbh, 'Nb H', {
+                            'label_attr': {'class': 'font-weight-bold star-on-required'}
+                        }) }}
+                    </div>
+                    {{ form_widget(domicil_form.nbh) }}
+                    {{ form_errors(domicil_form.nbh) }}
+                </div>
+                <div class="form-group col-md-2 text-center">
+                    <div class="label-field">
+                        {{ form_label(domicil_form.creation, 'Date création', {
+                            'label_attr': {'class': 'font-weight-bold star-on-required'}
+                        }) }}
+                    </div>
+                    {{ form_widget(domicil_form.creation) }}
+                    {{ form_errors(domicil_form.creation) }}
+                </div>
+            </div>
+
+
+            <div class="col-sm-12 p-3 mt-3 well">
+                {% if not domicil_form.facture.vars.valid %}
+                    {% set isFactureActive = true %}
+                {% else %}
+                    {% set isFactureActive = false %}
+                {% endif %}
+                {% if not domicil_form.commentaires.vars.valid %}
+                    {% set isFactureActive = false %}
+                {% endif %}
+                <ul class="nav nav-tabs">
+                    <li class="nav-item" ><a class="nav-link {% if not isFactureActive %}active{% endif %}" href="#tabnote" data-toggle="tab" role="tab" aria-controls="tabnote" aria-selected="true">Notes</a></li>
+                    <li class="nav-item"><a class="nav-link {% if isFactureActive %}active{% endif %}" href="#tabfacture" data-toggle="tab" role="tab" aria-controls="tabfacture" aria-selected="false">Facturation</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tabnote" class="tab-pane fade {% if not isFactureActive %}show active{% endif %}" role="tabpanel" aria-labelledby="tabnote-tab">
+                        {% include 'Common/commentaire-bloc.html.twig' with { prototype: domicil_form.commentaires.vars.prototype, commentaires: domicil_form.commentaires } %}
+                        {# pour empecher l'application d'afficher un bloc commentaire à la fin #}
+                        {% do domicil_form.commentaires.setRendered %}
+                    </div>
+                    <div id="tabfacture" class="tab-pane fade row {% if isFactureActive %}show active{% endif %}" role="tabpanel" aria-labelledby="tabfacture-tab" style="text-align: center">
+                        <div class="col-sm-12">
+                            <div class="input-group mb-3 col-sm-2">
+                                <input type="text" class="form-control" value="AJOUTER" readonly>
+                                <div class="input-group-append">
+                                    <input class="input-group-text btn btn-light" type="button" onclick="ajoutFacture();" value="+">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="facture_form" class="col col-sm-8" {% if not domicil_form.facture.vars.display %}style="display:none;"{% endif %}>
+                            {{ form_row(domicil_form.facture) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 p-3 mt-3 well" style="text-align: center">
+                <input type="submit" class="btn btn-primary" style="border-radius: 5%;" value="Enregistrer" {{ is_modif is defined and is_modif ? 'disabled="disabled"' : '' }} >
+            </div>
+            {{ form_end(domicil_form) }}
+        </div>
+    </div>
+    {% include 'domiciliationlocation/part/ajout-type.html.twig' with { typeId: domicil_form.type.vars.id } %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'domiciliationlocation/part/ajout-type-js.html.twig' %}
+    {% include 'Common/commentaire-js.html.twig' %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    {% include 'Common/client-ajax-js.html.twig' with { attrs: domicil_form.client.vars|merge({ 'structure': 'proform' }) } %}
+
+    <script type="text/javascript">
+
+                                        // charger montant fixe par défaut
+                                        function loadDefaultTarif(){
+                                        var tarif = $('#{{ domicil_form.salle.vars.id }} option:selected').attr('title');
+                                        var montantFixe = $('#{{ domicil_form.fixe.vars.id }}');
+                                        montantFixe.val(tarif);
+                                        montantFixe.trigger('blur');
+                                        }
+
+                                        function showFacture() {
+                                        var factureForm = $('#facture_form');
+                                        factureForm.find('input').removeAttr('disabled');
+                                        factureForm.show();
+                                        }
+
+                                        function ajoutFacture(){
+
+                                        var factureNumero = $('#{{ domicil_form.facture.numero.vars.id }}');
+                                        if (factureNumero.val()) {
+                                        return false;
+                                        }
+
+                                        $.ajax({
+                                        type: 'GET',
+                                                url: "{{ path('facture_generate_numero') }}",
+                                                data: { structure: "{{ constant('App\\Constants\\Structure::LIB_PROFORM') }}" },
+                                                success: function (response) {
+                                                if (!response.error) {
+                                                $('#{{ domicil_form.facture.numero.vars.id }}').val(response.numero);
+                                                showFacture();
+                                                // MAJ montant facture si location : 
+                                                if ($('#{{ domicil_form.type.vars.id }}').val() ==  {{ constant('App\\Constants\\Typedom::LOCATION') }} ) {
+                                                updateMontantFacture();
+                                                }
+                                                } else {
+                                                alert(response.message)
+                                                }
+                                                },
+                                                error: function () {
+                                                alert('Erreur de la génération de numéro !');
+                                                }
+                                        });
+                                        }
+
+                                        function setRequired(div, required){
+                                        $(div).each(function () {
+                                        if (required) {
+                                        $(this).find('[name]').attr('required', 'required');
+                                        $(this).find('label').addClass('required');
+                                        } else {
+                                        $(this).find('[name]').removeAttr('required');
+                                        $(this).find('label.required').removeClass('required');
+                                        }
+                                        });
+                                        }
+
+                                        function setFieldRequired($oField) {
+                                        // Set required
+                                        $oField.attr("required", "required");
+                                        $oField.prev('div').find('label').addClass('required');
+                                        }
+
+                                        function removeFieldRequired($oField) {
+                                        $oField.removeAttr('required');
+                                        $oField.prev('div').find('label.required').removeClass('required');
+                                        $oField.val("");
+                                        }
+
+                                        function removeFieldRequiredWithValue($oField) {
+                                        $oField.removeAttr('required');
+                                        var isDefined = $oField.prev('div').attr('class');
+                                        if (typeof isDefined != 'undefined') {
+                                        $oField.prev('div').find('label.required').removeClass('required');
+                                        } else {
+                                        $oField.closest('div').prev('div').find('label.required').removeClass('required');
+                                        }
+
+                                        }
+
+                                        // MAJ Montant facture
+                                        function updateMontantFacture() {
+                                        let factureNumero = $('#{{ domicil_form.facture.numero.vars.id }}');
+                                        if (factureNumero.val()) {
+                                        var iDuration = common.parseMoney($('#{{ domicil_form.nbj.vars.id }}').val());
+                                        if (common.parseMoney($('#{{ domicil_form.nbh.vars.id }}').val()) > 0) {
+                                        iDuration = common.parseMoney($('#{{ domicil_form.nbh.vars.id }}').val());
+                                        }
+
+                                        let iMontantFacture = iDuration * common.parseMoney($('#{{ domicil_form.fixe.vars.id }}').val());
+                                        $('#{{ domicil_form.facture.montant.vars.id }}').val(common.formatMoney(iMontantFacture));
+                                        }
+                                        }
+
+
+                                        $(document).ready(function () {
+        {#  APR-112 : Lors de MAJ, ne pas rendre obligatoire le champ montant fixé#}
+                var isModifForm = false;
+        {% if is_modif is defined and is_modif %}
+                isModifForm = true;
+                removeFieldRequiredWithValue($('#{{ domicil_form.fixe.vars.id }}'));
+        {% endif %}
+
+        {% if domicil_form.facture.vars.value %}
+                showFacture();
+        {% endif %}
+
+        {# charger reference #}
+                var reference = $('#{{ domicil_form.ref.vars.id }}');
+                $('#{{ domicil_form.type.vars.id }}').change(function(){
+                var selected = $(this).find('option:selected').text();
+                // set not required if domiciliation
+                var isDom = selected === "{{ constant('App\\Entity\\Typedom::DOMICILIATION') }}";
+                setRequired('.none-in-domiciliation', !isDom);
+        {# Retour APR-59 : Si type = location : Soit NbH, soit NBJ est obligatoire #}
+                    if (!isDom) {
+                    removeFieldRequired($('#{{ domicil_form.nbh.vars.id }}'));
+        {#$('#{{ domicil_form.nbh.vars.id }}').removeAttr('required');
+        $('#{{ domicil_form.nbh.vars.id }}').prev('div').find('label.required').removeClass('required');#}
+                        }
+        {#  APR-112 : Lors de MAJ, ne pas rendre obligatoire le champ montant fixé#}
+                    if (isModifForm){
+                    removeFieldRequiredWithValue($('#{{ domicil_form.fixe.vars.id }}'));
+                    }
+
+        {% if is_modif is not defined or not is_modif or (is_modif and domicil_form.ref.vars.value is empty ) %}
+                    $.ajax({
+                    type: 'POST',
+                            url: "{{ path('crm.domiciliation.generer_reference') }}",
+                            data: { type: $('#{{ domicil_form.type.vars.id }}').val() },
+                            success: function (response) {
+                            if (response.success) {
+                            reference.val(response.reference);
+                            } else {
+                            reference.val('');
+                            alert(response.message);
+                            }
+                            },
+                            error: function () {
+                            reference.val('');
+                            alert('Erreur inattendue. Veuillez recommencer SVP.');
+                            }
+                    });
+        {% endif %}
+                    });
+        {% if domicil_form.vars.attr.id is defined %}
+                $('form#{{ domicil_form.vars.attr.id }}').on('submit', function (event) {
+                if (!reference.val()) {
+                alert('Le référence ne doit pas être vide !');
+                event.preventDefault();
+                }
+                var numeroFacture = $('#{{ domicil_form.facture.numero.vars.id }}');
+                if (numeroFacture.val().length === 0 && numeroFacture.is(':enabled')) {
+                alert('Le numéro de facture ne doit pas être vide !');
+                event.preventDefault();
+                }
+                });
+        {% endif %}
+
+                $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                        'autoclose': true,
+                        'language': 'fr',
+                });
+        {# Retour APR-59 : Gestion champs NbH et NbJ si type = location #}
+                $('#{{ domicil_form.nbj.vars.id }}, #{{ domicil_form.nbh.vars.id }}').on('keyup blur', function(e) {
+
+                if ($('#{{ domicil_form.type.vars.id }}').val() ==  {{ constant('App\\Constants\\Typedom::LOCATION') }} ) {
+                // Si on met à jour le champ nbJ => On rend obligatoire le champ
+                // et on ne rend pas obligatoire 
+                if ($(this).attr('id') == '{{ domicil_form.nbj.vars.id }}') {
+                removeFieldRequired($('#{{ domicil_form.nbh.vars.id }}'));
+                setFieldRequired($(this));
+                } else {
+                removeFieldRequired($('#{{ domicil_form.nbj.vars.id }}'));
+                setFieldRequired($(this));
+                }
+
+        {# Retour APR-59 : Mettre à jour le montant de la facture = montant fixé * durée (nbj ou nbh) #}
+                        const iDuration = $(this).val();
+                        let factureNumero = $('#{{ domicil_form.facture.numero.vars.id }}');
+                        if (factureNumero.val()) {
+                        let iMontantFacture = iDuration * common.parseMoney($('#{{ domicil_form.fixe.vars.id }}').val());
+                        $('#{{ domicil_form.facture.montant.vars.id }}').val(common.formatMoney(iMontantFacture));
+                        }
+                        }
+                        });
+                        // Si montant fixe modifié : alors modifer montant facture
+                        $('#{{ domicil_form.fixe.vars.id }}, #{{ domicil_form.salle.vars.id }}').on('change keyup blur', function() {
+                        updateMontantFacture();
+                        });
+        {# Retour APR-59 : Gestion champs NbH et NbJ si type = location #}
+
+                var typeVal = $('#{{ domicil_form.type.vars.id }}').val();
+                manageFactureFields(typeVal);
+                manageNbJHFields(typeVal);
+                $('#{{ domicil_form.type.vars.id }}').on('change', function(e) {
+        {# APR-115 : déactivation des champs Nb H et Nb J  #}
+                    manageNbJHFields($(this).val());
+        {# APR-115 : déactivation des champs Nb H et Nb J  #}
+
+        {# APR-113 : Facture > Champ dépôt de garantie +  APR-116 : Facture champ tarif réduit #}
+                    manageFactureFields($(this).val());
+        {# Fin APR-113 + APR-116 #}
+                    });
+                    });
+        {# APR-113 + APR-116 #}
+            function manageFactureFields(typeVal) {
+            var inputDepotGarantie = $('#domiciliation_facture_depotGarantie');
+            var inputRemise = $('#domiciliation_facture_remise');
+            // Cacher les conteneur des 2 champs factures : dépôt garantie et remise
+            $(inputDepotGarantie).closest('.form-group').hide();
+            $(inputRemise).closest('.form-group').hide();
+            // Si le type n'est pas défini on cache le dépôt de garantie (caractéristique domiciliation)
+            if (Boolean(typeVal)) {
+            // Si domiciliation alors cacher le champ tarif réduit
+            // Afficher le champ : Dépôt de garantie 
+            if (typeVal == {{ constant('App\\Constants\\Typedom::DOMICILIATION') }}) {
+            $(inputDepotGarantie).closest('.form-group').show();
+            } else if (typeVal == {{ constant('App\\Constants\\Typedom::LOCATION') }}){
+            // APR-116 Si location : cache le champ Dépôt de garantie
+            // Afficher le champ : Tarif réduit
+            $(inputRemise).closest('.form-group').show();
+            }
+            }
+            }
+        {# APR-113 + APR-116 #}
+
+        {# APR-115 #}
+            function manageNbJHFields(typeVal) {
+            if (typeVal ==  {{ constant('App\\Constants\\Typedom::DOMICILIATION') }} ) {
+            $('#{{ domicil_form.nbh.vars.id }}').prop('disabled', true).val('');
+            $('#{{ domicil_form.nbj.vars.id }}').prop('disabled', true).val('');
+            } else {
+            $('#{{ domicil_form.nbh.vars.id }}').prop('disabled', false);
+            $('#{{ domicil_form.nbj.vars.id }}').prop('disabled', false);
+            }
+            }
+        {# APR-115 #}
+
+
+            $('#domiciliation_creation, #domiciliation_facture_date').datepicker({
+                format: "dd/mm/yyyy",
+                endDate: '+0d',
+                'language': 'fr',
+            });
+            $('#domiciliation_facture_date').datepicker({
+                format: "dd/mm/yyyy",
+                endDate: '+0d',
+                'language': 'fr',
+            });
+            
+            const date_spliter = (fakedate) => {
+    let date = fakedate.split("/");
+    let real_date = new Date(`${date[2]}-${parseInt(date[1])}-${parseInt(date[0])}`)
+    return real_date;
+}
+let date_debut = document.getElementById("domiciliation_debut")
+let current_set_date = date_debut.value;
+
+setInterval(()=>{
+    if(current_set_date === date_debut.value){
+        return;
+    }else{
+        current_set_date = date_debut.value;
+        $('#domiciliation_fin').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true
+}).datepicker("update",date_spliter(current_set_date)).datepicker('fill'); // setDate()
+    }
+},500)
+            
+    </script>
+{% endblock %}

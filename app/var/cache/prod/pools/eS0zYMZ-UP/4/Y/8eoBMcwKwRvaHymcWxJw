@@ -1,0 +1,79 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Query\\ParserResult'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ParserResult')),
+        clone ($p['Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor')),
+        clone ($p['Doctrine\\ORM\\Query\\ResultSetMapping'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ResultSetMapping')),
+    ],
+    null,
+    [
+        'Doctrine\\ORM\\Query\\ParserResult' => [
+            '_sqlExecutor' => [
+                $o[1],
+            ],
+            '_resultSetMapping' => [
+                $o[2],
+            ],
+            '_parameterMappings' => [
+                [
+                    'commercial' => [
+                        0,
+                    ],
+                    'val1' => [
+                        1,
+                    ],
+                    'val2' => [
+                        2,
+                    ],
+                    'val3' => [
+                        3,
+                    ],
+                    'val4' => [
+                        4,
+                    ],
+                    'dpid' => [
+                        5,
+                    ],
+                ],
+            ],
+        ],
+        'Doctrine\\ORM\\Query\\Exec\\AbstractSqlExecutor' => [
+            '_sqlStatements' => [
+                1 => 'SELECT p0_.id AS id_0, t1_.structure AS structure_1, t2_.statut_devis AS statut_devis_2, t3_.nom_prenom AS nom_prenom_3, t4_.nom_str AS nom_str_4, p0_.nom AS nom_5, p0_.prenom AS prenom_6, p0_.type AS type_7, p0_.daterelance AS daterelance_8, p0_.coutht AS coutht_9, p0_.fiabilite AS fiabilite_10 FROM propal p0_ LEFT JOIN 1_structure t1_ ON p0_.entitypropal_id = t1_.id LEFT JOIN 5_devis_statut t2_ ON p0_.statutpropal_id = t2_.id LEFT JOIN 1_collaborateur t3_ ON p0_.commercialpropal_id = t3_.id LEFT JOIN 1_contact t4_ ON p0_.clientpropal_id = t4_.id WHERE p0_.commercialpropal_id = ? AND t2_.statut_devis <> ? AND t2_.statut_devis <> ? AND t2_.statut_devis <> ? AND t2_.statut_devis <> ? AND p0_.id IN (?) ORDER BY p0_.daterelance ASC',
+            ],
+        ],
+        'stdClass' => [
+            'scalarMappings' => [
+                2 => [
+                    'id_0' => 'idpropal',
+                    'structure_1' => 'entite',
+                    'statut_devis_2' => 'statut',
+                    'nom_prenom_3' => 'commercial',
+                    'nom_str_4' => 'client',
+                    'nom_5' => 'nom',
+                    'prenom_6' => 'prenom',
+                    'type_7' => 'type',
+                    'daterelance_8' => 'daterelance',
+                    'coutht_9' => 'coutht',
+                    'fiabilite_10' => 'fiabilite',
+                ],
+            ],
+            'typeMappings' => [
+                2 => [
+                    'id_0' => 'integer',
+                    'structure_1' => 'string',
+                    'statut_devis_2' => 'string',
+                    'nom_prenom_3' => 'string',
+                    'nom_str_4' => 'string',
+                    'nom_5' => 'string',
+                    'prenom_6' => 'string',
+                    'type_7' => 'integer',
+                    'daterelance_8' => 'date',
+                    'coutht_9' => 'string',
+                    'fiabilite_10' => 'string',
+                ],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

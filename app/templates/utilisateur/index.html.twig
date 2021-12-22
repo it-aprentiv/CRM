@@ -1,0 +1,244 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client/Prospect - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Liste des utilisateurs</li>
+            </ol>
+            <div>
+                <a href="{{ path('user.update.generate-form-asynch', { id : 0 } ) }}" class=" open-user-form"><i class="fa fa-plus-circle"></i> Ajouter un utilisateur</a>
+            </div>
+        </div>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">LISTE DES UTILISATEURS</h2>
+
+    <section class="row mb-3">
+        <div class="col-md-6 list-filter">
+            <fieldset>
+                <legend>Rechercher</legend>
+                {{ form_start(userFilterForm,{'attr' : {'class' : 'list-filter'}}) }}
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        {{ form_widget(userFilterForm.nomPrenom, { attr : { 'placeholder' : '-- Nom ou prénoms --' } }) }}
+                    </div>
+                    <div class="form-group col-md-5">
+                        {{ form_widget(userFilterForm.poste, { attr : { 'placeholder' : '-- Poste --' } } ) }}
+                    </div>
+                    <div class="form-group col-md-2">
+                        <button class="btn btn-primary p-1" type="submit">Filtrer</button>
+                    </div>
+                </div>
+                {{ form_end(userFilterForm) }}
+            </fieldset>
+        </div>
+
+        <div class="col-md-6">
+            <fieldset>
+                <legend>Légendes</legend>
+                <div class="text-center">
+                    <ul class="list-inline d-inline-block">
+                        <li class="list-inline-item"><span class="d-inline-block px-2 bg-danger text-light rounded-circle">&nbsp;</span> Aucun accès
+                        </li>
+                        <li class="list-inline-item"><span class="d-inline-block px-2 bg-warning text-light rounded-circle">&nbsp;</span> Accès en
+                            lecture seulement
+                        </li>
+                        <li class="list-inline-item"><span class="d-inline-block px-2 bg-info text-light rounded-circle">&nbsp;</span> Accès en
+                            lecture et écriture
+                        </li>
+                    </ul>
+                </div>
+            </fieldset>
+        </div>
+
+    </section>
+
+    <table class="table-responsive table-striped">
+        <thead>
+            <tr class="bg-info text-light">
+                <th>Nom & Prénom(s)</th>
+                <th>Rôle/Poste</th>
+
+                {% for item in all_menus %}
+                    <th>{{ item.nomMenu }}</th>
+                    {% endfor %}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for  utilisateur in pagination %}
+                <tr data-user-id="{{ utilisateur.idutilisateur }}">
+                    <td>{{ utilisateur.nomutilisateur }} {{ utilisateur.prenomutilisateur }}</td>
+                    <td>{{ utilisateur.poste }}</td>
+                    {% for item in all_menus %}
+                        {% set userMenuAccess = utilisateur['menu_access'][item.nomMenu] is defined ?
+                        utilisateur['menu_access'][item.nomMenu] : -1 %}
+                        <td>
+                            {% if userMenuAccess == -1 %}
+                                <span class="d-inline-block px-2 bg-danger text-light rounded-circle">&nbsp;</span>
+                            {% elseif userMenuAccess == 0 %}
+                                <span class="d-inline-block px-2 bg-warning text-light rounded-circle">&nbsp;</span>
+                            {% elseif userMenuAccess == 1 %}
+                                <span class="d-inline-block px-2 bg-info text-light rounded-circle">&nbsp;</span>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                    <td>
+                        <span>
+                            <a href="{{ path('user.update.generate-form-asynch', { id : utilisateur.idutilisateur } ) }}" class="open-user-form" title="Modifier">
+                                <i class="fas fa-pencil-alt text-primary"></i>
+                            </a>
+                        </span>
+                        <span>
+                            <a href="javascript:void(0)" class="do-delete-confirm" title="Supprimer">
+                                <i class="fas fa-trash-alt text-danger"></i>
+                            </a>
+                        </span>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr >
+                <td colspan="6" class="text-align-middle pt-3">
+                    <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+                </td>
+                <td colspan="6" class="text-align-middle pt-3">
+                    {{ knp_pagination_render(pagination) }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+    {# MODAL : MAJ utilisateur >> #}
+    <div class="modal fade" id="user-modal-form" tabindex="-1" role="dialog" aria-labelledby="user-form"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header list-filter">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        <span class="fa-stack fa-1x">
+                            <i class="fas fa-circle fa-stack-2x text-info"></i>
+                            <i class="fas fa-user fa-stack-1x text-white"></i>
+                        </span>
+                        Gestion utilisateur</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Oups, une erreur s'est produite lors du chargement du contenu ... !
+                </div>
+                <div class="modal-footer list-filter">
+                    <strong class="alert alert-warning d-none mb-0" id="create-alert"></strong>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary" id="save-data">
+                        <span class="spinner spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        Enregistrer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# MODAL : MAJ utilisateur << #}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        {# MODAL : Formulaire dynamique gestion droit utilisateur #}
+            $('.open-user-form').on('click', function (e) {
+                e.preventDefault();
+
+                $('.modal-body').load($(this).attr('href'), function () {
+                    $('#user-modal-form').modal({show: true});
+                });
+            });
+        {# End MODAL : Formulaire dynamique gestion droit utilisateur #}
+
+        {# POST formulaire : enregistre les informations  #}
+            $('#save-data').on('click', function (e) {
+
+                let spinner = $(this).find('span.spinner');
+                spinner.addClass('d-inline-block');
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $('form[name="utilisateur"]').attr('action'),
+                    data: $('#user-form').serialize(),
+                    success: function (response) {
+
+                        if (response.success) {
+                            window.location.reload();
+                        } else {
+                            console.log(response.message);
+                            // @TODO : afficher erreurs
+                            spinner.removeClass('d-inline-block');
+                            spinner.addClass('d-none');
+                            $('#create-alert').html(response.message).removeClass('d-none').addClass('d-inline-block');
+                        }
+
+                        spinner.removeClass('d-inline-block');
+                        spinner.addClass('d-none');
+                    }
+
+                });
+            });
+        {# End POST formulaire #}
+
+        {# DELETE User Begin #}
+            $('.do-delete-confirm').on('click', function (e) {
+                const userId = $(this).closest('tr').data('user-id');
+                console.log(userId);
+                
+                swal({
+                    title: "Confirmation !",
+                    text: "Voulez vous supprimer cet utilisateur ?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type: "POST",
+                                url: "{{ path('user.delete-asynch') }}",
+                                data: {id: userId}
+                            })
+                            .done(function (response) {
+                                if (response.success) {
+                                    swal("Supprimé avec succés!", {
+                                        icon: "success"
+                                    }).then(function() {
+                                        // window.location.reload();
+                                        console.log("here");
+                                    });
+                                } else {
+                                    swal("Erreur", "Cette ligne n'a pas pu être supprimée!", "error");
+                                }
+                            });
+                        }
+                    });
+            });
+        {# DELETE User Fin #}
+
+        {# Donner tous les droits si on selection admin  #}
+        $('body').on('change', '#utilisateur_isAdmin' ,function() {
+            if (this.value == 1) {
+                $('body .utilisateur-menu').val(1).trigger('change');
+            }
+        });
+    </script>
+{% endblock %}

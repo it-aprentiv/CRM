@@ -1,0 +1,237 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Domiciliation / Location - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Liste des domiciliations et locations</li>
+            </ol>
+
+            <div>
+                <a href="{{ path('Domiciliation_Location_Controller/creation') }}"><i class="fa fa-plus-circle"></i> Ajouter un domiciliation</a>
+            </div>
+        </div>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">Liste des domiciliations et locations</h2>
+
+    <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
+        {{ form_start(filter)  }}
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                {{ form_widget(filter.ref, { attr: { 'placeholder' : '-- N° Dossier --' } }) }}
+            </div>
+            <div class="form-group col-md-2">
+                <p>{{ form_widget(filter.client, { 'placeholder' : '-- Client --' }) }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                <p>{{ form_widget(filter.debut, { attr: {'placeholder': '-- Date début --' } })  }}</p>
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(filter.fin, { attr: { placeholder : '-- Date fin --'} }) }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form_widget(filter.montantFacture, { attr: { placeholder : '-- mnt facture --'} }) }}
+            </div>
+        </div>
+        <div class="form-row clearfix">
+            <div class="form-group col-md-4 row">
+                <div class="form-group col-md-4">
+                    {{ form_widget(filter.montantRegle, { attr: { placeholder : '-- regle --'} }) }}
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="input-group">
+                        {{ form_widget(filter.montantDu, { attr: { placeholder : '-- du --'} }) }}
+                        <div class="input-group-append">
+                            <span class="input-group-text"> €</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    {{ form_widget(filter.statut) }}
+                </div>
+            </div>
+            <div class="col-md-2">
+                {{ form_widget(filter.refFacture, { attr: { placeholder : '-- Ref facture --'} }) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_widget(filter.dateEmission, { attr: { placeholder : '-- Date émission --'} }) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_widget(filter.dateEnc, { attr: { placeholder : '-- Date encaissement --' } }) }}
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+                <a href="{{ path('Domiciliation_Location_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(filter)  }}
+    </fieldset>
+
+    <table class="table table-sm table-striped">
+        <thead>
+        <tr class="bg-info text-light">
+            <th>N° DOSSIER</th>
+            <th>CLIENT</th>
+            <th>DATE DEBUT PERIODE</th>
+            <th>DATE FIN PERIODE</th>
+            {#<th>MONTANT ACCORDE</th>#}
+            <th>MONTANT HT FACTURE</th>
+            <th>MONTANT HT REGLE</th>
+            <th>MONTANT HT DU</th>
+            <th>STATUT</th>
+            <th>REF FACTURE</th>
+            <th>DATE EMISSION</th>
+            <th>DATE ENC</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in pagination %}
+            <tr data-href="{{ path('crm.domiciliation.fiche', { 'id': item.id }) }}">
+                <td>{{ item.ref }}</td>
+                <td>{{ item.client }}</td>
+                <td>{{ item.debut|date("d/m/Y") }}</td>
+                <td>{{ item.fin|date("d/m/Y") }}</td>
+                {#<td>{{ item.recu }}</td>#}
+                <td>{{ item.fixe | number_format(2, ',', ' ')  }}</td>
+                <td>{{ item.recu | number_format(2, ',', ' ')  }}</td>
+                <td>{{ item.du | number_format(2, ',', ' ')  }}</td>
+                <td>{{ item.statut }}</td>
+                <td>{{ item.ref_facture }}</td>
+                <td>{{ item.creation|date("d/m/Y") }}</td>
+                <td>{{ item.encaissement is empty ? "" : item.encaissement|date("d/m/Y") }}</td>
+                <td>
+                    <a href="{{ path('crm.domiciliation.fiche', { 'id': item.id }) }}">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="javascript:void(0)" class="delete-domiciliation" data-id="{{ item.id }}">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+        <tfoot>
+        <tr >
+            <td colspan="6" class="text-align-middle pt-3">
+                <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+            </td>
+            <td colspan="6" class="text-align-middle pt-3">
+                {{ knp_pagination_render(pagination) }}
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.js-datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                'autoclose': true,
+                'language': 'fr',
+            });
+
+            $('#{{ filter.client.vars.id }}').select2({
+                placeholder: "-- Client --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.contact.client.search_json') }}',
+                    data: function (params) {
+                        var query = {
+                            search: params.term,
+                            limit: 20,
+                            type: 'client'
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.nomStr,
+                                    id: item.id
+                                };
+                            })
+                        };
+                    }
+                },
+            });
+
+const date_spliter = (fakedate) => {
+    let date = fakedate.split("/");
+    let real_date = new Date(`${date[2]}-${parseInt(date[1])}-${parseInt(date[0])}`)
+    return real_date;
+}
+let date_debut = document.getElementById("domiciliation_debut")
+let current_set_date = date_debut.value;
+
+setInterval(()=>{
+    if(current_set_date === date_debut.value){
+        return;
+    }else{
+        current_set_date = date_debut.value;
+        $('#domiciliation_fin').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true
+}).datepicker("update",date_spliter(current_set_date)).datepicker('fill'); // setDate()
+    }
+},500)
+
+            {# Suppression domiciliation #}
+            $('.delete-domiciliation').on('click', function (e) {
+                 e.preventDefault();
+                 const domId = $(this).attr('data-id');
+
+                 swal({
+                     title: "Confirmation!",
+                     text: "Voulez vous supprimer ce domiciliation/ cette location ?",
+                     icon: "warning",
+                     buttons: true,
+                     dangerMode: true,
+                 }).then((willDelete) => {
+                     if (willDelete) {
+                         $.ajax({
+                             type: "POST",
+                             url: "{{ path('crm.domiciliation.delete') }}",
+                             data: { iddom : domId }
+                         }).done(function(data){
+                             if (data.success == true) {
+                                 swal(data.message, {
+                                     icon: "success",
+                                 }).then((ok) => {
+                                     location.reload();
+                                 });
+                             } else {
+                                 swal("Erreur", data.message, "error");
+                             }
+                         }).fail(function () {
+                             swal("Erreur", "Cette ligne n'a pas pu être supprimé!", "error");
+                         })
+                     }
+                 });
+            });
+            {# Fin suppression domiciliation #}
+        });
+    </script>
+{% endblock %}

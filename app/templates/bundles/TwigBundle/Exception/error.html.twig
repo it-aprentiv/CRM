@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Oups - Erreur{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Erreur</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary text-danger">Oups, une erreur est survenue</h2>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <p class="alert alert-warning">
+                Une erreur est survenue lors de la consultation de cette page.
+                Veuillez consulter l'administrateur du site pour plus d'info.
+            </p>
+        </div>
+    </div>
+{% endblock %}

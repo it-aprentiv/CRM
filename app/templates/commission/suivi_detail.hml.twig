@@ -1,0 +1,85 @@
+{{ form_start(form,{'attr':{'class':'list-filter'}}) }}
+<table class="table table-stripped table-bordered">
+    <tbody>
+        <tr>
+            <td class="titre"> Ref Dossier</td>
+            <td class="valeur"><b>{{ detail.num_intern }}</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Client</td>
+            <td class="valeur"><b>{{ detail.nomclient }}</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Mois et Année Signature</td>
+            <td class="valeur"><b>{{ detail.datesign|date('m/Y') }}</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Montant demandé</td>
+            <td class="valeur"><b>{{ detail.mntsigne | number_format(2, ',', ' ') }} €</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Montant accordé</td>
+            <td class="valeur"><b>{{ detail.mntaccorde | number_format(2, ',', ' ') }} €</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Montant HT Facture</td>
+            <td class="valeur"><b>{{ detail.mntfacture | number_format(2, ',', ' ') }} €</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Montant Encaisse TTC</td>
+            <td class="valeur"><b>{{ detail.mntTtc | number_format(2, ',', ' ') }} €</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Taux de commission</td>
+            <td class="valeur"><b>{{ detail.tauxCom | number_format(2, ',', ' ')}} %</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Montant de la commission</td>
+            <td class="valeur"><b>{{ (detail.mntfacture * detail.tauxCom / 100) |number_format(2, ',', ' ') }} €</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Commercial</td>
+            <td class="valeur"><b>{{ detail.com }}</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Date de paiement de la commission</td>
+            <td class="valeur"><b>{{ detail.dateReelleEncaiss | date('m-Y') }}</b></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td class="titre"> Statut de la commission</td>
+            <td class="valeur">
+                {% if detail.source == 'domiciliation/location' %}
+                    {{ form_widget(form.statutPaiementCommission) }}
+                {% elseif detail.source == 'dossier' %}
+                    {{ form_widget(form.payencaiss) }}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+        </tr>
+    </tbody>
+</table>
+{{ form_end(form) }}
+

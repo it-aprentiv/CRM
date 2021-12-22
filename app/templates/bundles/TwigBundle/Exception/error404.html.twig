@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Oups - Erreur{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+
+            {% if app.user.droit == 'superadmin' %}
+                <li class="breadcrumb-item active">
+                    <a href="{{ path('welcome/Liste_utilisateur') }}">
+                        Liste des utilisateurs
+                    </a>
+                </li>
+            {% endif %}
+            <li class="breadcrumb-item active" aria-current="page">Page introuvable</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary text-danger">PAGE INTROUVABLE !</h2>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <p class="alert alert-warning">
+                La page que vous voulez consulter n'existe pas ou a été déplacée !
+            </p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Factures Formations{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Factures formations</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">LISTE FACTURES FORMATIONS</h2>
+
+    <fieldset class="mb-3 list-filter">
+        {{ form_start(form_filter,{'attr':{'class':'list-filter'}}) }}
+        <div class="form-row">
+            {% for field_form in form_filter.children|sort((a, b) => a.vars.attr['ordre-field'] <=> b.vars.attr['ordre-field']) %}
+                {% if field_form.vars.attr.class is defined %}
+                    {% set class = field_form.vars.attr.class %}
+                {% else %}
+                    {% set class = '' %}
+                {% endif %}
+                {% if 'money-type' not in class %}
+                    {% set class = class~" w-100" %}
+                {% endif %}
+                <div class="form-group col-md-2">
+                    {% if 'crm-money-type' in class %}
+                        {{ form_widget(field_form, { attr: {'class' : class} }) }}
+                    {% elseif 'number-money-type' in class %}
+                        <div class="input-group">
+                            {{ form_widget(field_form, { attr: {'class' : class} }) }}
+                            <div class="input-group-append">
+                                <span class="input-group-text"> €</span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>{{ form_widget(field_form, { attr: {'class' : class} }) }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+                <a href="{{ path('Facture_formation_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+        {{ form_end(form_filter) }}
+    </fieldset>
+
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr class="bg-info text-light">
+                <th>ENTITE</th>
+                <th>Num Facture</th>
+                <th>Formateur</th>
+                <th>CLIENT</th>
+                <th>Réception facture</th>
+                <th>Date facture</th>
+                <th>MOIS</th>
+                <th>Intitulé</th>
+                <th>Heure fait</th>
+                <th>Heure restant</th>
+                <th>MONTANT HT</th>
+                <th>Date validation</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for facture in pagination %}
+                <tr data-href="{{ path('edit_formation', {'id': facture.id_formation}) }}#suivi-om">
+                    <td>{{ facture.structure }}</td>
+                    <td>{{ facture.numfac }}</td>
+                    <td>{{ facture.nom_formateur }} {{ facture.prenom_formateur }}</td>
+                    <td>{{ facture.client }}</td>
+                    <td>{{ facture.recepfac | date('d-m-Y') }}</td>
+                    <td>{{ facture.datefac | date('d-m-Y') }}</td>
+                    <td>{{ facture.moisfac | month_letter }}</td>
+                    <td>{{ facture.intitule_stage }}</td>
+                    <td>{{ facture.heurefait }}</td>
+                    <td>{{ facture.heurerestant }}</td>
+                    <td>{{ facture.montantht | number_format(2, ',', ' ') }} €</td>
+                    <td>{{ facture.dateValidation | date('d-m-Y') }}</td>
+                    <td>
+                        <a target="_blank" href="{{ path('edit_formation', {'id': facture.id_formation}) }}#suivi-om">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6" class="text-align-middle pt-3">
+                    <strong>Total : </strong> {{ pagination.getTotalItemCount }}
+                </td>
+                <td colspan="6" class="text-align-middle pt-3">
+                    {{ knp_pagination_render(pagination) }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".js-datepicker").each(function () {
+                $(this).datepicker({
+                    'format': 'dd/mm/yyyy',
+                    'autoclose': true,
+                    'clearBtn': true,
+                    'language': 'fr',
+                });
+            });
+
+
+            $('#client').select2({
+                placeholder: "-- client --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: '{{ path('crm.dossier.client.asynch-search') }}',
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    }
+                }
+            });
+
+        {% if app.request.query.get('client') %}
+                var data = {
+                    id: "{{ app.request.query.get('client') }}",
+                    text: '{{ app.request.query.get('client')|e('js') }}'
+                };
+
+                var newOption = new Option(data.text, data.id, true, true);
+                $('#client').append(newOption).trigger('change');
+
+        {% endif  %}
+
+
+                var dossierNom = $('#intitule');
+                var pathurl = '{{ path('crm.dossier.competence.asynch-search') }}';
+               {# var intitule = '{{ intitule|json_encode|raw }}';#}
+                
+                
+                dossierNom.select2({
+                    placeholder: "-- Intitulé --",
+                    minimumInputLength: 3,
+                    allowClear: true,
+                    ajax: {
+                        url: pathurl,
+                        data: function (params) {
+                            var query = {
+                                search: params.term
+                            };
+                            // Query parameters will be ?search=[term]&type=public
+                            return query;
+                        },
+                        processResults: function (data) {
+                            var dataResults = data.results !== undefined ? data.results : [];
+                            return {
+                                results: $.map(dataResults, function (item) {
+                                    return {
+                                        text: item.text,
+                                        id: item.idid
+                                    };
+                                })
+                            };
+                        }
+                    }
+                });
+
+            });
+    </script>
+    {#{% include 'Common/client-ajax-js.html.twig' with { attrs: form_filter.client.vars } %}#}
+{% endblock %}

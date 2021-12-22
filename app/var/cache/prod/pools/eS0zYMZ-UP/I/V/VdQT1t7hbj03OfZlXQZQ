@@ -1,0 +1,89 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Query\\ParserResult'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ParserResult')),
+        clone ($p['Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor')),
+        clone ($p['Doctrine\\ORM\\Query\\ResultSetMapping'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ResultSetMapping')),
+    ],
+    null,
+    [
+        'Doctrine\\ORM\\Query\\ParserResult' => [
+            '_sqlExecutor' => [
+                $o[1],
+            ],
+            '_resultSetMapping' => [
+                $o[2],
+            ],
+            '_parameterMappings' => [
+                [
+                    'ORMQueryBuilderLoader_getEntitiesByIds_idutilisateur' => [
+                        0,
+                    ],
+                ],
+            ],
+        ],
+        'Doctrine\\ORM\\Query\\Exec\\AbstractSqlExecutor' => [
+            '_sqlStatements' => [
+                1 => 'SELECT u0_.IDUTILISATEUR AS IDUTILISATEUR_0, u0_.NOMUTILISATEUR AS NOMUTILISATEUR_1, u0_.PRENOMUTILISATEUR AS PRENOMUTILISATEUR_2, u0_.PASSWORD AS PASSWORD_3, u0_.pass AS pass_4, u0_.Droit AS Droit_5, u0_.POSTE AS POSTE_6, u0_.CONNECTER AS CONNECTER_7, u0_.DEBUTCONNECTION AS DEBUTCONNECTION_8, u0_.FINCONNECTION AS FINCONNECTION_9, u0_.roles AS roles_10 FROM utilisateur u0_ WHERE u0_.IDUTILISATEUR IN (?)',
+            ],
+        ],
+        'stdClass' => [
+            'aliasMap' => [
+                2 => [
+                    'e' => 'App\\Entity\\Utilisateur',
+                ],
+            ],
+            'fieldMappings' => [
+                2 => [
+                    'IDUTILISATEUR_0' => 'idutilisateur',
+                    'NOMUTILISATEUR_1' => 'nomutilisateur',
+                    'PRENOMUTILISATEUR_2' => 'username',
+                    'PASSWORD_3' => 'passwordOld',
+                    'pass_4' => 'password',
+                    'Droit_5' => 'droit',
+                    'POSTE_6' => 'poste',
+                    'CONNECTER_7' => 'connecter',
+                    'DEBUTCONNECTION_8' => 'debutconnection',
+                    'FINCONNECTION_9' => 'finconnection',
+                    'roles_10' => 'roles',
+                ],
+            ],
+            'entityMappings' => [
+                2 => [
+                    'e' => null,
+                ],
+            ],
+            'columnOwnerMap' => [
+                2 => [
+                    'IDUTILISATEUR_0' => 'e',
+                    'NOMUTILISATEUR_1' => 'e',
+                    'PRENOMUTILISATEUR_2' => 'e',
+                    'PASSWORD_3' => 'e',
+                    'pass_4' => 'e',
+                    'Droit_5' => 'e',
+                    'POSTE_6' => 'e',
+                    'CONNECTER_7' => 'e',
+                    'DEBUTCONNECTION_8' => 'e',
+                    'FINCONNECTION_9' => 'e',
+                    'roles_10' => 'e',
+                ],
+            ],
+            'declaringClasses' => [
+                2 => [
+                    'IDUTILISATEUR_0' => 'App\\Entity\\Utilisateur',
+                    'NOMUTILISATEUR_1' => 'App\\Entity\\Utilisateur',
+                    'PRENOMUTILISATEUR_2' => 'App\\Entity\\Utilisateur',
+                    'PASSWORD_3' => 'App\\Entity\\Utilisateur',
+                    'pass_4' => 'App\\Entity\\Utilisateur',
+                    'Droit_5' => 'App\\Entity\\Utilisateur',
+                    'POSTE_6' => 'App\\Entity\\Utilisateur',
+                    'CONNECTER_7' => 'App\\Entity\\Utilisateur',
+                    'DEBUTCONNECTION_8' => 'App\\Entity\\Utilisateur',
+                    'FINCONNECTION_9' => 'App\\Entity\\Utilisateur',
+                    'roles_10' => 'App\\Entity\\Utilisateur',
+                ],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

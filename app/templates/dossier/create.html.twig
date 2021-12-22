@@ -1,0 +1,128 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dossier - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/wickedpicker.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active"><a href="{{ path('Liste_Dossiers_Controller') }}">Liste des Dossiers</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Création</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">AJOUT DE DOSSIER</h2>
+    
+    {% include 'dossier/part/dossier-form.html.twig' %}
+    
+    <!--- Modal formation --->
+    {% include 'dossier/part/calendrier.html.twig' with { formation_dates : formated_formation_dates is defined ? formated_formation_dates : [] } %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    {% include 'dossier/part/dossier-autocomplete-js.html.twig' with {
+            listAutocomplete: listAutocomplete,
+            opcaId: doc_form.idOpca.vars.id,
+            numInterne: doc_form.ref.vars.id,
+            datefin: doc_form.dateFinPeriode.vars.id
+        }
+    %}
+    {# addAutocomplete = function js who config autocomplete #}
+    {% include 'Common/commentaire-js.html.twig' with { addAutocomplete: 'addAutocomplete' }%}
+    {% include 'Common/stagiaire-js.html.twig' %}
+    {% include 'Common/client-ajax-js.html.twig' with { attrs: doc_form.idClient.vars } %}
+    {% include 'Common/opca-ajax-js.html.twig' with { attrs: doc_form.idOpca.vars } %}
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    
+    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js" type="text/javascript"></script-->
+    <script src="{{ asset('assets/js/wickedpicker.js') }}"></script>
+    {% include 'Common/collection-function-js.html.twig' %}
+    {% include 'Common/dossier-js.html.twig'%}
+    
+    
+    <script type="text/javascript">
+        $(function() {
+            common.enableFormFields();
+        });
+        
+        //Add Nouveau intitulé Stage
+        $('#tag-form-submit').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{{ path('ajout_competence') }}",
+                data: $('form.tagForm').serialize(),
+                success: function(response) {
+                    $('#popupAddStage').modal('hide');
+                },
+                error: function() {
+                    alert('Error');
+                }
+            });
+            return false;
+        });
+        function getlieudossier(){
+            var lieu = $(".lieudossier.active :input").first().val();
+            $("#dossier_lieu").val(lieu);
+        }
+        $("form.popUp-ajout.list-filter").on('submit', function(e){
+            var lieu = $(".lieudossier.active :input").first().val();
+            $("#dossier_lieu").val(lieu);
+        });
+        var $collectionfacturation;
+        var $collectionavoir;
+        var boutonremovefacturation = "<button type='button' class='removefacturationelement close' type='button'><span aria-hidden='true'>×</span></button>";
+        var boutonremoveavoir = "<button type='button' class='removeavoirelement close' type='button'><span aria-hidden='true'>×</span></button>";
+        $(document).ready(function () {
+            $collectionfacturation = $("#ajout_facture");
+            $collectionavoir = $("#ajout_avoir");
+            $collectionfacturation.data("index", $collectionfacturation.find('.form_facture').length);
+            $collectionavoir.data("index", $collectionavoir.find('.form_avoir').length);
+            $('.datepickerFacture').datepicker(
+                {
+                    'format':'dd/mm/yyyy',
+                    'autoclose': true,
+                    'endDate': '+0d',
+                    'language': 'fr',
+                }
+            );
+        });
+
+
+
+ window.onload = () => {
+        let newDate = new Date();
+        let thisMonth = newDate.getUTCMonth()
+        let addMonth = 2;
+
+        receptionDate=new Date();
+        receptionDate.setUTCMonth(thisMonth + addMonth);
+       
+$("#dossier_dateAccord").datepicker("setDate",receptionDate)
+
+/*    if(date_accord.value == ""){
+        date_debut.value = setDate(new Date());
+        date_fin.value = setDate(new Date(),{day: 1}) 
+        }
+    */
+    }
+
+      
+
+
+  //   
+    </script>
+{% endblock %}

@@ -1,0 +1,57 @@
+<p style="padding-left: 500pt">
+                                                                                <span style="font-weight: bold; font-size: 16px;">{{ client }}</span><br/>
+                                                                                <span style="font-size: 16px;"> {{ adresse }}</span><br/>
+                                                                                <span style="font-size: 16px;"> {{ oAdresse is not null ? oAdresse.codePostal : ''  }}, {{ ville is not null ? ville.nomVille  : '' }}</span>
+</p>
+<br/><br/>
+<p style="text-align: center;font-family: Calibri;font-size: 28px;font-weight: bold">DEVIS DE LA FORMATION</p>
+<br/>
+<div style="text-align: center">
+    <table style="font-weight: bold;">
+        <tbody>
+            <tr style="width: 500px">
+                <td>Stagiaires :</td>
+                <td>                            {{ stagiaire }}<br/></td>
+            </tr>
+            <tr>
+                <td>Objectifs :</td>
+                <td>                            {{ dossier.nom }}</td>
+            </tr>
+            <tr>
+                <td>Lieu de formation :</td>
+                <td>                            {{ dossier.lieu }}</td>
+            </tr>
+            <tr>
+                <td>Date du stage :</td>
+                <td>                            Du {{ oDatesFormation[0] and oDatesFormation[0].dateD is not null ? oDatesFormation[0].dateD | date('d-m-Y') : ''  }} au {{ oDatesFormation[0] and oDatesFormation[0].dateF is not null ? oDatesFormation[0].dateF | date('d-m-Y') : ''  }} <br/>
+                            {{ calendrier }}
+                </td>
+            </tr>
+            <tr>
+                <td>Durée de la formation :</td>
+                <td>                            {{ dossier.dureeJours }} Jours</td>
+            </tr>
+            <tr>
+                <td>Durée par stagiaire :</td>
+                <td>                            {{ oDatesFormation[0] and oDatesFormation[0].nbH ? oDatesFormation[0].nbH | number_format(1, ',') : ''   }} Heures</td>
+            </tr>
+            <tr>
+                <td>Horaires du stage :</td>
+                <td>                            {{ oDatesFormation[0] and oDatesFormation[0].dHeureM ? oDatesFormation[0].dHeureM ~ "/" ~ oDatesFormation[0].fHeureM }}{{ oDatesFormation[0] and oDatesFormation[0].dHeureAm ? "-" ~ oDatesFormation[0].dHeureAm ~"/"~ oDatesFormation[0].fHeureAm : "" }}
+                </td>
+            </tr>
+            <tr>
+                <td>Coût Total HT :</td>
+                <td>                            {{ montant | number_format(2, ",", " ") }} €</td>
+            </tr>
+            <tr>
+                <td>Montant TVA :</td>
+                <td>                            {{ tva | number_format(2, ",", " ") }} €</td>
+            </tr>
+            <tr>
+                <td>Coût Total TTC :</td>
+                <td>                            {{ ttc | number_format(2, ",", " ") }} €</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

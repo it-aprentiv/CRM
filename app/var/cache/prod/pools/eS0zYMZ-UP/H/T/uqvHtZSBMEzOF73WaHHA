@@ -1,0 +1,123 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\AssignedGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\AssignedGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'App\\Entity\\ContactType',
+            ],
+            'namespace' => [
+                'App\\Entity',
+            ],
+            'rootEntityName' => [
+                'App\\Entity\\ContactType',
+            ],
+            'customRepositoryClassName' => [
+                'App\\Repository\\ContactTypeRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id',
+                        'id' => true,
+                    ],
+                    'idb' => [
+                        'fieldName' => 'idb',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'idb',
+                    ],
+                    'typeContact' => [
+                        'fieldName' => 'typeContact',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 50,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'type_contact',
+                    ],
+                    'typeFrmJuri' => [
+                        'fieldName' => 'typeFrmJuri',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 2,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'type_frm_juri',
+                    ],
+                    'idFrmJuri' => [
+                        'fieldName' => 'idFrmJuri',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'id_frm_juri',
+                    ],
+                    'idbFrmJuri' => [
+                        'fieldName' => 'idbFrmJuri',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'idb_frm_juri',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'idb' => 'idb',
+                    'type_contact' => 'typeContact',
+                    'type_frm_juri' => 'typeFrmJuri',
+                    'id_frm_juri' => 'idFrmJuri',
+                    'idb_frm_juri' => 'idbFrmJuri',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'idb' => 'idb',
+                    'typeContact' => 'type_contact',
+                    'typeFrmJuri' => 'type_frm_juri',
+                    'idFrmJuri' => 'id_frm_juri',
+                    'idbFrmJuri' => 'idb_frm_juri',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => '5_contact_type',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

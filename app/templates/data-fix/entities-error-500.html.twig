@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client/Prospect - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Data fix</li>
+            </ol>
+            <div>
+                <a href="{{ path('user.update.generate-form-asynch', { id : 0 } ) }}" class=" open-user-form"><i class="fa fa-plus-circle"></i> Ajouter un utilisateur</a>
+            </div>
+        </div>
+    </nav>
+
+    <h1>Liste des fiches avec erreur 500</h1>
+
+
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h2 class="text-center mt-2 text-primary">CLIENTS/PROSPECTS liés à des OPCO supprimés</h2>
+
+            <p class="bg-light p-1">
+                {{ a_clients_with_bad_OPCO_links | length }} fiche(s) en erreur !
+            </p>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Client</th>
+                        <th>Commercial</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in a_clients_with_bad_OPCO_links %}
+                        <tr>
+                            <td>{{ contact.id }}</td>
+                            <td>{{ contact.id_type == 1 ? 'Client' : 'Prospect' }}</td>
+                            <td>{{ contact.nom_str }}</td>
+                            <td>{{ contact.collaborateur }}</td>
+                            <td>
+                                <a href="{{ path('Fiche_client_prospect_Controller/editClient', { id : contact.id} ) }}" target="_blank">Vérifier</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+            <div class="row text-right">
+                <div class="col-md-12">
+                    <a href="{{ path('data-fix.contact.client.fix-bad-opco-links') }}" class="text-center btn btn-warning text-bold">Corriger les erreurs</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+             <h2 class="text-center mt-2 text-primary">DOSSIERS liés à des OPCO supprimés ou innexistants</h2>
+
+            <p class="bg-light p-1">
+                {{ a_dossiers_with_bad_opco_links | length }} fiche(s) en erreur !
+            </p>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ref dossier</th>
+                        <th>Commercial</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dossier in a_dossiers_with_bad_opco_links %}
+                        <tr>
+                            <td>{{ dossier.id }}</td>
+                            <td>{{ dossier.ref }}</td>
+                            <td>{{ dossier.nom_prenom }}</td>
+                            <td>
+                                <a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', { id : dossier.id} ) }}" target="_blank">Vérifier</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+            <div class="row text-right">
+                <div class="col-md-12">
+                    <a href="{{ path('data-fix.dossier.fix-bad-opco-links', {t: 'OPCO'}) }}" class="text-center btn btn-warning text-bold">Corriger les erreurs</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+                
+                
+    
+    <div class="row mt-5">
+        <div class="col-md-6">
+             <h2 class="text-center mt-2 text-primary">DOSSIERS liés à des clients supprimés</h2>
+
+            <p class="bg-light p-1">
+                {{ a_dossiers_with_bad_clients_links | length }} fiche(s) en erreur !
+            </p>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ref dossier</th>
+                        <th>Commercial</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dossier in a_dossiers_with_bad_clients_links %}
+                        <tr>
+                            <td>{{ dossier.id }}</td>
+                            <td>{{ dossier.ref }}</td>
+                            <td>{{ dossier.nom_prenom }}</td>
+                            <td>
+                                <a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', { id : dossier.id} ) }}" target="_blank">Vérifier</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+            <div class="row text-right">
+                <div class="col-md-12">
+                    <a href="{{ path('data-fix.dossier.fix-bad-opco-links', {t: 'client'}) }}" class="text-center btn btn-warning text-bold">Corriger les erreurs</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

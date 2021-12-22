@@ -1,0 +1,321 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formateurs - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active"><a href="{{ path('Liste_Formateur_Controller') }}">Liste des formateurs</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Editer</li>
+            </ol>
+
+            <div>
+                {% if is_granted('edit', 'Formateurs') %}
+                    <a href="javascript:void(0)" id="maj" class="update">
+                        <i class="fas fa-edit"></i>
+                        Modifier le fiche formateur
+                    </a>
+                    <a href="{{ path('Liste_Formateur_Controller/editFormateur', { 'id': formateur_form.id.vars.value }) }}" class="text-danger cancel-update d-none">
+                        <i class="fas fa-ban"></i>
+                        Annuler la modification
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">DETAILS FORMATEURS</h2>
+    {{ form_start(formateur_form) }}
+    {{ form_widget(formateur_form.id) }}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-md-8">
+                    <fieldset>
+                        <legend>
+                            {{ form_label(formateur_form.idStatutFmt, 'Statut', {
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                        </legend>
+                        <div class="col-sm-12">
+                            {{ form_widget(formateur_form.idStatutFmt) }}
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Societé</legend>
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        {{ form_label(formateur_form.nomStr, 'Société ou organisme:', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.nomStr) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form_label(formateur_form.noSiret, 'N° SIRET:', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.noSiret) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form_label(formateur_form.nsecuritesocial, 'N° Sécurité Sociale:', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.nsecuritesocial) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Coordonnées</legend>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row form-group">
+                                    <div class="col-sm-6">
+                                        {{ form_label(formateur_form.pieceIdentite, "Piéce d'identité :", {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.pieceIdentite) }}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        {{ form_label(formateur_form.valididtePieceIdentite, 'Validité :', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.valididtePieceIdentite) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.idCivilite, 'Civilté :', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.idCivilite) }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.nom, 'Nom :', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.nom) }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.prenom, 'Prénom:',{
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.prenom) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.Competenceformateur, 'Comptétence/Spécialité:',{
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.Competenceformateur) }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.siteweb, 'Site web:',{
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.siteweb) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.adresses.children[0].children["adresse"], 'Adresse',{
+                                            'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.adresses.children[0].children["adresse"]) }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.adresses.children[0].children["codePostal"], 'Code postale',{
+                                            'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.adresses.children[0].children["codePostal"]) }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.adresses.children[0].children["idVille"], 'Ville:',{
+                                            'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.adresses.children[0].children["idVille"]) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.Telephone, 'Téléphone :', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.Telephone) }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.Email, 'Email :', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.Email) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-sm-12">
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.Portable, 'Portable :', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.Portable) }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ form_label(formateur_form.Fax, 'Fax :', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formateur_form.Fax) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-md-4">
+                    <fieldset>
+                        <legend>Commentaire/Disponibilité</legend>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    {{ form_widget(commentaire_dispo.id) }}
+                                    <div class="text-center col-sm-12">
+                                        {{ form_label(commentaire_dispo.commentaire, 'Commentaire :', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(commentaire_dispo.commentaire) }}
+                                    </div><br />
+                                    <div class="text-center col-sm-12">
+                                        {{ form_label(commentaire_dispo.disponibilite, 'Disponibilité :', {
+                                            'label_attr': {'class': 'font-weight-bold'},
+                                        }) }}
+                                        {{ form_widget(commentaire_dispo.disponibilite) }}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'Common/commentaire-bloc.html.twig' with { prototype: formateur_form.formateurcommentaires.vars.prototype, commentaires: formateur_form.formateurcommentaires } %}
+            {# pour empecher l'application d'afficher un bloc commentaire à la fin #}
+            {% do formateur_form.formateurcommentaires.setRendered %}
+        </div>
+    </div>
+    <div class="col-sm-12 p-3 " id="content_bouton">
+        <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group mr-2" role="group" aria-label="Third group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+    {{ form_end(formateur_form, {'render_rest': false}) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'Common/commentaire-js.html.twig' %}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var adressesville = {{ adressesvilledata|json_encode|raw }}
+            for(let key in adressesville){
+                if(adressesville[key] != null & adressesville[key] > 0){
+                    setVilleValue(key,adressesville[key]);
+                }
+                $('#formateur_adresses_'+key+'_idVille').select2({
+                    placeholder: "-- ville --",
+                    minimumInputLength: 3,
+                    allowClear: true,
+                    ajax: {
+                        url: '{{ path('crm.opca.ville.asynch-search') }}',
+                        data: function (params) {
+                            var query = {
+                                search: params.term
+                            };
+                            // Query parameters will be ?search=[term]&type=public
+                            return query;
+                        }
+                    }
+                });
+            }
+            function setVilleValue(key,idville) {
+                var villeSelect = $('#formateur_adresses_'+key+'_idVille');
+                if ( idville > 0) {
+                    var ville_id = idville;
+                    var url = '{{ path('crm.opca.oneVille.asynch-search', {idVille:'ville_id'}) }}';
+                    url = url.replace('ville_id', ville_id);
+                    $.ajax({
+                        type: 'GET',
+                        url: url
+                    }).then(function (data) {
+                        // create the option and append to Select2
+                        var dataSelected = (data['results'][0]);
+                        var option = new Option(dataSelected.text, dataSelected.text, true, true);
+                        villeSelect.append(option).trigger('change');
+                        // manually trigger the `select2:select` event
+                        villeSelect.trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                    });
+                }
+            }
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                'autoclose': true,
+                'language': 'fr',
+            });
+        });
+
+        $(document).ready(function () {
+            $('#dataformateur *').prop("disabled", true);
+            $('#commentaires_collection .delete-comment').addClass('disabled');
+
+            $('#maj').click(function () {
+                $('#dataformateur *').prop("disabled", false);
+                $('#commentaire_prototype *').prop("disabled", true);
+                $('#commentaires_collection .delete-comment').removeClass('disabled');
+                $('.cancel-update').removeClass('d-none');
+                $(this).addClass('d-none');
+            });
+        });
+
+    </script>
+{% endblock %}

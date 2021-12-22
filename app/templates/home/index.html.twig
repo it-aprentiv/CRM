@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu - CRM Aprentiv v2.0{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4 mt-3 ">
+            <div class="card m-t-3 card-menu">
+                <div class="card-header">
+                    <h3 class="text-well">GESTION</h3>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for menu_gestion in user_menus.gestion %}
+                        <li class="list-group-item list-menu">
+                            <a class="menu" href="{{ menu_gestion.urlmenu is not empty ?  path(menu_gestion.urlmenu) : '#'}}">
+                                {{ menu_gestion.nomMenu }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4 mt-3">
+            <div class="card card-menu">
+                <div class="card-header">
+                    <h3 class="text-well">CREATION</h3>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for menu_creation in user_menus.creation %}
+                        <li class="list-group-item list-menu">
+                            <a class="d-block w-100 menu" href="{{ menu_creation.urlmenu is not empty ?  path(menu_creation.urlmenu) : '#'}}">
+                                {{ menu_creation.nomMenu }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+{% endblock %}

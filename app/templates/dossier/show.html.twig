@@ -1,0 +1,166 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dossier - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/wickedpicker.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active"><a href="{{ path('Liste_Dossiers_Controller') }}">Liste des Dossiers</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Détails dossier</li>
+            </ol>
+
+            <div>
+                {% if is_granted('edit', 'Dossiers') %}
+                    <a href="javascript:void(0)" class="update">
+                        <i class="fas fa-edit"></i>
+                        Modifier le dossier
+                    </a>
+                    <a href="javascript:void(0)" class="text-danger cancel-update d-none">
+                        <i class="fas fa-ban"></i>
+                        Annuler la modification
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">DETAIL DU DOSSIER</h2>
+    {# BEGIN FORMULAIRE DOSSIER #}
+        {% include 'dossier/part/dossier-form.html.twig' %}
+    {# FIN FORMULAIRE DOSSIER #}
+
+    {# envoyer les valeurs chcisis #}
+    <form id="pagedegarde-form" action="{{ path("Dossier_Generate_Doc", {id: dossier.id,type: 4}) }}" target="_blank" method="post" style="display: none;">
+        <input type="hidden" id="pgarde-client" name="client"/>
+        <input type="hidden" id="pgarde-opca" name="opca" />
+        <input type="hidden" id="pgarde-intitstage" name="intitstage"/>
+        <input type="hidden" id="pgarde-datedebut" name="datedebut"/>
+        <input type="hidden" id="pgarde-datefin" name="datefin"/>
+        <input type="hidden" id="pgarde-montant" name="montant"/>
+    </form>
+
+{% endblock %}
+
+{% block modal %}
+    <!--- Modal formation --->
+    {% include 'dossier/part/calendrier.html.twig' with { formation_dates : formated_formation_dates } %}
+
+    <div id="confirm-delete-date-modal" class="modal fade">
+        <div class="modal-body" role="dialog">
+            Confirmer la suppression ?
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-primary" id="confirm-delete-date">Supprimer</button>
+            <button type="button" data-dismiss="modal" class="btn btn-secondary" id="#cancel-delete-date">Annuler</button>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modaldossierimpre">
+        <div class="modal-dialog modal-dialog-centered no-disabled modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edition courrier</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-12 p-3 " id="content_bouton">
+                        <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group mr-2 " role="group" aria-label="First group">
+                                <a href="{{ path("Dossier_Generate_Doc", {id: dossier.id,type: 1}) }}" class="btn btn-primary btn-block">ECD</a>
+                            </div>
+                            <div class="btn-group mr-2" role="group" aria-label="Third group">
+                                <a href="{{ path("Dossier_Generate_Doc", {id:dossier.id,type: 2}) }}" class="btn btn-primary btn-block">ELE</a>
+                            </div>
+                            <div class="btn-group mr-2" role="group" aria-label="Third group">
+                                {% if opco_is_fifpl is defined %}
+                                    {# SI OPCO = FIFPL => afficher le choix du document à editer #}
+                                    <a href="javascript:void(0)" id="show-fifpl-choices" class="btn btn-primary btn-block">IMP</a>
+                                {% else %}
+                                    <a href="{{ path("Dossier_Generate_Doc", {id:dossier.id,type: 3}) }}" class="btn btn-primary btn-block">IMP</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                            
+                        <p class="text-center mt-3 d-none" id="fifpl-choices">
+                            <a href="{{ path("Dossier_Generate_Doc", {id:dossier.id,type: 3, target: 'FIFPL' }) }}" class="d-inline-block btn btn-dark">FIFPL</a>
+                            <a href="{{ path("Dossier_Generate_Doc", {id:dossier.id,type: 3, target: 'FIFPL2' }) }}" class="d-inline-block btn btn-dark">FIFPL2</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="emmargementpapier">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Selectionner</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="col-sm-12 p-3 " id="content_bouton">
+                        <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group mr-2 " role="group" aria-label="First group">
+                                <label class="mr-2 font-weight-bold" for="inlineFormCustomSelectStag">Stagiaire</label>
+                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelectStag">
+                                    {% for stagiaire in listestagiaires %}
+                                        <option value="{{ stagiaire.id }}">{{ stagiaire.prenom }} {{ stagiaire.nom }} ({{ stagiaireemail[loop.index - 1]["email"] }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group mr-2" role="group" aria-label="Third group">
+                            <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-secondary mb-2 mr-3">Annuler</button>
+                        </div>
+                        <div class="btn-group mr-2" role="group" aria-label="Third group">
+                            <button type="button" class="btn btn-primary mb-2" id="creeremmargementdoc">Valider</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    {% include 'dossier/part/dossier-autocomplete-js.html.twig' with {
+        listAutocomplete: listAutocomplete,
+        opcaId: doc_form.idOpca.vars.id,
+        numInterne: doc_form.ref.vars.id,
+        datefin: doc_form.dateFinPeriode.vars.id
+    }
+    %}
+    {% include 'Common/commentaire-js.html.twig' with { addAutocomplete: 'addAutocomplete' } %}
+    {% include 'Common/stagiaire-js.html.twig' %}
+    {% include 'Common/client-ajax-js.html.twig' with { attrs: doc_form.idClient.vars } %}
+    {% include 'Common/opca-ajax-js.html.twig' with { attrs: doc_form.idOpca.vars } %}
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+
+    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js" type="text/javascript"></script-->
+    <script src="{{ asset('assets/js/wickedpicker.js') }}"></script>
+    {% include 'Common/collection-function-js.html.twig' %}
+    {% include 'Common/dossier-js.html.twig'%}
+
+{% endblock %}

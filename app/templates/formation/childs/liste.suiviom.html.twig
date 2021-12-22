@@ -1,0 +1,63 @@
+<table class="table table-striped table-borderless col-sm-12 mt-3">
+    <thead>
+    <tr class="row">
+        <th class="col-sm">Réception facture</th>
+        <th class="col-sm">Mois facture</th>
+        <th class="col-sm">Heure fait</th>
+        <th class="col-sm">Heure restant</th>
+        <th class="col-sm">Date de la fature</th>
+        <th class="col-sm">N° de la fature</th>
+        <th class="col-sm">Montant HT</th>
+        <th class="col-sm">Date validation</th>
+    </tr>
+    </thead>
+    <tbody id="suiviom_collection">
+    {% if formation_form.vars.data.suiviMissions|length > 0 %}
+    {% for form in formation_form.suiviMissions %}
+            <tr class="row">
+                <td class="col-sm row">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.recepfac, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.moisfac, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.heurefait, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.heurerestant, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.datefac, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.numfac, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.montantht, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.datevalidation, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>
+</table>
+

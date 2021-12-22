@@ -1,0 +1,68 @@
+<script>
+    $("#propal_durrej").on('keyup',function(){
+        if($("#propal_durreh").val() == ''){
+            if($(this).val() > 0){
+                $("#propal_durreh").removeAttr('required');
+            }
+            if($(this).val() == ''){
+                $("#propal_durreh").attr('required','required');
+            }
+        }
+    });
+    $("#propal_durreh").on('keyup',function(){
+        if($("#propal_durrej").val() == ''){
+            if($(this).val() > 0) {
+                $(this).attr('required','required');
+                $("#propal_durrej").removeAttr('required');
+            }
+            if($(this).val() == ''){
+                $(this).attr('required','required');
+                $("#propal_durrej").attr('required','required');
+            }
+        }
+    });
+    
+    {# APR-129 : Ajout nouveau champ : TVA et coût TTC   #}
+    function calculerTTC() {
+        var coutHT = common.parseMoney($('#propal_coutht').val());
+        var tva = common.parseMoney($('#propal_montantTVA').val());
+        var montantTVA = facture.calculerMontantTVA(coutHT, tva);
+        var ttc = coutHT + montantTVA;
+        $('#propal_coutTTC').val(common.formatMoney(ttc));
+    }
+        
+    $("#propal_coutht, #propal_montantTVA").on('keyup blur', function() {
+        calculerTTC();
+    });
+    
+    $(function() {
+        calculerTTC();
+    });
+    
+    /* APR-129: Après avoir choisi le client : renseigner automatiquement les champs :
+                    Numéro/voie,
+                    Code postal et ville */
+    $('#propal_clientpropal').on('change', function(){
+        var client = $(this).val();
+        $.ajax({
+            url: "{{ path('propal_get_address_client') }}",
+            type: 'get',
+            data: {'idClient': client},
+            success: function (data) {
+                $('#propal_adresse').val(data['address']);
+                $('#propal_codepostal').val(data['codePostal']);
+                //ville
+                var ville = data['ville'];
+                var newOption = new Option(ville['nomVille'], ville['nomVille'], true, true);
+                $('#propal_ville').append(newOption).trigger('change');
+                // APR-129 : suite
+                $('#propal_entitypropal').val(data['entite_id']);
+                $('#propal_commercialpropal').val(data['commercial_id']);
+                $('#propal_telephone').val(data['telephone']);
+                $('#propal_email').val(data['mail']);
+            }
+        });
+    });
+    
+    {# FIN APR-129 : Ajout nouveau champ : TVA et coût TTC   #}
+</script>

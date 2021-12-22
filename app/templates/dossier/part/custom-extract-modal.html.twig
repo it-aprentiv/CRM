@@ -1,0 +1,111 @@
+<div class="modal fade" id="{{ id }}-modal" tabindex="-1" role="dialog" aria-labelledby="{{ id }}-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="{{ id }}-modal-title">{{ titleModal }}</h5>
+                <button type="button" class="close not-disabling" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger check-missing" style="display: none;">
+                    <div class="d-flex justify-content-center"><p>Veuillez Sélectionner un élément a afficher.</p></div>
+                </div>
+                <form class="form list-filter" id="{{ id }}-form" target="_blank" action="{{ path('crm.dossier.extract') }}" method="post">
+                    <div class="form-row">
+                        <div class="col-md-4  column-to-display">
+                            <div class="extract-checkbox-bloc">
+                                {% if status is not empty %}
+                                    <h4>Statuts dossiers</h4>
+                                    {% for statut in status %}
+                                        <div class="form-group row">
+                                            <div class="col-md-8">
+                                                <label class="form-check-label" for="{{ id }}-statut-{{ statut.id }}">{{ statut.statut }}</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input id="{{ id }}-statut-{{ statut.id }}" name="filter[statut][]" class="form-check-input display-field" type="checkbox" value="{{ statut.id }}" />
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            {% if status is not empty %}
+                                <div class="form-check">
+                                    <input id="displayAllStatus-{{ id }}" type="checkbox" class="form-check-input display-all" name="filter[displayAll]" value="true" />
+                                    <label class="form-check-label " for="displayAllStatus-{{ id }}" >Tout sélectionner</label>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            {% if datePaiement is defined %}
+                                <h4>Date de paiement</h4>
+                                <div class="form-row">
+                                    <div class="col-md-5">
+                                        <input class="form-control js-datepicker-month" type="text" name="filter[moiscom]" placeholder="Mois..." />
+                                    </div>
+                                    <div class="d-flex justify-content-center py-10">&nbsp; - &nbsp;</div>
+                                    <div class="col-md-6">
+                                        <input class="form-control js-datepicker-year" type="text" name="filter[anneecom]" placeholder="Année..." />
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if allCommercials is defined %}
+                                <h4>Commercial</h4>
+                                <div class="form-group">
+                                    <select name="filter[commercial]" class="form-control">
+                                        <option value="">Tous</option>
+                                        {% for commercial in allCommercials %}
+                                            <option value="{{ commercial.id }}">{{ commercial.nomPrenom }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            {% endif %}
+                            <h4>Période</h4>
+                            <div class="form-row">
+                                <div class="col-md-6 py-2">
+                                    <input class="form-control js-datepicker-month" type="text" name="filter[debut_month]" placeholder="Mois début..." autocomplete="off"/>
+                                </div>
+                                <div class="col-md-6 py-2">
+                                    <input class="form-control js-datepicker-year" type="text" name="filter[debut_year]" placeholder="Année début ..." autocomplete="off"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6 py-2">
+                                    <input class="form-control js-datepicker-month" type="text" name="filter[fin_month]" placeholder="Mois fin..." autocomplete="off"/>
+                                </div>
+                                <div class="col-md-6 py-2">
+                                    <input class="form-control js-datepicker-year" type="text" name="filter[fin_year]" placeholder="Année fin..." autocomplete="off"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 column-to-display">
+                            <h4>Elements à afficher</h4>
+                            <div class="extract-checkbox-bloc">
+                                {% for key, libelle in displayColumns %}
+                                    <div class="form-group row">
+                                        <div class="col-md-8">
+                                            <label class="form-check-label" for="{{ id }}-column-{{ key }}">{{ libelle }}</label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input id="{{ id }}-column-{{ key }}" name="filter[columns][]" class="form-check-input display-field" type="checkbox" value="{{ key }}" />
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <input type="{{ id }}-column-" />
+                            </div>
+                            <div class="form-check">
+                                <input id="displayAllColumns-{{ id }}" type="checkbox" class="form-check-input display-all" name="filter[displayAll]" value="true" />
+                                <label class="form-check-label " for="displayAllColumns-{{ id }}" >Tout sélectionner</label>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="filtreextract" value="{{ typeExtract }}" />
+                </form>
+            </div>
+            <div class="modal-footer list-filter">
+                <button type="submit" name="filtreextract" data-form="#{{ id }}-form" class="btn btn-info submit-extract" >Continuer</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>

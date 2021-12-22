@@ -1,0 +1,96 @@
+<fieldset class="position-relative col-md-12">
+    <legend>Commentaires</legend>
+    <div class="position-absolute plus-link">
+        <a href="javascript:void(0)" id="btnajoutcom">
+            <span class="fa-stack fa-1x">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+            </span>
+        </a>
+    </div>
+    <table style="display: none">
+        <thead id="commentaire_prototype">
+            {% block comment_row %}
+                {% if indexRow is not defined %}
+                    {% set indexRow = '__name__' %}
+                {% endif %}
+                {% if attributes is not defined %}
+                    {% set attributes = { 'attr': { 'disabled': true } } %}
+                {% endif %}
+                <tr class="row" id="commentaire_row-{{ indexRow }}">
+                    {{ form_widget(prototype.id, attributes) }}
+                    <td class="col-sm">
+                        {{ form_widget(prototype.dateAdd, attributes) }}
+                        {{ form_errors(prototype.dateAdd) }}
+                    </td>
+                    <td class="col-sm">
+                        {{ form_widget(prototype.texteNote, attributes) }}
+                        {{ form_errors(prototype.texteNote) }}
+                    </td>
+                    {% if not prototype.idAction.vars.disabled %}
+                    <td class="col-sm">
+                        {{ form_widget(prototype.idAction, attributes) }}
+                        {{ form_errors(prototype.idAction) }}
+                    </td>
+                    {% endif %}
+                    <td class="col-sm">
+                        {{ form_widget(prototype.dateAction, attributes) }}
+                        {{ form_errors(prototype.dateAction) }}
+                    </td>
+                    {% if not prototype.idUserAction.vars.disabled %}
+                    <td class="col-sm">
+                        {{ form_widget(prototype.idUserAction, attributes) }}
+                        {{ form_errors(prototype.idUserAction) }}
+                    </td>
+                    {% endif %}
+                    {% if not prototype.idActionStatut.vars.disabled %}
+                    <td class="col-sm">
+                        {{ form_widget(prototype.idActionStatut, attributes) }}
+                        {{ form_errors(prototype.idActionStatut) }}
+                    </td>
+                    {% endif %}
+                     <td class="col-sm d-none">
+                        {{ form_widget(prototype.idUserAdd, attributes) }}
+                        {{ form_errors(prototype.idUserAdd) }}
+                    </td>
+                    <td>
+                        <div>
+                            <a href="javascript:void(0)" class="delete-comment fa-2x" title="Supprimer" data-idrow="commentaire_row-{{ indexRow }}">
+                                <i class="fas fa-trash-alt text-danger"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endblock %}
+        </thead>
+    </table>
+    <table class="table table-striped table-borderless col-sm-12 mt-3">
+        <thead>
+            <tr class="row">
+                <th class="col-sm">Date création</th>
+                <th class="col-sm">Commentaires</th>
+                {% if not prototype.idAction.vars.disabled %}
+                <th class="col-sm">Action</th>
+                {% endif %}
+                <th class="col-sm">Date Action</th>
+                {% if not prototype.idUserAction.vars.disabled %}
+                <th class="col-sm">Qui</th>
+                {% endif %}
+                {% if not prototype.idActionStatut.vars.disabled %}
+                <th class="col-sm">Statut action</th>
+                {% endif %}
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="commentaires_collection">
+            {% set rowNum = 0 %}
+            {% for commentaire in commentaires %}
+                {# utiliser les info du commentaire pour construire le bloc comment_row #}
+                {% set indexRow = loop.index %}
+                {% set attributes = {} %}
+                {% set prototype = commentaire %}
+                {{ block('comment_row') }}
+            {% endfor %}
+        </tbody>
+    </table>
+</fieldset>

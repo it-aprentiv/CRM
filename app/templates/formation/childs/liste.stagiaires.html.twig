@@ -1,0 +1,51 @@
+<table class="table table-striped table-borderless col-sm-12 mt-3">
+    <thead>
+    <tr class="row">
+        <th class="col-sm">Nom</th>
+        <th class="col-sm">Prénom</th>
+        <th class="col-sm">Email</th>
+        <th class="col-sm">Date de naissance</th>
+        <th class="col-sm">Niveau d'etude</th>
+        <th class="col-sm">N° sécurité social</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if formation_form.stagiaires|length > 0 %}
+        {% for form in formation_form.stagiaires %}
+            <tr class="row">
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.nom, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.prenom, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.Email, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.dateNaissance, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.niveauetude, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+                <td class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_widget(form.nsecuritesocial, {'attr': {'disabled': 'true'}} ) }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>
+</table>
+

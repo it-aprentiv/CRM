@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Authentification - CRM Aprentiv{% endblock %}
+
+{% block header %}
+    {# Pas de header dans page login  #}
+{% endblock %}
+
+{% block body %}
+
+    <div id="login">
+        <h2 class="text-center text-white pt-5">
+            <img src="{{ asset('crm/images/aprentiv-logo.png') }}" alt="CRM Aprentiv"/>
+            C.R.M
+        </h2>
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div class="col-md-12">
+                        <form id="login-form" class="form" action="" method="post">
+                            <div class="card">
+                                <div class="card-header card-header-dark">
+                                    <h3 class="text-center text-white">AUTHENTIFICATION - CRM</h3>
+                                </div>
+                                <br>
+                                <div class="row vdivide">
+                                    <div class="col-md-5">
+                                        <img id="cle-img" src="{{ asset('crm/images/authentification_cle.png') }}" alt="login"/>
+                                    </div>
+                                    <div class="col-md-7 no-disabled">
+                                        <div class="card-body">
+                                            {% if error %}
+                                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                            {% endif %}
+                                            <div class="form-group">
+                                                <label for="username" class="text-theme-dark">Nom d'utilisateur </label><br>
+                                                <input type="text" name="username" value="{{ last_username }}" id="username" class="form-control" autocomplete="off">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password" class="text-theme-dark">Mot de passe</label><br>
+                                                <input type="password" name="password" id="password" class="form-control">
+                                            </div>
+                                            <div class="form-group text-center">
+                                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                                <input type="submit" name="submit" class="btn btn-primary btn-theme-primary btn-md" value="Se connecter">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+
+        <div class="fixed-bottom door-footer"></div>
+        <img id="door-img" src="{{ asset('crm/images/authentification-porte.png') }}" class="fixed-bottom" alt="door"/>
+    </div>
+
+{% endblock %}

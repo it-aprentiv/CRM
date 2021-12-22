@@ -1,0 +1,540 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition formation - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item">
+                    <a href="{{ path('Liste_Formation_Mise_Place_Controller') }}">Formations</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Détails formation</li>
+            </ol>
+        </div>
+    </nav>
+
+    <h2 class="text-center mt-2 text-primary">EDITION FORMATION {{ type_formation|translateLetterToWord|upper }}</h2>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="col-sm-12">
+        {{ form_start(formation_form) }}
+        <div class="row well">
+            {% if 'A' == (type_formation) or 'S' == (type_formation) %}                
+                <div class="col-sm">
+                    <div class="form-group text-center">
+                        {{ form_label(formation_form.idClient, 'Société', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                        {{ form_widget(formation_form.idClient, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="col-sm">
+                <div class="form-group text-center">
+                    {{ form_label(formation_form.idStructure, 'Structure', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                    {{ form_widget(formation_form.idStructure, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group text-center">
+                    {{ form_label(formation_form.ref, 'N° OM', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                    {{ form_widget(formation_form.ref, {'attr': {'class': 'formation-field'} }) }}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group text-center">
+                    {{ form_label(formation_form.dateAccord, 'Date OM', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                    {{ form_widget(formation_form.dateAccord, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group text-center">
+                    {{ form_label(formation_form.dossierType, 'Type', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                    {{ form_widget(formation_form.dossierType) }}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group text-center">
+                    {{ form_label(formation_form.idStatut, 'Statut OM', {
+                        'label_attr': {'class': 'font-weight-bold'}
+                    }) }}
+                    {{ form_widget(formation_form.idStatut, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row well">
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group text-center">
+                                    <label class="font-weight-bold">Lieu de stage</label>
+                                    <nav class="nav nav-tabs">
+                                        {% set address_vivienne = constant('App\\Constants\\AddressFormation::VIVIENNE_ADDRESS') %}
+                                        {% if 'A' == type_formation %}
+                                            <a class="nav-item nav-link {% if address_vivienne == formation_form.lieu.vars.value %} active {% endif %}" href="#p1" data-toggle="tab">Vivienne</a>
+                                            <a class="nav-item nav-link {% if address_vivienne != formation_form.lieu.vars.value and formation_form.lieu.vars.value == address_societe %} active {% endif %}" href="#p2" data-toggle="tab">Client</a>
+                                            <a class="nav-item nav-link {% if address_vivienne != formation_form.lieu.vars.value and formation_form.lieu.vars.value != address_societe %} active {% endif %}" href="#p3" data-toggle="tab">Autre</a>
+                                        {% elseif 'R' == type_formation %}
+                                            <a class="nav-item nav-link {% if address_vivienne == formation_form.lieu.vars.value %} active {% endif %}" href="#p1" data-toggle="tab">Vivienne</a>
+                                        {% elseif 'S' == type_formation %}
+                                            <a class="nav-item nav-link {% if address_vivienne != formation_form.lieu.vars.value and formation_form.lieu.vars.value == address_societe %} active {% endif %}" href="#p2" data-toggle="tab">Client</a>
+                                            <a class="nav-item nav-link {% if address_vivienne != formation_form.lieu.vars.value and formation_form.lieu.vars.value != address_societe %} active {% endif %}" href="#p3" data-toggle="tab">Autre</a>
+                                        {% endif %}
+                                    </nav>
+                                    <div class="tab-content">
+                                        {% if 'A' == type_formation %}
+                                            <div id="p1" class="tab-pane {% if address_vivienne == formation_form.lieu.vars.value %} active {% endif %}" >
+                                                {% if address_vivienne == formation_form.lieu.vars.value %}
+                                                    {{ form_widget(formation_form.lieu, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                                {% endif %}
+                                            </div>
+                                            <div class="tab-pane {% if address_vivienne != formation_form.lieu.vars.value and formation_form.lieu.vars.value == address_societe %} active {% endif %}" id="p2">
+                                                {% if address_vivienne != formation_form.lieu.vars.value %}
+                                                    <input type="text" placeholder="{{ address_societe }}" disabled="true">
+                                                {% endif %}
+                                            </div>
+                                            <div class="tab-pane {% if address_vivienne != formation_form.lieu.vars.value and formation_form.lieu.vars.value != address_societe %} active {% endif %}" id="p3">
+                                                {% if address_vivienne != formation_form.lieu.vars.value and formation_form.lieu.vars.value != address_societe %}
+                                                    {{ form_widget(formation_form.lieu, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                                {% endif %}
+                                            </div>
+                                        {% elseif 'R' == type_formation %}
+                                            <div class="tab-pane {% if address_vivienne == formation_form.lieu.vars.value %} active {% endif %}" id="p1">
+                                                {% if address_vivienne == formation_form.lieu.vars.value %}
+                                                    {{ form_widget(formation_form.lieu, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                                {% endif %}
+                                            </div>
+                                        {% elseif 'S' == type_formation %}
+                                            <div class="tab-pane {% if address_vivienne != formation_form.lieu.vars.value and formation_form.lieu.vars.value == address_societe %} active {% endif %}" id="p2">
+                                                <input type="text" class="form-control" placeholder="{{ address_societe }}" disabled="true">
+                                            </div>
+                                            <div class="tab-pane {% if address_vivienne != formation_form.lieu.vars.value and formation_form.lieu.vars.value != address_societe %} active {% endif %}" id="p3">
+                                                {% if address_vivienne != formation_form.lieu.vars.value and formation_form.lieu.vars.value != address_societe %}
+                                                    {{ form_widget(formation_form.lieu, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        <input type="hidden" id="address_client" value="{{ address_societe }}">
+                                    </div>
+                                </div>
+                                {% if 'A' == type_formation or 'R' == type_formation %}
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group text-center">
+                                                {{ form_label(formation_form.dureeJours, 'Durée stage en J', {
+                                                    'label_attr': {'class': 'font-weight-bold'}
+                                                }) }}
+                                                {{ form_widget(formation_form.dureeJours, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            {{ form_label(formation_form.dureeHeures, 'Durée stage en H', {
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(formation_form.dureeHeures, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group text-center">
+                                                {{ form_label(formation_form.dureeHeures, 'Du', {
+                                                    'label_attr': {'class': 'font-weight-bold'}
+                                                }) }}
+                                                {{ form_widget(formation_form.dateDebutPeriode, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group text-center">
+                                                {{ form_label(formation_form.dureeHeures, 'Au', {
+                                                    'label_attr': {'class': 'font-weight-bold'}
+                                                }) }}
+                                                {{ form_widget(formation_form.dateFinPeriode, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-6">
+                                {% if 'S' == type_formation %}
+                                    <div class="form-group text-center">
+                                        {{ form_label(formation_form.soustraitance, 'Sous-traitant', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formation_form.soustraitance, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                    </div>
+                                {% endif %}
+
+                                {% if 'A' == type_formation or 'R' == type_formation %}
+                                    <div class="form-group text-center">
+                                        {{ form_label(formation_form.idFormateur, 'Formateur', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formation_form.idFormateur, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group text-center">
+                                    {{ form_label(formation_form.nom, 'Intitulé du stage', {
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(formation_form.nom, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if 'A' == type_formation or 'R' == type_formation %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {% if oFormation.stagiaires %}
+                                {%  set param = constant('\\App\\Constants\\ParamDossierStagiaire::DOSSIER_STAGIAIRE') %}
+                                {% include 'Common/stagiaire-bloc.html.twig' with { prototype: formation_form.stagiaires.vars.prototype, stagiaires: formation_form.stagiaires, param_dossier_stagiaire: param } %}
+                                {% do formation_form.stagiaires.setRendered %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-sm-4">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-header font-weight-bold">Prix vente HT</div>
+                                <div class="card-body">
+                                    {% if 'A' == type_formation or 'R' == type_formation %}
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pvTarifJ, 'Tarif par J', {
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(formation_form.pvTarifJ, {'attr': {'disabled': 'true', 'class': 'formation-field money-format'}} ) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pvTarifDj, 'Tarif par 1/2 J', {
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(formation_form.pvTarifDj, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pvTarifH, 'Tarif par H', {
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(formation_form.pvTarifH, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        {{ form_label(formation_form.pvTotalHt, 'Total HT', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formation_form.pvTotalHt, {'attr': {'disabled': 'true', 'class': 'formation-field money-format'}} ) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-header font-weight-bold">Coût formateur HT</div>
+                                <div class="card-body">
+                                    {% if 'A' == type_formation or 'R' == type_formation %}
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pfmteurJ, 'Tarif par J', {
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(formation_form.pfmteurJ, {'attr': {'disabled': 'true', 'class': 'formation-field money-format'}} ) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pfmteurDj, 'Tarif par 1/2 J', {
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(formation_form.pfmteurDj, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(formation_form.pfmteurH, 'Tarif par H', {
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(formation_form.pfmteurH, {'attr': {'disabled': 'true', 'class': 'formation-field'}} ) }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        {{ form_label(formation_form.pfmteurTotalHt, 'Total HT', {
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(formation_form.pfmteurTotalHt, {'attr': {'disabled': 'true', 'class': 'formation-field money-format'}} ) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <p>Marge brute : 
+                                <span  id="marge_brute">
+                                    {% if oFormation.montantMarge %} 
+                                        {{ oFormation.montantMarge|number_format(2, ',', ' ') }} 
+                                    {% else %}
+                                        {{ ((oFormation.pvTotalHt * 1) - (oFormation.pfmteurTotalHt * 1)) |number_format(2, ',', ' ') }}
+                                    {% endif %}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <br>
+        <div class="row" id="suivi-om">
+            <fieldset>
+                <legend>ORDRES DE MISSION</legend>
+                {% if oFormation.suiviMissions %}
+                    {% include 'formation/childs/suiviom-bloc.html.twig' with { prototype: formation_form.suiviMissions.vars.prototype, suiviMissions: formation_form.suiviMissions } %}                
+                    {% do formation_form.suiviMissions.setRendered %}
+                {% endif %}
+            </fieldset>
+        </div>
+        <div class="row">
+            {% if oFormation.commentaires %}
+                {% block commentaires %}
+                    {% include 'Common/commentaire-bloc.html.twig' with { prototype: formation_form.commentaires.vars.prototype, commentaires: formation_form.commentaires } %}                            
+                    {% do formation_form.commentaires.setRendered %}
+                {% endblock %}
+            {% endif %}
+        </div>
+        <div class="row my-5">
+            <div class="col-sm-12">
+                <p class="text-center">
+                    {% if oFormation.dossierType == "Intra" or oFormation.dossierType == "Inter" %}
+                        <a class="btn btn-primary" href="{{ path('formation_export_om_word', {'idFormation': oFormation.id})}}" target="_blank">Ordre de mission</a>
+                    {% endif %}
+                    <a class="btn btn-primary" href="#" id="mail_to_formateur" data-id-formation="{{ (oFormation.idFormateur) ? oFormation.idFormateur.id: '' }}">Mail OM formateur</a>
+                    {% if evaluation is defined and evaluation is not null and evaluation is not empty %}
+                        <a href="{{ path("download_programme_dossier",{'fichier':evaluation}) }}" class="btn btn-primary">Envoie évaluation stagiaires</a>
+                    {% else %}
+                        <a href="#" class="btn btn-primary disabled">Envoie évaluation stagiaires indisponible</a>
+                    {% endif %}
+                    {#<a class="btn btn-primary" data-toggle="modal" data-target="#myModal">Envoie évaluation stagiaires</a>#}
+                    <a class="btn btn-primary" id="recap_for" target="_blank" href="{{ path('export_recap_formation', { 'id': oFormation.id }) }}">Récap formateur</a>
+                    <a href="#" type="button" class="btn btn-primary" id="update_formation">MAJ formation</a>
+                    {% if is_granted('edit', 'Formations') %}
+                        <button style="display: none" type="submit" class="btn btn-danger" id="btn_update_formation">Enregistrer mise à jour</button>
+                    {% endif %}
+                </p>
+            </div>
+
+        </div>
+        {{ form_end(formation_form) }}
+
+        <div class="container">
+            <!-- The Modal -->
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Modal Heading</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <form id="evaluation_stagiaire" action="">
+                                <div class="form-group">
+                                    <label for="email">Adresse email</label>
+                                    <input type="email" id="email" name="email" class="form-control" required>
+                                </div>
+                                <div>
+                                    <label for="objet">Objet</label>
+                                    <input type="text" name="objet" id="objet" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message">Message</label>
+                                    <textarea name="message" id="message" class="form-control" rows="3" required>
+
+                                    </textarea>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Envoyer</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    
+    {{  include ('formation/childs/formation.js.twig') }}
+    {{  include ('Common/commentaire-js.html.twig') }}
+    {{  include ('Common/stagiaire-js.html.twig') }}
+    {{  include ('formation/childs/suiviom-js.twig') }}
+    {% include 'formation/childs/calcul.vente.achat.js.html.twig' with {'typeFormation': type_formation} %}
+    <script>
+        //Cacher les boutons ajout stagiaire, ajout suivi OM, ajout commentaires
+        $('#add_stagiaire, #add_suiviom, #btnajoutcom').attr('style', 'visibility: hidden');
+        $('document').ready(function () {
+            var submit = false;
+            var parentForm = $('form#formation_form');
+
+            // Veroullage des champs stagiaires au chargement de la page
+            $('input[name*="stagiaires"], select[name*="stagiaires"]').attr('disabled', 'disabled');
+
+            //Veroullage des champs ordre de mission au chargement de la page
+            $('input[name*="suiviMissions"], textarea[name*="suiviMissions"], select[name*="suiviMissions"]').attr('disabled', 'disabled');
+
+            //Verouillage des champs suivi ordre de missions
+            $('input[name*="commentaires"], select[name*="commentaires"], textarea[name*="commentaires"]').attr('disabled', 'disabled');
+
+            // Déverouller les champs
+            $('a#update_formation').click(function (e) {
+                e.preventDefault();
+                $('#add_stagiaire, #add_suiviom, #btnajoutcom').attr('style', 'visibility: visible').prop("disabled", false);
+
+
+                if (!submit) { //Si les champs sont déverouillés, alors sousmission formulaire
+                    $('#stagiaires_collection .form-control, #suiviom_collection .form-control, #commentaires_collection .form-control, .formation-field').each(function () {
+                        if (this.hasAttribute('disabled')) {
+                            $(this).removeAttr('disabled');
+                        }
+                    });
+
+                    $('#btn_update_formation').attr('style', 'display: inline');
+                    submit = true;
+                }
+            });
+
+            /** Send email to formateur or relance formateur **/
+            $('#mail_to_formateur, #relance_formateur').click(function (e) {
+                e.preventDefault();
+                var idFormateur = $(this).attr("data-id-formation");
+
+                $.ajax({
+                    url: "{{ path('formation_send_om_formateur') }}",
+                    type: 'POST',
+                    data: {'idFormateur': idFormateur},
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+            /** Fin Send email to formateur **/
+
+            $('.js-datepicker-note').datepicker({
+                'format': 'dd/mm/yyyy',
+                'autoclose': true,
+                'language': 'fr',
+            });
+
+            //Suppression commentaire
+            $('.delete-stagiaire').on('click', function () {
+                removeStagiaire(this);
+            });
+            var dossierNom = $('#formation_nom');
+            var pathurl = '{{ path('crm.dossier.competence.asynch-search') }}';
+            var intitule = {{ intitule|json_encode|raw }};
+                    for (let key in intitule) {
+                if (intitule[key] != null) {
+                    setIntituleStage(intitule[key]);
+                }
+            }
+            function setIntituleStage(intitule) {
+                var intituleSelect = $('#formation_nom');
+                var url = '{{ path('crm.dossier.competence.asynch-search-one', {initule:'intitule'}) }}';
+                url = url.replace('intitule', intitule);
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: 'intitule=' + intitule
+                }).then(function (data) {
+                    // create the option and append to Select2
+                    var dataSelected = (data['results'][0]);
+                    var option = new Option(dataSelected.text, dataSelected.text, true, true);
+                    intituleSelect.append(option).trigger('change');
+                    // manually trigger the `select2:select` event
+                    intituleSelect.trigger({
+                        type: 'select2:select',
+                        params: {
+                            data: data
+                        }
+                    });
+                });
+            }
+            dossierNom.select2({
+                placeholder: "-- Intitulé --",
+                minimumInputLength: 3,
+                allowClear: true,
+                ajax: {
+                    url: pathurl,
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    },
+                    processResults: function (data) {
+                        var dataResults = data.results !== undefined ? data.results : [];
+                        return {
+                            results: $.map(dataResults, function (item) {
+                                return {
+                                    text: item.text,
+                                    id: item.idid
+                                };
+                            })
+                        };
+                    }
+                }
+            });
+        });
+
+                const date_spliter = (fakedate) => {
+    let date = fakedate.split("/");
+    let real_date = new Date(`${date[2]}-${parseInt(date[1])}-${parseInt(date[0])}`)
+    return real_date;
+}
+let date_debut = document.getElementById("formation_dateDebutPeriode")
+let current_set_date = date_debut.value;
+
+setInterval(()=>{
+    if(current_set_date === date_debut.value){
+        return;
+    }else{
+        current_set_date = date_debut.value;
+        $('#formation_dateFinPeriode').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true
+}).datepicker("update",date_spliter(current_set_date)).datepicker('fill'); // setDate()
+    }
+},500)
+    </script>
+{% endblock %}

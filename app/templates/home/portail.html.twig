@@ -1,0 +1,472 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu - CRM Aprentiv v2.0{% endblock %}
+
+{% block body %}
+<h1 class="text-center mt-5">{{ app.user }}</h1>
+
+
+            <div class="row">
+                 <div class="col col-md-3 mb-3 mx-auto">
+                        <canvas id="propals" width="100" height="100"></canvas>
+                    </div> 
+                    {% if app.user == "MUNIER Pascal" %}
+                    <div class="col col-md-3 mb-3 mx-auto">
+                        <canvas id="leads" width="100" height="100"></canvas>
+                    </div>
+                    <div class="col col-md-3 mb-3 mx-auto">
+                        <canvas id="notes" width="100" height="100"></canvas>
+                    </div>
+                    {% endif %}
+                   
+            </div>
+        <a class="btn btn-info btn-portail mb-3" href="#" style=" width:10% !important;margin:0 auto !important;display:block !important;float:none !important;" onclick="btnlegend($(this))">LEGENDE</a>
+                <div class="row">
+                    <div class="col">
+                    <div class="text-center">
+                        <a class="btn btn-info btn-portail" href="{{ path('Liste_Dossiers_Controller', {'commercial': nomCommercial}) }}">VOS DOSSIERS</a>
+                    </div>
+                        
+                        <table class="table table-sm table-striped table-hover mt-2 mb-5 font-weight-bold">
+                            <thead>
+                                <tr class="bg-info text-light">
+                                    <th>Date de création</th>
+                                    <th>Dispositif</th>
+                                    <th>Client</th>
+                                    <th>Intitulé du stage</th>
+                                    <th>Montant signé</th>
+                                    <th>Date estimée pour clôture</th>
+                                    <th>Statut</th>
+                                    <th>OPCO</th>
+                                    <th>Date fin stage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                {% for dossier in paginationDossier %}                                                    
+                                    <tr data-id="{{ dossier.id }}" data-href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id:dossier.id}) }}">
+                                        <td>{{ (( (dossier.dateEnvoi | date('d-m-Y')) == '31-12-1969') or ((dossier.dateEnvoi | date('d-m-Y')) == '01-01-1970') or ((dossier.dateEnvoi | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateEnvoi | date('d-m-Y') }}</td>
+                                        <td>{{ dossier.dispositif }}</td>
+                                        <td>{{ dossier.client }}</td>
+                                        <td>{{ dossier.intituleStage }}</td>
+                                        <td>{{ dossier.montantSigne |number_format(2, ',', ' ') }}</td>
+                                        <td>{{ dossier.dateEnvoi | date_modify('+6 month') | date('d-m-Y') }}</td>
+                                        <td>{{ dossier.statut }}</td>
+                                        <td>{{ dossier.opca }}</td>
+                                         {% if dossier.dateFinPeriode >= currentDate and dossier.dateFinPeriode <= currentDate|date_modify('+5 day') %}
+
+                                                <td class="bg-danger text-white">{{ dossier.dateFinPeriode | date('d-m-Y')}}</td>
+
+                                        {% elseif dossier.dateFinPeriode >= currentDate and dossier.dateFinPeriode <= currentDate|date_modify('+10 day') %}
+
+                                                <td class="bg-warning">{{ dossier.dateFinPeriode | date('d-m-Y')}}</td>
+
+                                        {% elseif dossier.dateFinPeriode >= currentDate %}
+
+                                                <td class="bg-success text-white">{{ dossier.dateFinPeriode | date('d-m-Y')}}</td>
+                                                
+                                        {% else %}
+
+                                                <td class="bg-danger text-white">{{ dossier.dateFinPeriode | date('d-m-Y')}}</td>
+
+                                        {% endif %}
+                                        
+                                        <td style="display: none;">{{ dossier.commercial }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    
+                    <div class="col">
+                    <div class="text-center">
+                        <a class="btn btn-info btn-portail" href="{{ path('Liste_propositions_commerciales_Controller', {'commercial': idCommercial.id}) }}">VOS PROPALES</a>
+                    </div>
+                        
+                        <table class="table table-sm mb-0 table-striped table-hover mt-2 mb-5 font-weight-bold">
+                                    <thead>
+                                    <tr class="bg-info text-light">
+                                        <th>Statut</th>
+                                        <th>Client</th>
+                                        <th>Type</th>
+                                        <th>Nom</th>
+                                        <th>Prénom</th>
+                                        <th>Coût Ht</th>
+                                        <th>Fiabilité</th>
+                                        <th>Date de relance</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for propal in paginationPropal %}
+                                        <tr data-propal-id="{{ propal.idpropal }}" data-href="{{ path('propal_show', { id : propal.idpropal} ) }}">
+                                            <td>{{ propal.statut }}</td>
+                                            <td style="display: none;">{{ propal.commercial }}</td>
+                                            <td>{{ propal.client }}</td>
+                                            <td>{% if propal.type == 1 %} Entreprise {% else %} Particulier {% endif %}</td>
+                                            <td>{{ propal.nom }}</td>
+                                            <td> {{ propal.prenom}} </td>
+                                            {% if propal.coutht is not null %}
+                                            <td> {{ propal.coutht}} €</td>
+                                            {% else %}
+                                            <td> {{ propal.coutht}}</td>
+                                            {% endif %}
+                                            {% if propal.fiabilite == 'Froid' %}
+                                            <td class="bg-info text-white"> {{ propal.fiabilite}} </td>
+                                            {% elseif propal.fiabilite == 'Chaud' %}
+                                            <td class="bg-danger text-white"> {{ propal.fiabilite}} </td>
+                                            {% elseif propal.fiabilite == 'Tiede' %}
+                                            <td class="bg-warning text-white"> {{ propal.fiabilite}} </td>
+                                            {% else %}
+                                            <td> {{ propal.fiabilite}} </td>
+                                            {% endif %}
+                                        {% if propal.daterelance <= currentDate|date_modify('-1 day') and propal.daterelance >=  currentDate|date_modify('-4 day') %}
+
+                                                <td class="bg-warning">{{ propal.daterelance | date('d-m-Y')}}</td>
+
+                                        {% elseif propal.daterelance  <= currentDate|date_modify('-5 day') and propal.daterelance >=  currentDate|date_modify('-9 day') %}
+
+                                                <td class="bg-danger text-white">{{ propal.daterelance | date('d-m-Y')}}</td>
+
+                                        {% elseif propal.daterelance <= currentDate|date_modify('-10 day') %}
+
+                                                <td class="bg-danger text-white">{{ propal.daterelance | date('d-m-Y')}}<i class="fas fa-exclamation-triangle"></i></td>
+                                        
+                                        {% elseif propal.daterelance >= currentDate %}
+
+                                                <td class="bg-success text-white">{{ propal.daterelance | date('d-m-Y')}}</td>        
+
+                                        {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                    </div>
+                        <div class="w-100"></div>
+                    <div class="col"><div class="text-center">
+                        <a class="btn btn-info btn-portail" href="{{ path('Liste_Client_Prospect_Controller', {'commercial': idCommercial.id}) }}">VOS CLIENTS</a>
+                    </div>
+                        
+                        <table class="table table-sm mb-0 table-striped table-hover mt-2 mb-5 font-weight-bold">
+                            <thead>
+                                <tr class="bg-info text-light">
+                                    <th>Societe</th>
+                                    <th>Interlocuteur</th>
+                                    <th>Ville</th>
+                                    <th>OPCO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for contact in paginationClient %}
+                                    <tr data-clientprospect-id="{{ contact.contact_id }}" data-href="{{ path('Fiche_client_prospect_Controller/editClient', { id : contact.contact_id} ) }}">
+                                        <td style="display:none;">{{ contact.statut }}</td>
+                                        <td>{{ contact.societe }}</td>
+                                        <td>{{ contact.nom | ucwords}} {{ contact.prenom | ucwords }}</td>
+                                        <td>{{ contact.ville }}</td>
+                                        <td>{{ contact.opca }}</td>
+                                        <td style="display: none;">{{ contact.commercial }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            </table>
+                    </div>
+                    <div class="col">
+                    <div class="text-center">
+                        <a class="btn btn-info btn-portail" href="{{ path('Liste_Client_Prospect_Controller', {'idType': 1, 'commercial': idCommercial.id }) }}">VOS PROSPECTS</a>
+                    </div>
+                        
+                        <table class="table table-sm mb-0 table-striped table-hover mt-2 mb-5 font-weight-bold">
+                            <thead>
+                                <tr class="bg-info text-light">
+                                    <th>Societe</th>
+                                    <th>Interlocuteur</th>
+                                    <th>Ville</th>
+                                    <th>OPCO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for contact in paginationProspect %}
+                                    <tr data-clientprospect-id="{{ contact.contact_id }}" data-href="{{ path('Fiche_client_prospect_Controller/editClient', { id : contact.contact_id} ) }}">
+                                        <td style="display:none;">{{ contact.statut }}</td>
+                                        <td>{{ contact.societe }}</td>
+                                        <td>{{ contact.nom | ucwords}} {{ contact.prenom | ucwords }}</td>
+                                        <td>{{ contact.ville }}</td>
+                                        <td>{{ contact.opca }}</td>
+                                        <td style="display: none;">{{ contact.commercial }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            </table>
+                    </div>
+                        <div class="w-100"></div>
+                    <div class="col">
+                    <div class="text-center" id="AncreNote">
+                        <a class="btn btn-info btn-portail" href="{{ path('Liste_notes_actions_Controller', {'rappelleur': currentUser, 'actionStatut': 1}) }}">VOS NOTES ET ACTIONS</a>
+                    </div>    
+                        <table class="table table-sm table-striped table-hover mt-2 mb-5 font-weight-bold">
+                            <thead>
+                                <tr class="bg-info text-light">
+                                    <th>Module</th>
+                                    <th>Contact</th>
+                                    <th>Date</th>
+                                    <th>Note/Commentaire</th>
+                                    <th>Action</th>
+                                    <th>Date Action</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for note in paginationNoteResponsable %}
+                                    <tr data-href="{{ path('Liste_notes_actions_Controller/showNote', {id:note.id}) }}">
+                                        <td>{{ noteConstant.getTableLibelle(note.nomTable) }}</td>
+                                        {% if note.nomTable == '1_formation_dossier' %}
+                                        <td>{{ note.client }}</td>
+                                        {% elseif note.nomTable == 'lead' and note.societe is empty %}
+                                        <td>{{ note.nomLead | ucwords}} {{ note.prenomLead | ucwords }}</td>
+                                        {% elseif note.nomTable == 'lead' %}
+                                        <td>{{ note.societe }}</td>
+                                        {% elseif note.nomTable == '1_contact' and note.contact is empty %}
+                                        <td>{{ note.nom | ucwords}} {{ note.prenom | ucwords }}</td>      
+                                        {% elseif note.nomTable == '1_contact' %}
+                                        <td>{{ note.contact }}</td>
+                                        {% else %}
+                                        <td>{{note.nonCon}}</td>
+                                        {% endif %}
+                                        <td>{{ note.date|date('d/m/Y') }}</td>
+                                        <td>{{ note.noteCommentaire }}</td>
+                                        <td>{{ note.action }}</td>
+                                        <td style="display: none;">{{ note.statutAction }}</td>
+                                        
+                                        {% if note.dateAction <= currentDate and note.dateAction >= currentDate|date_modify('-4 day') %}
+
+                                                <td class="bg-warning">{{ note.dateAction|date('d-m-Y')}}</td>
+
+                                        {% elseif note.dateAction  <= currentDate and note.dateAction >= currentDate|date_modify('-9 day') %}
+
+                                                <td class="bg-danger text-white">{{ note.dateAction | date('d-m-Y')}}</td>
+
+                                        {% elseif note.dateAction < currentDate|date_modify('-9 day') %}
+
+                                                <td class="bg-danger text-white">{{ note.dateAction | date('d-m-Y')}}<i class="fas fa-exclamation-triangle"></i></td>
+                                        
+                                        {% elseif note.dateAction >= currentDate %}
+
+                                                <td class="bg-success text-white">{{ note.dateAction | date('d-m-Y')}}</td>        
+
+                                        {% endif %}
+
+                                            <td style="display: none;">{{ note.rappelleur }}{{ note.responsable }}</td>
+                                            <td><a  href="{{ path('note.update', {id:note.id}) }}#AncreNote" class="btn btn-success">Fait</a></td>
+                                        </tr>                                  
+                                    {% endfor %}
+                                </tbody>
+                        </table>
+                    </div>                 
+                </div>
+                
+                    <div class="col"><div class="text-center">
+                        <a class="btn btn-info btn-portail" href="{{ path('Liste_Lead_Controller', {'commercial': idCommercial.id }) }}">VOS LEADS</a>
+                    </div>
+                        
+                        <table class="table table-sm mb-0 table-striped table-hover mt-2 mb-5 font-weight-bold">
+                            <thead>
+                                <tr class="bg-info text-light">
+                                    <th>Nom Prénom</th>
+                                    <th>Société</th>
+                                    <th>Téléphone</th>
+                                    <th>Email</th>
+                                    <th>Ville</th>
+                                    <th>Origine</th>
+                                    <th>Statut</th>
+                                    {% if app.user.idutilisateur == 29 %}
+                                        <th>Commercial</th>
+                                    {% else %}
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for lead in paginationLead %}
+                                    <tr data-lead-id="{{ lead.id }}" data-href="{{ path('Fiche_lead_Controller/editLead', { id : lead.id} ) }}">
+                                        <td>{{ lead.nom | ucwords}} {{ lead.prenom | ucwords }}</td>
+                                        <td>{{ lead.societe }}</td>
+                                        <td>{{ lead.telephone }}</td>
+                                        <td>{{ lead.email }}</td>
+                                        <td>{{ lead.ville}}</td>
+                                        <td>{{ lead.origine }}</td>
+                                        <td>{{ lead.statut }}</td>
+                                    {% if app.user.idutilisateur == 29 %}
+                                        <td>{{ lead.commercial }}</td>
+                                    {% else %}
+                                        <td style="display: none;">{{ lead.commercial }}</td>
+                                    {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            </table>
+        {% endblock %}
+        {% block javascripts %}
+        {{ parent() }}
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js" integrity="sha256-D2tkh/3EROq+XuDEmgxOLW1oNxf0rLNlOwsPIUX+co4=" crossorigin="anonymous"></script>        
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script>
+Chart.register(ChartDataLabels);
+        var myhtml = document.createElement("div");
+                     myhtml.innerHTML = "<h5>Dossier :</h5><p>La date de fin de stage est dans plus de 10 jours</p><p style='background-color:green;padding:10px;width:50px;margin:auto'></p><p>La date de fin de stage est dans 10 jours ou moins</p><p style='background-color:orange;padding:10px;width:50px;margin:auto'></p><p>La date de fin de stage est dans 5 jours ou moins</p><p style='background-color:red;padding:10px;width:50px;margin:auto'></p><br><h5>Propal/Note :</h5><p>La date de relance/d'action n'est pas depassée</p><p style='background-color:green;padding:10px;width:50px;margin:auto'></p><p>La date de relance/d'action est depassée depuis 1 jours</p><p style='background-color:orange;padding:10px;width:50px;margin:auto'></p><p>La date de relance/d'action est depassée depuis 5 jours</p><p style='background-color:red;padding:10px;width:50px;margin:auto'></p><p>La date de relance/d'action est depassée depuis 10 jours</p><p style='background-color:red;width:55px;margin:auto'><i class='fas fa-exclamation-triangle' style='margin-right:3px;'></i></p>";
+
+         function btnlegend(elem)
+         {
+                    swal({
+                    content: myhtml,
+                    icon: 'warning',
+                        })
+        }
+        </script>
+    <script>
+      const ctx2 = document.getElementById('propals').getContext('2d');
+        const propals = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: ['Froid', 'Tiede', 'Chaud'],
+                datasets: [{
+                    data: [{{ propalStats[0] }},{{ propalStats[1] }},{{ propalStats[2] }}],
+                    backgroundColor: [
+                        'rgb(54, 162, 235, 1)',
+                        'rgb(255, 205, 86, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                tooltips: {
+        enabled: false
+    },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'PROPAL',
+                        fullSize:true
+                    },
+        datalabels: {
+            formatter: (value, ctx) => {
+                let sum = 0;
+                let dataArr = ctx.chart.data.datasets[0].data;
+                dataArr.map(data => {
+                    sum += data;
+                });
+                let percentage = (value*100 / sum).toFixed(2)+"%";
+                return percentage;
+            },
+            color: '#fff',
+                }
+                }
+            }
+        });
+    
+{% if app.user == "MUNIER Pascal" %}
+      
+           const ctx = document.getElementById('leads').getContext('2d');
+            const leads = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['En cours', 'Devenu client', 'Devenu prospect', 'Sans suite'],
+                datasets: [{
+                    data: [parseInt({{ leadStats.enCours }}), parseInt({{ leadStats.dClient }}), parseInt({{ leadStats.dProspect }}), parseInt({{ leadStats.sSuite }})],
+                    backgroundColor: [
+                        'rgb(255, 99, 132, 1)',
+                        'rgb(54, 162, 235, 1)',
+                        'rgb(255, 205, 86, 1)',
+                        'rgba(30, 130, 76, 1)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(30, 130, 76, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                tooltips: {
+        enabled: false
+    },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'LEAD',
+                        fullSize:true
+                    },
+                    datalabels: {
+            formatter: (value, ctx) => {
+                let sum = 0;
+                let dataArr = ctx.chart.data.datasets[0].data;
+                dataArr.map(data => {
+                    sum += data;
+                });
+                let percentage = (value*100 / sum).toFixed(2)+"%";
+                return percentage;
+            },
+            color: '#fff',
+                }
+                }
+            }
+        });
+        const ctx3 = document.getElementById('notes').getContext('2d');
+        const myChart3 = new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                labels: ['Fait', 'A faire'],
+                datasets: [{
+                    data: [{{ noteStats.fait }}, {{ noteStats.aFaire }}],
+                    backgroundColor: [
+                        'rgb(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)',
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                tooltips: {
+        enabled: false
+    },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'NOTE',
+                        fullSize:true
+                    },
+                    datalabels: {
+            formatter: (value, ctx) => {
+                let sum = 0;
+                let dataArr = ctx.chart.data.datasets[0].data;
+                dataArr.map(data => {
+                    sum += data;
+                });
+                let percentage = (value*100 / sum).toFixed(2)+"%";
+                return percentage;
+            },
+            color: '#fff',
+                }
+                }
+            }
+        });
+        {% endif %}
+        </script>
+        {% endblock %}

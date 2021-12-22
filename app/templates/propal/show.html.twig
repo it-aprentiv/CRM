@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Propal - CRM Aprentiv v2.0{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active"><a href="{{ path('Liste_propositions_commerciales_Controller') }}">Liste des propositions commerciales</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edition Propal</li>
+            </ol>
+            <div>
+                {% if is_granted('edit', 'Dossiers') %}
+                    <a href="javascript:void(0)" class="update" id="ModifBtn">
+                        <i class="fas fa-edit"></i>
+                        Modifier la proposition
+                    </a>
+                    <a href="javascript:void(0)" class="text-danger cancel-update d-none">
+                        <i class="fas fa-ban"></i>
+                        Annuler la modification
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="page-content">
+        {% for flash_message in app.session.flashBag.get('error') %}
+            <div class="note note-warnning">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+        {% for flash_message in app.session.flashBag.get('success') %}
+            <div class="note note-success">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <h2 class="text-center mt-2 text-nmary">Fiche Proposition Commerciales</h2>
+    <div class="row">
+        <div class="col-sm-12">
+            {{ include('propal/Parts/form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    
+    {% include 'Common/client-ajax-js.html.twig' with { attrs: propal_form.clientpropal.vars } %}
+    {% include 'propal/Parts/propal.js.html.twig' %}
+    <script>
+        $(document).ready(function(){
+            // Ajout valeur par défaut des societés liées selon leur valeur pourle contact
+            var client = {{ client|json_encode|raw }};
+            for (let key in client){
+                if(client.hasOwnProperty(key)){
+                    if(client[key] != null){
+                        var dataselect = {
+                            ide: key,
+                            text: client[key]
+                        }
+                        var newOption = new Option(dataselect.text, dataselect.ide, true, true);
+                        $("#propal_clientpropal").append(newOption).trigger("change");
+                        $("#propal_clientpropal").find('option[value="'+dataselect.ide+'"]').attr("selected","selected");
+                    }
+                }
+            }
+            var adressesville = {{ ville|json_encode|raw }}
+            for(let key in adressesville){
+                if(adressesville[key] != null & key > 0){
+                    setVilleValue(key,adressesville[key]);
+                }
+            }
+        });
+        
+        function setVilleValue(key,idville) {
+            var villeSelect = $('#propal_ville');
+            if ( idville > 0) {
+                var ville_id = idville;
+                var url = '{{ path('crm.opca.oneVille.asynch-search', {idVille:'ville_id'}) }}';
+                url = url.replace('ville_id', ville_id);
+                $.ajax({
+                    type: 'GET',
+                    url: url
+                }).then(function (data) {
+                    // create the option and append to Select2
+                    var dataSelected = (data['results'][0]);
+                    var option = new Option(dataSelected.text, dataSelected.text, true, true);
+                    villeSelect.append(option).trigger('change');
+                    // manually trigger the `select2:select` event
+                    villeSelect.trigger({
+                        type: 'select2:select',
+                        params: {
+                            data: data
+                        }
+                    });
+                });
+            }
+        }
+        $("#propal_ville").select2({
+            placeholder: "-- ville --",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.opca.ville.asynch-search') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                }
+            }
+        });
+
+        $(".js-datepicker").each(function(){
+            $(this).datepicker({
+                'format':'dd/mm/yyyy',
+                'autoclose': true,
+                'language': 'fr'
+            });
+        });
+        
+        let formation = $('#propal_formation');
+            formation.select2({
+                placeholder: "-- Intitulé stage --",
+                minimumInputLength: 3,
+                allowClear: true,
+                escapeMarkup: function (text) { return text; }, // Fix: erreur d'affichage des caractères
+                ajax: {
+                    url: '{{ path('crm.dossier.competence.asynch-search') }}',
+                    data: function (params) {
+                        var query = {
+                            search: params.term
+                        };
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    },
+                    processResults: function (data) {
+                        var dataResults = data.results !== undefined ? data.results : [];
+                        return {
+                            results: $.map(dataResults, function (item) {
+                                return {
+                                    text: common.escapeHTML(item.text),
+                                    id: item.id
+                                };
+                            })
+                        };
+                    }
+                }
+            });
+const date_spliter = (fakedate) => {
+    let date = fakedate.split("/");
+    let real_date = new Date(`${date[2]}-${parseInt(date[1])}-${parseInt(date[0])}`)
+    return real_date;
+}
+let date_debut = document.getElementById("propal_datedebutpropal")
+let current_set_date = date_debut.value;
+
+setInterval(()=>{
+    if(current_set_date === date_debut.value){
+        return;
+    }else{
+        current_set_date = date_debut.value;
+        $('#propal_datefinpropal').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true
+}).datepicker("update",date_spliter(current_set_date)).datepicker('fill'); // setDate()
+    }
+},500)
+            
+        {% if propal.formation %}
+            var data = {
+                id: "{{ propal.formation.id }}",
+                text: '{{ propal.formation.competence |escape('js') }}',
+            };
+            var newOption = new Option(data.text, data.text, true, true);
+            formation.append(newOption).trigger('change');
+        {% endif  %}
+    </script>
+{% endblock %}

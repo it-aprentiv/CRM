@@ -1,0 +1,845 @@
+    {% extends 'base.html.twig' %}
+
+{% block title %}Client/Prospect - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active"><a href="{{ path('Liste_Client_Prospect_Controller') }}">Liste des clients / Prospects</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Création</li>
+        </ol>
+    </nav>
+
+    <div class="page-content">
+        {% for flash_message in app.session.flashBag.get('error_message') %}
+            <div class="note note-warnning">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+        {% for flash_message in app.session.flashBag.get('success_message') %}
+            <div class="note note-success">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <h2 class="text-center mt-2 text-nmary">FICHE CLIENT / PROSPECT</h2>
+    <div class="row">
+        {{ form_start(contact_forme) }}
+        <div class="col-sm-12">
+
+            <div class="row">
+                <div class="col-sm-9">
+                    <fieldset>
+                        <legend>Infos client</legend>
+                        <div class="row">
+                            <div class="form-group col-md-3 text-center">
+                                {{ form_label(contact_forme.nomStr, 'Société', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contact_forme.nomStr) }}
+                            </div>
+                            <div class="form-group col-md-4 text-center">
+                                {{ form_label(contact_forme.idSecteur, 'Activité entreprise',{
+                                    'label_attr': {'class': 'font-weight-bold required'}
+                                }) }}
+                                <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalActiviteAdd" data-forselect="ctn"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                                {{ form_widget(contact_forme.idSecteur) }}
+                            </div>
+                            <div class="form-group col-md-3 text-center">
+                                {{ form_label(contact_forme.noSiret, 'Siret entreprise',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contact_forme.noSiret,{'attr':{'pattern':'.{14,14}','class':'siret_format'}}) }}
+                            </div>
+                            <div class="form-group col-md-2 text-center">
+                                {{ form_label(contact_forme.noNaf, 'NAF entreprise', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contact_forme.noNaf,{'attr':{'pattern':'[0-9]{4}[A-Za-z]{1}','class':'naf_format'}}) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2 text-center">
+                                {{ form_label(contact_forme.effectif, 'Nbr salariés', {
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contact_forme.effectif) }}
+                            </div>
+                            <div class="form-group col-md-3 text-center">
+                                {{ form_label(contact_forme.opca, 'OPCO1',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                <!-- <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalopcaadd"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a> -->
+                                {{ form_widget(contact_forme.opca,{'attr':{'class':'form-control'}}) }}
+                            </div>
+                            
+                            <div class="form-group col-md-2 text-center">
+                                {{ form_label(contact_forme.noAdherent, 'N° Adhérent',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contact_forme.noAdherent) }}
+                            </div>
+
+                            <div class="col-md-3 text-center">
+
+                                {{ form_label(contact_forme.id_commercial, 'Commercial',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contact_forme.id_commercial, { attr: {autocomplete : 'off'} } ) }}
+        
+                            </div>
+                            
+                            <div class="col-md-2 text-center">
+                                {{ form_label(contact_forme.structure, 'Entité',{
+                                    'label_attr': {'class': 'font-weight-bold required'}
+                                }) }}
+                                {{ form_widget(contact_forme.structure) }}
+                            </div>
+                        {#champ "sexe" en base de donnée inutilisé, je lai donc utilisé pour y stocké les ID des OPCO#}
+                            <div class="form-group col-md-10 text-center">
+                                    {{ form_label(contact_forme.sexe, 'Identifiants OCPO', {
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.sexe) }}
+                                </div>
+                        </div>
+                    </fieldset>
+                    
+                    <fieldset class="mt-3">
+                        <legend>Infos TNS</legend>
+                        <div class="row">
+                            <div class="form-group col-md-3 text-center">
+                                {{ form_label(contact_forme.siretTns, 'Siret TNS / N° TI',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contact_forme.siretTns,{'attr':{'pattern':'.{14,14}','class':'number-format','class':'siret_format'}}) }}
+                            </div>
+                            <div class="col-md-2 text-center">
+                                {{ form_label(contact_forme.nafTns, 'NAF TNS',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contact_forme.nafTns,{'attr':{'pattern':'[0-9]{4}[A-Za-z]{1}','class':'naf_format'}}) }}
+                            </div>
+                            <div class="col-md-4 text-center">
+                                {{ form_label(contact_forme.activiteTns, 'Activité TNS',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalActiviteAdd" data-forselect="tns"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                                {{ form_widget(contact_forme.activiteTns) }}
+                            </div>
+                            <div class="text-center col-md-3">
+                                {{ form_label(contact_forme.idOpcaTns, 'OPCO TNS',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contact_forme.idOpcaTns) }}
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <fieldset class="mt-3">
+                        <legend>ADRESSES</legend>
+                        <a href="javascript:void(0)" id="ajoutadresse" class="row plus-link" title="Ajouter une adresse">
+                            <span class="fa-stack fa-1x">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                        <div class="row" id="contact_adresse" data-prototype="{{ form_widget(contact_forme.adresses.vars.prototype)|e('html_attr') }}">
+                            <!-- Other adresse -->
+                            {% for adresse in contact_forme.adresses %}
+                                <div class="row col-sm-12 pr-0 form_adresse">
+                                    <button type='button' class='removeaddresseelement close' type='button'><span aria-hidden='true'>×</span></button>
+                                    <div id="contact_adresses_{{ loop.index }}" class="adresseformadded">
+                                        <div class="col-sm-3">
+                                            {{ form_label(adresse.children["adresse"], '',{
+                                                'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                                            }) }}
+                                            {{ form_widget(adresse.children["adresse"]) }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{ form_label(adresse.children["codePostal"], 'Code Postal',{
+                                                'label_attr': {'class': 'font-weight-bold  col-sm-12 text-center'}
+                                            }) }}
+                                            {{ form_widget(adresse.children["codePostal"]) }}
+                                        </div>
+                                        <div class="col-sm-2 text-center">
+                                            {{ form_label(adresse.children["idVille"], 'Ville',{
+                                                'label_attr': {'class': 'font-weight-bold d-inline text-center'}
+                                            }) }} <a id="add-ville-link" class="d-inline" data-toggle="modal" data-target="#modal-ville-add" title="Ajouter une ville"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                                            
+                                            {{ form_widget(adresse.children["idVille"]) }}
+                                        </div>
+                                        <div class="col-sm-1" align="center">
+                                            {{ form_widget(adresse.children["principal"]) }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{ form_label(adresse.children["type_adresse"], 'Type adresse',{
+                                                'label_attr': {'class': 'font-weight-bold  col-sm-12 text-center'}
+                                            }) }}
+                                            {{ form_widget(adresse.children["type_adresse"]) }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{ form_label(adresse.children["comp_adresse"], 'Infos accès',{
+                                                'label_attr': {'class': 'font-weight-bold  col-sm-12 text-center'}
+                                            }) }}
+                                            {{ form_widget(adresse.children["comp_adresse"]) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-sm-3 mt-3">
+                    <div class="col-sm-12">
+                        <div class="col-sm-12 well2 pb-3">
+                            <div class="col-sm-12">
+                                <div class="text-center col-md-12">
+                                    {{ form_label(contact_forme.id_type, 'Client / Prospect',{
+                                        'label_attr': {'class': 'font-weight-bold required'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.id_type) }}
+                                </div>
+                                <div class="col-sm-12">
+                                    <label class="font-weight-bold text-center col-sm-12">Sociétés liées</label>
+                                    <div class="row">
+                                    
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                            {{ form_label(contact_forme.societelie.vars.prototype.idSociete1, '',{
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                                {% if societeliedata.societelie1 is defined and societeliedata.societelie1 != "" %}
+                                                    <a href="{{ path('Fiche_client_prospect_Controller/editClient', {id : societeliedata.societeId1} ) }}" title="Voir fiche client" target="_blank">
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                    </a>
+                                                {% else %}
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                {% endif %}
+                                            {{ form_widget(contact_forme.societelie.vars.prototype.idSociete1) }}
+                                        </div>
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                            {{ form_label(contact_forme.societelie.vars.prototype.idSociete2, '',{
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                                {% if societeliedata.societelie2 is defined and societeliedata.societelie2 != "" %}
+                                                    <a href="{{ path('Fiche_client_prospect_Controller/editClient', {id : societeliedata.societeId2} ) }}" title="Voir fiche client" target="_blank">
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                    </a>
+                                                {% else %}
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                {% endif %}
+                                            {{ form_widget(contact_forme.societelie.vars.prototype.idSociete2) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                            {{ form_label(contact_forme.societelie.vars.prototype.idSociete3, '',{
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                                {% if societeliedata.societelie3 is defined and societeliedata.societelie3 != "" %}
+                                                    <a href="{{ path('Fiche_client_prospect_Controller/editClient', {id : societeliedata.societeId3} ) }}" title="Voir fiche client" target="_blank">
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                    </a>
+                                                {% else %}
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                {% endif %}
+                                            {{ form_widget(contact_forme.societelie.vars.prototype.idSociete3) }}
+                                        </div>
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                            {{ form_label(contact_forme.societelie.vars.prototype.idSociete4, '',{
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                                {% if societeliedata.societelie4 is defined and societeliedata.societelie4 != "" %}
+                                                    <a href="{{ path('Fiche_client_prospect_Controller/editClient', {id : societeliedata.societeId4} ) }}" title="Voir fiche client" target="_blank">
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                    </a>
+                                                {% else %}
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                {% endif %}
+                                            {{ form_widget(contact_forme.societelie.vars.prototype.idSociete4) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center col-md-12">
+                                    {{ form_label(contact_forme.solde, 'Solde Dispo',{
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.solde) }}
+                                </div>
+                                <div class="text-center col-md-12">
+                                    {{ form_label(contact_forme.soldeDate, 'Au',{
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.soldeDate) }}
+                                </div>
+                                <div class="text-center col-md-12">
+                                    {{ form_label(contact_forme.siteweb, 'Site web:',{
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">http://</div>
+                                        </div>
+                                        {{ form_widget(contact_forme.siteweb) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>                     
+                  
+    <div class="row col-md-12">
+        <fieldset class="mx-3">
+            <legend>CONTACTS</legend>
+            <a href="javascript:void(0)" id="adcontact" class="row plus-link" title="Ajouter un nouveau contact">
+                <span class="fa-stack fa-1x">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+            <div class="col-md-12 p-0" id="contactadded" data-prototype="{{ form_widget(contact_forme.contactsoc.vars.prototype)|e('html_attr') }}">
+                    <div class="row">
+                        <div class="col-sm-1 text-center">
+                            {{ form_label(contact_forme.idCivilite, 'Civilité',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(contact_forme.idCivilite) }}
+                        </div>
+                        <div class="col-sm-1 text-center">
+                            {{ form_label(contact_forme.nom, 'Nom',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(contact_forme.nom) }}
+                        </div>
+                        <div class="col-sm-1 text-center">
+                            {{ form_label(contact_forme.prenom, 'Prenom',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(contact_forme.prenom) }}
+                        </div>
+                        <div class="col-sm-1 text-center">
+                            {{ form_label(contact_forme.qualite, 'Qualité',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalQualiteAdd"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                            {{ form_widget(contact_forme.qualite) }}
+                        </div>
+                        <div class="col-sm-1">
+                            {{ form_label(contact_forme.interlocuteur, 'Interlocuteur',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(contact_forme.interlocuteur) }}
+                        </div>
+                        <div class="text-center col-sm-2">
+                            {{ form_label(contact_forme.Telephone, 'Téléphone',{
+                                'label_attr': {'class': 'font-weight-bold required'}
+                            }) }}
+                            {{ form_widget(contact_forme.Telephone,{'attr':{'pattern':'.{14,14}', 'maxlength':"14"}}) }}
+                        </div>
+                        <div class="text-center col-sm-2">
+                            {{ form_label(contact_forme.Portable, 'Portable',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+                            {{ form_widget(contact_forme.Portable,{'attr':{'pattern':'.{14,14}', 'maxlength':"14"}}) }}
+                        </div>
+                        <div class="text-center col-sm-1">
+                            {{ form_label(contact_forme.Fax, 'Fax',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+                            {{ form_widget(contact_forme.Fax,{'attr':{'pattern':'.{14,14}', 'maxlength':"14"}}) }}
+                        </div>
+                        <div class="text-center col-sm-2">
+                            {{ form_label(contact_forme.Email, 'Email',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+                            {{ form_widget(contact_forme.Email) }}
+                        </div>
+                    </div>
+                    <!-- Other contact for this contact -->
+                    {% for contactsoc in contact_forme.contactsoc.children %}
+                        <div class="row contact_added">
+                            <button type="button" class="removecontactelement close"><span aria-hidden="true">×</span></button>
+                            <div id="contact_contactsoc_{{ loop.index }}" class="p-r">
+                            <div class="col-sm-1 text-center">
+                                {{ form_label(contactsoc.idCivilite, 'Civilité',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contactsoc.idCivilite) }}
+                            </div>
+                            <div class="col-sm-1 text-center">
+                                {{ form_label(contactsoc.nom, 'Nom',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contactsoc.nom) }}
+                            </div>
+                            <div class="col-sm-1 text-center">
+                                {{ form_label(contactsoc.prenom, 'Prenom',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contactsoc.prenom) }}
+                            </div>
+                            <div class="col-sm-1 text-center">
+                                {{ form_label(contactsoc.qualite, 'Qualité',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contactsoc.qualite) }}
+                            </div>
+                            <div class="col-sm-1">
+                                {{ form_label(contactsoc.interlocuteur, 'Interlocuteur',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contactsoc.interlocuteur) }}
+                            </div>
+                            <div class="text-center col-sm-2">
+                                {{ form_label(contactsoc.Telephone, 'Telephone',{
+                                    'label_attr': {'class': 'font-weight-bold required'}
+                                }) }}
+                                {{ form_widget(contactsoc.Telephone) }}
+                            </div>
+                            <div class="text-center col-sm-2">
+                                {{ form_label(contactsoc.Fax, 'Fax',{
+                                    'label_attr': {'class': 'font-weight-bold text-center'}
+                                }) }}
+                                {{ form_widget(contactsoc.Fax) }}
+                            </div>
+                            <div class="text-center col-sm-1">
+                                {{ form_label(contactsoc.children["Portable"], 'Portable',{
+                                    'label_attr': {'class': 'font-weight-bold text-center'}
+                                }) }}
+                                {{ form_widget(contactsoc.Portable) }}
+                            </div>
+                            <div class="text-center col-sm-2">
+                                {{ form_label(contactsoc.Email, 'Email',{
+                                    'label_attr': {'class': 'font-weight-bold text-center'}
+                                }) }}
+                                {{ form_widget(contactsoc.Email) }}
+                            </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div> 
+            </fieldset>
+            <div class="col-sm-9 mt-4">
+                    <fieldset><legend>DOSSIERS</legend>
+            <table class="table table-sm table-striped">
+                    <thead>
+                        <tr class="bg-info text-light">
+                            <th>Structure</th>
+                            <th>Date de création</th>
+                            <th>Intitulé du stage</th>
+                            <th>Date fin stage</th>
+                            <th>Date estimée pour récépt accord</th>
+                            <th>Montant accordé</th>
+                            <th>Date estimée pour clôture</th>
+                            <th>Commercial</th>
+                        </tr>
+                    </thead>   
+            <tbody>           
+            {% if dossierClient is not null %}                  
+                {% for dossier in dossierClient %}
+                                           
+                        
+                            <tr data-id="{{ dossier.id }}" data-href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id:dossier.id}) }}">
+                                <td>{{ dossier.structure }}</td>
+                                <td>{{ (( (dossier.dateEnvoi | date('d-m-Y')) == '31-12-1969') or ((dossier.dateEnvoi | date('d-m-Y')) == '01-01-1970') or ((dossier.dateEnvoi | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateEnvoi | date('d-m-Y') }}</td>
+                                <td>{{ dossier.nom }}</td>
+                                <td>{{ (( (dossier.dateFinPeriode | date('d-m-Y')) == '31-12-1969') or ((dossier.dateFinPeriode | date('d-m-Y')) == '01-01-1970') or ((dossier.dateFinPeriode | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateFinPeriode | date('d-m-Y')}}</td>
+                                <td>
+                                    {% if dossier.dateAccord is not empty %}
+                                        {{ (( (dossier.dateAccord | date('d-m-Y')) == '31-12-1969') or ((dossier.dateAccord | date('d-m-Y')) == '01-01-1970') or ((dossier.dateAccord | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateAccord | date('d-m-Y')}}
+                                    {% else %}
+                                        {{ dossier.dateEnvoi | date_modify('+3 month') | date('d-m-Y') }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ dossier.mntAccorde |number_format(2, ',', ' ') }}</td>
+            {#                    <td>  {{ (( (dossier.dateFinPeriode | date('d-m-Y')) == '31-12-1969') or ((dossier.dateFinPeriode | date('d-m-Y')) == '01-01-1970') or ((dossier.dateFinPeriode | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateFinPeriode | date('d-m-Y')}}</td>#}
+                                {# APR-194 : Date estimee pour clôtre = date de création du dossier + 6 mois #}
+                                <td>{{ dossier.dateEnvoi | date_modify('+6 month') | date('d-m-Y') }}</td>
+                                <td>{{ dossier.commercial }}</td>
+                            </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+                </table>
+        </fieldset>        
+            </div>
+              <div class="col-sm-9 mt-4">
+            <fieldset><legend>PROPALES</legend>
+             <table class="table table-sm table-striped">
+                <thead>
+                <tr class="bg-info text-light">
+                    <th>Entité</th>
+                    <th>Statut</th>
+                    <th>Intitulé du stage</th>
+                    <th>Commercial</th>
+                    <th>Type</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Coût Ht</th>
+                    <th>Fiabilité</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if clientPropal is not null %}                  
+                {% for propal in clientPropal %}
+                    <tr data-propal-id="{{ propal.idpropal }}" data-href="{{ path('propal_show', { id : propal.idpropal} ) }}">
+                        <td>{{ propal.entite }}</td>
+                        <td>{{ propal.statut }}</td>
+                        <td>{{ propal.formation }}</td>
+                        <td>{{ propal.commercial }}</td>
+                        <td>{% if propal.type == 1 %} Entreprise {% else %} Particulier {% endif %}</td>
+                        <td>{{ propal.nom }}</td>
+                        <td> {{ propal.prenom}} </td>
+                        {% if propal.coutht is not null %}
+                        <td> {{ propal.coutht}} €</td>
+                        {% else %}
+                        <td> {{ propal.coutht}}</td>
+                        {% endif %}
+                        {% if propal.fiabilite == 'Froid' %}
+                        <td class="bg-info text-white"> {{ propal.fiabilite}} </td>
+                        {% elseif propal.fiabilite == 'Chaud' %}
+                        <td class="bg-danger text-white"> {{ propal.fiabilite}} </td>
+                        {% elseif propal.fiabilite == 'Tiede' %}
+                        <td class="bg-warning text-white"> {{ propal.fiabilite}} </td>
+                        {% else %}
+                        <td> {{ propal.fiabilite}} </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+         </fieldset>        
+        </div>
+
+
+            <fieldset class="col-sm-12 p-3 m-3 well">
+                <legend>COMMENTAIRES</legend>
+                <a href="javascript:void(0)" id="ajcom" class="row plus-link" title="Ajouter un nouveau commentaire">
+                    <span class="fa-stack fa-1x">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                {#<center>
+                    <input type="button" class="btn btn-warning" style="border-radius: 5%;" name="ajcom" id="ajcom" value="Ajouter un commentaire">
+                </center>#}
+                <table class="table table-striped table-borderless col-sm-12 mt-3">
+                    <thead class="">
+                    <tr class="row">
+                        <th class="col-sm-2">Date création</th>
+                        <th class="col-sm-2">Commentaires</th>
+                        <th class="col-sm-2">Action</th>
+                        <th class="col-sm-2">Date Action</th>
+                        <th class="col-sm-2">Qui</th>
+                        <th class="col-sm-2">Statut action</th>
+                    </tr>
+                    <tbody id="commentaires_collection" data-prototype="{{ form_widget(contact_forme.commentaires.vars.prototype)|e('html_attr') }}">
+                    {% for comment in contact_forme.commentaires %}
+                        <tr>
+                            <th colspan="6">
+                                <div class="row">
+                                    <div class="comment_contains">
+                                        <button type="button" class="removecommentelement close"><span aria-hidden="true">×</span></button>
+                                        <div id="contact_commentaires_{{ loop.index }}" class="comment_contains_form">
+                                            <div class="col-sm-2 form-group">
+                                                {{ form_widget(comment.children["dateAdd"]) }}
+                                            </div>
+                                            <div class="col-sm-2 form-group">
+                                                {{ form_widget(comment.children["texteNote"]) }}
+                                            </div>
+                                            <div class="col-sm-2 form-group">
+                                                {{ form_widget(comment.children["idAction"]) }}
+                                            </div>
+                                            <div class="col-sm-2 form-group">
+                                                {{ form_widget(comment.children["dateAction"]) }}
+                                            </div>
+                                            <div class="col-sm-2 form-group">
+                                                {{ form_widget(comment.children["idUserAction"]) }}
+                                            </div>
+                                            <div class="col-sm-2 form-group">
+                                                {{ form_widget(comment.children["idActionStatut"]) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </thead>
+                </table>
+            </fieldset>
+            <div class="col-sm-12 p-3 " id="content_bouton">
+                <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2 " role="group" aria-label="First group">
+                        <a href="{{ path("Liste_propositions_commerciales_Controller/ajoutpropal", {id : contact.id }) }}" class="btn btn-primary btn-block">Créer Propal</a>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <a name="editerdocument" data-toggle="modal" data-target="#modalEditerDocument" class="btn btn-primary btn-block" style="color:white;">Editer un document</a>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Third group">
+                        <button type="button" id="editthis" class="btn btn-primary btn-block">MAJ Fiche</button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Fourth group">
+                        <a href="{{ path("Liste_Dossiers_Controller", { 'client' : contact.nomStr } ) }}" class="btn btn-primary btn-block">Dossiers</a>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Fourth group">
+                        <a href="{{ path("Liste_Formation_Mise_Place_Controller") }}" class="btn btn-primary btn-block">Formations</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 p-3">
+                <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+                    <div id="saveedit" class="btn-group mr-2 d-none" role="group" aria-label="First group">
+                        <button type="submit" class="btn btn-danger btn-block">Mettre à jour</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {{ form_end(contact_forme,{'render_rest': false}) }}
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="modalopcaadd">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content list-filter">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajout Qualité</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('App\\Controller\\ContactController::OpcaModalAdd')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalActiviteAdd" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content list-filter">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajout activité</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('App\\Controller\\SecteurActiviteController::SecteurActiviteForm')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalQualiteAdd" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content list-filter">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajout Qualité</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('App\\Controller\\QualiteController::QualiteFormAdd')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {#  Modal : Ajouter une nouvelle ville #}
+    <div class="modal fade" id="modal-ville-add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content list-filter">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajouter une nouvelle ville</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('App\\Controller\\VilleController::create')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {# Fin modal ajouter une nouvelle ville #}
+    
+    <div class="modal fade" id="modalEditerDocument" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content list-filter">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group mr-2 " role="group" aria-label="First group">
+                            <a href="{{ path("client_prospect_printdocument", { id : contact.id, type: 1} ) }}" class="btn btn-primary btn-block">Bon de commmande</a>
+                        </div>
+                        <div class="btn-group mr-2" role="group" aria-label="Second group">
+                            <a href="{{ path("client_prospect_printdocument", { id : contact.id, type: 2}) }}" class="btn btn-primary btn-block">Convention</a>
+                        </div>
+                        <div class="btn-group mr-2" role="group" aria-label="Fourth group">
+                            <a href="{{ path("client_prospect_printdocument", { id : contact.id, type: 3}) }}" class="btn btn-primary btn-block">Rendez-vous</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    {% include 'contact/Parts/contact.js.html.twig' %}
+    <script language="javascript">
+        $(document).ready( function() {
+            $("#contactgenerale *").prop("disabled", true);
+            $("#content_bouton .btn").prop("disabled", false);
+            $("#editthis").click(function(){
+                $("#contactgenerale *").prop("disabled", false);
+                $("#saveedit").removeClass("d-none");
+                {% if app.user == "MUNIER Pascal" or app.user == "CREPEAU Francis" %}
+                    
+                {% else %}
+                $("#contact_id_commercial").prop("disabled",true)
+                {% endif %}
+                $("#saveedit").find('button').prop("disabled", false);
+                $("#ajcom").prop("disabled", false);
+            });
+            // Ajout valeur par défaut des societés liées selon leur valeur pourle contact
+            var societelie = {{ societeliedata|json_encode|raw }};
+            for (let key in societelie){
+                if(societelie.hasOwnProperty(key)){
+                    if(societelie[key] != null){
+                        var dataselect = {
+                            id: societelie[key],
+                            text: societelie[key]
+                        }
+                        var newOption = new Option(dataselect.text, dataselect.id, true, true);
+                        $('.'+key).append(newOption).trigger('change');
+                    }
+                }
+            }
+            var adressesville = {{ adressesvilledata|json_encode|raw }}
+            for(let key in adressesville){
+                if(adressesville[key] != null & adressesville[key] > 0){
+                    setVilleValue(key,adressesville[key]);
+                }
+                $('#contact_adresses_'+key+'_idVille').select2({
+                    placeholder: "-- ville --",
+                    minimumInputLength: 3,
+                    allowClear: true,
+                    ajax: {
+                        url: '{{ path('crm.opca.ville.asynch-search') }}',
+                        data: function (params) {
+                            var query = {
+                                search: params.term
+                            };
+                            // Query parameters will be ?search=[term]&type=public
+                            return query;
+                        }
+                    }
+                });
+            }
+            function setVilleValue(key,idville) {
+                var villeSelect = $('#contact_adresses_'+key+'_idVille');
+                if ( idville > 0) {
+                    var ville_id = idville;
+                    var url = '{{ path('crm.opca.oneVille.asynch-search', {idVille:'ville_id'}) }}';
+                    url = url.replace('ville_id', ville_id);
+                    $.ajax({
+                        type: 'GET',
+                        url: url
+                    }).then(function (data) {
+                        // create the option and append to Select2
+                        var dataSelected = (data['results'][0]);
+                        var option = new Option(dataSelected.text, dataSelected.text, true, true);
+                        villeSelect.append(option).trigger('change');
+                        // manually trigger the `select2:select` event
+                        villeSelect.trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                    });
+                }
+            }
+            var opca1 = {{  opca1|json_encode|raw  }};
+            var opcaTns = {{  idOpcaTns|json_encode|raw  }};
+            if (opca1) {
+                setSelectValue('opca', opca1);
+            }
+            if (opcaTns) {
+                setSelectValue('idOpcaTns', opcaTns);
+            }
+            
+            // APR-121
+            var secteurActiviteOptions = {{ secteurActiviteOptions | json_encode | raw }};
+            
+            if (secteurActiviteOptions) {
+                setSelectValue("idSecteur", secteurActiviteOptions);
+            }
+            
+            var activiteTNSOptions = {{ activiteTNSOptions | json_encode | raw }};
+            
+            if (activiteTNSOptions) {
+                setSelectValue("activiteTns", activiteTNSOptions);
+            }
+            
+            // Mise à jour de la valeur pour un champ d'autocompletion
+            function setSelectValue(key,data) {
+                var opcaSelect = $('#contact_'+key);
+                // create the option and append to Select2
+                var option = new Option(data['text'], data['id'], true, true);
+                opcaSelect.append(option).trigger('change');
+                // manually trigger the `select2:select` event
+                opcaSelect.trigger({
+                    type: 'select2:select',
+                    params: {
+                        data: data
+                    }
+                });
+            }
+            $(".removeaddresseelement").bind('click',function(event){
+                $(this).parents(".form_adresse").remove();
+            });
+            $(".removecontactelement").bind('click',function(event){
+                $(this).parents(".contact_added").remove();
+            });
+            $(".removecommentelement").bind('click',function(event){
+                $(this).parents(".comment_contains").parents("tr").remove();
+            });
+            
+            {# APR-183 : HACK bug firefox #}
+            $('#saveedit').on('click', function(e){
+                e.preventDefault();
+                let commercialId = $('#contact_id_commercial').val();
+                let structureId = $('#contact_structure').val();
+                let contactType = $('#contact_id_type').val();
+                $('#contact_id_commercial').val(commercialId);
+                $('#contact_structure').val(structureId);
+                $('#contact_id_type').val(contactType);
+                $('#contactgenerale').submit();
+            });
+            {# FIN APR-183 #}
+        });
+    </script>
+{% endblock %}

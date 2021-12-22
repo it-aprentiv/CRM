@@ -1,0 +1,50 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Query\\ParserResult'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ParserResult')),
+        clone ($p['Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor')),
+        clone ($p['Doctrine\\ORM\\Query\\ResultSetMapping'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ResultSetMapping')),
+    ],
+    null,
+    [
+        'Doctrine\\ORM\\Query\\ParserResult' => [
+            '_sqlExecutor' => [
+                $o[1],
+            ],
+            '_resultSetMapping' => [
+                $o[2],
+            ],
+            '_parameterMappings' => [
+                [
+                    'commercial' => [
+                        0,
+                    ],
+                    'val1' => [
+                        1,
+                    ],
+                    'val2' => [
+                        2,
+                    ],
+                ],
+            ],
+        ],
+        'Doctrine\\ORM\\Query\\Exec\\AbstractSqlExecutor' => [
+            '_sqlStatements' => [
+                1 => 'SELECT count(DISTINCT t0_.id) AS sclr_0 FROM 1_formation_dossier t0_ LEFT JOIN 5_formation_dossier_statut t1_ ON (t0_.id_statut = t1_.id) LEFT JOIN 1_structure t2_ ON (t2_.id = t0_.id_structure) LEFT JOIN 1_contact t3_ ON (t3_.id = t0_.id_opca) LEFT JOIN 1_contact t4_ ON (t4_.id = t0_.id_client) LEFT JOIN 1_collaborateur t5_ ON (t5_.id = t0_.id_commercial) WHERE t5_.nom_prenom = ? AND t0_.date_fin_periode <= ? AND t0_.date_fin_periode >= ?',
+            ],
+        ],
+        'stdClass' => [
+            'scalarMappings' => [
+                2 => [
+                    'sclr_0' => 1,
+                ],
+            ],
+            'typeMappings' => [
+                2 => [
+                    'sclr_0' => 'string',
+                ],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

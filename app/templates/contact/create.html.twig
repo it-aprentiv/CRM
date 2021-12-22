@@ -1,0 +1,443 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client/Prospect - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active"><a href="{{ path('Liste_Client_Prospect_Controller') }}">Liste des clients / Prospects</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Création</li>
+        </ol>
+    </nav>
+
+    <div class="page-content">
+        {% for flash_message in app.session.flashBag.get('error_message') %}
+            <div class="note note-warnning">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+        {% for flash_message in app.session.flashBag.get('success_message') %}
+            <div class="note note-success">
+                <p>{{ flash_message }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <h2 class="text-center mt-2 text-nmary">FICHE D'AJOUT DE CLIENT</h2>
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form_start(contact_forme,{'attr':{'class':'list-filter'}}) }}
+            <div class="row">
+                <div class="col-sm-9 mt-3">
+                    <div class="col-sm-12">
+                        <fieldset>
+                            <legend>Infos client</legend>
+                            <div class="row">
+                                <div class="form-group col-md-3 text-center">
+                                    {{ form_label(contact_forme.nomStr, 'Société', {
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.nomStr) }}
+                                </div>
+
+                                <div class="form-group col-md-3 text-center">
+                                    {{ form_label(contact_forme.idSecteur, 'Activité entreprise',{
+                                        'label_attr': {'class': 'font-weight-bold required'}
+                                    }) }}
+                                    <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalActiviteAdd" data-forselect="ctn"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                                    {{ form_widget(contact_forme.idSecteur) }}
+                                </div>
+                                <div class="form-group col-md-3 text-center">
+                                    {{ form_label(contact_forme.noSiret, 'Siret entreprise',{
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.noSiret,{'attr':{'pattern':'.{14,14}','class':'siret_format'}}) }}
+                                </div>
+                                <div class="form-group col-md-3 text-center">
+                                    {{ form_label(contact_forme.noNaf, 'NAF entreprise', {
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.noNaf,{'attr':{'pattern':'[0-9]{4}[A-Za-z]{1}','class':'naf_format'}}) }}
+                                </div>
+                                <div class="form-group col-md-2 text-center">
+                                    {{ form_label(contact_forme.effectif, 'Nbr salariés', {
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.effectif) }}
+                                </div>
+                                <div class="form-group col-md-3 text-center">
+                                    {{ form_label(contact_forme.opca, 'OPCO1',{
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    <!-- <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalopcaadd"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a> -->
+                                    {{ form_widget(contact_forme.opca) }}
+                                </div>
+
+                                <div class="form-group col-md-2 text-center">
+                                    {{ form_label(contact_forme.noAdherent, 'N° Adhérent',{
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.noAdherent) }}
+                                </div>
+                                <div class="col-sm-3 text-center">
+                                    {{ form_label(contact_forme.id_commercial, 'Commercial',{
+                                        'label_attr': {'class': 'font-weight-bold required'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.id_commercial) }}
+                                </div>
+                                <div class="text-center col-md-2">
+                                    {{ form_label(contact_forme.structure, 'Entité',{
+                                        'label_attr': {'class': 'font-weight-bold required'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.structure) }}
+                                </div>
+                                {#champ "sexe" en base de donnée inutilisé, je lai donc utilisé pour y stocké les ID des OPCO#}
+                                <div class="form-group col-md-10 text-center">
+                                    {{ form_label(contact_forme.sexe, 'Identifiants OPCO', {
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.sexe) }}
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Infos TNS</legend>
+                                <div class="row ">
+                                    <div class="col-sm-3 form-group text-center">
+                                        {{ form_label(contact_forme.siretTns, 'Siret TNS / N° TI',{
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(contact_forme.siretTns,{'attr':{'pattern':'.{14,14}','class':'number-format','class':'siret_format'}}) }}
+                                    </div>
+                                    <div class="col-sm-3 text-center">
+                                        {{ form_label(contact_forme.nafTns, 'NAF TNS',{
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(contact_forme.nafTns,{'attr':{'pattern':'[0-9]{4}[A-Za-z]{1}','class':'naf_format'}}) }}
+                                    </div>
+                                    <div class="col-sm-3 text-center">
+                                        {{ form_label(contact_forme.activiteTns, 'Activité TNS',{
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalActiviteAdd" data-forselect="tns"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                                        {{ form_widget(contact_forme.activiteTns) }}
+                                    </div>
+                                    <div class="text-center col-md-3">
+                                        {{ form_label(contact_forme.idOpcaTns, 'OPCO TNS',{
+                                            'label_attr': {'class': 'font-weight-bold'}
+                                        }) }}
+                                        {{ form_widget(contact_forme.idOpcaTns) }}
+                                    </div>
+                                </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>ADRESSE</legend>
+                            <a href="javascript:void(0)" id="ajoutadresse" class="row plus-link" title="Ajouter une adresse">
+                            <span class="fa-stack fa-1x">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                            </span>
+                            </a>
+                            <div class="row p-3 mb-3">
+                                <div class="row" id="contact_adresse" data-prototype="{{ form_widget(contact_forme.adresses.vars.prototype)|e('html_attr') }}">
+                                    <div class="row col-sm-12 pr-0 form_adresse">
+                                        <div class="col-sm-3">
+                                            {{ form_label(contact_forme.adresses.children[0].children["adresse"], 'N°,voie,nom de la voie',{
+                                                'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                                            }) }}
+                                            {{ form_widget(contact_forme.adresses.children[0].children["adresse"]) }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{ form_label(contact_forme.adresses.children[0].children["codePostal"], 'Code Postal',{
+                                                'label_attr': {'class': 'font-weight-bold  col-sm-12 text-center'}
+                                            }) }}
+                                            {{ form_widget(contact_forme.adresses.children[0].children["codePostal"]) }}
+                                        </div>
+                                        <div class="col-sm-2 text-center">
+                                            {{ form_label(contact_forme.adresses.children[0].children["idVille"], 'Ville',{
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }} <a id="add-ville-link" class="d-inline" data-toggle="modal" data-target="#modal-ville-add" title="Ajouter une ville"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                                            {{ form_widget(contact_forme.adresses.children[0].children["idVille"],{ 'attr': {'id': 'select_ville_0'} }) }}
+                                        </div>
+                                        <div class="col-sm-1" align="center">
+                                            {{ form_widget(contact_forme.adresses.children[0].children["principal"]) }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{ form_label(contact_forme.adresses.children[0].children["type_adresse"], 'Type adresse',{
+                                                'label_attr': {'class': 'font-weight-bold  col-sm-12 text-center'}
+                                            }) }}
+                                            {{ form_widget(contact_forme.adresses.children[0].children["type_adresse"]) }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{ form_label(contact_forme.adresses.children[0].children["comp_adresse"], 'Infos accès',{
+                                                'label_attr': {'class': 'font-weight-bold  col-sm-12 text-center'}
+                                            }) }}
+                                            {{ form_widget(contact_forme.adresses.children[0].children["comp_adresse"]) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    </div>
+                </div>
+                <div class="col-sm-3 mt-3">
+                    <div class="col-sm-12">
+                        <div class="col-sm-12 well2 pb-3">
+                            <div class="col-sm-12">
+                                <div class="text-center col-md-12">
+                                    {{ form_label(contact_forme.id_type, 'Client / Prospect',{
+                                        'label_attr': {'class': 'font-weight-bold required'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.id_type) }}
+                                </div>
+                                <div class="col-sm-12">
+                                    <label class="font-weight-bold text-center col-sm-12">Sociétés liées</label>
+                                    <div class="row">
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                            {{ form_label(contact_forme.societelie.vars.prototype.idSociete1, '',{
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(contact_forme.societelie.vars.prototype.idSociete1) }}
+                                        </div>
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                            {{ form_label(contact_forme.societelie.vars.prototype.idSociete2, '',{
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(contact_forme.societelie.vars.prototype.idSociete2) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                            {{ form_label(contact_forme.societelie.vars.prototype.idSociete3, '',{
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(contact_forme.societelie.vars.prototype.idSociete3) }}
+                                        </div>
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                            {{ form_label(contact_forme.societelie.vars.prototype.idSociete4, '',{
+                                                'label_attr': {'class': 'font-weight-bold'}
+                                            }) }}
+                                            {{ form_widget(contact_forme.societelie.vars.prototype.idSociete4) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center col-md-12">
+                                    {{ form_label(contact_forme.solde, 'Solde Dispo',{
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.solde) }}
+                                </div>
+                                <div class="text-center col-md-12">
+                                    {{ form_label(contact_forme.soldeDate, 'Au',{
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.soldeDate) }}
+                                </div>
+                                <div class="text-center col-md-12">
+                                    {{ form_label(contact_forme.siteweb, 'Site web:',{
+                                        'label_attr': {'class': 'font-weight-bold'}
+                                    }) }}
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">http://</div>
+                                        </div>
+                                        {{ form_widget(contact_forme.siteweb) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="mx-3">
+                <legend>CONTACTS</legend>
+                <a href="javascript:void(0)" id="adcontact" class="row plus-link d-inline-block" title="Ajouter un nouveau contact">
+                    <span class="fa-stack fa-1x">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                <div class="col-sm-12 p-3 mb-3" id="contactadded" data-prototype="{{ form_widget(contact_forme.contactsoc.vars.prototype)|e('html_attr') }}">
+                    <div class="row">
+                        <div class="col-sm-1 text-center">
+                            {{ form_label(contact_forme.idCivilite, 'Civilité',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(contact_forme.idCivilite) }}
+                        </div>
+                        <div class="col-sm-1 text-center">
+                            {{ form_label(contact_forme.nom, 'Nom',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(contact_forme.nom) }}
+                        </div>
+                        <div class="col-sm-1 text-center">
+                            {{ form_label(contact_forme.prenom, 'Prenom',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(contact_forme.prenom) }}
+                        </div>
+                        <div class="col-sm-1 text-center">
+                            {{ form_label(contact_forme.qualite, 'Qualité',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalQualiteAdd"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                            {{ form_widget(contact_forme.qualite) }}
+                        </div>
+                        <div class="col-sm-1">
+                            {{ form_label(contact_forme.qualite, 'Interlocuteur',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(contact_forme.interlocuteur) }}
+                        </div>
+                        <div class="text-center col-sm-2">
+                            {{ form_label(contact_forme.Telephone, 'Téléphone',{
+                                'label_attr': {'class': 'font-weight-bold required'}
+                            }) }}
+                            {{ form_widget(contact_forme.Telephone,{'attr':{'pattern':'.{14,14}', 'maxlength':"14"}}) }}
+                        </div>
+                        <div class="text-center col-sm-2">
+                            {{ form_label(contact_forme.Portable, 'Portable',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+                            {{ form_widget(contact_forme.Portable,{'attr':{'pattern':'.{14,14}', 'maxlength':"14"}}) }}
+                        </div>
+                        <div class="text-center col-sm-2">
+                            {{ form_label(contact_forme.Email, 'Email',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+                            {{ form_widget(contact_forme.Email) }}
+                        </div>
+                        <div class="text-center col-sm-1">
+                            {{ form_label(contact_forme.Fax, 'Fax',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+                            {{ form_widget(contact_forme.Fax,{'attr':{'pattern':'.{14,14}', 'maxlength':"14"}}) }}
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="col-sm-12 p-3 m-3 well">
+                <legend>COMMENTAIRES</legend>
+                <a href="javascript:void(0)" id="ajcom" class="row plus-link" title="Ajouter un nouveau commentaire">
+                    <span class="fa-stack fa-1x">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                <div class="col-sm-12 p-3 mt-3 well">
+                    <table class="table table-striped table-borderless col-sm-12 mt-3">
+                        <thead class="">
+                        <tr class="row">
+                            <th class="col-sm-2">Date création</th>
+                            <th class="col-sm-2">Commentaires</th>
+                            <th class="col-sm-2">Action</th>
+                            <th class="col-sm-2">Date Action</th>
+                            <th class="col-sm-2">Qui</th>
+                            <th class="col-sm-2">Statut action</th>
+                        </tr>
+                        <tbody id="commentaires_collection" data-prototype="{{ form_widget(contact_forme.commentaires.vars.prototype)|e('html_attr') }}">
+
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </fieldset>
+
+            <div class="col-sm-12 p-3 " id="content_bouton">
+                <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2" role="group" aria-label="Third group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+
+            {{ form_end(contact_forme,{'render_rest': false}) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="modalopcaadd" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header list-filter">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajout OPCA</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('App\\Controller\\ContactController::OpcaModalAdd')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalActiviteAdd" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajout activité</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="forselect" id="forselect" />
+                    {{ render(controller('App\\Controller\\SecteurActiviteController::SecteurActiviteForm')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalQualiteAdd" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajout Qualité</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('App\\Controller\\QualiteController::QualiteFormAdd')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {#  Modal : Ajouter une nouvelle ville #}
+    <div class="modal fade" id="modal-ville-add" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content list-filter">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ajouter une nouvelle ville</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('App\\Controller\\VilleController::create')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {# Fin modal ajouter une nouvelle ville #}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    
+    {% include 'contact/Parts/contact.js.html.twig' %}
+{% endblock %}

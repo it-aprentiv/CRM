@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LOG{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+   <h2 class="text-center mt-2 text-nmary">Journalisation</h2>
+    <div class="row">
+        <div class="col-sm-12">
+            <fieldset class="mb-3 list-filter">
+                <legend>Filtre</legend>
+                {{ form_start(log_filter_form)  }}
+                <div class="form-row">
+                  
+                    <div class="form-group col-md-2">
+                        {{ form_widget(log_filter_form.user, { 'placeholder' : 'Utilisateur',  attr: {'class' : 'w-100','required': false} }) }}
+                    </div>
+                    <div class="form-group col-md-2">
+                        {{ form_widget(log_filter_form.creation, { 'placeholder' : 'Date',  attr: {'class' : 'js-datepicker','required': false} }) }}
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-info py-1">Rechercher</button>
+                        <a href="{{ path('Log_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
+                    </div>
+                </div>
+                {{ form_end(log_filter_form)  }}
+            </fieldset>
+                        <table class="table table-xl mb-0 table-striped table-hover mt-2 mb-5 font-weight-bold">
+                <thead>
+                        <tr class="bg-info text-light">
+                        <th>Message</th>
+                        <th>Adresse</th>
+                        <th>Utilisateur</th>
+                        <th>Date</th>
+                </thead>
+                 <tbody>
+                                {% for log in paginationLog %}
+                                <tr>
+                                        {% if log.message starts with 'Connexion' %}
+                                        <td class="bg-success text-white">{{ log.message }}</td>
+                                        {% elseif log.message ends with 'supprimé(e)'%}
+                                        <td class="bg-warning text-white">{{ log.message }}</td>
+                                        {% else %}
+                                        <td class="bg-info text-white">{{ log.message }}</td>
+                                        {% endif %}
+                                        {% if log.levelName == "80.11.169.201" %}
+                                        <td>Aprentiv</td>
+                                        {% else %}
+                                        <td class="bg-danger text-white">{{ log.levelName }}</td>
+                                        {% endif %}
+                                        {% if log.user == null %}
+                                        <td>{{ log.user }}</td>
+                                        {% else %}
+                                        <td>{{ log.user.nomutilisateur }}</td>
+                                        {% endif %}
+                                        <td>{{ log.createdAt|date('d/m/Y H:i') }}</td>
+                                        
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                <tfoot>
+                        <tr>
+                            <td colspan="2" class="text-align-middle pt-3">
+                                <strong>Total : </strong> {{ paginationLog.getTotalItemCount }}
+                            </td>
+                            <td colspan="2" class="text-align-middle pt-3">
+                                {{ knp_pagination_render(paginationLog) }}
+                            </td>
+                        </tr>
+                    </tfoot>
+                        </table>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+        <script type="text/javascript">
+            $(".js-datepicker").each(function () {
+                $(this).datepicker({
+                    'format': 'dd/mm/yyyy',
+                    'autoclose': true,
+                    'clearBtn': true,
+                    'language': 'fr',
+                });
+            });
+        </script>
+{% endblock %}

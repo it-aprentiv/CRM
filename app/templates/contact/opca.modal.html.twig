@@ -1,0 +1,146 @@
+{{ form_start(opca_form,{'attr':{'class':'list-filter'}}) }}
+    <div class="col-sm-12">
+        <div class="row well p-3">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="form-group col-sm-6 text-center">
+                        {{ form_label(opca_form.nomStr, 'OPCA', {
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                        {{ form_widget(opca_form.nomStr) }}
+                    </div>
+                    <div class="form-group col-sm-6 text-center">
+                        {{ form_label(opca_form.idSecteur, 'Activité adhérents ',{
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                        <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalActiviteAdd"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                        {{ form_widget(opca_form.idSecteur) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-4">
+                        {{ form_label(opca_form.adresses.children[0].children["adresse"], 'N°,voie',{
+                            'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                        }) }}
+                        {{ form_widget(opca_form.adresses.children[0].children["adresse"]) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form_label(opca_form.adresses.children[0].children["codePostal"], 'Code postale',{
+                            'label_attr': {'class': 'font-weight-bold  col-sm-12 text-center'}
+                        }) }}
+                        {{ form_widget(opca_form.adresses.children[0].children["codePostal"]) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form_label(opca_form.adresses.children[0].children["idVille"], 'Ville',{
+                            'label_attr': {'class': 'font-weight-bold  col-sm-12 text-center'}
+                        }) }}
+                        {{ form_widget(opca_form.adresses.children[0].children["idVille"]) }}
+                        {{ form_widget(opca_form.adresses.children[0].children["idVille"]) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 mb-3 mt-3">
+        <div class="row well p-3">
+            <div class="col-sm-12">
+                <div class="col-sm-12">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-8">
+                            {{ form_label(opca_form.adresses.children[0].children["comp_adresse"], 'N°,voie,nom de la voie',{
+                                    'label_attr': {'class': 'font-weight-bold col-sm-12 text-center'}
+                            }) }}
+                            {{ form_widget(opca_form.adresses.children[0].children["comp_adresse"]) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="text-center col-sm-6">
+                            {{ form_label(opca_form.Telephone, 'Telephone',{
+                                'label_attr': {'class': 'font-weight-bold required'}
+                            }) }}
+                            {{ form_widget(opca_form.Telephone) }}
+                        </div>
+                        <div class="text-center col-sm-6">
+                            {{ form_label(opca_form.Email, 'Email',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+                            {{ form_widget(opca_form.Email) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="text-center col-sm-6">
+                            {{ form_label(opca_form.Fax, 'Fax',{
+                                'label_attr': {'class': 'font-weight-bold text-center'}
+                            }) }}
+                            {{ form_widget(opca_form.Fax) }}
+                        </div>
+                        <div class="text-center col-sm-6">
+                            {{ form_label(opca_form.siteweb, 'Site web:',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">http://</div>
+                                </div>
+                                {{ form_widget(opca_form.siteweb) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="row well p-3">
+            <span><u><b><h4 style="margin-right: 0%;">Contact </h4></b></u></span>
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-3 pl-0 pr-0">
+                        <div class="text-center col-md-12">
+                            {{ form_label(opca_form.idCivilite, 'Civilité',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(opca_form.idCivilite) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-3 pl-0 pr-0">
+                        <div class="text-center col-md-12">
+                            {{ form_label(opca_form.nom, 'Nom',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(opca_form.nom) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-3 pl-0 pr-0">
+                        <div class="text-center col-md-12 p-0">
+                            {{ form_label(opca_form.prenom, 'Prénom',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+                            {{ form_widget(opca_form.prenom) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        {{ form_label(opca_form.qualite, 'Qualité',{
+                            'label_attr': {'class': 'font-weight-bold'}
+                        }) }}
+                        <a name="ajactivite" value="+" data-toggle="modal" data-target="#modalQualiteAdd"><i class="fa fa-plus-square" style="font-size: 130%;"></i></a>
+                        {{ form_widget(opca_form.qualite) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 mt-3">
+        <div class="form-group row justify-content-right">
+            <div class="col-sm-3 text-right">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            <div class="col-sm-3 text-right">
+                <button type="submit" class="btn btn-primary" id="addopcato" >Ajouter</button>
+            </div>
+        </div>
+    </div>
+{{ form_end(opca_form,{'render_rest': false}) }}

@@ -1,0 +1,8 @@
+label.star-on-required.required:after {
+    content: '*';
+    padding: 4px;
+}
+
+.label-field .invalid-feedback{
+    display: none !important;
+}

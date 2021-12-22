@@ -1,0 +1,78 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Query\\ParserResult'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ParserResult')),
+        clone ($p['Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor')),
+        clone ($p['Doctrine\\ORM\\Query\\ResultSetMapping'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ResultSetMapping')),
+    ],
+    null,
+    [
+        'Doctrine\\ORM\\Query\\ParserResult' => [
+            '_sqlExecutor' => [
+                $o[1],
+            ],
+            '_resultSetMapping' => [
+                $o[2],
+            ],
+            '_parameterMappings' => [
+                [
+                    'dpid' => [
+                        0,
+                    ],
+                ],
+            ],
+        ],
+        'Doctrine\\ORM\\Query\\Exec\\AbstractSqlExecutor' => [
+            '_sqlStatements' => [
+                1 => 'SELECT t0_.id AS id_0, t1_.structure AS structure_1, t2_.type_contact AS type_contact_2, t0_.nom_str AS nom_str_3, t0_.nom AS nom_4, t0_.prenom AS prenom_5, t3_.adresse AS adresse_6, t4_.nom_ville AS nom_ville_7, t5_.tel AS tel_8, t6_.nom_str AS nom_str_9, t7_.nom_prenom AS nom_prenom_10, t8_.mail AS mail_11, t0_.origine AS origine_12, t0_.statutlead AS statutlead_13, t3_.code_postal AS code_postal_14, t0_.numero AS numero_15, t0_.adresseEmail AS adresseEmail_16, t0_.ville AS ville_17 FROM 1_contact t0_ LEFT JOIN 1_structure t1_ ON t0_.id_type_tructure = t1_.id LEFT JOIN 5_contact_type t2_ ON t0_.id_type = t2_.id LEFT JOIN 1_contact t6_ ON t0_.id_opca = t6_.id LEFT JOIN 2_adresse t3_ ON (t3_.id_contact = t0_.id) LEFT JOIN 5_ville t4_ ON (t4_.id = t3_.id_ville) LEFT JOIN 2_telephone t5_ ON (t5_.id_contact = t0_.id AND t5_.id_type_tel = 1) LEFT JOIN 2_mail t8_ ON (t8_.id_contact = t0_.id) LEFT JOIN 1_collaborateur t7_ ON t0_.id_commercial = t7_.id WHERE t2_.id IN (1, 2) AND t0_.id IN (?) ORDER BY t0_.id DESC',
+            ],
+        ],
+        'stdClass' => [
+            'scalarMappings' => [
+                2 => [
+                    'id_0' => 'contact_id',
+                    'structure_1' => 'entite',
+                    'type_contact_2' => 'statut',
+                    'nom_str_3' => 'societe',
+                    'nom_4' => 'nom',
+                    'prenom_5' => 'prenom',
+                    'adresse_6' => 'adresse',
+                    'nom_ville_7' => 'ville',
+                    'tel_8' => 'telephone',
+                    'nom_str_9' => 'opca',
+                    'nom_prenom_10' => 'commercial',
+                    'mail_11' => 'email',
+                    'origine_12' => 'origine',
+                    'statutlead_13' => 'statutlead',
+                    'code_postal_14' => 'codePostal',
+                    'numero_15' => 'numero',
+                    'adresseEmail_16' => 'adresseEmail',
+                    'ville_17' => 'villeLead',
+                ],
+            ],
+            'typeMappings' => [
+                2 => [
+                    'id_0' => 'integer',
+                    'structure_1' => 'string',
+                    'type_contact_2' => 'string',
+                    'nom_str_3' => 'string',
+                    'nom_4' => 'string',
+                    'prenom_5' => 'string',
+                    'adresse_6' => 'string',
+                    'nom_ville_7' => 'string',
+                    'tel_8' => 'string',
+                    'nom_str_9' => 'string',
+                    'nom_prenom_10' => 'string',
+                    'mail_11' => 'string',
+                    'origine_12' => 'string',
+                    'statutlead_13' => 'string',
+                    'code_postal_14' => 'string',
+                    'numero_15' => 'string',
+                    'adresseEmail_16' => 'string',
+                    'ville_17' => 'string',
+                ],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

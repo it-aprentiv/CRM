@@ -1,0 +1,31 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#{{ attrs.id }}').select2({
+            placeholder: "{{ attrs.placeholder }}",
+            minimumInputLength: 3,
+            allowClear: true,
+            ajax: {
+                url: '{{ path('crm.contact.client.search_json') }}',
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        limit: 20,
+                        type: 'opca'
+                    };
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.nomStr,
+                                id: item.id
+                            };
+                        })
+                    };
+                }
+            },
+        });
+    });
+</script>

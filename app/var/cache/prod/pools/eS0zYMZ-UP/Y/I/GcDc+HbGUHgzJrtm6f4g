@@ -1,0 +1,82 @@
+<?php return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'App\\Entity\\TypeAdresse',
+            ],
+            'namespace' => [
+                'App\\Entity',
+            ],
+            'rootEntityName' => [
+                'App\\Entity\\TypeAdresse',
+            ],
+            'identifier' => [
+                [
+                    'idTypeAdresse',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'idTypeAdresse' => [
+                        'fieldName' => 'idTypeAdresse',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id_type_adresse',
+                        'id' => true,
+                    ],
+                    'typeAdresse' => [
+                        'fieldName' => 'typeAdresse',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 200,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'type_adresse',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id_type_adresse' => 'idTypeAdresse',
+                    'type_adresse' => 'typeAdresse',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'idTypeAdresse' => 'id_type_adresse',
+                    'typeAdresse' => 'type_adresse',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => '2_type_adresse',
+                    'uniqueConstraints' => [
+                        'type_adresse' => [
+                            'columns' => [
+                                'type_adresse',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];
