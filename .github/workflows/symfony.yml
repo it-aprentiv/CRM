@@ -29,8 +29,6 @@ jobs:
           ${{ runner.os }}-php-
     - name: Go into app
       run: cd ./app
-    - name: Install dependancies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Create Database
       run: |
         mkdir -p data
