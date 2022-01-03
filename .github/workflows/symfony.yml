@@ -27,8 +27,6 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-    
-    - name: Go into app
-      run: cd ./app
 
     - name: Lint twigs
       run: cd app && php bin/console lint:twig templates/
