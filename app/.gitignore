@@ -1,39 +1,34 @@
-app/var/*
-!app/var/log/.gitkeep
+/var/log/*
+!var/log/.gitkeep
 
 # Parameters
-app/config/parameters.yml
+/app/config/parameters.yml
 /app/config/parameters.ini
 
 # Managed by Composer
 /app/bootstrap.php.cache
 /var/bootstrap.php.cache
-app/bin/*
-!app/bin/console
-!app/bin/symfony_requirements
-app/vendor/
+/bin/*
+!bin/console
+!bin/symfony_requirements
+/vendor/
 
 # Assets and user uploads
-app/web/bundles/
-app/web/uploads/
+/web/bundles/
+/web/uploads/
 
 # PHPUnit
 /app/phpunit.xml
 /phpunit.xml
 
 # Build data
-app/build/
+/build/
 
 # Composer PHAR
-app/composer.phar
+/composer.phar
 
 # Backup entities generated with doctrine:generate:entities command
 **/Entity/*~
 
 # Embedded web-server pid file
-app/.web-server-pid
-logs/nginx
-app/var/cache/dev/profiler/index.csv
-app/var/log/dev.log
-logs/nginx/access.log
-logs/nginx/access.log
+/.web-server-pid
