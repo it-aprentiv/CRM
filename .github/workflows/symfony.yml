@@ -29,14 +29,8 @@ jobs:
           ${{ runner.os }}-php-    
     - name: Go into app
       run: cd ./app
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
 
     - name: Create Database
       run: |
         mkdir -p data
         touch data/database.sqlite
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
-      run: php app/bin/phpunit --dont-report-useless-tests --disallow-test-output
