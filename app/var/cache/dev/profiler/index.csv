@@ -2013,3 +2013,6 @@ b48891,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641199311,59bf
 ef6ae5,172.18.0.1,GET,http://localhost/contact,1641199866,,200
 5d1cbd,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641199866,6ad2fc,200
 6ad2fc,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641199866,,404
+513afa,172.18.0.1,GET,http://localhost/portail,1641200289,,200
+028f2c,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641200289,e0ce5c,200
+e0ce5c,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641200289,,404
