@@ -2,15 +2,15 @@
 
 namespace Knp\Component\Pager\Event\Subscriber\Paginate;
 
-use Knp\Component\Pager\Event\ItemsEvent;
-
-use Knp\Component\Pager\PaginatorInterface;
 use ModelCriteria;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Knp\Component\Pager\Event\ItemsEvent;
+use Knp\Component\Pager\PaginatorInterface;
 
 class PropelQuerySubscriber implements EventSubscriberInterface
 {
-    public function items(ItemsEvent $event): void
+    public function items(ItemsEvent $event)
     {
         if ($event->target instanceof ModelCriteria) {
             // process count
@@ -36,17 +36,17 @@ class PropelQuerySubscriber implements EventSubscriberInterface
                 ;
                 $result = $resultQuery->find();
             } else {
-                $result = []; // count is 0
+                $result = array(); // count is 0
             }
             $event->items = $result;
             $event->stopPropagation();
         }
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
-        return [
-            'knp_pager.items' => ['items', 0]
-        ];
+        return array(
+            'knp_pager.items' => array('items', 0)
+        );
     }
 }

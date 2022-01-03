@@ -17,7 +17,7 @@ class Helper
      * @param Query $query
      * @return Query
      */
-    public static function cloneQuery(Query $query): Query
+    public static function cloneQuery(Query $query)
     {
         $clonedQuery = clone $query;
         $clonedQuery->setParameters(clone $query->getParameters());
@@ -38,13 +38,13 @@ class Helper
      * @param string $walker
      * @return void
      */
-    public static function addCustomTreeWalker(Query $query, string $walker): void
+    public static function addCustomTreeWalker(Query $query, $walker)
     {
         $customTreeWalkers = $query->getHint(Query::HINT_CUSTOM_TREE_WALKERS);
         if ($customTreeWalkers !== false && is_array($customTreeWalkers)) {
-            $customTreeWalkers = array_merge($customTreeWalkers, [$walker]);
+            $customTreeWalkers = array_merge($customTreeWalkers, array($walker));
         } else {
-            $customTreeWalkers = [$walker];
+            $customTreeWalkers = array($walker);
         }
         $query->setHint(Query::HINT_CUSTOM_TREE_WALKERS, $customTreeWalkers);
     }

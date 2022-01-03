@@ -2,8 +2,8 @@
 
 namespace Knp\Component\Pager\Event;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Specific Event class for paginator
@@ -12,21 +12,13 @@ class BeforeEvent extends Event
 {
     private $eventDispatcher;
 
-    private $request;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher, ?Request $request)
+    public function __construct($eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->request = $request;
     }
 
-    public function getEventDispatcher(): EventDispatcherInterface
+    public function getEventDispatcher()
     {
         return $this->eventDispatcher;
-    }
-
-    public function getRequest(): Request
-    {
-        return $this->request ?? Request::createFromGlobals();
     }
 }

@@ -11,7 +11,7 @@
 
 namespace Symfony\Component\Routing\Generator\Dumper;
 
-@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.3, use "CompiledUrlGeneratorDumper" instead.', PhpGeneratorDumper::class), E_USER_DEPRECATED);
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.3, use "CompiledUrlGeneratorDumper" instead.', PhpGeneratorDumper::class), \E_USER_DEPRECATED);
 
 use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;
 
@@ -79,10 +79,8 @@ EOF;
     /**
      * Generates PHP code representing an array of defined routes
      * together with the routes properties (e.g. requirements).
-     *
-     * @return string PHP code
      */
-    private function generateDeclaredRoutes()
+    private function generateDeclaredRoutes(): string
     {
         $routes = "[\n";
         foreach ($this->getRoutes()->all() as $name => $route) {
@@ -105,10 +103,8 @@ EOF;
 
     /**
      * Generates PHP code representing the `generate` method that implements the UrlGeneratorInterface.
-     *
-     * @return string PHP code
      */
-    private function generateGenerateMethod()
+    private function generateGenerateMethod(): string
     {
         return <<<'EOF'
     public function generate($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH)

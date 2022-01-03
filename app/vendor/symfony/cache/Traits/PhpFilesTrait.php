@@ -41,7 +41,7 @@ trait PhpFilesTrait
     {
         self::$startTime = self::$startTime ?? $_SERVER['REQUEST_TIME'] ?? time();
 
-        return \function_exists('opcache_invalidate') && filter_var(ini_get('opcache.enable'), FILTER_VALIDATE_BOOLEAN) && (!\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) || filter_var(ini_get('opcache.enable_cli'), FILTER_VALIDATE_BOOLEAN));
+        return \function_exists('opcache_invalidate') && filter_var(ini_get('opcache.enable'), \FILTER_VALIDATE_BOOLEAN) && (!\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) || filter_var(ini_get('opcache.enable_cli'), \FILTER_VALIDATE_BOOLEAN));
     }
 
     /**
@@ -55,7 +55,7 @@ trait PhpFilesTrait
 
         set_error_handler($this->includeHandler);
         try {
-            foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->directory, \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::CURRENT_AS_PATHNAME), \RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
+            foreach ($this->scanHashDir($this->directory) as $file) {
                 try {
                     if (\is_array($expiresAt = include $file)) {
                         $expiresAt = $expiresAt[0];
@@ -194,7 +194,7 @@ trait PhpFilesTrait
     /**
      * {@inheritdoc}
      */
-    protected function doSave(array $values, $lifetime)
+    protected function doSave(array $values, int $lifetime)
     {
         $ok = true;
         $expiry = $lifetime ? time() + $lifetime : 'PHP_INT_MAX';
@@ -209,7 +209,7 @@ trait PhpFilesTrait
                 try {
                     $value = VarExporter::export($value, $isStaticValue);
                 } catch (\Exception $e) {
-                    throw new InvalidArgumentException(sprintf('Cache key "%s" has non-serializable %s value.', $key, \is_object($value) ? \get_class($value) : 'array'), 0, $e);
+                    throw new InvalidArgumentException(sprintf('Cache key "%s" has non-serializable "%s" value.', $key, \is_object($value) ? \get_class($value) : 'array'), 0, $e);
                 }
             } elseif (\is_string($value)) {
                 // Wrap "N;" in a closure to not confuse it with an encoded `null`
@@ -218,24 +218,26 @@ trait PhpFilesTrait
                 }
                 $value = var_export($value, true);
             } elseif (!is_scalar($value)) {
-                throw new InvalidArgumentException(sprintf('Cache key "%s" has non-serializable %s value.', $key, \gettype($value)));
+                throw new InvalidArgumentException(sprintf('Cache key "%s" has non-serializable "%s" value.', $key, \gettype($value)));
             } else {
                 $value = var_export($value, true);
             }
 
+            $encodedKey = rawurlencode($key);
+
             if ($isStaticValue) {
-                $value = "<?php return [{$expiry}, {$value}];\n";
+                $value = "return [{$expiry}, {$value}];";
             } elseif ($this->appendOnly) {
-                $value = "<?php return [{$expiry}, static function () { return {$value}; }];\n";
+                $value = "return [{$expiry}, static function () { return {$value}; }];";
             } else {
                 // We cannot use a closure here because of https://bugs.php.net/76982
                 $value = str_replace('\Symfony\Component\VarExporter\Internal\\', '', $value);
-                $value = "<?php\n\nnamespace Symfony\Component\VarExporter\Internal;\n\nreturn \$getExpiry ? {$expiry} : {$value};\n";
+                $value = "namespace Symfony\Component\VarExporter\Internal;\n\nreturn \$getExpiry ? {$expiry} : {$value};";
             }
 
             $file = $this->files[$key] = $this->getFile($key, true);
             // Since OPcache only compiles files older than the script execution start, set the file's mtime in the past
-            $ok = $this->write($file, $value, self::$startTime - 10) && $ok;
+            $ok = $this->write($file, "<?php //{$encodedKey}\n\n{$value}\n", self::$startTime - 10) && $ok;
 
             if ($allowCompile) {
                 @opcache_invalidate($file, true);
@@ -245,7 +247,7 @@ trait PhpFilesTrait
         }
 
         if (!$ok && !is_writable($this->directory)) {
-            throw new CacheException(sprintf('Cache directory is not writable (%s)', $this->directory));
+            throw new CacheException(sprintf('Cache directory is not writable (%s).', $this->directory));
         }
 
         return $ok;
@@ -283,6 +285,18 @@ trait PhpFilesTrait
 
         return @unlink($file);
     }
+
+    private function getFileKey(string $file): string
+    {
+        if (!$h = @fopen($file, 'r')) {
+            return '';
+        }
+
+        $encodedKey = substr(fgets($h), 8);
+        fclose($h);
+
+        return rawurldecode(rtrim($encodedKey));
+    }
 }
 
 /**
@@ -292,7 +306,7 @@ class LazyValue
 {
     public $file;
 
-    public function __construct($file)
+    public function __construct(string $file)
     {
         $this->file = $file;
     }

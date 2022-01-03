@@ -3,15 +3,15 @@
 namespace Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ODM\PHPCR;
 
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
-use Knp\Component\Pager\Event\ItemsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Knp\Component\Pager\Event\ItemsEvent;
 
 /**
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
 class QueryBuilderSubscriber implements EventSubscriberInterface
 {
-    public function items(ItemsEvent $event): void
+    public function items(ItemsEvent $event)
     {
         if (!$event->target instanceof QueryBuilder) {
             return;
@@ -20,10 +20,10 @@ class QueryBuilderSubscriber implements EventSubscriberInterface
         $event->target = $event->target->getQuery();
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
-        return [
-            'knp_pager.items' => ['items', 10/*make sure to transform before any further modifications*/]
-        ];
+        return array(
+            'knp_pager.items' => array('items', 10/*make sure to transform before any further modifications*/)
+        );
     }
 }

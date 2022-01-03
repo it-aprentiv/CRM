@@ -2,6 +2,8 @@
 
 namespace Knp\Component\Pager\Event;
 
+use Symfony\Component\EventDispatcher\Event;
+
 /**
  * Specific Event class for paginator
  */
@@ -37,37 +39,37 @@ class ItemsEvent extends Event
 
     private $offset;
     private $limit;
-    private $customPaginationParams = [];
+    private $customPaginationParams = array();
 
-    public function __construct(int $offset, int $limit)
+    public function __construct($offset, $limit)
     {
         $this->offset = $offset;
         $this->limit = $limit;
     }
 
-    public function setCustomPaginationParameter($name, $value): void
+    public function setCustomPaginationParameter($name, $value)
     {
         $this->customPaginationParams[$name] = $value;
     }
 
-    public function getCustomPaginationParameters(): array
+    public function getCustomPaginationParameters()
     {
         return $this->customPaginationParams;
     }
 
-    public function unsetCustomPaginationParameter($name): void
+    public function unsetCustomPaginationParameter($name)
     {
         if (isset($this->customPaginationParams[$name])) {
             unset($this->customPaginationParams[$name]);
         }
     }
 
-    public function getLimit(): int
+    public function getLimit()
     {
         return $this->limit;
     }
 
-    public function getOffset(): int
+    public function getOffset()
     {
         return $this->offset;
     }

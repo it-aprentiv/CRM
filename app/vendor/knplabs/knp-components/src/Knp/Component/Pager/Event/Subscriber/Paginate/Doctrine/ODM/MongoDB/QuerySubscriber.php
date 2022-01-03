@@ -2,13 +2,13 @@
 
 namespace Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ODM\MongoDB;
 
-use Doctrine\ODM\MongoDB\Query\Query;
-use Knp\Component\Pager\Event\ItemsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Knp\Component\Pager\Event\ItemsEvent;
+use Doctrine\ODM\MongoDB\Query\Query;
 
 class QuerySubscriber implements EventSubscriberInterface
 {
-    public function items(ItemsEvent $event): void
+    public function items(ItemsEvent $event)
     {
         if ($event->target instanceof Query) {
             // items
@@ -18,25 +18,23 @@ class QuerySubscriber implements EventSubscriberInterface
             }
             static $reflectionProperty;
             if (is_null($reflectionProperty)) {
-                $reflectionClass = new \ReflectionClass('Doctrine\ODM\MongoDB\Query\Query');
+                $reflectionClass = new \ReflectionClass('Doctrine\MongoDB\Query\Query');
                 $reflectionProperty = $reflectionClass->getProperty('query');
                 $reflectionProperty->setAccessible(true);
             }
             $queryOptions = $reflectionProperty->getValue($event->target);
-            $resultCount = clone $event->target;
-            $queryOptions['type'] = Query::TYPE_COUNT;
-            $reflectionProperty->setValue($resultCount, $queryOptions);
-            $event->count = $resultCount->execute();
 
-            $queryOptions = $reflectionProperty->getValue($event->target);
-            $queryOptions['type'] = Query::TYPE_FIND;
             $queryOptions['limit'] = $event->getLimit();
             $queryOptions['skip'] = $event->getOffset();
+
             $resultQuery = clone $event->target;
             $reflectionProperty->setValue($resultQuery, $queryOptions);
             $cursor = $resultQuery->execute();
 
-            $event->items = [];
+            // set the count from the cursor
+            $event->count = $cursor->count();
+
+            $event->items = array();
             // iterator_to_array for GridFS results in 1 item
             foreach ($cursor as $item) {
                 $event->items[] = $item;
@@ -45,10 +43,10 @@ class QuerySubscriber implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
-        return [
-            'knp_pager.items' => ['items', 0]
-        ];
+        return array(
+            'knp_pager.items' => array('items', 0)
+        );
     }
 }

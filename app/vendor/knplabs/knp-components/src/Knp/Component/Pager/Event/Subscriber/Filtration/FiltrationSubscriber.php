@@ -2,8 +2,8 @@
 
 namespace Knp\Component\Pager\Event\Subscriber\Filtration;
 
-use Knp\Component\Pager\Event\BeforeEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Knp\Component\Pager\Event\BeforeEvent;
 
 class FiltrationSubscriber implements EventSubscriberInterface
 {
@@ -13,7 +13,7 @@ class FiltrationSubscriber implements EventSubscriberInterface
      */
     private $isLoaded = false;
 
-    public function before(BeforeEvent $event): void
+    public function before(BeforeEvent $event)
     {
         // Do not lazy-load more than once
         if ($this->isLoaded) {
@@ -22,16 +22,16 @@ class FiltrationSubscriber implements EventSubscriberInterface
 
         $disp = $event->getEventDispatcher();
         // hook all standard filtration subscribers
-        $disp->addSubscriber(new Doctrine\ORM\QuerySubscriber($event->getRequest()));
-        $disp->addSubscriber(new PropelQuerySubscriber($event->getRequest()));
+        $disp->addSubscriber(new Doctrine\ORM\QuerySubscriber());
+        $disp->addSubscriber(new PropelQuerySubscriber());
 
         $this->isLoaded = true;
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
-        return [
-            'knp_pager.before' => ['before', 1],
-        ];
+        return array(
+            'knp_pager.before' => array('before', 1),
+        );
     }
 }

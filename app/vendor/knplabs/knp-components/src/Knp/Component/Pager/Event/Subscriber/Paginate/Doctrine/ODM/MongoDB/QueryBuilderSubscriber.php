@@ -2,13 +2,13 @@
 
 namespace Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ODM\MongoDB;
 
-use Doctrine\ODM\MongoDB\Query\Builder;
-use Knp\Component\Pager\Event\ItemsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Knp\Component\Pager\Event\ItemsEvent;
+use Doctrine\ODM\MongoDB\Query\Builder;
 
 class QueryBuilderSubscriber implements EventSubscriberInterface
 {
-    public function items(ItemsEvent $event): void
+    public function items(ItemsEvent $event)
     {
         if ($event->target instanceof Builder) {
             // change target into query
@@ -16,10 +16,10 @@ class QueryBuilderSubscriber implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
-        return [
-            'knp_pager.items' => ['items', 10/*make sure to transform before any further modifications*/]
-        ];
+        return array(
+            'knp_pager.items' => array('items', 10/*make sure to transform before any further modifications*/)
+        );
     }
 }

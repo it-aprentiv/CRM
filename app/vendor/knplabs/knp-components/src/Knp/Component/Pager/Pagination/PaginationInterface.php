@@ -2,84 +2,40 @@
 
 namespace Knp\Component\Pager\Pagination;
 
-use ArrayAccess, Countable, Traversable;
-
 /**
  * Pagination interface strictly defines
  * the methods - paginator will use to populate the
  * pagination data
  */
-interface PaginationInterface extends Countable, Traversable, ArrayAccess
+interface PaginationInterface
 {
     /**
-     * @param int $pageNumber
+     * @param integer $pageNumber
      */
-    public function setCurrentPageNumber(int $pageNumber): void;
+    function setCurrentPageNumber($pageNumber);
 
     /**
-     * Get currently used page number
-     *
-     * @return int
+     * @param integer $numItemsPerPage
      */
-    public function getCurrentPageNumber(): int;
+    function setItemNumberPerPage($numItemsPerPage);
 
     /**
-     * @param int $numItemsPerPage
+     * @param integer $numTotal
      */
-    public function setItemNumberPerPage(int $numItemsPerPage): void;
+    function setTotalItemCount($numTotal);
 
     /**
-     * Get number of items per page
-     *
-     * @return int
+     * @param mixed $items
      */
-    public function getItemNumberPerPage(): int;
+    function setItems($items);
 
     /**
-     * @param int $numTotal
+     * @param string $options
      */
-    public function setTotalItemCount(int $numTotal): void;
-
-    /**
-     * Get total item number available
-     *
-     * @return int
-     */
-    public function getTotalItemCount(): int;
-
-    /**
-     * @param iterable $items
-     */
-    public function setItems(iterable $items): void;
-
-    /**
-     * Get current items
-     *
-     * @return iterable
-     */
-    public function getItems(): iterable;
-
-    /**
-     * @param array $options
-     */
-    public function setPaginatorOptions(array $options): void;
-
-    /**
-     * Get pagination alias
-     *
-     * @return mixed
-     */
-    public function getPaginatorOption($name);
+    function setPaginatorOptions($options);
 
     /**
      * @param array $parameters
      */
-    public function setCustomParameters(array $parameters): void;
-
-    /**
-     * Return custom parameter
-     * 
-     * @return mixed
-     */
-    public function getCustomParameter(string $name);
+    function setCustomParameters(array $parameters);
 }

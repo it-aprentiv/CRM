@@ -440,7 +440,9 @@ class QueryBuilder
      *     $qb->getRootAliases(); // array('u')
      * </code>
      *
-     * @return array
+     * @return mixed[]
+     *
+     * @psalm-return list<mixed>
      */
     public function getRootAliases()
     {
@@ -473,7 +475,10 @@ class QueryBuilder
      *
      *     $qb->getAllAliases(); // array('u','a')
      * </code>
-     * @return array
+     *
+     * @return mixed[]
+     *
+     * @psalm-return list<mixed>
      */
     public function getAllAliases()
     {
@@ -492,7 +497,9 @@ class QueryBuilder
      *     $qb->getRootEntities(); // array('User')
      * </code>
      *
-     * @return array
+     * @return mixed[]
+     *
+     * @psalm-return list<mixed>
      */
     public function getRootEntities()
     {
@@ -567,6 +574,7 @@ class QueryBuilder
     {
         // BC compatibility with 2.3-
         if (is_array($parameters)) {
+            /** @psalm-var ArrayCollection<int, Query\Parameter> $parameterCollection */
             $parameterCollection = new ArrayCollection();
 
             foreach ($parameters as $key => $value) {
@@ -602,11 +610,13 @@ class QueryBuilder
      */
     public function getParameter($key)
     {
+        $key = Query\Parameter::normalizeName($key);
+
         $filteredParameters = $this->parameters->filter(
             function (Query\Parameter $parameter) use ($key) : bool {
                 $parameterName = $parameter->getName();
 
-                return $key === $parameterName || (string) $key === (string) $parameterName;
+                return $key === $parameterName;
             }
         );
 
@@ -1336,8 +1346,6 @@ class QueryBuilder
      * @param string $queryPartName
      *
      * @return mixed $queryPart
-     *
-     * @todo Rename: getQueryPart (or remove?)
      */
     public function getDQLPart($queryPartName)
     {
@@ -1348,8 +1356,6 @@ class QueryBuilder
      * Gets all query parts.
      *
      * @return array $dqlParts
-     *
-     * @todo Rename: getQueryParts (or remove?)
      */
     public function getDQLParts()
     {

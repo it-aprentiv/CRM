@@ -2,29 +2,29 @@
 
 namespace Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Knp\Component\Pager\Event\ItemsEvent;
 use ArrayObject;
 use Doctrine\Common\Collections\Collection;
-use Knp\Component\Pager\Event\ItemsEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CollectionSubscriber implements EventSubscriberInterface
 {
-    public function items(ItemsEvent $event): void
+    public function items(ItemsEvent $event)
     {
         if ($event->target instanceof Collection) {
             $event->count = $event->target->count();
-            $event->items = $event->target->slice(
+            $event->items = new ArrayObject($event->target->slice(
                 $event->getOffset(),
                 $event->getLimit()
-            );
+            ));
             $event->stopPropagation();
         }
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
-        return [
-            'knp_pager.items' => ['items', 0]
-        ];
+        return array(
+            'knp_pager.items' => array('items', 0)
+        );
     }
 }

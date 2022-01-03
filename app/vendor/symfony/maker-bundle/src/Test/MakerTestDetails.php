@@ -44,7 +44,12 @@ final class MakerTestDetails
 
     private $requiredPhpVersion;
 
+    private $requiredPackageVersions = [];
+
     private $guardAuthenticators = [];
+
+    private $shouldSkip = false;
+    private $skipMessage;
 
     /**
      * @return static
@@ -134,17 +139,18 @@ final class MakerTestDetails
         $this
             ->addReplacement(
                 '.env',
-                'mysql://db_user:db_password@127.0.0.1:3306/db_name',
+                'postgresql://symfony:ChangeMe@127.0.0.1:5432/app?serverVersion=13&charset=utf8',
                 getenv('TEST_DATABASE_DSN')
             )
         ;
 
-        // use MySQL 5.6, which is what's currently available on Travis
+        // Flex includes a recipe to suffix the dbname w/ "_test" - lets keep
+        // things simple for these tests and not do that.
         $this->addReplacement(
-            'config/packages/doctrine.yaml',
-            "server_version: '5.7'",
-            "server_version: '5.6'"
-        );
+            'config/packages/test/doctrine.yaml',
+            "dbname_suffix: '_test%env(default::TEST_TOKEN)%'",
+            '')
+        ;
 
         // this looks silly, but it's the only way to drop the database *for sure*,
         // as doctrine:database:drop will error if there is no database
@@ -212,6 +218,13 @@ final class MakerTestDetails
     public function setRequiredPhpVersion(int $version): self
     {
         $this->requiredPhpVersion = $version;
+
+        return $this;
+    }
+
+    public function addRequiredPackageVersion(string $packageName, string $versionConstraint): self
+    {
+        $this->requiredPackageVersions[] = ['name' => $packageName, 'version_constraint' => $versionConstraint];
 
         return $this;
     }
@@ -315,5 +328,37 @@ final class MakerTestDetails
     public function getGuardAuthenticators(): array
     {
         return $this->guardAuthenticators;
+    }
+
+    public function getRequiredPackageVersions(): array
+    {
+        return $this->requiredPackageVersions;
+    }
+
+    public function skip(string $message)
+    {
+        $this->shouldSkip = true;
+        $this->skipMessage = $message;
+
+        return $this;
+    }
+
+    public function shouldSkip(): bool
+    {
+        return $this->shouldSkip;
+    }
+
+    public function getSkipMessage(): ?string
+    {
+        return $this->skipMessage;
+    }
+
+    public function useDoctrineAttributeMapping(): self
+    {
+        return $this->addReplacement(
+        'config/packages/doctrine.yaml',
+                'type: annotation',
+                'type: attribute'
+        );
     }
 }

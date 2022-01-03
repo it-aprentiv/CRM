@@ -48,6 +48,8 @@ class DoctrineProvider extends CacheProvider implements PruneableInterface, Rese
 
     /**
      * {@inheritdoc}
+     *
+     * @return mixed
      */
     protected function doFetch($id)
     {
@@ -58,6 +60,8 @@ class DoctrineProvider extends CacheProvider implements PruneableInterface, Rese
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     protected function doContains($id)
     {
@@ -66,6 +70,8 @@ class DoctrineProvider extends CacheProvider implements PruneableInterface, Rese
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     protected function doSave($id, $data, $lifeTime = 0)
     {
@@ -80,6 +86,8 @@ class DoctrineProvider extends CacheProvider implements PruneableInterface, Rese
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     protected function doDelete($id)
     {
@@ -88,6 +96,8 @@ class DoctrineProvider extends CacheProvider implements PruneableInterface, Rese
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     protected function doFlush()
     {
@@ -96,6 +106,8 @@ class DoctrineProvider extends CacheProvider implements PruneableInterface, Rese
 
     /**
      * {@inheritdoc}
+     *
+     * @return array|null
      */
     protected function doGetStats()
     {

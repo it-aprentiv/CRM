@@ -13,6 +13,7 @@ namespace Symfony\Component\Cache\Traits;
 
 use Psr\Cache\CacheItemInterface;
 use Symfony\Component\Cache\CacheItem;
+use Symfony\Component\Cache\Exception\InvalidArgumentException;
 
 /**
  * @author Nicolas Grekas <p@tchwork.com>
@@ -38,10 +39,11 @@ trait AbstractAdapterTrait
      */
     public function getItem($key)
     {
-        if ($this->deferred) {
+        $id = $this->getId($key);
+
+        if (isset($this->deferred[$key])) {
             $this->commit();
         }
-        $id = $this->getId($key);
 
         $f = $this->createCacheItem;
         $isHit = false;
@@ -51,11 +53,13 @@ trait AbstractAdapterTrait
             foreach ($this->doFetch([$id]) as $value) {
                 $isHit = true;
             }
+
+            return $f($key, $value, $isHit);
         } catch (\Exception $e) {
             CacheItem::log($this->logger, 'Failed to fetch key "{key}": '.$e->getMessage(), ['key' => $key, 'exception' => $e]);
         }
 
-        return $f($key, $value, $isHit);
+        return $f($key, null, false);
     }
 
     /**
@@ -63,14 +67,18 @@ trait AbstractAdapterTrait
      */
     public function getItems(array $keys = [])
     {
-        if ($this->deferred) {
-            $this->commit();
-        }
         $ids = [];
+        $commit = false;
 
         foreach ($keys as $key) {
             $ids[] = $this->getId($key);
+            $commit = $commit || isset($this->deferred[$key]);
         }
+
+        if ($commit) {
+            $this->commit();
+        }
+
         try {
             $items = $this->doFetch($ids);
         } catch (\Exception $e) {
@@ -84,6 +92,8 @@ trait AbstractAdapterTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     public function save(CacheItemInterface $item)
     {
@@ -97,6 +107,8 @@ trait AbstractAdapterTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     public function saveDeferred(CacheItemInterface $item)
     {
@@ -108,6 +120,9 @@ trait AbstractAdapterTrait
         return true;
     }
 
+    /**
+     * @return array
+     */
     public function __sleep()
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
@@ -125,14 +140,14 @@ trait AbstractAdapterTrait
         }
     }
 
-    private function generateItems($items, &$keys)
+    private function generateItems(iterable $items, array &$keys): iterable
     {
         $f = $this->createCacheItem;
 
         try {
             foreach ($items as $id => $value) {
                 if (!isset($keys[$id])) {
-                    $id = key($keys);
+                    throw new InvalidArgumentException(sprintf('Could not match value id "%s" to keys "%s".', $id, implode('", "', $keys)));
                 }
                 $key = $keys[$id];
                 unset($keys[$id]);

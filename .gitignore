@@ -12,6 +12,7 @@ app/config/parameters.yml
 app/bin/*
 !app/bin/console
 !app/bin/symfony_requirements
+vendor/
 
 # Assets and user uploads
 app/web/bundles/
@@ -36,3 +37,4 @@ logs/nginx
 app/var/cache/dev/profiler/index.csv
 app/var/log/dev.log
 logs/nginx/access.log
+app/.github/workflows/symfony.yml

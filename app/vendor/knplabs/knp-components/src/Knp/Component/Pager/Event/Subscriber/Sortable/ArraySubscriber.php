@@ -3,12 +3,11 @@
 namespace Knp\Component\Pager\Event\Subscriber\Sortable;
 
 use Knp\Component\Pager\Event\ItemsEvent;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 class ArraySubscriber implements EventSubscriberInterface
 {
@@ -27,77 +26,53 @@ class ArraySubscriber implements EventSubscriberInterface
      */
     private $propertyAccessor;
 
-    /**
-     * @var Request
-     */
-    private $request;
-
-    public function __construct(Request $request = null, PropertyAccessorInterface $accessor = null)
+    public function __construct(PropertyAccessorInterface $accessor = null)
     {
         if (!$accessor && class_exists('Symfony\Component\PropertyAccess\PropertyAccess')) {
             $accessor = PropertyAccess::createPropertyAccessorBuilder()->enableMagicCall()->getPropertyAccessor();
         }
 
         $this->propertyAccessor = $accessor;
-        // check needed because $request must be nullable, being the second parameter (with the first one nullable)
-        if (null === $request) {
-            throw new \InvalidArgumentException('Request must be initialized.');
-        }
-        $this->request = $request;
     }
 
-    public function items(ItemsEvent $event): void
+    public function items(ItemsEvent $event)
     {
         // Check if the result has already been sorted by an other sort subscriber
         $customPaginationParameters = $event->getCustomPaginationParameters();
         if (!empty($customPaginationParameters['sorted']) ) {
             return;
         }
-        $sortField = $event->options[PaginatorInterface::SORT_FIELD_PARAMETER_NAME];
-        if (!is_array($event->target) || null === $sortField || !$this->request->query->has($sortField)) {
+
+        if (!is_array($event->target) || empty($_GET[$event->options[PaginatorInterface::SORT_FIELD_PARAMETER_NAME]])) {
             return;
         }
 
         $event->setCustomPaginationParameter('sorted', true);
 
-        if (isset($event->options[PaginatorInterface::SORT_FIELD_WHITELIST]) && !in_array($this->request->query->get($sortField), $event->options[PaginatorInterface::SORT_FIELD_WHITELIST])) {
-            throw new \UnexpectedValueException("Cannot sort by: [{$this->request->query->get($sortField)}] this field is not in whitelist");
+        if (isset($event->options[PaginatorInterface::SORT_FIELD_WHITELIST]) && !in_array($_GET[$event->options[PaginatorInterface::SORT_FIELD_PARAMETER_NAME]], $event->options[PaginatorInterface::SORT_FIELD_WHITELIST])) {
+            throw new \UnexpectedValueException("Cannot sort by: [{$_GET[$event->options[PaginatorInterface::SORT_FIELD_PARAMETER_NAME]]}] this field is not in whitelist");
         }
 
-        $sortFunction = isset($event->options['sortFunction']) ? $event->options['sortFunction'] : [$this, 'proxySortFunction'];
-        $sortField = $this->request->query->get($sortField);
+        $sortFunction = isset($event->options['sortFunction']) ? $event->options['sortFunction'] : array($this, 'proxySortFunction');
+        $sortField = $_GET[$event->options[PaginatorInterface::SORT_FIELD_PARAMETER_NAME]];
 
         // compatibility layer
         if ($sortField[0] === '.') {
             $sortField = substr($sortField, 1);
         }
 
-        call_user_func_array($sortFunction, [
+        call_user_func_array($sortFunction, array(
             &$event->target,
             $sortField,
-            $this->getSortDirection($event->options)
-        ]);
+            isset($_GET[$event->options[PaginatorInterface::SORT_DIRECTION_PARAMETER_NAME]]) && strtolower($_GET[$event->options[PaginatorInterface::SORT_DIRECTION_PARAMETER_NAME]]) === 'asc' ? 'asc' : 'desc'
+        ));
     }
 
-    private function getSortDirection(array $options): string
-    {
-        if (!$this->request->query->has($options[PaginatorInterface::SORT_DIRECTION_PARAMETER_NAME])) {
-            return 'desc';
-        }
-        $direction = $this->request->query->get($options[PaginatorInterface::SORT_DIRECTION_PARAMETER_NAME]);
-        if (strtolower($direction) === 'asc') {
-            return 'asc';
-        }
-
-        return 'desc';
-    }
-
-    private function proxySortFunction(&$target, $sortField, $sortDirection): bool
-    {
+    private function proxySortFunction(&$target, $sortField, $sortDirection) {
         $this->currentSortingField = $sortField;
         $this->sortDirection = $sortDirection;
 
-        return usort($target, [$this, 'sortFunction']);
+        return usort($target, array($this, 'sortFunction'));
     }
 
     /**
@@ -106,14 +81,10 @@ class ArraySubscriber implements EventSubscriberInterface
      *
      * @return int
      */
-    private function sortFunction($object1, $object2): int
+    private function sortFunction($object1, $object2)
     {
         if (!$this->propertyAccessor) {
             throw new \UnexpectedValueException('You need symfony/property-access component to use this sorting function');
-        }
-
-        if (!$this->propertyAccessor->isReadable($object1, $this->currentSortingField) || !$this->propertyAccessor->isReadable($object2, $this->currentSortingField)) {
-            return 0;
         }
 
         try {
@@ -143,15 +114,15 @@ class ArraySubscriber implements EventSubscriberInterface
         return ($fieldValue1 > $fieldValue2 ? 1 : -1) * $this->getSortCoefficient();
     }
 
-    private function getSortCoefficient(): int
+    private function getSortCoefficient()
     {
         return $this->sortDirection === 'asc' ? 1 : -1;
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
-        return [
-            'knp_pager.items' => ['items', 1]
-        ];
+        return array(
+            'knp_pager.items' => array('items', 1)
+        );
     }
 }

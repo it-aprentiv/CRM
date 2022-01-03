@@ -14,6 +14,7 @@ namespace Symfony\Component\Security\Core\Authentication\Provider;
 use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\AuthenticationServiceException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -80,7 +81,7 @@ abstract class UserAuthenticationProvider implements AuthenticationProviderInter
             $this->userChecker->checkPreAuth($user);
             $this->checkAuthentication($user, $token);
             $this->userChecker->checkPostAuth($user);
-        } catch (BadCredentialsException $e) {
+        } catch (AccountStatusException|BadCredentialsException $e) {
             if ($this->hideUserNotFoundExceptions) {
                 throw new BadCredentialsException('Bad credentials.', 0, $e);
             }
@@ -109,10 +110,8 @@ abstract class UserAuthenticationProvider implements AuthenticationProviderInter
 
     /**
      * Retrieves roles from user and appends SwitchUserRole if original token contained one.
-     *
-     * @return array The user roles
      */
-    private function getRoles(UserInterface $user, TokenInterface $token)
+    private function getRoles(UserInterface $user, TokenInterface $token): array
     {
         $roles = $user->getRoles();
 
@@ -130,8 +129,7 @@ abstract class UserAuthenticationProvider implements AuthenticationProviderInter
     /**
      * Retrieves the user from an implementation-specific location.
      *
-     * @param string                $username The username to retrieve
-     * @param UsernamePasswordToken $token    The Token
+     * @param string $username The username to retrieve
      *
      * @return UserInterface The user
      *

@@ -11,9 +11,10 @@
 
 namespace Symfony\Bundle\MakerBundle\Doctrine;
 
-use Doctrine\Common\Persistence\Mapping\MappingException as CommonMappingException;
+use Doctrine\Common\Persistence\Mapping\MappingException as LegacyCommonMappingException;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\Persistence\Mapping\MappingException as PersistenceMappingException;
 use Symfony\Bundle\MakerBundle\Exception\RuntimeCommandException;
 use Symfony\Bundle\MakerBundle\FileManager;
 use Symfony\Bundle\MakerBundle\Generator;
@@ -39,11 +40,11 @@ final class EntityRegenerator
         $this->overwrite = $overwrite;
     }
 
-    public function regenerateEntities(string $classOrNamespace)
+    public function regenerateEntities(string $classOrNamespace): void
     {
         try {
             $metadata = $this->doctrineHelper->getMetadata($classOrNamespace);
-        } catch (MappingException | CommonMappingException $mappingException) {
+        } catch (MappingException|LegacyCommonMappingException|PersistenceMappingException $mappingException) {
             $metadata = $this->doctrineHelper->getMetadata($classOrNamespace, true);
         }
 
@@ -214,7 +215,7 @@ final class EntityRegenerator
         return (new \ReflectionClass($class))->getFileName();
     }
 
-    private function generateRepository(ClassMetadata $metadata)
+    private function generateRepository(ClassMetadata $metadata): void
     {
         if (!$metadata->customRepositoryClassName) {
             return;
@@ -234,7 +235,7 @@ final class EntityRegenerator
         $this->generator->writeChanges();
     }
 
-    private function getMappedFieldsInEntity(ClassMetadata $classMetadata)
+    private function getMappedFieldsInEntity(ClassMetadata $classMetadata): array
     {
         /* @var $classReflection \ReflectionClass */
         $classReflection = $classMetadata->reflClass;

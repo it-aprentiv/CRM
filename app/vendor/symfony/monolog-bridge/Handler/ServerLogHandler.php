@@ -11,6 +11,7 @@
 
 namespace Symfony\Bridge\Monolog\Handler;
 
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractHandler;
 use Monolog\Logger;
 use Symfony\Bridge\Monolog\Formatter\VarDumperFormatter;
@@ -24,11 +25,14 @@ class ServerLogHandler extends AbstractHandler
     private $context;
     private $socket;
 
-    public function __construct(string $host, int $level = Logger::DEBUG, bool $bubble = true, array $context = [])
+    /**
+     * @param string|int $level The minimum logging level at which this handler will be triggered
+     */
+    public function __construct(string $host, $level = Logger::DEBUG, bool $bubble = true, array $context = [])
     {
         parent::__construct($level, $bubble);
 
-        if (false === strpos($host, '://')) {
+        if (!str_contains($host, '://')) {
             $host = 'tcp://'.$host;
         }
 
@@ -38,6 +42,8 @@ class ServerLogHandler extends AbstractHandler
 
     /**
      * {@inheritdoc}
+     *
+     * @return bool
      */
     public function handle(array $record)
     {
@@ -61,7 +67,7 @@ class ServerLogHandler extends AbstractHandler
 
         try {
             if (-1 === stream_socket_sendto($this->socket, $recordFormatted)) {
-                stream_socket_shutdown($this->socket, STREAM_SHUT_RDWR);
+                stream_socket_shutdown($this->socket, \STREAM_SHUT_RDWR);
 
                 // Let's retry: the persistent connection might just be stale
                 if ($this->socket = $this->createSocket()) {
@@ -77,6 +83,8 @@ class ServerLogHandler extends AbstractHandler
 
     /**
      * {@inheritdoc}
+     *
+     * @return FormatterInterface
      */
     protected function getDefaultFormatter()
     {
@@ -89,7 +97,7 @@ class ServerLogHandler extends AbstractHandler
 
     private function createSocket()
     {
-        $socket = stream_socket_client($this->host, $errno, $errstr, 0, STREAM_CLIENT_CONNECT | STREAM_CLIENT_ASYNC_CONNECT | STREAM_CLIENT_PERSISTENT, $this->context);
+        $socket = stream_socket_client($this->host, $errno, $errstr, 0, \STREAM_CLIENT_CONNECT | \STREAM_CLIENT_ASYNC_CONNECT | \STREAM_CLIENT_PERSISTENT, $this->context);
 
         if ($socket) {
             stream_set_blocking($socket, false);
@@ -98,7 +106,7 @@ class ServerLogHandler extends AbstractHandler
         return $socket;
     }
 
-    private function formatRecord(array $record)
+    private function formatRecord(array $record): string
     {
         if ($this->processors) {
             foreach ($this->processors as $processor) {

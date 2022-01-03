@@ -1,1 +1,1 @@
-doctrine/migrations/bin/doctrine-migrations
+../doctrine/migrations/bin/doctrine-migrations

@@ -2,6 +2,7 @@
 
 namespace Knp\Component\Pager\Event;
 
+use Symfony\Component\EventDispatcher\Event;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
@@ -25,12 +26,12 @@ class PaginationEvent extends Event
 
     private $pagination;
 
-    public function setPagination(PaginationInterface $pagination): void
+    public function setPagination(PaginationInterface $pagination)
     {
         $this->pagination = $pagination;
     }
 
-    public function getPagination(): PaginationInterface
+    public function getPagination()
     {
         return $this->pagination;
     }

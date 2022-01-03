@@ -12,11 +12,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class SolariumQuerySubscriber implements EventSubscriberInterface
 {
-    public function items(ItemsEvent $event): void
+    public function items(ItemsEvent $event)
     {
         if (is_array($event->target) && 2 == count($event->target)) {
             $values = array_values($event->target);
-            [$client, $query] = $values;
+            list($client, $query) = $values;
 
             if ($client instanceof \Solarium\Client && $query instanceof \Solarium\QueryType\Select\Query\Query) {
                 $query->setStart($event->getOffset())->setRows($event->getLimit());
@@ -30,10 +30,10 @@ class SolariumQuerySubscriber implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
-        return [
-            'knp_pager.items' => ['items', 0] /* triggers before a standard array subscriber*/
-        ];
+        return array(
+            'knp_pager.items' => array('items', 0) /* triggers before a standard array subscriber*/
+        );
     }
 }
