@@ -12,7 +12,7 @@ app/config/parameters.yml
 app/bin/*
 !app/bin/console
 !app/bin/symfony_requirements
-vendor/
+app/vendor
 
 # Assets and user uploads
 app/web/bundles/
