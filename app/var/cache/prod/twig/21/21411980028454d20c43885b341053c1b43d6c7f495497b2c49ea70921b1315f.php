@@ -109,6 +109,6 @@ class __TwigTemplate_cdccef0b83608f567005f0e26b01ce46220dd8113fe2db28ff18b947de7
 
     public function getSourceContext()
     {
-        return new Source("", "@Twig/Exception/error500.html.twig", "/var/www/templates/bundles/TwigBundle/Exception/error500.html.twig");
+        return new Source("", "@Twig/Exception/error500.html.twig", "/home/jeremy/Bureau/project/app/templates/bundles/TwigBundle/Exception/error500.html.twig");
     }
 }

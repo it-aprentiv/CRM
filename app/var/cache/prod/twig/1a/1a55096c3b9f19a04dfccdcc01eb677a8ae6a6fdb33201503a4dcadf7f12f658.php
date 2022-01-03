@@ -219,39 +219,41 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                             </div>
 
                             <div class=\"col-md-3 text-center\">
+
                                 ";
-        // line 91
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "id_commercial", [], "any", false, false, false, 91), 'label', ["label_attr" => ["class" => "font-weight-bold required"], "label" => "Commercial"]);
-        // line 93
-        echo "
-                                ";
+        // line 92
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "id_commercial", [], "any", false, false, false, 92), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Commercial"]);
         // line 94
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "id_commercial", [], "any", false, false, false, 94), 'widget', ["attr" => ["autocomplete" => "off"]]);
         echo "
+                                ";
+        // line 95
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "id_commercial", [], "any", false, false, false, 95), 'widget', ["attr" => ["autocomplete" => "off"]]);
+        echo "
+        
                             </div>
                             
                             <div class=\"col-md-2 text-center\">
                                 ";
-        // line 98
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "structure", [], "any", false, false, false, 98), 'label', ["label_attr" => ["class" => "font-weight-bold required"], "label" => "Entité"]);
         // line 100
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "structure", [], "any", false, false, false, 100), 'label', ["label_attr" => ["class" => "font-weight-bold required"], "label" => "Entité"]);
+        // line 102
         echo "
                                 ";
-        // line 101
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "structure", [], "any", false, false, false, 101), 'widget');
+        // line 103
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "structure", [], "any", false, false, false, 103), 'widget');
         echo "
                             </div>
                         ";
-        // line 104
+        // line 106
         echo "                            <div class=\"form-group col-md-10 text-center\">
                                     ";
-        // line 105
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "sexe", [], "any", false, false, false, 105), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Identifiants OCPO"]);
         // line 107
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "sexe", [], "any", false, false, false, 107), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Identifiants OCPO"]);
+        // line 109
         echo "
                                     ";
-        // line 108
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "sexe", [], "any", false, false, false, 108), 'widget');
+        // line 110
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "sexe", [], "any", false, false, false, 110), 'widget');
         echo "
                                 </div>
                         </div>
@@ -262,47 +264,47 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                         <div class=\"row\">
                             <div class=\"form-group col-md-3 text-center\">
                                 ";
-        // line 117
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "siretTns", [], "any", false, false, false, 117), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Siret TNS / N° TI"]);
         // line 119
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "siretTns", [], "any", false, false, false, 119), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Siret TNS / N° TI"]);
+        // line 121
         echo "
                                 ";
-        // line 120
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "siretTns", [], "any", false, false, false, 120), 'widget', ["attr" => ["pattern" => ".{14,14}", "class" => "number-format", "class" => "siret_format"]]);
+        // line 122
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "siretTns", [], "any", false, false, false, 122), 'widget', ["attr" => ["pattern" => ".{14,14}", "class" => "number-format", "class" => "siret_format"]]);
         echo "
                             </div>
                             <div class=\"col-md-2 text-center\">
                                 ";
-        // line 123
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "nafTns", [], "any", false, false, false, 123), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "NAF TNS"]);
         // line 125
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "nafTns", [], "any", false, false, false, 125), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "NAF TNS"]);
+        // line 127
         echo "
                                 ";
-        // line 126
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "nafTns", [], "any", false, false, false, 126), 'widget', ["attr" => ["pattern" => "[0-9]{4}[A-Za-z]{1}", "class" => "naf_format"]]);
+        // line 128
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "nafTns", [], "any", false, false, false, 128), 'widget', ["attr" => ["pattern" => "[0-9]{4}[A-Za-z]{1}", "class" => "naf_format"]]);
         echo "
                             </div>
                             <div class=\"col-md-4 text-center\">
                                 ";
-        // line 129
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "activiteTns", [], "any", false, false, false, 129), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Activité TNS"]);
         // line 131
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "activiteTns", [], "any", false, false, false, 131), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Activité TNS"]);
+        // line 133
         echo "
                                 <a name=\"ajactivite\" value=\"+\" data-toggle=\"modal\" data-target=\"#modalActiviteAdd\" data-forselect=\"tns\"><i class=\"fa fa-plus-square\" style=\"font-size: 130%;\"></i></a>
                                 ";
-        // line 133
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "activiteTns", [], "any", false, false, false, 133), 'widget');
+        // line 135
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "activiteTns", [], "any", false, false, false, 135), 'widget');
         echo "
                             </div>
                             <div class=\"text-center col-md-3\">
                                 ";
-        // line 136
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "idOpcaTns", [], "any", false, false, false, 136), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "OPCO TNS"]);
         // line 138
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "idOpcaTns", [], "any", false, false, false, 138), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "OPCO TNS"]);
+        // line 140
         echo "
                                 ";
-        // line 139
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "idOpcaTns", [], "any", false, false, false, 139), 'widget');
+        // line 141
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "idOpcaTns", [], "any", false, false, false, 141), 'widget');
         echo "
                             </div>
                         </div>
@@ -317,14 +319,14 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                             </span>
                         </a>
                         <div class=\"row\" id=\"contact_adresse\" data-prototype=\"";
-        // line 152
-        echo twig_escape_filter($this->env, $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "adresses", [], "any", false, false, false, 152), "vars", [], "any", false, false, false, 152), "prototype", [], "any", false, false, false, 152), 'widget'), "html_attr");
+        // line 154
+        echo twig_escape_filter($this->env, $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "adresses", [], "any", false, false, false, 154), "vars", [], "any", false, false, false, 154), "prototype", [], "any", false, false, false, 154), 'widget'), "html_attr");
         echo "\">
                             <!-- Other adresse -->
                             ";
-        // line 154
+        // line 156
         $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "adresses", [], "any", false, false, false, 154));
+        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "adresses", [], "any", false, false, false, 156));
         $context['loop'] = [
           'parent' => $context['_parent'],
           'index0' => 0,
@@ -339,73 +341,73 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
             $context['loop']['last'] = 1 === $length;
         }
         foreach ($context['_seq'] as $context["_key"] => $context["adresse"]) {
-            // line 155
+            // line 157
             echo "                                <div class=\"row col-sm-12 pr-0 form_adresse\">
                                     <button type='button' class='removeaddresseelement close' type='button'><span aria-hidden='true'>×</span></button>
                                     <div id=\"contact_adresses_";
-            // line 157
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 157), "html", null, true);
+            // line 159
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 159), "html", null, true);
             echo "\" class=\"adresseformadded\">
                                         <div class=\"col-sm-3\">
                                             ";
-            // line 159
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 159)) && is_array($__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4) || $__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4 instanceof ArrayAccess ? ($__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4["adresse"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold col-sm-12 text-center"]]);
             // line 161
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 161)) && is_array($__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4) || $__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4 instanceof ArrayAccess ? ($__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4["adresse"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold col-sm-12 text-center"]]);
+            // line 163
             echo "
                                             ";
-            // line 162
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 162)) && is_array($__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144) || $__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144 instanceof ArrayAccess ? ($__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144["adresse"] ?? null) : null), 'widget');
+            // line 164
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 164)) && is_array($__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144) || $__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144 instanceof ArrayAccess ? ($__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144["adresse"] ?? null) : null), 'widget');
             echo "
                                         </div>
                                         <div class=\"col-sm-2\">
                                             ";
-            // line 165
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 165)) && is_array($__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b) || $__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b instanceof ArrayAccess ? ($__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b["codePostal"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold  col-sm-12 text-center"], "label" => "Code Postal"]);
             // line 167
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 167)) && is_array($__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b) || $__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b instanceof ArrayAccess ? ($__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b["codePostal"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold  col-sm-12 text-center"], "label" => "Code Postal"]);
+            // line 169
             echo "
                                             ";
-            // line 168
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_68aa442c1d43d3410ea8f958ba9090f3eaa9a76f8de8fc9be4d6c7389ba28002 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 168)) && is_array($__internal_68aa442c1d43d3410ea8f958ba9090f3eaa9a76f8de8fc9be4d6c7389ba28002) || $__internal_68aa442c1d43d3410ea8f958ba9090f3eaa9a76f8de8fc9be4d6c7389ba28002 instanceof ArrayAccess ? ($__internal_68aa442c1d43d3410ea8f958ba9090f3eaa9a76f8de8fc9be4d6c7389ba28002["codePostal"] ?? null) : null), 'widget');
+            // line 170
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_68aa442c1d43d3410ea8f958ba9090f3eaa9a76f8de8fc9be4d6c7389ba28002 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 170)) && is_array($__internal_68aa442c1d43d3410ea8f958ba9090f3eaa9a76f8de8fc9be4d6c7389ba28002) || $__internal_68aa442c1d43d3410ea8f958ba9090f3eaa9a76f8de8fc9be4d6c7389ba28002 instanceof ArrayAccess ? ($__internal_68aa442c1d43d3410ea8f958ba9090f3eaa9a76f8de8fc9be4d6c7389ba28002["codePostal"] ?? null) : null), 'widget');
             echo "
                                         </div>
                                         <div class=\"col-sm-2 text-center\">
                                             ";
-            // line 171
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_d7fc55f1a54b629533d60b43063289db62e68921ee7a5f8de562bd9d4a2b7ad4 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 171)) && is_array($__internal_d7fc55f1a54b629533d60b43063289db62e68921ee7a5f8de562bd9d4a2b7ad4) || $__internal_d7fc55f1a54b629533d60b43063289db62e68921ee7a5f8de562bd9d4a2b7ad4 instanceof ArrayAccess ? ($__internal_d7fc55f1a54b629533d60b43063289db62e68921ee7a5f8de562bd9d4a2b7ad4["idVille"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold d-inline text-center"], "label" => "Ville"]);
             // line 173
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_d7fc55f1a54b629533d60b43063289db62e68921ee7a5f8de562bd9d4a2b7ad4 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 173)) && is_array($__internal_d7fc55f1a54b629533d60b43063289db62e68921ee7a5f8de562bd9d4a2b7ad4) || $__internal_d7fc55f1a54b629533d60b43063289db62e68921ee7a5f8de562bd9d4a2b7ad4 instanceof ArrayAccess ? ($__internal_d7fc55f1a54b629533d60b43063289db62e68921ee7a5f8de562bd9d4a2b7ad4["idVille"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold d-inline text-center"], "label" => "Ville"]);
+            // line 175
             echo " <a id=\"add-ville-link\" class=\"d-inline\" data-toggle=\"modal\" data-target=\"#modal-ville-add\" title=\"Ajouter une ville\"><i class=\"fa fa-plus-square\" style=\"font-size: 130%;\"></i></a>
                                             
                                             ";
-            // line 175
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_01476f8db28655ee4ee02ea2d17dd5a92599be76304f08cd8bc0e05aced30666 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 175)) && is_array($__internal_01476f8db28655ee4ee02ea2d17dd5a92599be76304f08cd8bc0e05aced30666) || $__internal_01476f8db28655ee4ee02ea2d17dd5a92599be76304f08cd8bc0e05aced30666 instanceof ArrayAccess ? ($__internal_01476f8db28655ee4ee02ea2d17dd5a92599be76304f08cd8bc0e05aced30666["idVille"] ?? null) : null), 'widget');
+            // line 177
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_01476f8db28655ee4ee02ea2d17dd5a92599be76304f08cd8bc0e05aced30666 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 177)) && is_array($__internal_01476f8db28655ee4ee02ea2d17dd5a92599be76304f08cd8bc0e05aced30666) || $__internal_01476f8db28655ee4ee02ea2d17dd5a92599be76304f08cd8bc0e05aced30666 instanceof ArrayAccess ? ($__internal_01476f8db28655ee4ee02ea2d17dd5a92599be76304f08cd8bc0e05aced30666["idVille"] ?? null) : null), 'widget');
             echo "
                                         </div>
                                         <div class=\"col-sm-1\" align=\"center\">
                                             ";
-            // line 178
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_01c35b74bd85735098add188b3f8372ba465b232ab8298cb582c60f493d3c22e = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 178)) && is_array($__internal_01c35b74bd85735098add188b3f8372ba465b232ab8298cb582c60f493d3c22e) || $__internal_01c35b74bd85735098add188b3f8372ba465b232ab8298cb582c60f493d3c22e instanceof ArrayAccess ? ($__internal_01c35b74bd85735098add188b3f8372ba465b232ab8298cb582c60f493d3c22e["principal"] ?? null) : null), 'widget');
+            // line 180
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_01c35b74bd85735098add188b3f8372ba465b232ab8298cb582c60f493d3c22e = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 180)) && is_array($__internal_01c35b74bd85735098add188b3f8372ba465b232ab8298cb582c60f493d3c22e) || $__internal_01c35b74bd85735098add188b3f8372ba465b232ab8298cb582c60f493d3c22e instanceof ArrayAccess ? ($__internal_01c35b74bd85735098add188b3f8372ba465b232ab8298cb582c60f493d3c22e["principal"] ?? null) : null), 'widget');
             echo "
                                         </div>
                                         <div class=\"col-sm-2\">
                                             ";
-            // line 181
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_63ad1f9a2bf4db4af64b010785e9665558fdcac0e8db8b5b413ed986c62dbb52 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 181)) && is_array($__internal_63ad1f9a2bf4db4af64b010785e9665558fdcac0e8db8b5b413ed986c62dbb52) || $__internal_63ad1f9a2bf4db4af64b010785e9665558fdcac0e8db8b5b413ed986c62dbb52 instanceof ArrayAccess ? ($__internal_63ad1f9a2bf4db4af64b010785e9665558fdcac0e8db8b5b413ed986c62dbb52["type_adresse"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold  col-sm-12 text-center"], "label" => "Type adresse"]);
             // line 183
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_63ad1f9a2bf4db4af64b010785e9665558fdcac0e8db8b5b413ed986c62dbb52 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 183)) && is_array($__internal_63ad1f9a2bf4db4af64b010785e9665558fdcac0e8db8b5b413ed986c62dbb52) || $__internal_63ad1f9a2bf4db4af64b010785e9665558fdcac0e8db8b5b413ed986c62dbb52 instanceof ArrayAccess ? ($__internal_63ad1f9a2bf4db4af64b010785e9665558fdcac0e8db8b5b413ed986c62dbb52["type_adresse"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold  col-sm-12 text-center"], "label" => "Type adresse"]);
+            // line 185
             echo "
                                             ";
-            // line 184
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_f10a4cc339617934220127f034125576ed229e948660ebac906a15846d52f136 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 184)) && is_array($__internal_f10a4cc339617934220127f034125576ed229e948660ebac906a15846d52f136) || $__internal_f10a4cc339617934220127f034125576ed229e948660ebac906a15846d52f136 instanceof ArrayAccess ? ($__internal_f10a4cc339617934220127f034125576ed229e948660ebac906a15846d52f136["type_adresse"] ?? null) : null), 'widget');
+            // line 186
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_f10a4cc339617934220127f034125576ed229e948660ebac906a15846d52f136 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 186)) && is_array($__internal_f10a4cc339617934220127f034125576ed229e948660ebac906a15846d52f136) || $__internal_f10a4cc339617934220127f034125576ed229e948660ebac906a15846d52f136 instanceof ArrayAccess ? ($__internal_f10a4cc339617934220127f034125576ed229e948660ebac906a15846d52f136["type_adresse"] ?? null) : null), 'widget');
             echo "
                                         </div>
                                         <div class=\"col-sm-2\">
                                             ";
-            // line 187
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_887a873a4dc3cf8bd4f99c487b4c7727999c350cc3a772414714e49a195e4386 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 187)) && is_array($__internal_887a873a4dc3cf8bd4f99c487b4c7727999c350cc3a772414714e49a195e4386) || $__internal_887a873a4dc3cf8bd4f99c487b4c7727999c350cc3a772414714e49a195e4386 instanceof ArrayAccess ? ($__internal_887a873a4dc3cf8bd4f99c487b4c7727999c350cc3a772414714e49a195e4386["comp_adresse"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold  col-sm-12 text-center"], "label" => "Infos accès"]);
             // line 189
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_887a873a4dc3cf8bd4f99c487b4c7727999c350cc3a772414714e49a195e4386 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 189)) && is_array($__internal_887a873a4dc3cf8bd4f99c487b4c7727999c350cc3a772414714e49a195e4386) || $__internal_887a873a4dc3cf8bd4f99c487b4c7727999c350cc3a772414714e49a195e4386 instanceof ArrayAccess ? ($__internal_887a873a4dc3cf8bd4f99c487b4c7727999c350cc3a772414714e49a195e4386["comp_adresse"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold  col-sm-12 text-center"], "label" => "Infos accès"]);
+            // line 191
             echo "
                                             ";
-            // line 190
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_d527c24a729d38501d770b40a0d25e1ce8a7f0bff897cc4f8f449ba71fcff3d9 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 190)) && is_array($__internal_d527c24a729d38501d770b40a0d25e1ce8a7f0bff897cc4f8f449ba71fcff3d9) || $__internal_d527c24a729d38501d770b40a0d25e1ce8a7f0bff897cc4f8f449ba71fcff3d9 instanceof ArrayAccess ? ($__internal_d527c24a729d38501d770b40a0d25e1ce8a7f0bff897cc4f8f449ba71fcff3d9["comp_adresse"] ?? null) : null), 'widget');
+            // line 192
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_d527c24a729d38501d770b40a0d25e1ce8a7f0bff897cc4f8f449ba71fcff3d9 = twig_get_attribute($this->env, $this->source, $context["adresse"], "children", [], "any", false, false, false, 192)) && is_array($__internal_d527c24a729d38501d770b40a0d25e1ce8a7f0bff897cc4f8f449ba71fcff3d9) || $__internal_d527c24a729d38501d770b40a0d25e1ce8a7f0bff897cc4f8f449ba71fcff3d9 instanceof ArrayAccess ? ($__internal_d527c24a729d38501d770b40a0d25e1ce8a7f0bff897cc4f8f449ba71fcff3d9["comp_adresse"] ?? null) : null), 'widget');
             echo "
                                         </div>
                                     </div>
@@ -423,7 +425,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['adresse'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 195
+        // line 197
         echo "                        </div>
                     </fieldset>
                 </div>
@@ -433,101 +435,162 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                             <div class=\"col-sm-12\">
                                 <div class=\"text-center col-md-12\">
                                     ";
-        // line 203
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "id_type", [], "any", false, false, false, 203), 'label', ["label_attr" => ["class" => "font-weight-bold required"], "label" => "Client / Prospect"]);
         // line 205
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "id_type", [], "any", false, false, false, 205), 'label', ["label_attr" => ["class" => "font-weight-bold required"], "label" => "Client / Prospect"]);
+        // line 207
         echo "
                                     ";
-        // line 206
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "id_type", [], "any", false, false, false, 206), 'widget');
+        // line 208
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "id_type", [], "any", false, false, false, 208), 'widget');
         echo "
                                 </div>
                                 <div class=\"col-sm-12\">
                                     <label class=\"font-weight-bold text-center col-sm-12\">Sociétés liées</label>
                                     <div class=\"row\">
+                                    
                                         <div class=\"text-center col-sm-6 pl-0 pr-0\">
                                             ";
-        // line 212
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 212), "vars", [], "any", false, false, false, 212), "prototype", [], "any", false, false, false, 212), "idSociete1", [], "any", false, false, false, 212), 'label', ["label_attr" => ["class" => "font-weight-bold"]]);
-        // line 214
-        echo "
-                                            ";
         // line 215
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 215), "vars", [], "any", false, false, false, 215), "prototype", [], "any", false, false, false, 215), "idSociete1", [], "any", false, false, false, 215), 'widget');
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 215), "vars", [], "any", false, false, false, 215), "prototype", [], "any", false, false, false, 215), "idSociete1", [], "any", false, false, false, 215), 'label', ["label_attr" => ["class" => "font-weight-bold"]]);
+        // line 217
+        echo "
+                                                ";
+        // line 218
+        if ((twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societelie1", [], "any", true, true, false, 218) && (twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societelie1", [], "any", false, false, false, 218) != ""))) {
+            // line 219
+            echo "                                                    <a href=\"";
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_client_prospect_Controller/editClient", ["id" => twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societeId1", [], "any", false, false, false, 219)]), "html", null, true);
+            echo "\" title=\"Voir fiche client\" target=\"_blank\">
+                                                        <i class=\"fa fa-user\" aria-hidden=\"true\"></i>
+                                                    </a>
+                                                ";
+        } else {
+            // line 223
+            echo "                                                        <i class=\"fa fa-user\" aria-hidden=\"true\"></i>
+                                                ";
+        }
+        // line 225
+        echo "                                            ";
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 225), "vars", [], "any", false, false, false, 225), "prototype", [], "any", false, false, false, 225), "idSociete1", [], "any", false, false, false, 225), 'widget');
         echo "
                                         </div>
                                         <div class=\"text-center col-sm-6 pl-0 pr-0\">
                                             ";
-        // line 218
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 218), "vars", [], "any", false, false, false, 218), "prototype", [], "any", false, false, false, 218), "idSociete2", [], "any", false, false, false, 218), 'label', ["label_attr" => ["class" => "font-weight-bold"]]);
-        // line 220
+        // line 228
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 228), "vars", [], "any", false, false, false, 228), "prototype", [], "any", false, false, false, 228), "idSociete2", [], "any", false, false, false, 228), 'label', ["label_attr" => ["class" => "font-weight-bold"]]);
+        // line 230
         echo "
-                                            ";
-        // line 221
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 221), "vars", [], "any", false, false, false, 221), "prototype", [], "any", false, false, false, 221), "idSociete2", [], "any", false, false, false, 221), 'widget');
+                                                ";
+        // line 231
+        if ((twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societelie2", [], "any", true, true, false, 231) && (twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societelie2", [], "any", false, false, false, 231) != ""))) {
+            // line 232
+            echo "                                                    <a href=\"";
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_client_prospect_Controller/editClient", ["id" => twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societeId2", [], "any", false, false, false, 232)]), "html", null, true);
+            echo "\" title=\"Voir fiche client\" target=\"_blank\">
+                                                        <i class=\"fa fa-user\" aria-hidden=\"true\"></i>
+                                                    </a>
+                                                ";
+        } else {
+            // line 236
+            echo "                                                        <i class=\"fa fa-user\" aria-hidden=\"true\"></i>
+                                                ";
+        }
+        // line 238
+        echo "                                            ";
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 238), "vars", [], "any", false, false, false, 238), "prototype", [], "any", false, false, false, 238), "idSociete2", [], "any", false, false, false, 238), 'widget');
         echo "
                                         </div>
                                     </div>
                                     <div class=\"row\">
                                         <div class=\"text-center col-sm-6 pl-0 pr-0\">
                                             ";
-        // line 226
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 226), "vars", [], "any", false, false, false, 226), "prototype", [], "any", false, false, false, 226), "idSociete3", [], "any", false, false, false, 226), 'label', ["label_attr" => ["class" => "font-weight-bold"]]);
-        // line 228
+        // line 243
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 243), "vars", [], "any", false, false, false, 243), "prototype", [], "any", false, false, false, 243), "idSociete3", [], "any", false, false, false, 243), 'label', ["label_attr" => ["class" => "font-weight-bold"]]);
+        // line 245
         echo "
-                                            ";
-        // line 229
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 229), "vars", [], "any", false, false, false, 229), "prototype", [], "any", false, false, false, 229), "idSociete3", [], "any", false, false, false, 229), 'widget');
+                                                ";
+        // line 246
+        if ((twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societelie3", [], "any", true, true, false, 246) && (twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societelie3", [], "any", false, false, false, 246) != ""))) {
+            // line 247
+            echo "                                                    <a href=\"";
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_client_prospect_Controller/editClient", ["id" => twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societeId3", [], "any", false, false, false, 247)]), "html", null, true);
+            echo "\" title=\"Voir fiche client\" target=\"_blank\">
+                                                        <i class=\"fa fa-user\" aria-hidden=\"true\"></i>
+                                                    </a>
+                                                ";
+        } else {
+            // line 251
+            echo "                                                        <i class=\"fa fa-user\" aria-hidden=\"true\"></i>
+                                                ";
+        }
+        // line 253
+        echo "                                            ";
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 253), "vars", [], "any", false, false, false, 253), "prototype", [], "any", false, false, false, 253), "idSociete3", [], "any", false, false, false, 253), 'widget');
         echo "
                                         </div>
                                         <div class=\"text-center col-sm-6 pl-0 pr-0\">
                                             ";
-        // line 232
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 232), "vars", [], "any", false, false, false, 232), "prototype", [], "any", false, false, false, 232), "idSociete4", [], "any", false, false, false, 232), 'label', ["label_attr" => ["class" => "font-weight-bold"]]);
-        // line 234
+        // line 256
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 256), "vars", [], "any", false, false, false, 256), "prototype", [], "any", false, false, false, 256), "idSociete4", [], "any", false, false, false, 256), 'label', ["label_attr" => ["class" => "font-weight-bold"]]);
+        // line 258
         echo "
-                                            ";
-        // line 235
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 235), "vars", [], "any", false, false, false, 235), "prototype", [], "any", false, false, false, 235), "idSociete4", [], "any", false, false, false, 235), 'widget');
+                                                ";
+        // line 259
+        if ((twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societelie4", [], "any", true, true, false, 259) && (twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societelie4", [], "any", false, false, false, 259) != ""))) {
+            // line 260
+            echo "                                                    <a href=\"";
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_client_prospect_Controller/editClient", ["id" => twig_get_attribute($this->env, $this->source, ($context["societeliedata"] ?? null), "societeId4", [], "any", false, false, false, 260)]), "html", null, true);
+            echo "\" title=\"Voir fiche client\" target=\"_blank\">
+                                                        <i class=\"fa fa-user\" aria-hidden=\"true\"></i>
+                                                    </a>
+                                                ";
+        } else {
+            // line 264
+            echo "                                                        <i class=\"fa fa-user\" aria-hidden=\"true\"></i>
+                                                ";
+        }
+        // line 266
+        echo "                                            ";
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "societelie", [], "any", false, false, false, 266), "vars", [], "any", false, false, false, 266), "prototype", [], "any", false, false, false, 266), "idSociete4", [], "any", false, false, false, 266), 'widget');
         echo "
                                         </div>
                                     </div>
                                 </div>
                                 <div class=\"text-center col-md-12\">
                                     ";
-        // line 240
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "solde", [], "any", false, false, false, 240), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Solde Dispo"]);
-        // line 242
+        // line 271
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "solde", [], "any", false, false, false, 271), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Solde Dispo"]);
+        // line 273
         echo "
                                     ";
-        // line 243
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "solde", [], "any", false, false, false, 243), 'widget');
-        echo "
-                                </div>
-                                <div class=\"text-center col-md-12\">
-                                    ";
-        // line 246
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "soldeDate", [], "any", false, false, false, 246), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Au"]);
-        // line 248
-        echo "
-                                    ";
-        // line 249
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "soldeDate", [], "any", false, false, false, 249), 'widget');
+        // line 274
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "solde", [], "any", false, false, false, 274), 'widget');
         echo "
                                 </div>
                                 <div class=\"text-center col-md-12\">
                                     ";
-        // line 252
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "siteweb", [], "any", false, false, false, 252), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Site web:"]);
-        // line 254
+        // line 277
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "soldeDate", [], "any", false, false, false, 277), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Au"]);
+        // line 279
+        echo "
+                                    ";
+        // line 280
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "soldeDate", [], "any", false, false, false, 280), 'widget');
+        echo "
+                                </div>
+                                <div class=\"text-center col-md-12\">
+                                    ";
+        // line 283
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "siteweb", [], "any", false, false, false, 283), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Site web:"]);
+        // line 285
         echo "
                                     <div class=\"input-group\">
                                         <div class=\"input-group-prepend\">
                                             <div class=\"input-group-text\">http://</div>
                                         </div>
                                         ";
-        // line 259
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "siteweb", [], "any", false, false, false, 259), 'widget');
+        // line 290
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "siteweb", [], "any", false, false, false, 290), 'widget');
         echo "
                                     </div>
                                 </div>
@@ -548,116 +611,116 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                 </span>
             </a>
             <div class=\"col-md-12 p-0\" id=\"contactadded\" data-prototype=\"";
-        // line 278
-        echo twig_escape_filter($this->env, $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "contactsoc", [], "any", false, false, false, 278), "vars", [], "any", false, false, false, 278), "prototype", [], "any", false, false, false, 278), 'widget'), "html_attr");
+        // line 309
+        echo twig_escape_filter($this->env, $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "contactsoc", [], "any", false, false, false, 309), "vars", [], "any", false, false, false, 309), "prototype", [], "any", false, false, false, 309), 'widget'), "html_attr");
         echo "\">
                     <div class=\"row\">
                         <div class=\"col-sm-1 text-center\">
                             ";
-        // line 281
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "idCivilite", [], "any", false, false, false, 281), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Civilité"]);
-        // line 283
-        echo "
-                            ";
-        // line 284
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "idCivilite", [], "any", false, false, false, 284), 'widget');
-        echo "
-                        </div>
-                        <div class=\"col-sm-1 text-center\">
-                            ";
-        // line 287
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "nom", [], "any", false, false, false, 287), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Nom"]);
-        // line 289
-        echo "
-                            ";
-        // line 290
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "nom", [], "any", false, false, false, 290), 'widget');
-        echo "
-                        </div>
-                        <div class=\"col-sm-1 text-center\">
-                            ";
-        // line 293
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "prenom", [], "any", false, false, false, 293), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Prenom"]);
-        // line 295
-        echo "
-                            ";
-        // line 296
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "prenom", [], "any", false, false, false, 296), 'widget');
-        echo "
-                        </div>
-                        <div class=\"col-sm-1 text-center\">
-                            ";
-        // line 299
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "qualite", [], "any", false, false, false, 299), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Qualité"]);
-        // line 301
-        echo "
-                            <a name=\"ajactivite\" value=\"+\" data-toggle=\"modal\" data-target=\"#modalQualiteAdd\"><i class=\"fa fa-plus-square\" style=\"font-size: 130%;\"></i></a>
-                            ";
-        // line 303
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "qualite", [], "any", false, false, false, 303), 'widget');
-        echo "
-                        </div>
-                        <div class=\"col-sm-1\">
-                            ";
-        // line 306
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "interlocuteur", [], "any", false, false, false, 306), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Interlocuteur"]);
-        // line 308
-        echo "
-                            ";
-        // line 309
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "interlocuteur", [], "any", false, false, false, 309), 'widget');
-        echo "
-                        </div>
-                        <div class=\"text-center col-sm-2\">
-                            ";
         // line 312
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Telephone", [], "any", false, false, false, 312), 'label', ["label_attr" => ["class" => "font-weight-bold required"], "label" => "Téléphone"]);
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "idCivilite", [], "any", false, false, false, 312), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Civilité"]);
         // line 314
         echo "
                             ";
         // line 315
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Telephone", [], "any", false, false, false, 315), 'widget', ["attr" => ["pattern" => ".{14,14}", "maxlength" => "14"]]);
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "idCivilite", [], "any", false, false, false, 315), 'widget');
         echo "
                         </div>
-                        <div class=\"text-center col-sm-2\">
+                        <div class=\"col-sm-1 text-center\">
                             ";
         // line 318
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Portable", [], "any", false, false, false, 318), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Portable"]);
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "nom", [], "any", false, false, false, 318), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Nom"]);
         // line 320
         echo "
                             ";
         // line 321
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Portable", [], "any", false, false, false, 321), 'widget', ["attr" => ["pattern" => ".{14,14}", "maxlength" => "14"]]);
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "nom", [], "any", false, false, false, 321), 'widget');
         echo "
                         </div>
-                        <div class=\"text-center col-sm-1\">
+                        <div class=\"col-sm-1 text-center\">
                             ";
         // line 324
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Fax", [], "any", false, false, false, 324), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Fax"]);
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "prenom", [], "any", false, false, false, 324), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Prenom"]);
         // line 326
         echo "
                             ";
         // line 327
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Fax", [], "any", false, false, false, 327), 'widget', ["attr" => ["pattern" => ".{14,14}", "maxlength" => "14"]]);
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "prenom", [], "any", false, false, false, 327), 'widget');
+        echo "
+                        </div>
+                        <div class=\"col-sm-1 text-center\">
+                            ";
+        // line 330
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "qualite", [], "any", false, false, false, 330), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Qualité"]);
+        // line 332
+        echo "
+                            <a name=\"ajactivite\" value=\"+\" data-toggle=\"modal\" data-target=\"#modalQualiteAdd\"><i class=\"fa fa-plus-square\" style=\"font-size: 130%;\"></i></a>
+                            ";
+        // line 334
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "qualite", [], "any", false, false, false, 334), 'widget');
+        echo "
+                        </div>
+                        <div class=\"col-sm-1\">
+                            ";
+        // line 337
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "interlocuteur", [], "any", false, false, false, 337), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Interlocuteur"]);
+        // line 339
+        echo "
+                            ";
+        // line 340
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "interlocuteur", [], "any", false, false, false, 340), 'widget');
         echo "
                         </div>
                         <div class=\"text-center col-sm-2\">
                             ";
-        // line 330
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Email", [], "any", false, false, false, 330), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Email"]);
-        // line 332
+        // line 343
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Telephone", [], "any", false, false, false, 343), 'label', ["label_attr" => ["class" => "font-weight-bold required"], "label" => "Téléphone"]);
+        // line 345
         echo "
                             ";
-        // line 333
-        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Email", [], "any", false, false, false, 333), 'widget');
+        // line 346
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Telephone", [], "any", false, false, false, 346), 'widget', ["attr" => ["pattern" => ".{14,14}", "maxlength" => "14"]]);
+        echo "
+                        </div>
+                        <div class=\"text-center col-sm-2\">
+                            ";
+        // line 349
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Portable", [], "any", false, false, false, 349), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Portable"]);
+        // line 351
+        echo "
+                            ";
+        // line 352
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Portable", [], "any", false, false, false, 352), 'widget', ["attr" => ["pattern" => ".{14,14}", "maxlength" => "14"]]);
+        echo "
+                        </div>
+                        <div class=\"text-center col-sm-1\">
+                            ";
+        // line 355
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Fax", [], "any", false, false, false, 355), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Fax"]);
+        // line 357
+        echo "
+                            ";
+        // line 358
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Fax", [], "any", false, false, false, 358), 'widget', ["attr" => ["pattern" => ".{14,14}", "maxlength" => "14"]]);
+        echo "
+                        </div>
+                        <div class=\"text-center col-sm-2\">
+                            ";
+        // line 361
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Email", [], "any", false, false, false, 361), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Email"]);
+        // line 363
+        echo "
+                            ";
+        // line 364
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "Email", [], "any", false, false, false, 364), 'widget');
         echo "
                         </div>
                     </div>
                     <!-- Other contact for this contact -->
                     ";
-        // line 337
+        // line 368
         $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "contactsoc", [], "any", false, false, false, 337), "children", [], "any", false, false, false, 337));
+        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "contactsoc", [], "any", false, false, false, 368), "children", [], "any", false, false, false, 368));
         $context['loop'] = [
           'parent' => $context['_parent'],
           'index0' => 0,
@@ -672,110 +735,110 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
             $context['loop']['last'] = 1 === $length;
         }
         foreach ($context['_seq'] as $context["_key"] => $context["contactsoc"]) {
-            // line 338
+            // line 369
             echo "                        <div class=\"row contact_added\">
                             <button type=\"button\" class=\"removecontactelement close\"><span aria-hidden=\"true\">×</span></button>
                             <div id=\"contact_contactsoc_";
-            // line 340
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 340), "html", null, true);
+            // line 371
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 371), "html", null, true);
             echo "\" class=\"p-r\">
                             <div class=\"col-sm-1 text-center\">
                                 ";
-            // line 342
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "idCivilite", [], "any", false, false, false, 342), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Civilité"]);
-            // line 344
+            // line 373
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "idCivilite", [], "any", false, false, false, 373), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Civilité"]);
+            // line 375
             echo "
                                 ";
-            // line 345
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "idCivilite", [], "any", false, false, false, 345), 'widget');
-            echo "
-                            </div>
-                            <div class=\"col-sm-1 text-center\">
-                                ";
-            // line 348
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "nom", [], "any", false, false, false, 348), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Nom"]);
-            // line 350
-            echo "
-                                ";
-            // line 351
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "nom", [], "any", false, false, false, 351), 'widget');
+            // line 376
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "idCivilite", [], "any", false, false, false, 376), 'widget');
             echo "
                             </div>
                             <div class=\"col-sm-1 text-center\">
                                 ";
-            // line 354
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "prenom", [], "any", false, false, false, 354), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Prenom"]);
-            // line 356
+            // line 379
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "nom", [], "any", false, false, false, 379), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Nom"]);
+            // line 381
             echo "
                                 ";
-            // line 357
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "prenom", [], "any", false, false, false, 357), 'widget');
+            // line 382
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "nom", [], "any", false, false, false, 382), 'widget');
             echo "
                             </div>
                             <div class=\"col-sm-1 text-center\">
                                 ";
-            // line 360
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "qualite", [], "any", false, false, false, 360), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Qualité"]);
-            // line 362
+            // line 385
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "prenom", [], "any", false, false, false, 385), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Prenom"]);
+            // line 387
             echo "
                                 ";
-            // line 363
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "qualite", [], "any", false, false, false, 363), 'widget');
+            // line 388
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "prenom", [], "any", false, false, false, 388), 'widget');
+            echo "
+                            </div>
+                            <div class=\"col-sm-1 text-center\">
+                                ";
+            // line 391
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "qualite", [], "any", false, false, false, 391), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Qualité"]);
+            // line 393
+            echo "
+                                ";
+            // line 394
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "qualite", [], "any", false, false, false, 394), 'widget');
             echo "
                             </div>
                             <div class=\"col-sm-1\">
                                 ";
-            // line 366
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "interlocuteur", [], "any", false, false, false, 366), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Interlocuteur"]);
-            // line 368
+            // line 397
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "interlocuteur", [], "any", false, false, false, 397), 'label', ["label_attr" => ["class" => "font-weight-bold"], "label" => "Interlocuteur"]);
+            // line 399
             echo "
                                 ";
-            // line 369
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "interlocuteur", [], "any", false, false, false, 369), 'widget');
-            echo "
-                            </div>
-                            <div class=\"text-center col-sm-2\">
-                                ";
-            // line 372
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Telephone", [], "any", false, false, false, 372), 'label', ["label_attr" => ["class" => "font-weight-bold required"], "label" => "Telephone"]);
-            // line 374
-            echo "
-                                ";
-            // line 375
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Telephone", [], "any", false, false, false, 375), 'widget');
+            // line 400
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "interlocuteur", [], "any", false, false, false, 400), 'widget');
             echo "
                             </div>
                             <div class=\"text-center col-sm-2\">
                                 ";
-            // line 378
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Fax", [], "any", false, false, false, 378), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Fax"]);
-            // line 380
+            // line 403
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Telephone", [], "any", false, false, false, 403), 'label', ["label_attr" => ["class" => "font-weight-bold required"], "label" => "Telephone"]);
+            // line 405
             echo "
                                 ";
-            // line 381
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Fax", [], "any", false, false, false, 381), 'widget');
+            // line 406
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Telephone", [], "any", false, false, false, 406), 'widget');
+            echo "
+                            </div>
+                            <div class=\"text-center col-sm-2\">
+                                ";
+            // line 409
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Fax", [], "any", false, false, false, 409), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Fax"]);
+            // line 411
+            echo "
+                                ";
+            // line 412
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Fax", [], "any", false, false, false, 412), 'widget');
             echo "
                             </div>
                             <div class=\"text-center col-sm-1\">
                                 ";
-            // line 384
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_f6dde3a1020453fdf35e718e94f93ce8eb8803b28cc77a665308e14bbe8572ae = twig_get_attribute($this->env, $this->source, $context["contactsoc"], "children", [], "any", false, false, false, 384)) && is_array($__internal_f6dde3a1020453fdf35e718e94f93ce8eb8803b28cc77a665308e14bbe8572ae) || $__internal_f6dde3a1020453fdf35e718e94f93ce8eb8803b28cc77a665308e14bbe8572ae instanceof ArrayAccess ? ($__internal_f6dde3a1020453fdf35e718e94f93ce8eb8803b28cc77a665308e14bbe8572ae["Portable"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Portable"]);
-            // line 386
+            // line 415
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_f6dde3a1020453fdf35e718e94f93ce8eb8803b28cc77a665308e14bbe8572ae = twig_get_attribute($this->env, $this->source, $context["contactsoc"], "children", [], "any", false, false, false, 415)) && is_array($__internal_f6dde3a1020453fdf35e718e94f93ce8eb8803b28cc77a665308e14bbe8572ae) || $__internal_f6dde3a1020453fdf35e718e94f93ce8eb8803b28cc77a665308e14bbe8572ae instanceof ArrayAccess ? ($__internal_f6dde3a1020453fdf35e718e94f93ce8eb8803b28cc77a665308e14bbe8572ae["Portable"] ?? null) : null), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Portable"]);
+            // line 417
             echo "
                                 ";
-            // line 387
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Portable", [], "any", false, false, false, 387), 'widget');
+            // line 418
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Portable", [], "any", false, false, false, 418), 'widget');
             echo "
                             </div>
                             <div class=\"text-center col-sm-2\">
                                 ";
-            // line 390
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Email", [], "any", false, false, false, 390), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Email"]);
-            // line 392
+            // line 421
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Email", [], "any", false, false, false, 421), 'label', ["label_attr" => ["class" => "font-weight-bold text-center"], "label" => "Email"]);
+            // line 423
             echo "
                                 ";
-            // line 393
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Email", [], "any", false, false, false, 393), 'widget');
+            // line 424
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, $context["contactsoc"], "Email", [], "any", false, false, false, 424), 'widget');
             echo "
                             </div>
                             </div>
@@ -793,21 +856,12 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['contactsoc'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 398
+        // line 429
         echo "                </div> 
             </fieldset>
-";
-        // line 400
-        $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable(($context["dossierClient"] ?? null));
-        foreach ($context['_seq'] as $context["_key"] => $context["dossier"]) {
-            // line 401
-            if ((null === $context["dossier"])) {
-            } else {
-                // line 403
-                echo "        <div class=\"col-sm-9 mt-4\">
-            <fieldset>
-                <table class=\"table table-sm table-striped\">
+            <div class=\"col-sm-9 mt-4\">
+                    <fieldset><legend>DOSSIERS</legend>
+            <table class=\"table table-sm table-striped\">
                     <thead>
                         <tr class=\"bg-info text-light\">
                             <th>Structure</th>
@@ -817,87 +871,217 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                             <th>Date estimée pour récépt accord</th>
                             <th>Montant accordé</th>
                             <th>Date estimée pour clôture</th>
-                            <th>OPCO</th>
                             <th>Commercial</th>
                         </tr>
-                    </thead>
-                    <tbody> 
+                    </thead>   
+            <tbody>           
+            ";
+        // line 447
+        if ( !(null === ($context["dossierClient"] ?? null))) {
+            echo "                  
+                ";
+            // line 448
+            $context['_parent'] = $context;
+            $context['_seq'] = twig_ensure_traversable(($context["dossierClient"] ?? null));
+            foreach ($context['_seq'] as $context["_key"] => $context["dossier"]) {
+                // line 449
+                echo "                                           
                         
                             <tr data-id=\"";
-                // line 421
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "id", [], "any", false, false, false, 421), "html", null, true);
+                // line 451
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "id", [], "any", false, false, false, 451), "html", null, true);
                 echo "\" data-href=\"";
-                echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Dossiers_Controller/visualiserDossier", ["id" => twig_get_attribute($this->env, $this->source, $context["dossier"], "id", [], "any", false, false, false, 421)]), "html", null, true);
+                echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Dossiers_Controller/visualiserDossier", ["id" => twig_get_attribute($this->env, $this->source, $context["dossier"], "id", [], "any", false, false, false, 451)]), "html", null, true);
                 echo "\">
                                 <td>";
-                // line 422
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "idStructure", [], "any", false, false, false, 422), "html", null, true);
+                // line 452
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "structure", [], "any", false, false, false, 452), "html", null, true);
                 echo "</td>
                                 <td>";
-                // line 423
-                (((((twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 423), "d-m-Y") == "31-12-1969") || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 423), "d-m-Y") == "01-01-1970")) || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 423), "d-m-Y") == "30-11--0001"))) ? (print ("")) : (print (twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 423), "d-m-Y"), "html", null, true))));
+                // line 453
+                (((((twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 453), "d-m-Y") == "31-12-1969") || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 453), "d-m-Y") == "01-01-1970")) || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 453), "d-m-Y") == "30-11--0001"))) ? (print ("")) : (print (twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 453), "d-m-Y"), "html", null, true))));
                 echo "</td>
                                 <td>";
-                // line 424
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "themeformation", [], "any", false, false, false, 424), "html", null, true);
+                // line 454
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "nom", [], "any", false, false, false, 454), "html", null, true);
                 echo "</td>
                                 <td>";
-                // line 425
-                (((((twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 425), "d-m-Y") == "31-12-1969") || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 425), "d-m-Y") == "01-01-1970")) || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 425), "d-m-Y") == "30-11--0001"))) ? (print ("")) : (print (twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 425), "d-m-Y"), "html", null, true))));
+                // line 455
+                (((((twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 455), "d-m-Y") == "31-12-1969") || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 455), "d-m-Y") == "01-01-1970")) || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 455), "d-m-Y") == "30-11--0001"))) ? (print ("")) : (print (twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 455), "d-m-Y"), "html", null, true))));
                 echo "</td>
                                 <td>
                                     ";
-                // line 427
-                if ( !twig_test_empty(twig_get_attribute($this->env, $this->source, $context["dossier"], "dateAccord", [], "any", false, false, false, 427))) {
-                    // line 428
+                // line 457
+                if ( !twig_test_empty(twig_get_attribute($this->env, $this->source, $context["dossier"], "dateAccord", [], "any", false, false, false, 457))) {
+                    // line 458
                     echo "                                        ";
-                    (((((twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateAccord", [], "any", false, false, false, 428), "d-m-Y") == "31-12-1969") || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateAccord", [], "any", false, false, false, 428), "d-m-Y") == "01-01-1970")) || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateAccord", [], "any", false, false, false, 428), "d-m-Y") == "30-11--0001"))) ? (print ("")) : (print (twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateAccord", [], "any", false, false, false, 428), "d-m-Y"), "html", null, true))));
+                    (((((twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateAccord", [], "any", false, false, false, 458), "d-m-Y") == "31-12-1969") || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateAccord", [], "any", false, false, false, 458), "d-m-Y") == "01-01-1970")) || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateAccord", [], "any", false, false, false, 458), "d-m-Y") == "30-11--0001"))) ? (print ("")) : (print (twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateAccord", [], "any", false, false, false, 458), "d-m-Y"), "html", null, true))));
                     echo "
                                     ";
                 } else {
-                    // line 430
+                    // line 460
                     echo "                                        ";
-                    echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_date_modify_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 430), "+3 month"), "d-m-Y"), "html", null, true);
+                    echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_date_modify_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 460), "+3 month"), "d-m-Y"), "html", null, true);
                     echo "
                                     ";
                 }
-                // line 432
+                // line 462
                 echo "                                </td>
                                 <td>";
-                // line 433
-                echo twig_escape_filter($this->env, twig_number_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "mntAccorde", [], "any", false, false, false, 433), 2, ",", " "), "html", null, true);
+                // line 463
+                echo twig_escape_filter($this->env, twig_number_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "mntAccorde", [], "any", false, false, false, 463), 2, ",", " "), "html", null, true);
                 echo "</td>
             ";
-                // line 435
+                // line 465
                 echo "                                ";
-                // line 436
+                // line 466
                 echo "                                <td>";
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_date_modify_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 436), "+6 month"), "d-m-Y"), "html", null, true);
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_date_modify_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 466), "+6 month"), "d-m-Y"), "html", null, true);
                 echo "</td>
                                 <td>";
-                // line 437
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "idOpca", [], "any", false, false, false, 437), "html", null, true);
-                echo "</td>
-                                <td>";
-                // line 438
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "idCommercial", [], "any", false, false, false, 438), "html", null, true);
+                // line 467
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "commercial", [], "any", false, false, false, 467), "html", null, true);
                 echo "</td>
                             </tr>
-                        
-                    </tbody>
-                </table>
-            </fieldset>
-        </div>
-";
+                ";
             }
-            // line 446
-            echo "       ";
+            $_parent = $context['_parent'];
+            unset($context['_seq'], $context['_iterated'], $context['_key'], $context['dossier'], $context['_parent'], $context['loop']);
+            $context = array_intersect_key($context, $_parent) + $_parent;
+            // line 470
+            echo "            ";
         }
-        $_parent = $context['_parent'];
-        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['dossier'], $context['_parent'], $context['loop']);
-        $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 447
-        echo "            <fieldset class=\"col-sm-12 p-3 m-3 well\">
+        // line 471
+        echo "        </tbody>
+                </table>
+        </fieldset>        
+            </div>
+              <div class=\"col-sm-9 mt-4\">
+            <fieldset><legend>PROPALES</legend>
+             <table class=\"table table-sm table-striped\">
+                <thead>
+                <tr class=\"bg-info text-light\">
+                    <th>Entité</th>
+                    <th>Statut</th>
+                    <th>Intitulé du stage</th>
+                    <th>Commercial</th>
+                    <th>Type</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Coût Ht</th>
+                    <th>Fiabilité</th>
+                </tr>
+                </thead>
+                <tbody>
+                ";
+        // line 492
+        if ( !(null === ($context["clientPropal"] ?? null))) {
+            echo "                  
+                ";
+            // line 493
+            $context['_parent'] = $context;
+            $context['_seq'] = twig_ensure_traversable(($context["clientPropal"] ?? null));
+            foreach ($context['_seq'] as $context["_key"] => $context["propal"]) {
+                // line 494
+                echo "                    <tr data-propal-id=\"";
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "idpropal", [], "any", false, false, false, 494), "html", null, true);
+                echo "\" data-href=\"";
+                echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("propal_show", ["id" => twig_get_attribute($this->env, $this->source, $context["propal"], "idpropal", [], "any", false, false, false, 494)]), "html", null, true);
+                echo "\">
+                        <td>";
+                // line 495
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "entite", [], "any", false, false, false, 495), "html", null, true);
+                echo "</td>
+                        <td>";
+                // line 496
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "statut", [], "any", false, false, false, 496), "html", null, true);
+                echo "</td>
+                        <td>";
+                // line 497
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "formation", [], "any", false, false, false, 497), "html", null, true);
+                echo "</td>
+                        <td>";
+                // line 498
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "commercial", [], "any", false, false, false, 498), "html", null, true);
+                echo "</td>
+                        <td>";
+                // line 499
+                if ((twig_get_attribute($this->env, $this->source, $context["propal"], "type", [], "any", false, false, false, 499) == 1)) {
+                    echo " Entreprise ";
+                } else {
+                    echo " Particulier ";
+                }
+                echo "</td>
+                        <td>";
+                // line 500
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "nom", [], "any", false, false, false, 500), "html", null, true);
+                echo "</td>
+                        <td> ";
+                // line 501
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "prenom", [], "any", false, false, false, 501), "html", null, true);
+                echo " </td>
+                        ";
+                // line 502
+                if ( !(null === twig_get_attribute($this->env, $this->source, $context["propal"], "coutht", [], "any", false, false, false, 502))) {
+                    // line 503
+                    echo "                        <td> ";
+                    echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "coutht", [], "any", false, false, false, 503), "html", null, true);
+                    echo " €</td>
+                        ";
+                } else {
+                    // line 505
+                    echo "                        <td> ";
+                    echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "coutht", [], "any", false, false, false, 505), "html", null, true);
+                    echo "</td>
+                        ";
+                }
+                // line 507
+                echo "                        ";
+                if ((twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 507) == "Froid")) {
+                    // line 508
+                    echo "                        <td class=\"bg-info text-white\"> ";
+                    echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 508), "html", null, true);
+                    echo " </td>
+                        ";
+                } elseif ((twig_get_attribute($this->env, $this->source,                 // line 509
+$context["propal"], "fiabilite", [], "any", false, false, false, 509) == "Chaud")) {
+                    // line 510
+                    echo "                        <td class=\"bg-danger text-white\"> ";
+                    echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 510), "html", null, true);
+                    echo " </td>
+                        ";
+                } elseif ((twig_get_attribute($this->env, $this->source,                 // line 511
+$context["propal"], "fiabilite", [], "any", false, false, false, 511) == "Tiede")) {
+                    // line 512
+                    echo "                        <td class=\"bg-warning text-white\"> ";
+                    echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 512), "html", null, true);
+                    echo " </td>
+                        ";
+                } else {
+                    // line 514
+                    echo "                        <td> ";
+                    echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 514), "html", null, true);
+                    echo " </td>
+                        ";
+                }
+                // line 516
+                echo "                    </tr>
+                ";
+            }
+            $_parent = $context['_parent'];
+            unset($context['_seq'], $context['_iterated'], $context['_key'], $context['propal'], $context['_parent'], $context['loop']);
+            $context = array_intersect_key($context, $_parent) + $_parent;
+            // line 518
+            echo "                ";
+        }
+        // line 519
+        echo "                </tbody>
+            </table>
+         </fieldset>        
+        </div>
+
+
+            <fieldset class=\"col-sm-12 p-3 m-3 well\">
                 <legend>COMMENTAIRES</legend>
                 <a href=\"javascript:void(0)\" id=\"ajcom\" class=\"row plus-link\" title=\"Ajouter un nouveau commentaire\">
                     <span class=\"fa-stack fa-1x\">
@@ -906,7 +1090,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                     </span>
                 </a>
                 ";
-        // line 458
+        // line 536
         echo "                <table class=\"table table-striped table-borderless col-sm-12 mt-3\">
                     <thead class=\"\">
                     <tr class=\"row\">
@@ -918,13 +1102,13 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                         <th class=\"col-sm-2\">Statut action</th>
                     </tr>
                     <tbody id=\"commentaires_collection\" data-prototype=\"";
-        // line 468
-        echo twig_escape_filter($this->env, $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "commentaires", [], "any", false, false, false, 468), "vars", [], "any", false, false, false, 468), "prototype", [], "any", false, false, false, 468), 'widget'), "html_attr");
+        // line 546
+        echo twig_escape_filter($this->env, $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock(twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "commentaires", [], "any", false, false, false, 546), "vars", [], "any", false, false, false, 546), "prototype", [], "any", false, false, false, 546), 'widget'), "html_attr");
         echo "\">
                     ";
-        // line 469
+        // line 547
         $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "commentaires", [], "any", false, false, false, 469));
+        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, ($context["contact_forme"] ?? null), "commentaires", [], "any", false, false, false, 547));
         $context['loop'] = [
           'parent' => $context['_parent'],
           'index0' => 0,
@@ -939,50 +1123,50 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
             $context['loop']['last'] = 1 === $length;
         }
         foreach ($context['_seq'] as $context["_key"] => $context["comment"]) {
-            // line 470
+            // line 548
             echo "                        <tr>
                             <th colspan=\"6\">
                                 <div class=\"row\">
                                     <div class=\"comment_contains\">
                                         <button type=\"button\" class=\"removecommentelement close\"><span aria-hidden=\"true\">×</span></button>
                                         <div id=\"contact_commentaires_";
-            // line 475
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 475), "html", null, true);
+            // line 553
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["loop"], "index", [], "any", false, false, false, 553), "html", null, true);
             echo "\" class=\"comment_contains_form\">
                                             <div class=\"col-sm-2 form-group\">
                                                 ";
-            // line 477
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_25c0fab8152b8dd6b90603159c0f2e8a936a09ab76edb5e4d7bc95d9a8d2dc8f = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 477)) && is_array($__internal_25c0fab8152b8dd6b90603159c0f2e8a936a09ab76edb5e4d7bc95d9a8d2dc8f) || $__internal_25c0fab8152b8dd6b90603159c0f2e8a936a09ab76edb5e4d7bc95d9a8d2dc8f instanceof ArrayAccess ? ($__internal_25c0fab8152b8dd6b90603159c0f2e8a936a09ab76edb5e4d7bc95d9a8d2dc8f["dateAdd"] ?? null) : null), 'widget');
+            // line 555
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_25c0fab8152b8dd6b90603159c0f2e8a936a09ab76edb5e4d7bc95d9a8d2dc8f = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 555)) && is_array($__internal_25c0fab8152b8dd6b90603159c0f2e8a936a09ab76edb5e4d7bc95d9a8d2dc8f) || $__internal_25c0fab8152b8dd6b90603159c0f2e8a936a09ab76edb5e4d7bc95d9a8d2dc8f instanceof ArrayAccess ? ($__internal_25c0fab8152b8dd6b90603159c0f2e8a936a09ab76edb5e4d7bc95d9a8d2dc8f["dateAdd"] ?? null) : null), 'widget');
             echo "
                                             </div>
                                             <div class=\"col-sm-2 form-group\">
                                                 ";
-            // line 480
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_f769f712f3484f00110c86425acea59f5af2752239e2e8596bcb6effeb425b40 = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 480)) && is_array($__internal_f769f712f3484f00110c86425acea59f5af2752239e2e8596bcb6effeb425b40) || $__internal_f769f712f3484f00110c86425acea59f5af2752239e2e8596bcb6effeb425b40 instanceof ArrayAccess ? ($__internal_f769f712f3484f00110c86425acea59f5af2752239e2e8596bcb6effeb425b40["texteNote"] ?? null) : null), 'widget');
+            // line 558
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_f769f712f3484f00110c86425acea59f5af2752239e2e8596bcb6effeb425b40 = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 558)) && is_array($__internal_f769f712f3484f00110c86425acea59f5af2752239e2e8596bcb6effeb425b40) || $__internal_f769f712f3484f00110c86425acea59f5af2752239e2e8596bcb6effeb425b40 instanceof ArrayAccess ? ($__internal_f769f712f3484f00110c86425acea59f5af2752239e2e8596bcb6effeb425b40["texteNote"] ?? null) : null), 'widget');
             echo "
                                             </div>
                                             <div class=\"col-sm-2 form-group\">
                                                 ";
-            // line 483
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_98e944456c0f58b2585e4aa36e3a7e43f4b7c9038088f0f056004af41f4a007f = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 483)) && is_array($__internal_98e944456c0f58b2585e4aa36e3a7e43f4b7c9038088f0f056004af41f4a007f) || $__internal_98e944456c0f58b2585e4aa36e3a7e43f4b7c9038088f0f056004af41f4a007f instanceof ArrayAccess ? ($__internal_98e944456c0f58b2585e4aa36e3a7e43f4b7c9038088f0f056004af41f4a007f["idAction"] ?? null) : null), 'widget');
+            // line 561
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_98e944456c0f58b2585e4aa36e3a7e43f4b7c9038088f0f056004af41f4a007f = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 561)) && is_array($__internal_98e944456c0f58b2585e4aa36e3a7e43f4b7c9038088f0f056004af41f4a007f) || $__internal_98e944456c0f58b2585e4aa36e3a7e43f4b7c9038088f0f056004af41f4a007f instanceof ArrayAccess ? ($__internal_98e944456c0f58b2585e4aa36e3a7e43f4b7c9038088f0f056004af41f4a007f["idAction"] ?? null) : null), 'widget');
             echo "
                                             </div>
                                             <div class=\"col-sm-2 form-group\">
                                                 ";
-            // line 486
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_a06a70691a7ca361709a372174fa669f5ee1c1e4ed302b3a5b61c10c80c02760 = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 486)) && is_array($__internal_a06a70691a7ca361709a372174fa669f5ee1c1e4ed302b3a5b61c10c80c02760) || $__internal_a06a70691a7ca361709a372174fa669f5ee1c1e4ed302b3a5b61c10c80c02760 instanceof ArrayAccess ? ($__internal_a06a70691a7ca361709a372174fa669f5ee1c1e4ed302b3a5b61c10c80c02760["dateAction"] ?? null) : null), 'widget');
+            // line 564
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_a06a70691a7ca361709a372174fa669f5ee1c1e4ed302b3a5b61c10c80c02760 = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 564)) && is_array($__internal_a06a70691a7ca361709a372174fa669f5ee1c1e4ed302b3a5b61c10c80c02760) || $__internal_a06a70691a7ca361709a372174fa669f5ee1c1e4ed302b3a5b61c10c80c02760 instanceof ArrayAccess ? ($__internal_a06a70691a7ca361709a372174fa669f5ee1c1e4ed302b3a5b61c10c80c02760["dateAction"] ?? null) : null), 'widget');
             echo "
                                             </div>
                                             <div class=\"col-sm-2 form-group\">
                                                 ";
-            // line 489
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_653499042eb14fd8415489ba6fa87c1e85cff03392e9f57b26d0da09b9be82ce = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 489)) && is_array($__internal_653499042eb14fd8415489ba6fa87c1e85cff03392e9f57b26d0da09b9be82ce) || $__internal_653499042eb14fd8415489ba6fa87c1e85cff03392e9f57b26d0da09b9be82ce instanceof ArrayAccess ? ($__internal_653499042eb14fd8415489ba6fa87c1e85cff03392e9f57b26d0da09b9be82ce["idUserAction"] ?? null) : null), 'widget');
+            // line 567
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_653499042eb14fd8415489ba6fa87c1e85cff03392e9f57b26d0da09b9be82ce = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 567)) && is_array($__internal_653499042eb14fd8415489ba6fa87c1e85cff03392e9f57b26d0da09b9be82ce) || $__internal_653499042eb14fd8415489ba6fa87c1e85cff03392e9f57b26d0da09b9be82ce instanceof ArrayAccess ? ($__internal_653499042eb14fd8415489ba6fa87c1e85cff03392e9f57b26d0da09b9be82ce["idUserAction"] ?? null) : null), 'widget');
             echo "
                                             </div>
                                             <div class=\"col-sm-2 form-group\">
                                                 ";
-            // line 492
-            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_ba9f0a3bb95c082f61c9fbf892a05514d732703d52edc77b51f2e6284135900b = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 492)) && is_array($__internal_ba9f0a3bb95c082f61c9fbf892a05514d732703d52edc77b51f2e6284135900b) || $__internal_ba9f0a3bb95c082f61c9fbf892a05514d732703d52edc77b51f2e6284135900b instanceof ArrayAccess ? ($__internal_ba9f0a3bb95c082f61c9fbf892a05514d732703d52edc77b51f2e6284135900b["idActionStatut"] ?? null) : null), 'widget');
+            // line 570
+            echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((($__internal_ba9f0a3bb95c082f61c9fbf892a05514d732703d52edc77b51f2e6284135900b = twig_get_attribute($this->env, $this->source, $context["comment"], "children", [], "any", false, false, false, 570)) && is_array($__internal_ba9f0a3bb95c082f61c9fbf892a05514d732703d52edc77b51f2e6284135900b) || $__internal_ba9f0a3bb95c082f61c9fbf892a05514d732703d52edc77b51f2e6284135900b instanceof ArrayAccess ? ($__internal_ba9f0a3bb95c082f61c9fbf892a05514d732703d52edc77b51f2e6284135900b["idActionStatut"] ?? null) : null), 'widget');
             echo "
                                             </div>
                                         </div>
@@ -1003,7 +1187,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['comment'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 500
+        // line 578
         echo "                    </tbody>
                     </thead>
                 </table>
@@ -1012,8 +1196,8 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                 <div class=\"btn-toolbar justify-content-md-center\" role=\"toolbar\" aria-label=\"Toolbar with button groups\">
                     <div class=\"btn-group mr-2 \" role=\"group\" aria-label=\"First group\">
                         <a href=\"";
-        // line 507
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_propositions_commerciales_Controller/ajoutpropal", ["id" => twig_get_attribute($this->env, $this->source, ($context["contact"] ?? null), "id", [], "any", false, false, false, 507)]), "html", null, true);
+        // line 585
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_propositions_commerciales_Controller/ajoutpropal", ["id" => twig_get_attribute($this->env, $this->source, ($context["contact"] ?? null), "id", [], "any", false, false, false, 585)]), "html", null, true);
         echo "\" class=\"btn btn-primary btn-block\">Créer Propal</a>
                     </div>
                     <div class=\"btn-group mr-2\" role=\"group\" aria-label=\"Second group\">
@@ -1024,13 +1208,13 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                     </div>
                     <div class=\"btn-group mr-2\" role=\"group\" aria-label=\"Fourth group\">
                         <a href=\"";
-        // line 516
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Dossiers_Controller", ["client" => twig_get_attribute($this->env, $this->source, ($context["contact"] ?? null), "nomStr", [], "any", false, false, false, 516)]), "html", null, true);
+        // line 594
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Dossiers_Controller", ["client" => twig_get_attribute($this->env, $this->source, ($context["contact"] ?? null), "nomStr", [], "any", false, false, false, 594)]), "html", null, true);
         echo "\" class=\"btn btn-primary btn-block\">Dossiers</a>
                     </div>
                     <div class=\"btn-group mr-2\" role=\"group\" aria-label=\"Fourth group\">
                         <a href=\"";
-        // line 519
+        // line 597
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Formation_Mise_Place_Controller");
         echo "\" class=\"btn btn-primary btn-block\">Formations</a>
                     </div>
@@ -1046,18 +1230,18 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
 
         </div>
         ";
-        // line 532
+        // line 610
         echo         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock(($context["contact_forme"] ?? null), 'form_end', ["render_rest" => false]);
         echo "
     </div>
 ";
     }
 
-    // line 536
+    // line 614
     public function block_modal($context, array $blocks = [])
     {
         $macros = $this->macros;
-        // line 537
+        // line 615
         echo "    <div class=\"modal fade\" id=\"modalopcaadd\">
         <div class=\"modal-dialog modal-dialog-centered modal-lg\" role=\"document\">
             <div class=\"modal-content list-filter\">
@@ -1069,7 +1253,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                 </div>
                 <div class=\"modal-body\">
                     ";
-        // line 547
+        // line 625
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Extension\HttpKernelRuntime')->renderFragment(Symfony\Bridge\Twig\Extension\HttpKernelExtension::controller("App\\Controller\\ContactController::OpcaModalAdd"));
         echo "
                 </div>
@@ -1087,7 +1271,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                 </div>
                 <div class=\"modal-body\">
                     ";
-        // line 562
+        // line 640
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Extension\HttpKernelRuntime')->renderFragment(Symfony\Bridge\Twig\Extension\HttpKernelExtension::controller("App\\Controller\\SecteurActiviteController::SecteurActiviteForm"));
         echo "
                 </div>
@@ -1105,7 +1289,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                 </div>
                 <div class=\"modal-body\">
                     ";
-        // line 577
+        // line 655
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Extension\HttpKernelRuntime')->renderFragment(Symfony\Bridge\Twig\Extension\HttpKernelExtension::controller("App\\Controller\\QualiteController::QualiteFormAdd"));
         echo "
                 </div>
@@ -1113,7 +1297,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
         </div>
     </div>
     ";
-        // line 583
+        // line 661
         echo "    <div class=\"modal fade\" id=\"modal-ville-add\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">
         <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">
             <div class=\"modal-content list-filter\">
@@ -1125,7 +1309,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                 </div>
                 <div class=\"modal-body\">
                     ";
-        // line 593
+        // line 671
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Extension\HttpKernelRuntime')->renderFragment(Symfony\Bridge\Twig\Extension\HttpKernelExtension::controller("App\\Controller\\VilleController::create"));
         echo "
                 </div>
@@ -1133,7 +1317,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
         </div>
     </div>
     ";
-        // line 599
+        // line 677
         echo "    
     <div class=\"modal fade\" id=\"modalEditerDocument\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">
         <div class=\"modal-dialog modal-dialog-centered modal-lg\" role=\"document\">
@@ -1147,20 +1331,20 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                     <div class=\"btn-toolbar justify-content-md-center\" role=\"toolbar\" aria-label=\"Toolbar with button groups\">
                         <div class=\"btn-group mr-2 \" role=\"group\" aria-label=\"First group\">
                             <a href=\"";
-        // line 611
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("client_prospect_printdocument", ["id" => twig_get_attribute($this->env, $this->source, ($context["contact"] ?? null), "id", [], "any", false, false, false, 611), "type" => 1]), "html", null, true);
+        // line 689
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("client_prospect_printdocument", ["id" => twig_get_attribute($this->env, $this->source, ($context["contact"] ?? null), "id", [], "any", false, false, false, 689), "type" => 1]), "html", null, true);
         echo "\" class=\"btn btn-primary btn-block\">Bon de commmande</a>
                         </div>
                         <div class=\"btn-group mr-2\" role=\"group\" aria-label=\"Second group\">
                             <a href=\"";
-        // line 614
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("client_prospect_printdocument", ["id" => twig_get_attribute($this->env, $this->source, ($context["contact"] ?? null), "id", [], "any", false, false, false, 614), "type" => 2]), "html", null, true);
+        // line 692
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("client_prospect_printdocument", ["id" => twig_get_attribute($this->env, $this->source, ($context["contact"] ?? null), "id", [], "any", false, false, false, 692), "type" => 2]), "html", null, true);
         echo "\" class=\"btn btn-primary btn-block\">Convention</a>
                         </div>
                         <div class=\"btn-group mr-2\" role=\"group\" aria-label=\"Fourth group\">
                             <a href=\"";
-        // line 617
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("client_prospect_printdocument", ["id" => twig_get_attribute($this->env, $this->source, ($context["contact"] ?? null), "id", [], "any", false, false, false, 617), "type" => 3]), "html", null, true);
+        // line 695
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("client_prospect_printdocument", ["id" => twig_get_attribute($this->env, $this->source, ($context["contact"] ?? null), "id", [], "any", false, false, false, 695), "type" => 3]), "html", null, true);
         echo "\" class=\"btn btn-primary btn-block\">Rendez-vous</a>
                         </div>
                     </div>
@@ -1171,11 +1355,11 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
 ";
     }
 
-    // line 626
+    // line 704
     public function block_javascripts($context, array $blocks = [])
     {
         $macros = $this->macros;
-        // line 627
+        // line 705
         echo "    ";
         $this->displayParentBlock("javascripts", $context, $blocks);
         echo "
@@ -1184,9 +1368,9 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
     <script src=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js\"></script>
     <script src=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js\"></script>
     ";
-        // line 632
-        $this->loadTemplate("contact/Parts/contact.js.html.twig", "contact/edit.html.twig", 632)->display($context);
-        // line 633
+        // line 710
+        $this->loadTemplate("contact/Parts/contact.js.html.twig", "contact/edit.html.twig", 710)->display($context);
+        // line 711
         echo "    <script language=\"javascript\">
         \$(document).ready( function() {
             \$(\"#contactgenerale *\").prop(\"disabled\", true);
@@ -1194,16 +1378,27 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
             \$(\"#editthis\").click(function(){
                 \$(\"#contactgenerale *\").prop(\"disabled\", false);
                 \$(\"#saveedit\").removeClass(\"d-none\");
-                \$(\"#saveedit\").find('button').prop(\"disabled\", false);
+                ";
+        // line 718
+        if (((twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 718) == "MUNIER Pascal") || (twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 718) == "CREPEAU Francis"))) {
+            // line 719
+            echo "                    
+                ";
+        } else {
+            // line 721
+            echo "                \$(\"#contact_id_commercial\").prop(\"disabled\",true)
+                ";
+        }
+        // line 723
+        echo "                \$(\"#saveedit\").find('button').prop(\"disabled\", false);
                 \$(\"#ajcom\").prop(\"disabled\", false);
             });
             // Ajout valeur par défaut des societés liées selon leur valeur pourle contact
             var societelie = ";
-        // line 644
+        // line 727
         echo json_encode(($context["societeliedata"] ?? null));
         echo ";
-            if(societelie){
-                 for (let key in societelie){
+            for (let key in societelie){
                 if(societelie.hasOwnProperty(key)){
                     if(societelie[key] != null){
                         var dataselect = {
@@ -1215,10 +1410,8 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                     }
                 }
             }
-            }
-           
             var adressesville = ";
-        // line 660
+        // line 740
         echo json_encode(($context["adressesvilledata"] ?? null));
         echo "
             for(let key in adressesville){
@@ -1231,7 +1424,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                     allowClear: true,
                     ajax: {
                         url: '";
-        // line 670
+        // line 750
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("crm.opca.ville.asynch-search");
         echo "',
                         data: function (params) {
@@ -1249,7 +1442,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                 if ( idville > 0) {
                     var ville_id = idville;
                     var url = '";
-        // line 685
+        // line 765
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("crm.opca.oneVille.asynch-search", ["idVille" => "ville_id"]);
         echo "';
                     url = url.replace('ville_id', ville_id);
@@ -1272,11 +1465,11 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                 }
             }
             var opca1 = ";
-        // line 705
+        // line 785
         echo json_encode(($context["opca1"] ?? null));
         echo ";
             var opcaTns = ";
-        // line 706
+        // line 786
         echo json_encode(($context["idOpcaTns"] ?? null));
         echo ";
             if (opca1) {
@@ -1288,7 +1481,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
             
             // APR-121
             var secteurActiviteOptions = ";
-        // line 715
+        // line 795
         echo json_encode(($context["secteurActiviteOptions"] ?? null));
         echo ";
             
@@ -1297,7 +1490,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
             }
             
             var activiteTNSOptions = ";
-        // line 721
+        // line 801
         echo json_encode(($context["activiteTNSOptions"] ?? null));
         echo ";
             
@@ -1330,7 +1523,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
             });
             
             ";
-        // line 752
+        // line 832
         echo "            \$('#saveedit').on('click', function(e){
                 e.preventDefault();
                 let commercialId = \$('#contact_id_commercial').val();
@@ -1342,7 +1535,7 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
                 \$('#contactgenerale').submit();
             });
             ";
-        // line 763
+        // line 843
         echo "        });
     </script>
 ";
@@ -1360,11 +1553,11 @@ class __TwigTemplate_2b83e62bef16a5e541faae4dce15fbb20dcc1b5170d12b04ab72e995bb4
 
     public function getDebugInfo()
     {
-        return array (  1346 => 763,  1334 => 752,  1301 => 721,  1292 => 715,  1280 => 706,  1276 => 705,  1253 => 685,  1235 => 670,  1222 => 660,  1203 => 644,  1190 => 633,  1188 => 632,  1179 => 627,  1175 => 626,  1163 => 617,  1157 => 614,  1151 => 611,  1137 => 599,  1129 => 593,  1117 => 583,  1109 => 577,  1091 => 562,  1073 => 547,  1061 => 537,  1057 => 536,  1050 => 532,  1034 => 519,  1028 => 516,  1016 => 507,  1007 => 500,  985 => 492,  979 => 489,  973 => 486,  967 => 483,  961 => 480,  955 => 477,  950 => 475,  943 => 470,  926 => 469,  922 => 468,  910 => 458,  900 => 447,  894 => 446,  883 => 438,  879 => 437,  874 => 436,  872 => 435,  868 => 433,  865 => 432,  859 => 430,  853 => 428,  851 => 427,  846 => 425,  842 => 424,  838 => 423,  834 => 422,  828 => 421,  808 => 403,  805 => 401,  801 => 400,  797 => 398,  778 => 393,  775 => 392,  773 => 390,  767 => 387,  764 => 386,  762 => 384,  756 => 381,  753 => 380,  751 => 378,  745 => 375,  742 => 374,  740 => 372,  734 => 369,  731 => 368,  729 => 366,  723 => 363,  720 => 362,  718 => 360,  712 => 357,  709 => 356,  707 => 354,  701 => 351,  698 => 350,  696 => 348,  690 => 345,  687 => 344,  685 => 342,  680 => 340,  676 => 338,  659 => 337,  652 => 333,  649 => 332,  647 => 330,  641 => 327,  638 => 326,  636 => 324,  630 => 321,  627 => 320,  625 => 318,  619 => 315,  616 => 314,  614 => 312,  608 => 309,  605 => 308,  603 => 306,  597 => 303,  593 => 301,  591 => 299,  585 => 296,  582 => 295,  580 => 293,  574 => 290,  571 => 289,  569 => 287,  563 => 284,  560 => 283,  558 => 281,  552 => 278,  530 => 259,  523 => 254,  521 => 252,  515 => 249,  512 => 248,  510 => 246,  504 => 243,  501 => 242,  499 => 240,  491 => 235,  488 => 234,  486 => 232,  480 => 229,  477 => 228,  475 => 226,  467 => 221,  464 => 220,  462 => 218,  456 => 215,  453 => 214,  451 => 212,  442 => 206,  439 => 205,  437 => 203,  427 => 195,  408 => 190,  405 => 189,  403 => 187,  397 => 184,  394 => 183,  392 => 181,  386 => 178,  380 => 175,  376 => 173,  374 => 171,  368 => 168,  365 => 167,  363 => 165,  357 => 162,  354 => 161,  352 => 159,  347 => 157,  343 => 155,  326 => 154,  321 => 152,  305 => 139,  302 => 138,  300 => 136,  294 => 133,  290 => 131,  288 => 129,  282 => 126,  279 => 125,  277 => 123,  271 => 120,  268 => 119,  266 => 117,  254 => 108,  251 => 107,  249 => 105,  246 => 104,  241 => 101,  238 => 100,  236 => 98,  229 => 94,  226 => 93,  224 => 91,  217 => 87,  214 => 86,  212 => 84,  205 => 80,  201 => 78,  199 => 76,  193 => 73,  190 => 72,  188 => 70,  180 => 65,  177 => 64,  175 => 62,  169 => 59,  166 => 58,  164 => 56,  158 => 53,  154 => 51,  152 => 49,  146 => 46,  143 => 45,  141 => 43,  129 => 34,  124 => 31,  115 => 28,  112 => 27,  107 => 26,  98 => 23,  95 => 22,  91 => 21,  82 => 15,  78 => 14,  74 => 12,  70 => 11,  61 => 6,  57 => 5,  50 => 3,  39 => 1,);
+        return array (  1539 => 843,  1527 => 832,  1494 => 801,  1485 => 795,  1473 => 786,  1469 => 785,  1446 => 765,  1428 => 750,  1415 => 740,  1399 => 727,  1393 => 723,  1389 => 721,  1385 => 719,  1383 => 718,  1374 => 711,  1372 => 710,  1363 => 705,  1359 => 704,  1347 => 695,  1341 => 692,  1335 => 689,  1321 => 677,  1313 => 671,  1301 => 661,  1293 => 655,  1275 => 640,  1257 => 625,  1245 => 615,  1241 => 614,  1234 => 610,  1218 => 597,  1212 => 594,  1200 => 585,  1191 => 578,  1169 => 570,  1163 => 567,  1157 => 564,  1151 => 561,  1145 => 558,  1139 => 555,  1134 => 553,  1127 => 548,  1110 => 547,  1106 => 546,  1094 => 536,  1078 => 519,  1075 => 518,  1068 => 516,  1062 => 514,  1056 => 512,  1054 => 511,  1049 => 510,  1047 => 509,  1042 => 508,  1039 => 507,  1033 => 505,  1027 => 503,  1025 => 502,  1021 => 501,  1017 => 500,  1009 => 499,  1005 => 498,  1001 => 497,  997 => 496,  993 => 495,  986 => 494,  982 => 493,  978 => 492,  955 => 471,  952 => 470,  943 => 467,  938 => 466,  936 => 465,  932 => 463,  929 => 462,  923 => 460,  917 => 458,  915 => 457,  910 => 455,  906 => 454,  902 => 453,  898 => 452,  892 => 451,  888 => 449,  884 => 448,  880 => 447,  860 => 429,  841 => 424,  838 => 423,  836 => 421,  830 => 418,  827 => 417,  825 => 415,  819 => 412,  816 => 411,  814 => 409,  808 => 406,  805 => 405,  803 => 403,  797 => 400,  794 => 399,  792 => 397,  786 => 394,  783 => 393,  781 => 391,  775 => 388,  772 => 387,  770 => 385,  764 => 382,  761 => 381,  759 => 379,  753 => 376,  750 => 375,  748 => 373,  743 => 371,  739 => 369,  722 => 368,  715 => 364,  712 => 363,  710 => 361,  704 => 358,  701 => 357,  699 => 355,  693 => 352,  690 => 351,  688 => 349,  682 => 346,  679 => 345,  677 => 343,  671 => 340,  668 => 339,  666 => 337,  660 => 334,  656 => 332,  654 => 330,  648 => 327,  645 => 326,  643 => 324,  637 => 321,  634 => 320,  632 => 318,  626 => 315,  623 => 314,  621 => 312,  615 => 309,  593 => 290,  586 => 285,  584 => 283,  578 => 280,  575 => 279,  573 => 277,  567 => 274,  564 => 273,  562 => 271,  553 => 266,  549 => 264,  541 => 260,  539 => 259,  536 => 258,  534 => 256,  527 => 253,  523 => 251,  515 => 247,  513 => 246,  510 => 245,  508 => 243,  499 => 238,  495 => 236,  487 => 232,  485 => 231,  482 => 230,  480 => 228,  473 => 225,  469 => 223,  461 => 219,  459 => 218,  456 => 217,  454 => 215,  444 => 208,  441 => 207,  439 => 205,  429 => 197,  410 => 192,  407 => 191,  405 => 189,  399 => 186,  396 => 185,  394 => 183,  388 => 180,  382 => 177,  378 => 175,  376 => 173,  370 => 170,  367 => 169,  365 => 167,  359 => 164,  356 => 163,  354 => 161,  349 => 159,  345 => 157,  328 => 156,  323 => 154,  307 => 141,  304 => 140,  302 => 138,  296 => 135,  292 => 133,  290 => 131,  284 => 128,  281 => 127,  279 => 125,  273 => 122,  270 => 121,  268 => 119,  256 => 110,  253 => 109,  251 => 107,  248 => 106,  243 => 103,  240 => 102,  238 => 100,  230 => 95,  227 => 94,  225 => 92,  217 => 87,  214 => 86,  212 => 84,  205 => 80,  201 => 78,  199 => 76,  193 => 73,  190 => 72,  188 => 70,  180 => 65,  177 => 64,  175 => 62,  169 => 59,  166 => 58,  164 => 56,  158 => 53,  154 => 51,  152 => 49,  146 => 46,  143 => 45,  141 => 43,  129 => 34,  124 => 31,  115 => 28,  112 => 27,  107 => 26,  98 => 23,  95 => 22,  91 => 21,  82 => 15,  78 => 14,  74 => 12,  70 => 11,  61 => 6,  57 => 5,  50 => 3,  39 => 1,);
     }
 
     public function getSourceContext()
     {
-        return new Source("", "contact/edit.html.twig", "/var/www/templates/contact/edit.html.twig");
+        return new Source("", "contact/edit.html.twig", "/home/jeremy/Bureau/project/app/templates/contact/edit.html.twig");
     }
 }

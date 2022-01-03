@@ -146,6 +146,6 @@ class __TwigTemplate_24f44f7faa5a4226ef7d60a0aad249d01160f02932b01fb2be03715e90e
 
     public function getSourceContext()
     {
-        return new Source("", "home/index.html.twig", "/var/www/templates/home/index.html.twig");
+        return new Source("", "home/index.html.twig", "/home/jeremy/Bureau/project/app/templates/home/index.html.twig");
     }
 }

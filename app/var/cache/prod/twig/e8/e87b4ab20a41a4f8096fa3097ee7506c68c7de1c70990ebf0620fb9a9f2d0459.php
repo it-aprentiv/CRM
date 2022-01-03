@@ -64,24 +64,24 @@ class __TwigTemplate_1afce4fa4f036608f0c30a58702e5fb456dd9c99ad1090d068996a88bca
             ";
         // line 24
         $this->displayBlock('header', $context, $blocks);
-        // line 85
+        // line 86
         echo "
             ";
-        // line 86
+        // line 87
         $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "flashes", [], "any", false, false, false, 86));
+        $context['_seq'] = twig_ensure_traversable(twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "flashes", [], "any", false, false, false, 87));
         foreach ($context['_seq'] as $context["label"] => $context["messages"]) {
-            // line 87
+            // line 88
             echo "                ";
             $context['_parent'] = $context;
             $context['_seq'] = twig_ensure_traversable($context["messages"]);
             foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-                // line 88
+                // line 89
                 echo "                    <div class=\"alert alert-";
                 echo twig_escape_filter($this->env, $context["label"], "html", null, true);
                 echo " my-2\">
                         ";
-                // line 89
+                // line 90
                 echo twig_escape_filter($this->env, $context["message"], "html", null, true);
                 echo "
                     </div>
@@ -90,26 +90,26 @@ class __TwigTemplate_1afce4fa4f036608f0c30a58702e5fb456dd9c99ad1090d068996a88bca
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['_key'], $context['message'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 92
+            // line 93
             echo "            ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['label'], $context['messages'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 93
+        // line 94
         echo "
             ";
-        // line 94
+        // line 95
         $this->displayBlock('body', $context, $blocks);
-        // line 98
+        // line 99
         echo "        </div>
         ";
-        // line 99
+        // line 100
         $this->displayBlock('modal', $context, $blocks);
-        // line 101
+        // line 102
         echo "        ";
         $this->displayBlock('javascripts', $context, $blocks);
-        // line 164
+        // line 168
         echo "    </body>
 </html>";
     }
@@ -218,11 +218,15 @@ class __TwigTemplate_1afce4fa4f036608f0c30a58702e5fb456dd9c99ad1090d068996a88bca
         if ((twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 54) == "MUNIER Pascal")) {
             // line 55
             echo "                        <a href=\"";
+            echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("home.stats");
+            echo "\" class=\"btn btn-info mr-1\">Statistiques</a>
+                        <a href=\"";
+            // line 56
             echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Log_Controller");
             echo "\" class=\"btn btn-info mr-1\">ACTIVITÉ</a>
                         ";
         }
-        // line 57
+        // line 58
         echo "                        <a href=\"";
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_lead_Controller/ajoutLead");
         echo "\" class=\"btn btn-info\">CREER LEAD</a>
@@ -236,22 +240,22 @@ class __TwigTemplate_1afce4fa4f036608f0c30a58702e5fb456dd9c99ad1090d068996a88bca
                                             <i class=\"fas fa-user fa-stack-1x text-white\"></i>
                                         </span>
                                             Hello ";
-        // line 67
-        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 67), "username", [], "any", false, false, false, 67), "html", null, true);
+        // line 68
+        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 68), "username", [], "any", false, false, false, 68), "html", null, true);
         echo " [";
-        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 67), "droit", [], "any", false, false, false, 67), "html", null, true);
+        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 68), "droit", [], "any", false, false, false, 68), "html", null, true);
         echo "]
                                     </a>
                                     <div class=\"dropdown-menu\" aria-labelledby=\"navbarUserDropdown\">
                                         <a class=\"dropdown-item\" href=\"";
-        // line 70
+        // line 71
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("user.view");
         echo "\" title=\"Infos profil\">
                                             <i class=\"fas fa-user\"></i> 
                                             Mon Profil
                                         </a>
                                         <a class=\"dropdown-item\" href=\"";
-        // line 74
+        // line 75
         echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_logout");
         echo "\" title=\"Fermer la session\">
                                             <i class=\"fas fa-sign-out-alt\"></i> 
@@ -266,41 +270,44 @@ class __TwigTemplate_1afce4fa4f036608f0c30a58702e5fb456dd9c99ad1090d068996a88bca
             ";
     }
 
-    // line 94
+    // line 95
     public function block_body($context, array $blocks = [])
     {
         $macros = $this->macros;
-        // line 95
+        // line 96
         echo "
                 ";
-        // line 96
-        $this->displayBlock('commentaires', $context, $blocks);
         // line 97
+        $this->displayBlock('commentaires', $context, $blocks);
+        // line 98
         echo "            ";
     }
 
-    // line 96
+    // line 97
     public function block_commentaires($context, array $blocks = [])
     {
         $macros = $this->macros;
     }
 
-    // line 99
+    // line 100
     public function block_modal($context, array $blocks = [])
     {
         $macros = $this->macros;
-        // line 100
+        // line 101
         echo "        ";
     }
 
-    // line 101
+    // line 102
     public function block_javascripts($context, array $blocks = [])
     {
         $macros = $this->macros;
-        // line 102
+        // line 103
         echo "            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-            <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>
-            <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js\"
+  <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css\">
+  <link rel=\"stylesheet\" href=\"/resources/demos/style.css\">
+  <script src=\"https://code.jquery.com/jquery-3.6.0.js\"></script>
+  <script src=\"https://code.jquery.com/ui/1.13.0/jquery-ui.js\"></script>
+        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js\"
                     integrity=\"sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1\"
             crossorigin=\"anonymous\"></script>
             <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js\"
@@ -312,26 +319,26 @@ class __TwigTemplate_1afce4fa4f036608f0c30a58702e5fb456dd9c99ad1090d068996a88bca
             <script src=\"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/i18n/fr.js\"></script>
             
             <script src=\"";
-        // line 115
+        // line 119
         echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("crm/common.js"), "html", null, true);
         echo "?v=";
         echo twig_escape_filter($this->env, ($context["asset_version"] ?? null), "html", null, true);
         echo "\"></script>
             <script src=\"";
-        // line 116
+        // line 120
         echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/js/number-utils.js"), "html", null, true);
         echo "?v=";
         echo twig_escape_filter($this->env, ($context["asset_version"] ?? null), "html", null, true);
         echo "\"></script>
             <script src=\"";
-        // line 117
+        // line 121
         echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/js/facture-utils.js"), "html", null, true);
         echo "?v=";
         echo twig_escape_filter($this->env, ($context["asset_version"] ?? null), "html", null, true);
         echo "\"></script>
             <script>
                 ";
-        // line 120
+        // line 124
         echo "                    common.disableFormFields('#commentaires_collection :input, .list-filter :input, .no-disabled :input, #btn_update_formation, .not-disabling');
 
                     \$('.update').on('click', function (e) {
@@ -353,7 +360,7 @@ class __TwigTemplate_1afce4fa4f036608f0c30a58702e5fb456dd9c99ad1090d068996a88bca
                         \$('#btnajoutcom').hide();
                     });
                 ";
-        // line 141
+        // line 145
         echo "
 
                     function chargement(parameters) {
@@ -391,11 +398,11 @@ class __TwigTemplate_1afce4fa4f036608f0c30a58702e5fb456dd9c99ad1090d068996a88bca
 
     public function getDebugInfo()
     {
-        return array (  357 => 141,  335 => 120,  328 => 117,  322 => 116,  316 => 115,  301 => 102,  297 => 101,  293 => 100,  289 => 99,  283 => 96,  279 => 97,  277 => 96,  274 => 95,  270 => 94,  255 => 74,  248 => 70,  240 => 67,  226 => 57,  220 => 55,  218 => 54,  214 => 53,  210 => 51,  202 => 48,  192 => 46,  189 => 45,  185 => 44,  179 => 41,  174 => 38,  170 => 37,  157 => 27,  153 => 26,  150 => 25,  146 => 24,  139 => 19,  131 => 16,  122 => 9,  118 => 8,  113 => 164,  110 => 101,  108 => 99,  105 => 98,  103 => 94,  100 => 93,  94 => 92,  85 => 89,  80 => 88,  75 => 87,  71 => 86,  68 => 85,  66 => 24,  58 => 19,  55 => 18,  53 => 8,  44 => 1,);
+        return array (  364 => 145,  342 => 124,  335 => 121,  329 => 120,  323 => 119,  305 => 103,  301 => 102,  297 => 101,  293 => 100,  287 => 97,  283 => 98,  281 => 97,  278 => 96,  274 => 95,  259 => 75,  252 => 71,  244 => 68,  230 => 58,  225 => 56,  220 => 55,  218 => 54,  214 => 53,  210 => 51,  202 => 48,  192 => 46,  189 => 45,  185 => 44,  179 => 41,  174 => 38,  170 => 37,  157 => 27,  153 => 26,  150 => 25,  146 => 24,  139 => 19,  131 => 16,  122 => 9,  118 => 8,  113 => 168,  110 => 102,  108 => 100,  105 => 99,  103 => 95,  100 => 94,  94 => 93,  85 => 90,  80 => 89,  75 => 88,  71 => 87,  68 => 86,  66 => 24,  58 => 19,  55 => 18,  53 => 8,  44 => 1,);
     }
 
     public function getSourceContext()
     {
-        return new Source("", "base.html.twig", "/var/www/templates/base.html.twig");
+        return new Source("", "base.html.twig", "/home/jeremy/Bureau/project/app/templates/base.html.twig");
     }
 }

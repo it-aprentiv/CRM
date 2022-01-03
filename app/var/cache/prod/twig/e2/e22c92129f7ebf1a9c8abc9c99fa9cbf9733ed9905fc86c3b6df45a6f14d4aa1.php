@@ -79,6 +79,6 @@ class __TwigTemplate_7d9feaf0d5b8b4a6ae65f3e0f586a674544a26c6ab2deb9929dd4c0a16b
 
     public function getSourceContext()
     {
-        return new Source("", "secteur_activite/modal.add.activite.html.twig", "/var/www/templates/secteur_activite/modal.add.activite.html.twig");
+        return new Source("", "secteur_activite/modal.add.activite.html.twig", "/home/jeremy/Bureau/project/app/templates/secteur_activite/modal.add.activite.html.twig");
     }
 }

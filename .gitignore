@@ -1,5 +1,6 @@
 app/var/*
 !app/var/log/.gitkeep
+app/var/cache/prod/*
 
 # Parameters
 app/config/parameters.yml
@@ -11,7 +12,6 @@ app/config/parameters.yml
 app/bin/*
 !app/bin/console
 !app/bin/symfony_requirements
-app/vendor/
 
 # Assets and user uploads
 app/web/bundles/

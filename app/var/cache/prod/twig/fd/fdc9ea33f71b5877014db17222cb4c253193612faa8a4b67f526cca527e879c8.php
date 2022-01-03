@@ -56,18 +56,36 @@ class __TwigTemplate_d7e68e9d9b1e9605f5125081195e168eb084ee116e33e1f76b0e50611c3
     {
         $macros = $this->macros;
         // line 6
-        echo "
-    <h1 class=\"text-center mt-5\">";
-        // line 7
-        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 7), "html", null, true);
+        echo "<h1 class=\"text-center mt-5\">";
+        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 6), "html", null, true);
         echo "</h1>
 
+
+            <div class=\"row\">
+                 <div class=\"col col-md-3 mb-3 mx-auto\">
+                        <canvas id=\"propals\" width=\"100\" height=\"100\"></canvas>
+                    </div> 
+                    ";
+        // line 13
+        if ((twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 13) == "MUNIER Pascal")) {
+            // line 14
+            echo "                    <div class=\"col col-md-3 mb-3 mx-auto\">
+                        <canvas id=\"leads\" width=\"100\" height=\"100\"></canvas>
+                    </div>
+                    <div class=\"col col-md-3 mb-3 mx-auto\">
+                        <canvas id=\"notes\" width=\"100\" height=\"100\"></canvas>
+                    </div>
+                    ";
+        }
+        // line 21
+        echo "                   
+            </div>
         <a class=\"btn btn-info btn-portail mb-3\" href=\"#\" style=\" width:10% !important;margin:0 auto !important;display:block !important;float:none !important;\" onclick=\"btnlegend(\$(this))\">LEGENDE</a>
                 <div class=\"row\">
                     <div class=\"col\">
                     <div class=\"text-center\">
                         <a class=\"btn btn-info btn-portail\" href=\"";
-        // line 13
+        // line 27
         echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Dossiers_Controller", ["commercial" => ($context["nomCommercial"] ?? null)]), "html", null, true);
         echo "\">VOS DOSSIERS</a>
                     </div>
@@ -90,95 +108,95 @@ class __TwigTemplate_d7e68e9d9b1e9605f5125081195e168eb084ee116e33e1f76b0e50611c3
 
 
                                 ";
-        // line 33
+        // line 47
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable(($context["paginationDossier"] ?? null));
         foreach ($context['_seq'] as $context["_key"] => $context["dossier"]) {
             echo "                                                    
                                     <tr data-id=\"";
-            // line 34
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "id", [], "any", false, false, false, 34), "html", null, true);
+            // line 48
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "id", [], "any", false, false, false, 48), "html", null, true);
             echo "\" data-href=\"";
-            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Dossiers_Controller/visualiserDossier", ["id" => twig_get_attribute($this->env, $this->source, $context["dossier"], "id", [], "any", false, false, false, 34)]), "html", null, true);
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Dossiers_Controller/visualiserDossier", ["id" => twig_get_attribute($this->env, $this->source, $context["dossier"], "id", [], "any", false, false, false, 48)]), "html", null, true);
             echo "\">
                                         <td>";
-            // line 35
-            (((((twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 35), "d-m-Y") == "31-12-1969") || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 35), "d-m-Y") == "01-01-1970")) || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 35), "d-m-Y") == "30-11--0001"))) ? (print ("")) : (print (twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 35), "d-m-Y"), "html", null, true))));
+            // line 49
+            (((((twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 49), "d-m-Y") == "31-12-1969") || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 49), "d-m-Y") == "01-01-1970")) || (twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 49), "d-m-Y") == "30-11--0001"))) ? (print ("")) : (print (twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 49), "d-m-Y"), "html", null, true))));
             echo "</td>
                                         <td>";
-            // line 36
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dispositif", [], "any", false, false, false, 36), "html", null, true);
+            // line 50
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dispositif", [], "any", false, false, false, 50), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 37
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "client", [], "any", false, false, false, 37), "html", null, true);
+            // line 51
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "client", [], "any", false, false, false, 51), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 38
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "intituleStage", [], "any", false, false, false, 38), "html", null, true);
+            // line 52
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "intituleStage", [], "any", false, false, false, 52), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 39
-            echo twig_escape_filter($this->env, twig_number_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "montantSigne", [], "any", false, false, false, 39), 2, ",", " "), "html", null, true);
+            // line 53
+            echo twig_escape_filter($this->env, twig_number_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "montantSigne", [], "any", false, false, false, 53), 2, ",", " "), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 40
-            echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_date_modify_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 40), "+6 month"), "d-m-Y"), "html", null, true);
+            // line 54
+            echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_date_modify_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateEnvoi", [], "any", false, false, false, 54), "+6 month"), "d-m-Y"), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 41
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "statut", [], "any", false, false, false, 41), "html", null, true);
+            // line 55
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "statut", [], "any", false, false, false, 55), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 42
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "opca", [], "any", false, false, false, 42), "html", null, true);
+            // line 56
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "opca", [], "any", false, false, false, 56), "html", null, true);
             echo "</td>
                                          ";
-            // line 43
-            if (((twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 43) >= ($context["currentDate"] ?? null)) && (twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 43) <= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "+5 day")))) {
-                // line 44
+            // line 57
+            if (((twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 57) >= ($context["currentDate"] ?? null)) && (twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 57) <= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "+5 day")))) {
+                // line 58
                 echo "
                                                 <td class=\"bg-danger text-white\">";
-                // line 45
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 45), "d-m-Y"), "html", null, true);
+                // line 59
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 59), "d-m-Y"), "html", null, true);
                 echo "</td>
 
                                         ";
-            } elseif (((twig_get_attribute($this->env, $this->source,             // line 47
-$context["dossier"], "dateFinPeriode", [], "any", false, false, false, 47) >= ($context["currentDate"] ?? null)) && (twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 47) <= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "+10 day")))) {
-                // line 48
+            } elseif (((twig_get_attribute($this->env, $this->source,             // line 61
+$context["dossier"], "dateFinPeriode", [], "any", false, false, false, 61) >= ($context["currentDate"] ?? null)) && (twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 61) <= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "+10 day")))) {
+                // line 62
                 echo "
                                                 <td class=\"bg-warning\">";
-                // line 49
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 49), "d-m-Y"), "html", null, true);
+                // line 63
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 63), "d-m-Y"), "html", null, true);
                 echo "</td>
 
                                         ";
-            } elseif ((twig_get_attribute($this->env, $this->source,             // line 51
-$context["dossier"], "dateFinPeriode", [], "any", false, false, false, 51) >= ($context["currentDate"] ?? null))) {
-                // line 52
+            } elseif ((twig_get_attribute($this->env, $this->source,             // line 65
+$context["dossier"], "dateFinPeriode", [], "any", false, false, false, 65) >= ($context["currentDate"] ?? null))) {
+                // line 66
                 echo "
                                                 <td class=\"bg-success text-white\">";
-                // line 53
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 53), "d-m-Y"), "html", null, true);
+                // line 67
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 67), "d-m-Y"), "html", null, true);
                 echo "</td>
                                                 
                                         ";
             } else {
-                // line 56
+                // line 70
                 echo "
                                                 <td class=\"bg-danger text-white\">";
-                // line 57
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 57), "d-m-Y"), "html", null, true);
+                // line 71
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 71), "d-m-Y"), "html", null, true);
                 echo "</td>
 
                                         ";
             }
-            // line 60
+            // line 74
             echo "                                        
                                         <td style=\"display: none;\">";
-            // line 61
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "commercial", [], "any", false, false, false, 61), "html", null, true);
+            // line 75
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["dossier"], "commercial", [], "any", false, false, false, 75), "html", null, true);
             echo "</td>
                                     </tr>
                                 ";
@@ -186,7 +204,7 @@ $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 51) >= ($
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['dossier'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 64
+        // line 78
         echo "                            </tbody>
                         </table>
                     </div>
@@ -195,8 +213,8 @@ $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 51) >= ($
                     <div class=\"col\">
                     <div class=\"text-center\">
                         <a class=\"btn btn-info btn-portail\" href=\"";
-        // line 71
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_propositions_commerciales_Controller", ["commercial" => twig_get_attribute($this->env, $this->source, ($context["idCommercial"] ?? null), "id", [], "any", false, false, false, 71)]), "html", null, true);
+        // line 85
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_propositions_commerciales_Controller", ["commercial" => twig_get_attribute($this->env, $this->source, ($context["idCommercial"] ?? null), "id", [], "any", false, false, false, 85)]), "html", null, true);
         echo "\">VOS PROPALES</a>
                     </div>
                         
@@ -215,138 +233,138 @@ $context["dossier"], "dateFinPeriode", [], "any", false, false, false, 51) >= ($
                                     </thead>
                                     <tbody>
                                     ";
-        // line 88
+        // line 102
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable(($context["paginationPropal"] ?? null));
         foreach ($context['_seq'] as $context["_key"] => $context["propal"]) {
-            // line 89
+            // line 103
             echo "                                        <tr data-propal-id=\"";
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "idpropal", [], "any", false, false, false, 89), "html", null, true);
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "idpropal", [], "any", false, false, false, 103), "html", null, true);
             echo "\" data-href=\"";
-            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("propal_show", ["id" => twig_get_attribute($this->env, $this->source, $context["propal"], "idpropal", [], "any", false, false, false, 89)]), "html", null, true);
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("propal_show", ["id" => twig_get_attribute($this->env, $this->source, $context["propal"], "idpropal", [], "any", false, false, false, 103)]), "html", null, true);
             echo "\">
                                             <td>";
-            // line 90
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "statut", [], "any", false, false, false, 90), "html", null, true);
+            // line 104
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "statut", [], "any", false, false, false, 104), "html", null, true);
             echo "</td>
                                             <td style=\"display: none;\">";
-            // line 91
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "commercial", [], "any", false, false, false, 91), "html", null, true);
+            // line 105
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "commercial", [], "any", false, false, false, 105), "html", null, true);
             echo "</td>
                                             <td>";
-            // line 92
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "client", [], "any", false, false, false, 92), "html", null, true);
+            // line 106
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "client", [], "any", false, false, false, 106), "html", null, true);
             echo "</td>
                                             <td>";
-            // line 93
-            if ((twig_get_attribute($this->env, $this->source, $context["propal"], "type", [], "any", false, false, false, 93) == 1)) {
+            // line 107
+            if ((twig_get_attribute($this->env, $this->source, $context["propal"], "type", [], "any", false, false, false, 107) == 1)) {
                 echo " Entreprise ";
             } else {
                 echo " Particulier ";
             }
             echo "</td>
                                             <td>";
-            // line 94
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "nom", [], "any", false, false, false, 94), "html", null, true);
+            // line 108
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "nom", [], "any", false, false, false, 108), "html", null, true);
             echo "</td>
                                             <td> ";
-            // line 95
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "prenom", [], "any", false, false, false, 95), "html", null, true);
+            // line 109
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "prenom", [], "any", false, false, false, 109), "html", null, true);
             echo " </td>
                                             ";
-            // line 96
-            if ( !(null === twig_get_attribute($this->env, $this->source, $context["propal"], "coutht", [], "any", false, false, false, 96))) {
-                // line 97
+            // line 110
+            if ( !(null === twig_get_attribute($this->env, $this->source, $context["propal"], "coutht", [], "any", false, false, false, 110))) {
+                // line 111
                 echo "                                            <td> ";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "coutht", [], "any", false, false, false, 97), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "coutht", [], "any", false, false, false, 111), "html", null, true);
                 echo " €</td>
                                             ";
             } else {
-                // line 99
+                // line 113
                 echo "                                            <td> ";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "coutht", [], "any", false, false, false, 99), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "coutht", [], "any", false, false, false, 113), "html", null, true);
                 echo "</td>
                                             ";
             }
-            // line 101
+            // line 115
             echo "                                            ";
-            if ((twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 101) == "Froid")) {
-                // line 102
+            if ((twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 115) == "Froid")) {
+                // line 116
                 echo "                                            <td class=\"bg-info text-white\"> ";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 102), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 116), "html", null, true);
                 echo " </td>
                                             ";
-            } elseif ((twig_get_attribute($this->env, $this->source,             // line 103
-$context["propal"], "fiabilite", [], "any", false, false, false, 103) == "Chaud")) {
-                // line 104
+            } elseif ((twig_get_attribute($this->env, $this->source,             // line 117
+$context["propal"], "fiabilite", [], "any", false, false, false, 117) == "Chaud")) {
+                // line 118
                 echo "                                            <td class=\"bg-danger text-white\"> ";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 104), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 118), "html", null, true);
                 echo " </td>
                                             ";
-            } elseif ((twig_get_attribute($this->env, $this->source,             // line 105
-$context["propal"], "fiabilite", [], "any", false, false, false, 105) == "Tiede")) {
-                // line 106
+            } elseif ((twig_get_attribute($this->env, $this->source,             // line 119
+$context["propal"], "fiabilite", [], "any", false, false, false, 119) == "Tiede")) {
+                // line 120
                 echo "                                            <td class=\"bg-warning text-white\"> ";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 106), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 120), "html", null, true);
                 echo " </td>
                                             ";
             } else {
-                // line 108
+                // line 122
                 echo "                                            <td> ";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 108), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "fiabilite", [], "any", false, false, false, 122), "html", null, true);
                 echo " </td>
                                             ";
             }
-            // line 110
+            // line 124
             echo "                                        ";
-            if (((twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 110) <= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-1 day")) && (twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 110) >= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-4 day")))) {
-                // line 111
+            if (((twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 124) <= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-1 day")) && (twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 124) >= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-4 day")))) {
+                // line 125
                 echo "
                                                 <td class=\"bg-warning\">";
-                // line 112
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 112), "d-m-Y"), "html", null, true);
+                // line 126
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 126), "d-m-Y"), "html", null, true);
                 echo "</td>
 
                                         ";
-            } elseif (((twig_get_attribute($this->env, $this->source,             // line 114
-$context["propal"], "daterelance", [], "any", false, false, false, 114) <= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-5 day")) && (twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 114) >= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-9 day")))) {
-                // line 115
+            } elseif (((twig_get_attribute($this->env, $this->source,             // line 128
+$context["propal"], "daterelance", [], "any", false, false, false, 128) <= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-5 day")) && (twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 128) >= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-9 day")))) {
+                // line 129
                 echo "
                                                 <td class=\"bg-danger text-white\">";
-                // line 116
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 116), "d-m-Y"), "html", null, true);
+                // line 130
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 130), "d-m-Y"), "html", null, true);
                 echo "</td>
 
                                         ";
-            } elseif ((twig_get_attribute($this->env, $this->source,             // line 118
-$context["propal"], "daterelance", [], "any", false, false, false, 118) <= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-10 day"))) {
-                // line 119
+            } elseif ((twig_get_attribute($this->env, $this->source,             // line 132
+$context["propal"], "daterelance", [], "any", false, false, false, 132) <= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-10 day"))) {
+                // line 133
                 echo "
                                                 <td class=\"bg-danger text-white\">";
-                // line 120
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 120), "d-m-Y"), "html", null, true);
+                // line 134
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 134), "d-m-Y"), "html", null, true);
                 echo "<i class=\"fas fa-exclamation-triangle\"></i></td>
                                         
                                         ";
-            } elseif ((twig_get_attribute($this->env, $this->source,             // line 122
-$context["propal"], "daterelance", [], "any", false, false, false, 122) >= ($context["currentDate"] ?? null))) {
-                // line 123
+            } elseif ((twig_get_attribute($this->env, $this->source,             // line 136
+$context["propal"], "daterelance", [], "any", false, false, false, 136) >= ($context["currentDate"] ?? null))) {
+                // line 137
                 echo "
                                                 <td class=\"bg-success text-white\">";
-                // line 124
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 124), "d-m-Y"), "html", null, true);
+                // line 138
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["propal"], "daterelance", [], "any", false, false, false, 138), "d-m-Y"), "html", null, true);
                 echo "</td>        
 
                                         ";
             }
-            // line 127
+            // line 141
             echo "                                        </tr>
                                     ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['propal'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 129
+        // line 143
         echo "                                    </tbody>
                                 </table>
 
@@ -354,8 +372,8 @@ $context["propal"], "daterelance", [], "any", false, false, false, 122) >= ($con
                         <div class=\"w-100\"></div>
                     <div class=\"col\"><div class=\"text-center\">
                         <a class=\"btn btn-info btn-portail\" href=\"";
-        // line 135
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Client_Prospect_Controller", ["commercial" => twig_get_attribute($this->env, $this->source, ($context["idCommercial"] ?? null), "id", [], "any", false, false, false, 135)]), "html", null, true);
+        // line 149
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Client_Prospect_Controller", ["commercial" => twig_get_attribute($this->env, $this->source, ($context["idCommercial"] ?? null), "id", [], "any", false, false, false, 149)]), "html", null, true);
         echo "\">VOS CLIENTS</a>
                     </div>
                         
@@ -370,41 +388,41 @@ $context["propal"], "daterelance", [], "any", false, false, false, 122) >= ($con
                             </thead>
                             <tbody>
                                 ";
-        // line 148
+        // line 162
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable(($context["paginationClient"] ?? null));
         foreach ($context['_seq'] as $context["_key"] => $context["contact"]) {
-            // line 149
+            // line 163
             echo "                                    <tr data-clientprospect-id=\"";
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "contact_id", [], "any", false, false, false, 149), "html", null, true);
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "contact_id", [], "any", false, false, false, 163), "html", null, true);
             echo "\" data-href=\"";
-            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_client_prospect_Controller/editClient", ["id" => twig_get_attribute($this->env, $this->source, $context["contact"], "contact_id", [], "any", false, false, false, 149)]), "html", null, true);
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_client_prospect_Controller/editClient", ["id" => twig_get_attribute($this->env, $this->source, $context["contact"], "contact_id", [], "any", false, false, false, 163)]), "html", null, true);
             echo "\">
                                         <td style=\"display:none;\">";
-            // line 150
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "statut", [], "any", false, false, false, 150), "html", null, true);
+            // line 164
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "statut", [], "any", false, false, false, 164), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 151
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "societe", [], "any", false, false, false, 151), "html", null, true);
+            // line 165
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "societe", [], "any", false, false, false, 165), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 152
-            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["contact"], "nom", [], "any", false, false, false, 152)), "html", null, true);
+            // line 166
+            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["contact"], "nom", [], "any", false, false, false, 166)), "html", null, true);
             echo " ";
-            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["contact"], "prenom", [], "any", false, false, false, 152)), "html", null, true);
+            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["contact"], "prenom", [], "any", false, false, false, 166)), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 153
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "ville", [], "any", false, false, false, 153), "html", null, true);
+            // line 167
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "ville", [], "any", false, false, false, 167), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 154
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "opca", [], "any", false, false, false, 154), "html", null, true);
+            // line 168
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "opca", [], "any", false, false, false, 168), "html", null, true);
             echo "</td>
                                         <td style=\"display: none;\">";
-            // line 155
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "commercial", [], "any", false, false, false, 155), "html", null, true);
+            // line 169
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "commercial", [], "any", false, false, false, 169), "html", null, true);
             echo "</td>
                                     </tr>
                                 ";
@@ -412,15 +430,15 @@ $context["propal"], "daterelance", [], "any", false, false, false, 122) >= ($con
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['contact'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 158
+        // line 172
         echo "                            </tbody>
                             </table>
                     </div>
                     <div class=\"col\">
                     <div class=\"text-center\">
                         <a class=\"btn btn-info btn-portail\" href=\"";
-        // line 163
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Client_Prospect_Controller", ["idType" => 1, "commercial" => twig_get_attribute($this->env, $this->source, ($context["idCommercial"] ?? null), "id", [], "any", false, false, false, 163)]), "html", null, true);
+        // line 177
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Client_Prospect_Controller", ["idType" => 1, "commercial" => twig_get_attribute($this->env, $this->source, ($context["idCommercial"] ?? null), "id", [], "any", false, false, false, 177)]), "html", null, true);
         echo "\">VOS PROSPECTS</a>
                     </div>
                         
@@ -435,41 +453,41 @@ $context["propal"], "daterelance", [], "any", false, false, false, 122) >= ($con
                             </thead>
                             <tbody>
                                 ";
-        // line 176
+        // line 190
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable(($context["paginationProspect"] ?? null));
         foreach ($context['_seq'] as $context["_key"] => $context["contact"]) {
-            // line 177
+            // line 191
             echo "                                    <tr data-clientprospect-id=\"";
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "contact_id", [], "any", false, false, false, 177), "html", null, true);
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "contact_id", [], "any", false, false, false, 191), "html", null, true);
             echo "\" data-href=\"";
-            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_client_prospect_Controller/editClient", ["id" => twig_get_attribute($this->env, $this->source, $context["contact"], "contact_id", [], "any", false, false, false, 177)]), "html", null, true);
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_client_prospect_Controller/editClient", ["id" => twig_get_attribute($this->env, $this->source, $context["contact"], "contact_id", [], "any", false, false, false, 191)]), "html", null, true);
             echo "\">
                                         <td style=\"display:none;\">";
-            // line 178
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "statut", [], "any", false, false, false, 178), "html", null, true);
+            // line 192
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "statut", [], "any", false, false, false, 192), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 179
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "societe", [], "any", false, false, false, 179), "html", null, true);
+            // line 193
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "societe", [], "any", false, false, false, 193), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 180
-            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["contact"], "nom", [], "any", false, false, false, 180)), "html", null, true);
+            // line 194
+            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["contact"], "nom", [], "any", false, false, false, 194)), "html", null, true);
             echo " ";
-            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["contact"], "prenom", [], "any", false, false, false, 180)), "html", null, true);
+            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["contact"], "prenom", [], "any", false, false, false, 194)), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 181
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "ville", [], "any", false, false, false, 181), "html", null, true);
+            // line 195
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "ville", [], "any", false, false, false, 195), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 182
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "opca", [], "any", false, false, false, 182), "html", null, true);
+            // line 196
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "opca", [], "any", false, false, false, 196), "html", null, true);
             echo "</td>
                                         <td style=\"display: none;\">";
-            // line 183
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "commercial", [], "any", false, false, false, 183), "html", null, true);
+            // line 197
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["contact"], "commercial", [], "any", false, false, false, 197), "html", null, true);
             echo "</td>
                                     </tr>
                                 ";
@@ -477,7 +495,7 @@ $context["propal"], "daterelance", [], "any", false, false, false, 122) >= ($con
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['contact'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 186
+        // line 200
         echo "                            </tbody>
                             </table>
                     </div>
@@ -485,7 +503,7 @@ $context["propal"], "daterelance", [], "any", false, false, false, 122) >= ($con
                     <div class=\"col\">
                     <div class=\"text-center\" id=\"AncreNote\">
                         <a class=\"btn btn-info btn-portail\" href=\"";
-        // line 192
+        // line 206
         echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_notes_actions_Controller", ["rappelleur" => ($context["currentUser"] ?? null), "actionStatut" => 1]), "html", null, true);
         echo "\">VOS NOTES ET ACTIONS</a>
                     </div>    
@@ -503,134 +521,134 @@ $context["propal"], "daterelance", [], "any", false, false, false, 122) >= ($con
                             </thead>
                             <tbody>
                                 ";
-        // line 207
+        // line 221
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable(($context["paginationNoteResponsable"] ?? null));
         foreach ($context['_seq'] as $context["_key"] => $context["note"]) {
-            // line 208
+            // line 222
             echo "                                    <tr data-href=\"";
-            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_notes_actions_Controller/showNote", ["id" => twig_get_attribute($this->env, $this->source, $context["note"], "id", [], "any", false, false, false, 208)]), "html", null, true);
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_notes_actions_Controller/showNote", ["id" => twig_get_attribute($this->env, $this->source, $context["note"], "id", [], "any", false, false, false, 222)]), "html", null, true);
             echo "\">
                                         <td>";
-            // line 209
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["noteConstant"] ?? null), "getTableLibelle", [0 => twig_get_attribute($this->env, $this->source, $context["note"], "nomTable", [], "any", false, false, false, 209)], "method", false, false, false, 209), "html", null, true);
+            // line 223
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["noteConstant"] ?? null), "getTableLibelle", [0 => twig_get_attribute($this->env, $this->source, $context["note"], "nomTable", [], "any", false, false, false, 223)], "method", false, false, false, 223), "html", null, true);
             echo "</td>
                                         ";
-            // line 210
-            if ((twig_get_attribute($this->env, $this->source, $context["note"], "nomTable", [], "any", false, false, false, 210) == "1_formation_dossier")) {
-                // line 211
+            // line 224
+            if ((twig_get_attribute($this->env, $this->source, $context["note"], "nomTable", [], "any", false, false, false, 224) == "1_formation_dossier")) {
+                // line 225
                 echo "                                        <td>";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "client", [], "any", false, false, false, 211), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "client", [], "any", false, false, false, 225), "html", null, true);
                 echo "</td>
                                         ";
-            } elseif (((twig_get_attribute($this->env, $this->source,             // line 212
-$context["note"], "nomTable", [], "any", false, false, false, 212) == "lead") && twig_test_empty(twig_get_attribute($this->env, $this->source, $context["note"], "societe", [], "any", false, false, false, 212)))) {
-                // line 213
+            } elseif (((twig_get_attribute($this->env, $this->source,             // line 226
+$context["note"], "nomTable", [], "any", false, false, false, 226) == "lead") && twig_test_empty(twig_get_attribute($this->env, $this->source, $context["note"], "societe", [], "any", false, false, false, 226)))) {
+                // line 227
                 echo "                                        <td>";
-                echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["note"], "nomLead", [], "any", false, false, false, 213)), "html", null, true);
+                echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["note"], "nomLead", [], "any", false, false, false, 227)), "html", null, true);
                 echo " ";
-                echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["note"], "prenomLead", [], "any", false, false, false, 213)), "html", null, true);
+                echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["note"], "prenomLead", [], "any", false, false, false, 227)), "html", null, true);
                 echo "</td>
                                         ";
-            } elseif ((twig_get_attribute($this->env, $this->source,             // line 214
-$context["note"], "nomTable", [], "any", false, false, false, 214) == "lead")) {
-                // line 215
+            } elseif ((twig_get_attribute($this->env, $this->source,             // line 228
+$context["note"], "nomTable", [], "any", false, false, false, 228) == "lead")) {
+                // line 229
                 echo "                                        <td>";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "societe", [], "any", false, false, false, 215), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "societe", [], "any", false, false, false, 229), "html", null, true);
                 echo "</td>
                                         ";
-            } elseif (((twig_get_attribute($this->env, $this->source,             // line 216
-$context["note"], "nomTable", [], "any", false, false, false, 216) == "1_contact") && twig_test_empty(twig_get_attribute($this->env, $this->source, $context["note"], "contact", [], "any", false, false, false, 216)))) {
-                // line 217
+            } elseif (((twig_get_attribute($this->env, $this->source,             // line 230
+$context["note"], "nomTable", [], "any", false, false, false, 230) == "1_contact") && twig_test_empty(twig_get_attribute($this->env, $this->source, $context["note"], "contact", [], "any", false, false, false, 230)))) {
+                // line 231
                 echo "                                        <td>";
-                echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["note"], "nom", [], "any", false, false, false, 217)), "html", null, true);
+                echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["note"], "nom", [], "any", false, false, false, 231)), "html", null, true);
                 echo " ";
-                echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["note"], "prenom", [], "any", false, false, false, 217)), "html", null, true);
+                echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["note"], "prenom", [], "any", false, false, false, 231)), "html", null, true);
                 echo "</td>      
                                         ";
-            } elseif ((twig_get_attribute($this->env, $this->source,             // line 218
-$context["note"], "nomTable", [], "any", false, false, false, 218) == "1_contact")) {
-                // line 219
+            } elseif ((twig_get_attribute($this->env, $this->source,             // line 232
+$context["note"], "nomTable", [], "any", false, false, false, 232) == "1_contact")) {
+                // line 233
                 echo "                                        <td>";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "contact", [], "any", false, false, false, 219), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "contact", [], "any", false, false, false, 233), "html", null, true);
                 echo "</td>
                                         ";
             } else {
-                // line 221
+                // line 235
                 echo "                                        <td>";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "nonCon", [], "any", false, false, false, 221), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "nonCon", [], "any", false, false, false, 235), "html", null, true);
                 echo "</td>
                                         ";
             }
-            // line 223
+            // line 237
             echo "                                        <td>";
-            echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "date", [], "any", false, false, false, 223), "d/m/Y"), "html", null, true);
+            echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "date", [], "any", false, false, false, 237), "d/m/Y"), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 224
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "noteCommentaire", [], "any", false, false, false, 224), "html", null, true);
+            // line 238
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "noteCommentaire", [], "any", false, false, false, 238), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 225
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "action", [], "any", false, false, false, 225), "html", null, true);
+            // line 239
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "action", [], "any", false, false, false, 239), "html", null, true);
             echo "</td>
                                         <td style=\"display: none;\">";
-            // line 226
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "statutAction", [], "any", false, false, false, 226), "html", null, true);
+            // line 240
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "statutAction", [], "any", false, false, false, 240), "html", null, true);
             echo "</td>
                                         
                                         ";
-            // line 228
-            if (((twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 228) <= ($context["currentDate"] ?? null)) && (twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 228) >= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-4 day")))) {
-                // line 229
+            // line 242
+            if (((twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 242) <= ($context["currentDate"] ?? null)) && (twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 242) >= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-4 day")))) {
+                // line 243
                 echo "
                                                 <td class=\"bg-warning\">";
-                // line 230
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 230), "d-m-Y"), "html", null, true);
+                // line 244
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 244), "d-m-Y"), "html", null, true);
                 echo "</td>
 
                                         ";
-            } elseif (((twig_get_attribute($this->env, $this->source,             // line 232
-$context["note"], "dateAction", [], "any", false, false, false, 232) <= ($context["currentDate"] ?? null)) && (twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 232) >= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-9 day")))) {
-                // line 233
+            } elseif (((twig_get_attribute($this->env, $this->source,             // line 246
+$context["note"], "dateAction", [], "any", false, false, false, 246) <= ($context["currentDate"] ?? null)) && (twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 246) >= twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-9 day")))) {
+                // line 247
                 echo "
                                                 <td class=\"bg-danger text-white\">";
-                // line 234
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 234), "d-m-Y"), "html", null, true);
+                // line 248
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 248), "d-m-Y"), "html", null, true);
                 echo "</td>
 
                                         ";
-            } elseif ((twig_get_attribute($this->env, $this->source,             // line 236
-$context["note"], "dateAction", [], "any", false, false, false, 236) < twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-9 day"))) {
-                // line 237
+            } elseif ((twig_get_attribute($this->env, $this->source,             // line 250
+$context["note"], "dateAction", [], "any", false, false, false, 250) < twig_date_modify_filter($this->env, ($context["currentDate"] ?? null), "-9 day"))) {
+                // line 251
                 echo "
                                                 <td class=\"bg-danger text-white\">";
-                // line 238
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 238), "d-m-Y"), "html", null, true);
+                // line 252
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 252), "d-m-Y"), "html", null, true);
                 echo "<i class=\"fas fa-exclamation-triangle\"></i></td>
                                         
                                         ";
-            } elseif ((twig_get_attribute($this->env, $this->source,             // line 240
-$context["note"], "dateAction", [], "any", false, false, false, 240) >= ($context["currentDate"] ?? null))) {
-                // line 241
+            } elseif ((twig_get_attribute($this->env, $this->source,             // line 254
+$context["note"], "dateAction", [], "any", false, false, false, 254) >= ($context["currentDate"] ?? null))) {
+                // line 255
                 echo "
                                                 <td class=\"bg-success text-white\">";
-                // line 242
-                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 242), "d-m-Y"), "html", null, true);
+                // line 256
+                echo twig_escape_filter($this->env, twig_date_format_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "dateAction", [], "any", false, false, false, 256), "d-m-Y"), "html", null, true);
                 echo "</td>        
 
                                         ";
             }
-            // line 245
+            // line 259
             echo "
                                             <td style=\"display: none;\">";
-            // line 246
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "rappelleur", [], "any", false, false, false, 246), "html", null, true);
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "responsable", [], "any", false, false, false, 246), "html", null, true);
+            // line 260
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "rappelleur", [], "any", false, false, false, 260), "html", null, true);
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["note"], "responsable", [], "any", false, false, false, 260), "html", null, true);
             echo "</td>
                                             <td><a  href=\"";
-            // line 247
-            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("note.update", ["id" => twig_get_attribute($this->env, $this->source, $context["note"], "id", [], "any", false, false, false, 247)]), "html", null, true);
+            // line 261
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("note.update", ["id" => twig_get_attribute($this->env, $this->source, $context["note"], "id", [], "any", false, false, false, 261)]), "html", null, true);
             echo "#AncreNote\" class=\"btn btn-success\">Fait</a></td>
                                         </tr>                                  
                                     ";
@@ -638,7 +656,7 @@ $context["note"], "dateAction", [], "any", false, false, false, 240) >= ($contex
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['note'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 250
+        // line 264
         echo "                                </tbody>
                         </table>
                     </div>                 
@@ -646,8 +664,8 @@ $context["note"], "dateAction", [], "any", false, false, false, 240) >= ($contex
                 
                     <div class=\"col\"><div class=\"text-center\">
                         <a class=\"btn btn-info btn-portail\" href=\"";
-        // line 256
-        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Lead_Controller", ["commercial" => twig_get_attribute($this->env, $this->source, ($context["idCommercial"] ?? null), "id", [], "any", false, false, false, 256)]), "html", null, true);
+        // line 270
+        echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Liste_Lead_Controller", ["commercial" => twig_get_attribute($this->env, $this->source, ($context["idCommercial"] ?? null), "id", [], "any", false, false, false, 270)]), "html", null, true);
         echo "\">VOS LEADS</a>
                     </div>
                         
@@ -662,93 +680,93 @@ $context["note"], "dateAction", [], "any", false, false, false, 240) >= ($contex
                                     <th>Origine</th>
                                     <th>Statut</th>
                                     ";
-        // line 269
-        if ((twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 269), "idutilisateur", [], "any", false, false, false, 269) == 29)) {
-            // line 270
+        // line 283
+        if ((twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 283), "idutilisateur", [], "any", false, false, false, 283) == 29)) {
+            // line 284
             echo "                                        <th>Commercial</th>
                                     ";
         } else {
-            // line 272
+            // line 286
             echo "                                    ";
         }
-        // line 273
+        // line 287
         echo "                                </tr>
                             </thead>
                             <tbody>
                                 ";
-        // line 276
+        // line 290
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable(($context["paginationLead"] ?? null));
         foreach ($context['_seq'] as $context["_key"] => $context["lead"]) {
-            // line 277
+            // line 291
             echo "                                    <tr data-lead-id=\"";
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "id", [], "any", false, false, false, 277), "html", null, true);
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "id", [], "any", false, false, false, 291), "html", null, true);
             echo "\" data-href=\"";
-            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_lead_Controller/editLead", ["id" => twig_get_attribute($this->env, $this->source, $context["lead"], "id", [], "any", false, false, false, 277)]), "html", null, true);
+            echo twig_escape_filter($this->env, $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("Fiche_lead_Controller/editLead", ["id" => twig_get_attribute($this->env, $this->source, $context["lead"], "id", [], "any", false, false, false, 291)]), "html", null, true);
             echo "\">
                                         <td>";
-            // line 278
-            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["lead"], "nom", [], "any", false, false, false, 278)), "html", null, true);
+            // line 292
+            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["lead"], "nom", [], "any", false, false, false, 292)), "html", null, true);
             echo " ";
-            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["lead"], "prenom", [], "any", false, false, false, 278)), "html", null, true);
+            echo twig_escape_filter($this->env, $this->extensions['App\Twig\AppExtension']->phpUcwords(twig_get_attribute($this->env, $this->source, $context["lead"], "prenom", [], "any", false, false, false, 292)), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 279
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "societe", [], "any", false, false, false, 279), "html", null, true);
+            // line 293
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "societe", [], "any", false, false, false, 293), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 280
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "telephone", [], "any", false, false, false, 280), "html", null, true);
+            // line 294
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "telephone", [], "any", false, false, false, 294), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 281
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "email", [], "any", false, false, false, 281), "html", null, true);
+            // line 295
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "email", [], "any", false, false, false, 295), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 282
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "ville", [], "any", false, false, false, 282), "html", null, true);
+            // line 296
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "ville", [], "any", false, false, false, 296), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 283
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "origine", [], "any", false, false, false, 283), "html", null, true);
+            // line 297
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "origine", [], "any", false, false, false, 297), "html", null, true);
             echo "</td>
                                         <td>";
-            // line 284
-            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "statut", [], "any", false, false, false, 284), "html", null, true);
+            // line 298
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "statut", [], "any", false, false, false, 298), "html", null, true);
             echo "</td>
                                     ";
-            // line 285
-            if ((twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 285), "idutilisateur", [], "any", false, false, false, 285) == 29)) {
-                // line 286
+            // line 299
+            if ((twig_get_attribute($this->env, $this->source, twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 299), "idutilisateur", [], "any", false, false, false, 299) == 29)) {
+                // line 300
                 echo "                                        <td>";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "commercial", [], "any", false, false, false, 286), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "commercial", [], "any", false, false, false, 300), "html", null, true);
                 echo "</td>
                                     ";
             } else {
-                // line 288
+                // line 302
                 echo "                                        <td style=\"display: none;\">";
-                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "commercial", [], "any", false, false, false, 288), "html", null, true);
+                echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["lead"], "commercial", [], "any", false, false, false, 302), "html", null, true);
                 echo "</td>
                                     ";
             }
-            // line 290
+            // line 304
             echo "                                    </tr>
                                 ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['lead'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 292
+        // line 306
         echo "                            </tbody>
                             </table>
         ";
     }
 
-    // line 295
+    // line 309
     public function block_javascripts($context, array $blocks = [])
     {
         $macros = $this->macros;
-        // line 296
+        // line 310
         echo "        ";
         $this->displayParentBlock("javascripts", $context, $blocks);
         echo "
@@ -756,7 +774,10 @@ $context["note"], "dateAction", [], "any", false, false, false, 240) >= ($contex
     <script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>
     <script src=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js\"></script>
     <script src=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js\"></script>
-        <script>
+<script src=\"https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js\" integrity=\"sha256-D2tkh/3EROq+XuDEmgxOLW1oNxf0rLNlOwsPIUX+co4=\" crossorigin=\"anonymous\"></script>        
+<script src=\"https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0\"></script>
+<script>
+Chart.register(ChartDataLabels);
         var myhtml = document.createElement(\"div\");
                      myhtml.innerHTML = \"<h5>Dossier :</h5><p>La date de fin de stage est dans plus de 10 jours</p><p style='background-color:green;padding:10px;width:50px;margin:auto'></p><p>La date de fin de stage est dans 10 jours ou moins</p><p style='background-color:orange;padding:10px;width:50px;margin:auto'></p><p>La date de fin de stage est dans 5 jours ou moins</p><p style='background-color:red;padding:10px;width:50px;margin:auto'></p><br><h5>Propal/Note :</h5><p>La date de relance/d'action n'est pas depassée</p><p style='background-color:green;padding:10px;width:50px;margin:auto'></p><p>La date de relance/d'action est depassée depuis 1 jours</p><p style='background-color:orange;padding:10px;width:50px;margin:auto'></p><p>La date de relance/d'action est depassée depuis 5 jours</p><p style='background-color:red;padding:10px;width:50px;margin:auto'></p><p>La date de relance/d'action est depassée depuis 10 jours</p><p style='background-color:red;width:55px;margin:auto'><i class='fas fa-exclamation-triangle' style='margin-right:3px;'></i></p>\";
 
@@ -768,6 +789,174 @@ $context["note"], "dateAction", [], "any", false, false, false, 240) >= ($contex
                         })
         }
         </script>
+    <script>
+      const ctx2 = document.getElementById('propals').getContext('2d');
+        const propals = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: ['Froid', 'Tiede', 'Chaud'],
+                datasets: [{
+                    data: [";
+        // line 337
+        echo twig_escape_filter($this->env, (($__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4 = ($context["propalStats"] ?? null)) && is_array($__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4) || $__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4 instanceof ArrayAccess ? ($__internal_f607aeef2c31a95a7bf963452dff024ffaeb6aafbe4603f9ca3bec57be8633f4[0] ?? null) : null), "html", null, true);
+        echo ",";
+        echo twig_escape_filter($this->env, (($__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144 = ($context["propalStats"] ?? null)) && is_array($__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144) || $__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144 instanceof ArrayAccess ? ($__internal_62824350bc4502ee19dbc2e99fc6bdd3bd90e7d8dd6e72f42c35efd048542144[1] ?? null) : null), "html", null, true);
+        echo ",";
+        echo twig_escape_filter($this->env, (($__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b = ($context["propalStats"] ?? null)) && is_array($__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b) || $__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b instanceof ArrayAccess ? ($__internal_1cfccaec8dd2e8578ccb026fbe7f2e7e29ac2ed5deb976639c5fc99a6ea8583b[2] ?? null) : null), "html", null, true);
+        echo "],
+                    backgroundColor: [
+                        'rgb(54, 162, 235, 1)',
+                        'rgb(255, 205, 86, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                tooltips: {
+        enabled: false
+    },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'PROPAL',
+                        fullSize:true
+                    },
+        datalabels: {
+            formatter: (value, ctx) => {
+                let sum = 0;
+                let dataArr = ctx.chart.data.datasets[0].data;
+                dataArr.map(data => {
+                    sum += data;
+                });
+                let percentage = (value*100 / sum).toFixed(2)+\"%\";
+                return percentage;
+            },
+            color: '#fff',
+                }
+                }
+            }
+        });
+    
+";
+        // line 378
+        if ((twig_get_attribute($this->env, $this->source, ($context["app"] ?? null), "user", [], "any", false, false, false, 378) == "MUNIER Pascal")) {
+            // line 379
+            echo "      
+           const ctx = document.getElementById('leads').getContext('2d');
+            const leads = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['En cours', 'Devenu client', 'Devenu prospect', 'Sans suite'],
+                datasets: [{
+                    data: [parseInt(";
+            // line 386
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["leadStats"] ?? null), "enCours", [], "any", false, false, false, 386), "html", null, true);
+            echo "), parseInt(";
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["leadStats"] ?? null), "dClient", [], "any", false, false, false, 386), "html", null, true);
+            echo "), parseInt(";
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["leadStats"] ?? null), "dProspect", [], "any", false, false, false, 386), "html", null, true);
+            echo "), parseInt(";
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["leadStats"] ?? null), "sSuite", [], "any", false, false, false, 386), "html", null, true);
+            echo ")],
+                    backgroundColor: [
+                        'rgb(255, 99, 132, 1)',
+                        'rgb(54, 162, 235, 1)',
+                        'rgb(255, 205, 86, 1)',
+                        'rgba(30, 130, 76, 1)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(30, 130, 76, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                tooltips: {
+        enabled: false
+    },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'LEAD',
+                        fullSize:true
+                    },
+                    datalabels: {
+            formatter: (value, ctx) => {
+                let sum = 0;
+                let dataArr = ctx.chart.data.datasets[0].data;
+                dataArr.map(data => {
+                    sum += data;
+                });
+                let percentage = (value*100 / sum).toFixed(2)+\"%\";
+                return percentage;
+            },
+            color: '#fff',
+                }
+                }
+            }
+        });
+        const ctx3 = document.getElementById('notes').getContext('2d');
+        const myChart3 = new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                labels: ['Fait', 'A faire'],
+                datasets: [{
+                    data: [";
+            // line 433
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["noteStats"] ?? null), "fait", [], "any", false, false, false, 433), "html", null, true);
+            echo ", ";
+            echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["noteStats"] ?? null), "aFaire", [], "any", false, false, false, 433), "html", null, true);
+            echo "],
+                    backgroundColor: [
+                        'rgb(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)',
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                tooltips: {
+        enabled: false
+    },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'NOTE',
+                        fullSize:true
+                    },
+                    datalabels: {
+            formatter: (value, ctx) => {
+                let sum = 0;
+                let dataArr = ctx.chart.data.datasets[0].data;
+                dataArr.map(data => {
+                    sum += data;
+                });
+                let percentage = (value*100 / sum).toFixed(2)+\"%\";
+                return percentage;
+            },
+            color: '#fff',
+                }
+                }
+            }
+        });
+        ";
+        }
+        // line 471
+        echo "        </script>
         ";
     }
 
@@ -783,11 +972,11 @@ $context["note"], "dateAction", [], "any", false, false, false, 240) >= ($contex
 
     public function getDebugInfo()
     {
-        return array (  752 => 296,  748 => 295,  742 => 292,  735 => 290,  729 => 288,  723 => 286,  721 => 285,  717 => 284,  713 => 283,  709 => 282,  705 => 281,  701 => 280,  697 => 279,  691 => 278,  684 => 277,  680 => 276,  675 => 273,  672 => 272,  668 => 270,  666 => 269,  650 => 256,  642 => 250,  633 => 247,  628 => 246,  625 => 245,  619 => 242,  616 => 241,  614 => 240,  609 => 238,  606 => 237,  604 => 236,  599 => 234,  596 => 233,  594 => 232,  589 => 230,  586 => 229,  584 => 228,  579 => 226,  575 => 225,  571 => 224,  566 => 223,  560 => 221,  554 => 219,  552 => 218,  545 => 217,  543 => 216,  538 => 215,  536 => 214,  529 => 213,  527 => 212,  522 => 211,  520 => 210,  516 => 209,  511 => 208,  507 => 207,  489 => 192,  481 => 186,  472 => 183,  468 => 182,  464 => 181,  458 => 180,  454 => 179,  450 => 178,  443 => 177,  439 => 176,  423 => 163,  416 => 158,  407 => 155,  403 => 154,  399 => 153,  393 => 152,  389 => 151,  385 => 150,  378 => 149,  374 => 148,  358 => 135,  350 => 129,  343 => 127,  337 => 124,  334 => 123,  332 => 122,  327 => 120,  324 => 119,  322 => 118,  317 => 116,  314 => 115,  312 => 114,  307 => 112,  304 => 111,  301 => 110,  295 => 108,  289 => 106,  287 => 105,  282 => 104,  280 => 103,  275 => 102,  272 => 101,  266 => 99,  260 => 97,  258 => 96,  254 => 95,  250 => 94,  242 => 93,  238 => 92,  234 => 91,  230 => 90,  223 => 89,  219 => 88,  199 => 71,  190 => 64,  181 => 61,  178 => 60,  172 => 57,  169 => 56,  163 => 53,  160 => 52,  158 => 51,  153 => 49,  150 => 48,  148 => 47,  143 => 45,  140 => 44,  138 => 43,  134 => 42,  130 => 41,  126 => 40,  122 => 39,  118 => 38,  114 => 37,  110 => 36,  106 => 35,  100 => 34,  94 => 33,  71 => 13,  62 => 7,  59 => 6,  55 => 5,  48 => 3,  37 => 1,);
+        return array (  959 => 471,  916 => 433,  860 => 386,  851 => 379,  849 => 378,  801 => 337,  770 => 310,  766 => 309,  760 => 306,  753 => 304,  747 => 302,  741 => 300,  739 => 299,  735 => 298,  731 => 297,  727 => 296,  723 => 295,  719 => 294,  715 => 293,  709 => 292,  702 => 291,  698 => 290,  693 => 287,  690 => 286,  686 => 284,  684 => 283,  668 => 270,  660 => 264,  651 => 261,  646 => 260,  643 => 259,  637 => 256,  634 => 255,  632 => 254,  627 => 252,  624 => 251,  622 => 250,  617 => 248,  614 => 247,  612 => 246,  607 => 244,  604 => 243,  602 => 242,  597 => 240,  593 => 239,  589 => 238,  584 => 237,  578 => 235,  572 => 233,  570 => 232,  563 => 231,  561 => 230,  556 => 229,  554 => 228,  547 => 227,  545 => 226,  540 => 225,  538 => 224,  534 => 223,  529 => 222,  525 => 221,  507 => 206,  499 => 200,  490 => 197,  486 => 196,  482 => 195,  476 => 194,  472 => 193,  468 => 192,  461 => 191,  457 => 190,  441 => 177,  434 => 172,  425 => 169,  421 => 168,  417 => 167,  411 => 166,  407 => 165,  403 => 164,  396 => 163,  392 => 162,  376 => 149,  368 => 143,  361 => 141,  355 => 138,  352 => 137,  350 => 136,  345 => 134,  342 => 133,  340 => 132,  335 => 130,  332 => 129,  330 => 128,  325 => 126,  322 => 125,  319 => 124,  313 => 122,  307 => 120,  305 => 119,  300 => 118,  298 => 117,  293 => 116,  290 => 115,  284 => 113,  278 => 111,  276 => 110,  272 => 109,  268 => 108,  260 => 107,  256 => 106,  252 => 105,  248 => 104,  241 => 103,  237 => 102,  217 => 85,  208 => 78,  199 => 75,  196 => 74,  190 => 71,  187 => 70,  181 => 67,  178 => 66,  176 => 65,  171 => 63,  168 => 62,  166 => 61,  161 => 59,  158 => 58,  156 => 57,  152 => 56,  148 => 55,  144 => 54,  140 => 53,  136 => 52,  132 => 51,  128 => 50,  124 => 49,  118 => 48,  112 => 47,  89 => 27,  81 => 21,  72 => 14,  70 => 13,  59 => 6,  55 => 5,  48 => 3,  37 => 1,);
     }
 
     public function getSourceContext()
     {
-        return new Source("", "home/portail.html.twig", "/var/www/templates/home/portail.html.twig");
+        return new Source("", "home/portail.html.twig", "/home/jeremy/Bureau/project/app/templates/home/portail.html.twig");
     }
 }

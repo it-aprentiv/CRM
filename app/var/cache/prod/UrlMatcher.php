@@ -72,6 +72,7 @@ return [
         '/dossier/getCompetenceone' => [[['_route' => 'crm.dossier.competence.asynch-search-one', '_controller' => 'App\\Controller\\FormationDossierController::asynchCompetenceOne'], null, ['GET' => 0], null, false, false, null]],
         '/dossier/getTheme' => [[['_route' => 'crm.dossier.theme.asynch-search', '_controller' => 'App\\Controller\\FormationDossierController::asynchTheme'], null, ['GET' => 0], null, false, false, null]],
         '/' => [[['_route' => 'home.index', '_controller' => 'App\\Controller\\HomeController::index'], null, null, null, false, false, null]],
+        '/stats' => [[['_route' => 'home.stats', '_controller' => 'App\\Controller\\HomeController::homestats'], null, null, null, false, false, null]],
         '/portail' => [[['_route' => 'home.portail', '_controller' => 'App\\Controller\\HomeController::portail'], null, null, null, false, false, null]],
         '/lead' => [[['_route' => 'Liste_Lead_Controller', '_controller' => 'App\\Controller\\LeadController::index'], null, null, null, false, false, null]],
         '/lead/creation' => [[['_route' => 'Fiche_lead_Controller/ajoutLead', '_controller' => 'App\\Controller\\LeadController::createLead'], null, null, null, false, false, null]],
@@ -180,35 +181,37 @@ return [
                             .'|/([^/]++)(*:1019)'
                             .'|Emmargement/([^/]++)(*:1048)'
                         .')'
+                        .'|convocation(*:1069)'
                     .')'
                 .')'
                 .'|/lead/([^/]++)/(?'
-                    .'|editionLead(*:1089)'
-                    .'|delete(*:1104)'
+                    .'|editionLead(*:1109)'
+                    .'|delete(*:1124)'
                 .')'
                 .'|/note/([^/]++)/(?'
-                    .'|show(*:1136)'
-                    .'|delete(*:1151)'
+                    .'|show(*:1156)'
+                    .'|delete(*:1171)'
+                    .'|update(*:1186)'
                 .')'
                 .'|/opca/(?'
                     .'|([^/]++)/(?'
-                        .'|show(*:1186)'
-                        .'|delete(*:1201)'
+                        .'|show(*:1221)'
+                        .'|delete(*:1236)'
                     .')'
-                    .'|ville/([^/]++)/getOne(*:1232)'
+                    .'|ville/([^/]++)/getOne(*:1267)'
                 .')'
                 .'|/propal/([^/]++)/(?'
-                    .'|edit(*:1266)'
-                    .'|delete(*:1281)'
+                    .'|edit(*:1301)'
+                    .'|delete(*:1316)'
                     .'|generate(?'
                         .'|doc(?'
-                            .'|(*:1307)'
-                            .'|proform(*:1323)'
+                            .'|(*:1342)'
+                            .'|proform(*:1358)'
                         .')'
-                        .'|conv(*:1337)'
+                        .'|conv(*:1372)'
                     .')'
                 .')'
-                .'|/utilisateur/([^/]++)/update/generate\\-form(*:1391)'
+                .'|/utilisateur/([^/]++)/update/generate\\-form(*:1426)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -249,19 +252,21 @@ return [
         988 => [[['_route' => 'Liste_Dossiers_Controller/visualiserDossier', '_controller' => 'App\\Controller\\FormationDossierController::show'], ['id'], null, null, false, false, null]],
         1019 => [[['_route' => 'Dossier_Generate_Doc', '_controller' => 'App\\Controller\\FormationDossierController::generateDocDossier'], ['id', 'type'], null, null, false, true, null]],
         1048 => [[['_route' => 'generate_doc_emmargement', '_controller' => 'App\\Controller\\FormationDossierController::generateDocEmmargement'], ['id', 'stagiaireid'], null, null, false, true, null]],
-        1089 => [[['_route' => 'Fiche_lead_Controller/editLead', '_controller' => 'App\\Controller\\LeadController::editLead'], ['id'], null, null, false, false, null]],
-        1104 => [[['_route' => 'Lead_Delete', '_controller' => 'App\\Controller\\LeadController::deleteLead'], ['id'], null, null, false, false, null]],
-        1136 => [[['_route' => 'Liste_notes_actions_Controller/showNote', '_controller' => 'App\\Controller\\NoteController::show'], ['id'], null, null, false, false, null]],
-        1151 => [[['_route' => 'Liste_notes_actions_Controller/deleteNote', '_controller' => 'App\\Controller\\NoteController::delete'], ['id'], null, null, false, false, null]],
-        1186 => [[['_route' => 'OPCA_Controller/showOpca', '_controller' => 'App\\Controller\\OpcaController::show'], ['idOpca'], null, null, false, false, null]],
-        1201 => [[['_route' => 'OPCA_Controller/deleteOpca', '_controller' => 'App\\Controller\\OpcaController::delete'], ['idOpca'], null, null, false, false, null]],
-        1232 => [[['_route' => 'crm.opca.oneVille.asynch-search', '_controller' => 'App\\Controller\\OpcaController::getVilleById'], ['idVille'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1266 => [[['_route' => 'propal_show', '_controller' => 'App\\Controller\\PropalController::show'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        1281 => [[['_route' => 'Propal_Delete', '_controller' => 'App\\Controller\\PropalController::deletepropal'], ['id'], null, null, false, false, null]],
-        1307 => [[['_route' => 'propal_generate_doc', '_controller' => 'App\\Controller\\PropalController::generatedocpropal'], ['id'], null, null, false, false, null]],
-        1323 => [[['_route' => 'propal_generate_docproform', '_controller' => 'App\\Controller\\PropalController::generatedocpropalproform'], ['id'], null, null, false, false, null]],
-        1337 => [[['_route' => 'propal_generate_conv', '_controller' => 'App\\Controller\\PropalController::generatedocconv'], ['id'], null, null, false, false, null]],
-        1391 => [
+        1069 => [[['_route' => 'Formation_Dossier_ConvProform', '_controller' => 'App\\Controller\\FormationDossierController::convProfom'], ['id'], null, null, false, false, null]],
+        1109 => [[['_route' => 'Fiche_lead_Controller/editLead', '_controller' => 'App\\Controller\\LeadController::editLead'], ['id'], null, null, false, false, null]],
+        1124 => [[['_route' => 'Lead_Delete', '_controller' => 'App\\Controller\\LeadController::deleteLead'], ['id'], null, null, false, false, null]],
+        1156 => [[['_route' => 'Liste_notes_actions_Controller/showNote', '_controller' => 'App\\Controller\\NoteController::show'], ['id'], null, null, false, false, null]],
+        1171 => [[['_route' => 'Liste_notes_actions_Controller/deleteNote', '_controller' => 'App\\Controller\\NoteController::delete'], ['id'], null, null, false, false, null]],
+        1186 => [[['_route' => 'note.update', '_controller' => 'App\\Controller\\NoteController::updateStatut'], ['id'], null, null, false, false, null]],
+        1221 => [[['_route' => 'OPCA_Controller/showOpca', '_controller' => 'App\\Controller\\OpcaController::show'], ['idOpca'], null, null, false, false, null]],
+        1236 => [[['_route' => 'OPCA_Controller/deleteOpca', '_controller' => 'App\\Controller\\OpcaController::delete'], ['idOpca'], null, null, false, false, null]],
+        1267 => [[['_route' => 'crm.opca.oneVille.asynch-search', '_controller' => 'App\\Controller\\OpcaController::getVilleById'], ['idVille'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1301 => [[['_route' => 'propal_show', '_controller' => 'App\\Controller\\PropalController::show'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        1316 => [[['_route' => 'Propal_Delete', '_controller' => 'App\\Controller\\PropalController::deletepropal'], ['id'], null, null, false, false, null]],
+        1342 => [[['_route' => 'propal_generate_doc', '_controller' => 'App\\Controller\\PropalController::generatedocpropal'], ['id'], null, null, false, false, null]],
+        1358 => [[['_route' => 'propal_generate_docproform', '_controller' => 'App\\Controller\\PropalController::generatedocpropalproform'], ['id'], null, null, false, false, null]],
+        1372 => [[['_route' => 'propal_generate_conv', '_controller' => 'App\\Controller\\PropalController::generatedocconv'], ['id'], null, null, false, false, null]],
+        1426 => [
             [['_route' => 'user.update.generate-form-asynch', '_controller' => 'App\\Controller\\UtilisateurController::asynchUpdateUtilisateur'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null],
             [null, null, null, null, false, false, 0],
         ],
