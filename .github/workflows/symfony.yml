@@ -2,7 +2,7 @@ name: Symfony
 
 on:
   schedule:
-    - cron: '* 0 * * *'
+    - cron: '0 1 * * *'
 
 jobs:
   symfony-tests:
