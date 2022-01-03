@@ -31,5 +31,4 @@ jobs:
       run: cd ./app
 
     - name: Lint twigs
-      run: cd app\
-           php bin/console lint:twig templates/
+      run: cd app && php bin/console lint:twig templates/
