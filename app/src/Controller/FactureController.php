@@ -542,7 +542,7 @@ class FactureController extends BaseController
         if($idcontact > 0){
             $contact = $this->em->getRepository(Contact::class)->find($idcontact);
         }
-        $facture->setIdContact($contact);
+        $facture->setIdContact($contact); 
         $retour = $facturemanager->createdocfacture($facture,$contact, $formationDossierDateRepository);
 
 
