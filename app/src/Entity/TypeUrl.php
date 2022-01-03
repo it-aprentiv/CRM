@@ -14,8 +14,12 @@ class TypeUrl
 {
     /**
      * @var int
+<<<<<<< HEAD
      *
      * 
+=======
+     * coucou
+>>>>>>> fbf634660769310c46dc22124cf6d8f375160cf2
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
