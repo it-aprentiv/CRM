@@ -360,10 +360,4 @@ class Url
         $this->remarques = $remarques;
     }
 
-    public function __toString(): ?string
-    {
-        return $this->getUrl();
-    }
-
-
 }
