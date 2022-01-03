@@ -20,7 +20,7 @@ class TypeUrl
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $id
+    private $id;
 
     /**
      * @var int
