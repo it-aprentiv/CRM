@@ -36,4 +36,4 @@ jobs:
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
-      run: php app/bin/phpunit --no-debug
+      run: php app/bin/phpunit --dont-report-useless-tests
