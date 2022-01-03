@@ -1,4 +1,4 @@
-name: Symfony
+name: Twig linter
 
 on:
   schedule:
