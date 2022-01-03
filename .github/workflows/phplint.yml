@@ -13,4 +13,4 @@ jobs:
         - uses: overtrue/phplint@8.0
           with:
             path: ./app/
-            options: --exclude=vendor
+            options: --exclude=vendor var
