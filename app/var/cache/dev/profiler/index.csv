@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 1d6dd2,172.18.0.1,GET,http://localhost/portail,1639388908,,302
 3db9dc,172.18.0.1,GET,http://localhost/login,1639388908,,200
 c10bfb,172.18.0.1,POST,http://localhost/login,1639388911,,302
@@ -2016,3 +2017,6 @@ ef6ae5,172.18.0.1,GET,http://localhost/contact,1641199866,,200
 513afa,172.18.0.1,GET,http://localhost/portail,1641200289,,200
 028f2c,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641200289,e0ce5c,200
 e0ce5c,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641200289,,404
+=======
+
+>>>>>>> c4768b120436ba361089ccd997d6be422c3d557c
