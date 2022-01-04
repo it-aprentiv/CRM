@@ -37,6 +37,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
@@ -98,7 +99,7 @@ class ContactController extends BaseController {
      *
      * @Route("/contact/creation", name="Fiche_client_prospect_Controller/ajoutclient")
      */
-    public function create(Request $request, EntityManagerInterface $em, ContactManager $contactmanager) {
+    public function create(Request $request,Security $security, EntityManagerInterface $em, ContactManager $contactmanager) {
         $this->denyAccessUnlessGranted('edit', Menu::MENU_CLIENT_PROSPECT);
         $contact = new Contact();
         $adresse = new Adresse();
@@ -151,6 +152,10 @@ class ContactController extends BaseController {
         if (!empty($idCommercial)) {
             $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->find($idCommercial);
             $contact->setIdCommercial($commercial);
+        }else{
+            $idUser = $security->getUser()->getIdutilisateur();
+            $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->findBy(["idUser" => $idUser]);
+            $contact->setIdCommercial($commercial[0]);
         }
 
         if (!empty($idType)) {
@@ -206,7 +211,6 @@ class ContactController extends BaseController {
 
             return $this->redirectToRoute("Liste_Client_Prospect_Controller");
         }
-
         $this->viewParams['contact_forme'] = $contactForm->createView();
 
         return $this->render('contact/create.html.twig', $this->viewParams);
