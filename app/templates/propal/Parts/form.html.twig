@@ -10,7 +10,7 @@
         <div class="row">
              <div class="col-sm-3">
                 {{ form_label(propal_form.clientpropal, 'Client', {
-                    'label_attr': {'class': 'font-weight-bold required'}
+                    'label_attr': {'class': 'font-weight-bold required', 'data-toggle': 'tooltip', 'data-placement':'top', 'title': 'Nom de la société ou prénom du client'}
                 }) }}
                 {% if propal.clientpropal %}
                                 {# APR-140 : Lien vers fiche client #}
@@ -163,13 +163,13 @@
                     </div>
                     <div class="col-sm-4">
                         {{ form_label(propal_form.prerequis, 'Prérequis', {
-                            'label_attr': {'class': 'font-weight-bold'}
+                            'label_attr': {'class': 'font-weight-bold', 'required': "false"}
                         }) }}
                         {{ form_widget(propal_form.prerequis) }}
                     </div>
                     <div class="col-sm-4">
                         {{ form_label(propal_form.objectif, 'Objectif', {
-                            'label_attr': {'class': 'font-weight-bold'}
+                            'label_attr': {'class': 'font-weight-bold', 'required': "false"}
                         }) }}
                         {{ form_widget(propal_form.objectif, {'attr' : {'autocomplete' : 'off'}}) }}
                     </div>
