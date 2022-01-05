@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 700bd8,172.18.0.1,GET,http://localhost/,1641388656,,302
 574d4b,172.18.0.1,GET,http://localhost/login,1641388666,,200
 5d2ce8,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641388681,3ad21c,200
@@ -8,3 +9,42 @@
 4b3e20,172.18.0.1,GET,http://localhost/,1641388765,,200
 db9ec5,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641388773,92b72c,200
 92b72c,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641388773,,404
+=======
+9083c2,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376014,c05d42,200
+c05d42,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376014,,500
+cd992b,172.18.0.1,GET,http://localhost/propal/17/edit,1641376054,,200
+ed4b31,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376054,9a9062,200
+9a9062,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376054,,404
+52a459,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376055,780c2f,200
+780c2f,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376055,,500
+91d208,172.18.0.1,GET,http://localhost/propal/17/edit,1641376651,,200
+d89071,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376651,55e786,200
+55e786,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376651,,404
+f904f5,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376652,558bb0,200
+558bb0,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376652,,404
+21cbe9,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376652,6d81d3,200
+6d81d3,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376652,,500
+d39ecf,172.18.0.1,GET,http://localhost/propal/17/edit,1641376722,,200
+3b2569,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376722,a35fec,200
+a35fec,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376722,,404
+108a69,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376722,94c4e4,200
+94c4e4,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376722,,404
+677e25,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376723,ed7400,200
+ed7400,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376723,,500
+4482fd,172.18.0.1,GET,http://localhost/propal/17/edit,1641376789,,200
+8fb0b6,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376790,2dc8f3,200
+2dc8f3,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376790,,404
+240642,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376790,a505b4,200
+a505b4,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376790,,404
+b6ed44,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376791,062df6,200
+062df6,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376791,,500
+32c5b7,172.18.0.1,GET,http://localhost/propal/17/edit,1641376795,,302
+a1521b,172.18.0.1,POST,http://localhost/propal/17/edit,1641376844,,302
+b01ceb,172.18.0.1,GET,http://localhost/propal/17/edit,1641376845,,200
+877f58,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376845,3adb45,200
+3adb45,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376845,,404
+fcd08f,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376846,0fdff1,200
+0fdff1,172.18.0.1,GET,http://localhost/resources/demos/style.css,1641376846,,404
+751d7e,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376847,c6a4b6,200
+c6a4b6,172.18.0.1,GET,http://localhost/propal/get-adress-client?idClient=55573,1641376847,,500
+>>>>>>> 90f50937882ad40ee0a6c919601505ae2d5b2c13

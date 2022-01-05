@@ -41,7 +41,7 @@
                             <div class="row">
                                 <div class="form-group col-md-3 text-center">
                                     {{ form_label(contact_forme.nomStr, 'Société', {
-                                        'label_attr': {'class': 'font-weight-bold'}
+                                        'label_attr': {'class': 'font-weight-bold', 'data-toggle': 'tooltip', 'data-placement':'top', 'title': 'Nom de la société ou prénom du client'}
                                     }) }}
                                     {{ form_widget(contact_forme.nomStr) }}
                                 </div>
