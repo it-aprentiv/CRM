@@ -328,6 +328,7 @@ Chart.register(ChartDataLabels);
         }
         </script>
     <script>
+{% if propalStats[0] > 0 or propalStats[1] > 0 or propalStats[1] > 0 %}
       const ctx2 = document.getElementById('propals').getContext('2d');
         const propals = new Chart(ctx2, {
             type: 'pie',
@@ -374,7 +375,7 @@ Chart.register(ChartDataLabels);
                 }
             }
         });
-    
+    {% endif %}
 {% if app.user == "MUNIER Pascal" %}
       
            const ctx = document.getElementById('leads').getContext('2d');

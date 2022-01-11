@@ -95,19 +95,31 @@ class ContactType extends AbstractType
             ->add('nomStr', TextType::class, [
                 'label'     => "Société",
                 'required'  => false,
+                'attr' => [
+                    'placeholder' => 'Nom de la société ou prénom du client',
+                ]
             ])
             ->add('noSiret', TextType::class, [
                 'label'     => "Siret entreprise",
                 'required'  => false,
+                'attr' => [
+                    'placeholder' => 'Numéro de Siret',
+                ]
             ])
             ->add('noNaf', TextType::class, [
                 'label'     => 'NAF entreprise',
                 'required'  => false,
+                'attr' => [
+                    'placeholder' => 'Nomentlature d\'activité française',
+                ]
             ])
             //AJOUT DU CHAMP SEXE DANS LE FORM, IL SERT A STOCKER LES ID OPCO 
             ->add('sexe', TextType::class, [
                 'label'     => 'sexe',
                 'required'  => false,
+                'attr' => [
+                    'placeholder' => 'Identifiant opco',
+                ]
             ])
             // Table 5_activite
 //            ->add('idSecteur', EntityType::class, [
@@ -134,7 +146,10 @@ class ContactType extends AbstractType
             ->add('effectif', TextType::class, [
                 'label'     => 'Nbr salairiés',
                 'required'  => false,
-                'attr'      => ['class' => 'number-format']
+                'attr'      => [
+                    'class' => 'number-format',
+                    'placeholder' => 'Nombre de salarié'
+                ]
             ])
             /*->add('opca', EntityType::class, [
                 'class' => Contact::class,
@@ -158,6 +173,10 @@ class ContactType extends AbstractType
             ])
             ->add('noAdherent', TextType::class,[
                 'required' => false,
+                'attr' => [
+                    'placeholder' => 'Numéro adhérent',  
+                ]
+                
             ])
             ->add('id_commercial', EntityType::class, [
                 'class' => Collaborateur::class,

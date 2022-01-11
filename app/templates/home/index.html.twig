@@ -1,45 +1,108 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Menu - CRM Aprentiv v2.0{% endblock %}
+{% block title %}Menu - CRM Aprentiv v2.0
+{% endblock %}
 
 {% block body %}
 
-    <div class="row">
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-4 mt-3 ">
-            <div class="card m-t-3 card-menu">
-                <div class="card-header">
-                    <h3 class="text-well">GESTION</h3>
-                </div>
-                <ul class="list-group list-group-flush">
-                    {% for menu_gestion in user_menus.gestion %}
-                        <li class="list-group-item list-menu">
-                            <a class="menu" href="{{ menu_gestion.urlmenu is not empty ?  path(menu_gestion.urlmenu) : '#'}}">
-                                {{ menu_gestion.nomMenu }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-4 mt-3">
-            <div class="card card-menu">
-                <div class="card-header">
-                    <h3 class="text-well">CREATION</h3>
-                </div>
-                <ul class="list-group list-group-flush">
-                    {% for menu_creation in user_menus.creation %}
-                        <li class="list-group-item list-menu">
-                            <a class="d-block w-100 menu" href="{{ menu_creation.urlmenu is not empty ?  path(menu_creation.urlmenu) : '#'}}">
-                                {{ menu_creation.nomMenu }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-2">
-        </div>
-    </div>
-{% endblock %}
+	<div class="row">
+		<div class="col-md-4 mt-3 ">
+			<div class="card m-t-3 card-menu">
+				<div class="card-header">
+					<h3 class="text-well text-center">GESTION</h3>
+				</div>
+				<ul class="list-group list-group-flush">
+					{% for menu_gestion in user_menus.gestion %}
+						<li class="list-group-item list-menu">
+							<a class="menu text-center" href="{{ menu_gestion.urlmenu is not empty ? path(menu_gestion.urlmenu) : '#'}}">
+								{{ menu_gestion.nomMenu }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="col-md-4 mt-3">
+			<div class="card card-menu">
+				<div class="card-header">
+					<h3 class="text-well text-center">CREATION</h3>
+				</div>
+				<ul class="list-group list-group-flush">
+					{% for menu_creation in user_menus.creation %}
+						<li class="list-group-item list-menu">
+							<a class="d-block w-100 menu text-center" href="{{ menu_creation.urlmenu is not empty ? path(menu_creation.urlmenu) : '#'}}">
+								{{ menu_creation.nomMenu }}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>		
+					</div>
+					<div class="col-md-4 mt-3">
+                        	<div class="card card-menu">
+				<div class="card-header">
+					<h3 class="text-well text-center">Changelogs</h3>
+					<div>
+						<div class="stackedit__html">
+							<h1 id="changelog-du-crm-aprentiv">Changelog du CRM aprentiv</h1>
+							<h2 id="au-5-janvier-2021">3 au 5 janvier 2021</h2>
+							<blockquote>
+								<p>Ajout de légère modification</p>
+							</blockquote>
+							<ul>
+								<li>
+									<p>Les commerciales ne peuvent désormais plus modifié le champ “commmercial” après la création d’un contact</p>
+								</li>
+								<li>
+									<p>Si votre nombre de propal est à zéro, elle n’est plus affiché dans les statistiques.</p>
+								</li>
+								<li>
+									<p>Lors de la création d’un contact certain champ sont “pré-indiqué” afin de vous aidé à savoir de quoi il s’agit</p>
+								</li>
+								<li>
+									<p>Le champ commercial est près rempli par votre nom lorsque vous créer un contact</p>
+								</li>
+							</ul>
+							<h2 id="section">21-12-2021</h2>
+							<blockquote>
+								<h3 id="statistique-sur-le-portail">Statistique sur le portail</h3>
+							</blockquote>
+							<ul>
+								<li>
+									<p>Retrait des leads</p>
+								</li>
+								<li>
+									<p>Retrait des notes</p>
+								</li>
+							</ul>
+							<blockquote>
+								<h3 id="contacts">Contacts</h3>
+							</blockquote>
+							<ul>
+								<li>Lors de la modification d’un contact, vous ne pouvez désormais plus modifié le commercial.</li>
+							</ul>
+							<blockquote>
+								<h3 id="modification-des-convention-propal">Modification des convention propal</h3>
+							</blockquote>
+							<ul>
+								<li>
+									<p>Désormais, la formulation est adapté en fonction du “Nom du stagiaire”.</p>
+								</li>
+								<li>
+									<p>Avant cela affichait le “nombre de stagiaires” en comptant le nombre de caractère.</p>
+								</li>
+								<li>
+									<p>Désormais lorsque vous remplirez ce champ merci d’indiqué le nombre de stagiaires si ils sont plusieurs, ou le nom prénom si il n’y en a qu’un.</p>
+								</li>
+							</ul>
+							<!--&#10;&#10;&gt; ### Statistiques globales&#10;&#10;  &#10;&#10;- S&#233;l&#233;ction des statistique via un &#34;slider&#34;, pour choisir entre quand &#224; quand les statistiques doivent &#234;tre affich&#233;&#10;&#10;-->
+							<blockquote>
+								<h3 id="leads">Leads</h3>
+							</blockquote>
+							<ul>
+								<li>Ajout du type “Autre”</li>
+							</ul>
+						</div>
+                    </div>
+				</div>
+			{% endblock %}
