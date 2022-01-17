@@ -230,7 +230,7 @@ class FactureManager {
             $worksheet->getCell('A22')->setValue("Dates : " . $dateduau);
             $worksheet->getCell('A23')->setValue("Nb jour(s) : " . $res['nbJ']);
             $worksheet->getCell('A24')->setValue("Nb heure(s) : " . $res['nbH']);
-
+            
             $worksheet->getCell('A25')->setValue("Dossier n° : " . $ndossopca);
             $worksheet->getCell('F21')->setValue($datatotalfact['httalfact'] . " €");
             $worksheet->getCell('F27')->setValue($datatotalfact['httalfact'] . " €");
@@ -264,6 +264,7 @@ class FactureManager {
     private function createdocfactproform(Facture $facture, Contact $contact, $worksheet, FormationDossierDateRepository $formationDossierDateRepository) {
         $aDataContact = $this->getFactureContactData($facture, $contact);
         $dossierdata = $this->getfacturedossierdata($facture, $formationDossierDateRepository);
+        // dd($dossierdata);
         $ndossier = $dossierdata["ndossier"];
         $nomdossier = $dossierdata["nomdossier"];
         $dateduau = $dossierdata["dateduau"];
@@ -283,12 +284,11 @@ class FactureManager {
         if ($facture->getDest1() == "C") {
             $worksheet->getCell('A13')->setValue("Paris le, " . $todaylong);
             $worksheet->getCell('A15')->setValue("Facture : " . $facture->getRef());
-            $worksheet->getCell('A21')->setValue("Stagiaire(s) :" . $nomstagiaire);
-            $worksheet->getCell('A22')->setValue("Session de formation : :" . $nomdossier);
-            $worksheet->getCell('A23')->setValue("Dates :" . $dateduau);
-            $worksheet->getCell('A24')->setValue("Nb jour(s) :" . $res['nbJ']);
-            $worksheet->getCell('A25')->setValue("Nb heure(s) :" . $res['nbH']);
-            $worksheet->getCell('A26')->setValue("Dossier n° :" . $ndossier);
+            $worksheet->getCell('A20')->setValue("Stagiaire(s) :" . $nomstagiaire);
+            $worksheet->getCell('A21')->setValue("Session de formation : " . $nomdossier);
+            $worksheet->getCell('A22')->setValue("Dates :" . $dateduau);
+            $worksheet->getCell('A23')->setValue("Nb jour(s) :" . $res['nbJ']);
+            $worksheet->getCell('A24')->setValue("Nb heure(s) :" . $res['nbH']);
 
             $worksheet->getCell('G20')->setValue($datatotalfact['httalfact'] . " €");
             $worksheet->getCell('G27')->setValue($datatotalfact['httalfact'] . " €");

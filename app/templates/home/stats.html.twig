@@ -21,9 +21,74 @@
           </p> 
         <div id="slider-range"></div>
       </div>
+      <div class="col-md-6">
+            <canvas id="propals"></canvas>
+        </div>  
     </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js" integrity="sha256-D2tkh/3EROq+XuDEmgxOLW1oNxf0rLNlOwsPIUX+co4=" crossorigin="anonymous"></script>        
 <script>
+
+let propals = []
+
+{% for propals in statspropalsYears %}
+propals.push({
+    label: {{ propals.year }},
+    froid: {{ propals.froid }},
+    tiede: {{ propals.tiede }},
+    chaud: {{ propals.chaud }}
+})
+
+{% endfor %}
+const propo = document.getElementById('propals').getContext('2d');
+        const propales = new Chart(propo, {
+            type: 'bar',
+            data: {
+                labels: propals.map(p => p.label),
+                datasets: [{
+            label: 'Froid',
+            data: propals.map(p => p.froid),
+            fill: false,
+            backgroundColor: [
+                'rgb(54, 162, 235, 1)',
+            ],
+            borderColor: 'rgb(54, 162, 235, 1)',
+            tension: 0.1
+        },{
+            label: 'Tiede',
+            data: propals.map(p => p.tiede),
+            fill: false,
+            backgroundColor: [
+                'rgb(255, 205, 86, 1)',
+            ],
+            borderColor: 'rgb(255, 206, 86, 1)',
+            tension: 0.1
+        },{
+            label: 'Chaud',
+            data: propals.map(p => p.chaud),
+            fill: false,
+            backgroundColor: [
+                'rgb(255, 99, 132, 1)',
+            ],
+            borderColor: 'rgb(255, 99, 132, 1)',
+            tension: 0.1
+        }]
+            },
+            options: {
+                tooltips: {
+        enabled: false
+    },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Propales',
+                        fullSize:true
+                    },
+                }
+            }
+        });
+
+
+
 let labels = []
 {% for stats in statsDossiersMonth %}
 {% if stats.montantAccorde or stats.montantSigne %}
@@ -210,6 +275,36 @@ setTimeout(() => {
                     tension: 0.1
                 }]
                 years.update()
+                propales.data.labels = propals.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(d => d.label);
+                propales.data.datasets = [{
+            label: 'Froid',
+            data: propals.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(p => p.froid),
+            fill: false,
+            backgroundColor: [
+                'rgb(54, 162, 235, 1)',
+            ],
+            borderColor: 'rgb(54, 162, 235, 1)',
+            tension: 0.1
+        },{
+            label: 'Tiede',
+            data: propals.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(p => p.tiede),
+            fill: false,
+            backgroundColor: [
+                'rgb(255, 205, 86, 1)',
+            ],
+            borderColor: 'rgb(255, 206, 86, 1)',
+            tension: 0.1
+        },{
+            label: 'Chaud',
+            data: propals.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(p => p.chaud),
+            fill: false,
+            backgroundColor: [
+                'rgb(255, 99, 132, 1)',
+            ],
+            borderColor: 'rgb(255, 99, 132, 1)',
+            tension: 0.1
+        }];
+        propales.update();
 
                 month.data.labels = labels.filter(d => d.year >= ui.values[0] && d.year <= ui.values[1]).map(d => d.label)
                 month.data.datasets = [{

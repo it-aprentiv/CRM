@@ -42,9 +42,11 @@ class HomeController extends BaseController
     {
         $dossiersMonth = $formationDossierRepository->getStatsMonthFormation();
         $dossierYears = $formationDossierRepository->getStatsYearFormation();
+
+        $propalsYears = $propalRepository->getStatsYearsPropals();
         $this->viewParams["statsDossiersMonth"] = $dossiersMonth;
         $this->viewParams["statsDossiersYear"] = $dossierYears;
-
+        $this->viewParams["statspropalsYears"] = $propalsYears;
         return $this->render('home/stats.html.twig', $this->viewParams);
     }
 

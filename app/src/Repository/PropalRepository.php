@@ -63,6 +63,29 @@ class PropalRepository extends ServiceEntityRepository
             ->getQuery();
     }
 
+    public function getStatsYearsPropals(){
+        $qb = $this->createQueryBuilder("ppl");
+        $qb->select('
+        YEAR(ppl.dateedition) AS year, 
+        SUM(CASE WHEN ppl.fiabilite = \'Tiede\' THEN 1 ELSE 0 END) as tiede, 
+        SUM(CASE WHEN ppl.fiabilite = \'Froid\' THEN 1 ELSE 0 END) as froid, 
+        SUM(CASE WHEN ppl.fiabilite = \'Chaud\' THEN 1 ELSE 0 END) as chaud
+        ');
+
+        $qb->leftJoin("ppl.entitypropal", "ent")
+            ->leftJoin("ppl.statutpropal", "stt")
+            ->leftJoin("ppl.commercialpropal", "com")
+            ->leftJoin("ppl.clientpropal", "clt");
+
+            return $qb
+            ->groupBy("year")
+            ->andWhere('year(ppl.dateedition) != :val2')
+            ->setParameter('val2', "null")
+            ->getQuery()
+            ->execute()
+            ;
+    }
+
     public function findallpropalportail(PropalFilter $propalFilter = null)
     {
         $qb = $this->createQueryBuilder("ppl");
