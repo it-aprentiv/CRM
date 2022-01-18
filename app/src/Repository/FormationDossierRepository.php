@@ -343,6 +343,15 @@ $qb
     ->leftJoin('App\Entity\Collaborateur', 'col', 'WITH', 'col.id = d.idCommercial')
     ->leftJoin('App\Entity\Facture','fac','WITH','fac.idDossier = d.id')
 ;
+        if($filter){
+            //filtre commercial
+            if ($filter->getCommercial()) {
+                $sCommercial = $filter->getCommercial();
+                $qb->andWhere($qb->expr()->eq('col.nomPrenom', ':commercial'));
+                $qb->setParameter(':commercial', $sCommercial);
+            }
+        }
+
          return $qb
             ->groupBy("year")
             ->addGroupBy("month")         
@@ -367,6 +376,15 @@ $qb
     ->leftJoin('App\Entity\Collaborateur', 'col', 'WITH', 'col.id = d.idCommercial')
     ->leftJoin('App\Entity\Facture','fac','WITH','fac.idDossier = d.id')
 ;
+
+         if($filter){
+            //filtre commercial
+            if ($filter->getCommercial()) {
+                $sCommercial = $filter->getCommercial();
+                $qb->andWhere($qb->expr()->eq('col.nomPrenom', ':commercial'));
+                $qb->setParameter(':commercial', $sCommercial);
+            }
+        }
          return $qb
             ->groupBy("year")
             ->getQuery()

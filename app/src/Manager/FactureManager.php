@@ -265,7 +265,7 @@ class FactureManager {
         $aDataContact = $this->getFactureContactData($facture, $contact);
         $dossierdata = $this->getfacturedossierdata($facture, $formationDossierDateRepository);
         // dd($dossierdata);
-        $ndossier = $dossierdata["ndossier"];
+        $ndossopca = $dossierdata['ndossopca'];
         $nomdossier = $dossierdata["nomdossier"];
         $dateduau = $dossierdata["dateduau"];
         $res['nbJ'] = $dossierdata["res"]['nbJ'];
@@ -304,7 +304,7 @@ class FactureManager {
             $worksheet->getCell('A24')->setValue("Dates :" . $dateduau);
             $worksheet->getCell('A25')->setValue("Nb jour(s) :" . $res['nbJ']);
             $worksheet->getCell('A26')->setValue("Nb heure(s) :" . $res['nbH']);
-            $worksheet->getCell('A27')->setValue("Dossier n° :" . $ndossier);
+            $worksheet->getCell('A27')->setValue("Dossier n° :" . $ndossopca);
 
             $worksheet->getCell('G22')->setValue($datatotalfact['httalfact'] . " €");
             $worksheet->getCell('G29')->setValue($datatotalfact['httalfact'] . " €");

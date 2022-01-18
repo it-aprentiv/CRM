@@ -20,6 +20,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Collaborateur;
+use App\Form\CommercialType;
 
 
 
@@ -40,13 +42,18 @@ class HomeController extends BaseController
     EntityManagerInterface $em, ContactRepository $contactRepository,
      NoteRepository $noteRepository, Request $request, PaginatorInterface $paginator, PropalRepository $propalRepository, LeadRepository $leadRepository)
     {
+        $commercial = new Collaborateur();
+        $form = $this->createForm(CommercialType::class, $commercial);
+        
         $dossiersMonth = $formationDossierRepository->getStatsMonthFormation();
         $dossierYears = $formationDossierRepository->getStatsYearFormation();
+
 
         $propalsYears = $propalRepository->getStatsYearsPropals();
         $this->viewParams["statsDossiersMonth"] = $dossiersMonth;
         $this->viewParams["statsDossiersYear"] = $dossierYears;
         $this->viewParams["statspropalsYears"] = $propalsYears;
+        $this->viewParams["form"] = $form->createView();
         return $this->render('home/stats.html.twig', $this->viewParams);
     }
 
