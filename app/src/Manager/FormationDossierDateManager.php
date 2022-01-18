@@ -194,6 +194,10 @@ class FormationDossierDateManager {
         $oLastDossier = $this->formationDossierRepository->findOneBy([], ['id' => 'DESC']);
         $sLastRef = $oLastDossier->getRef();
         $sIncrement = substr($sLastRef, 8);
+        $date = new DateTime();
+        if($date->format("m-d") == "01-01"){
+            $sIncrement = 0;
+        }
         $iNextSequence = intval($sIncrement) + 1;
             
         return str_pad($iNextSequence, 4, "0", STR_PAD_LEFT);
