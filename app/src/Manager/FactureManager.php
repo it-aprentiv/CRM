@@ -231,7 +231,6 @@ class FactureManager {
             $worksheet->getCell('A23')->setValue("Nb jour(s) : " . $res['nbJ']);
             $worksheet->getCell('A24')->setValue("Nb heure(s) : " . $res['nbH']);
             
-            $worksheet->getCell('A25')->setValue("Dossier n° : " . $ndossopca);
             $worksheet->getCell('F21')->setValue($datatotalfact['httalfact'] . " €");
             $worksheet->getCell('F27')->setValue($datatotalfact['httalfact'] . " €");
             $worksheet->getCell('F28')->setValue($datatotalfact['tvatotalfact'] . " €");
