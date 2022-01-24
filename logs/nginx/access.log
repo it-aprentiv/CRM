@@ -9128,6 +9128,7 @@
 172.18.0.1 - - [18/Jan/2022:10:55:10 +0000] "GET /resources/demos/style.css HTTP/1.1" 404 271115 "http://localhost/dossier/29147/visualiser" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
 172.18.0.1 - - [18/Jan/2022:10:55:10 +0000] "GET /_wdt/7c1246 HTTP/1.1" 200 23239 "http://localhost/dossier/29147/visualiser" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
 172.18.0.1 - - [18/Jan/2022:10:55:10 +0000] "GET /contact/75774/getadresse HTTP/1.1" 200 99 "http://localhost/dossier/29147/visualiser" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+<<<<<<< HEAD
 172.18.0.1 - - [18/Jan/2022:16:47:26 +0000] "GET /contact/75879/printdocument/1 HTTP/1.1" 500 209547 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
 172.18.0.1 - - [18/Jan/2022:16:47:27 +0000] "GET /_wdt/4b838e HTTP/1.1" 200 20652 "http://localhost/contact/75879/printdocument/1" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
 172.18.0.1 - - [18/Jan/2022:16:47:30 +0000] "GET /contact/ HTTP/1.1" 301 354 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
@@ -16038,3 +16039,18 @@
 172.18.0.1 - - [24/Jan/2022:09:11:54 +0000] "GET /resources/demos/style.css HTTP/1.1" 404 271095 "http://localhost/contact/75953/edition" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
 172.18.0.1 - - [24/Jan/2022:09:11:55 +0000] "GET /_wdt/1bd6c3 HTTP/1.1" 404 5 "http://localhost/contact/75953/edition" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
 172.18.0.1 - - [24/Jan/2022:09:11:56 +0000] "GET /_wdt/1bd6c3 HTTP/1.1" 200 23219 "http://localhost/contact/75953/edition" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+=======
+172.18.0.1 - - [18/Jan/2022:16:03:06 +0000] "GET / HTTP/1.1" 500 25268 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:42 +0000] "GET / HTTP/1.1" 200 69481 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:42 +0000] "GET /crm/common.css?v=3.5 HTTP/1.1" 304 0 "http://localhost/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:42 +0000] "GET /crm/common.js?v=3.5 HTTP/1.1" 304 0 "http://localhost/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:42 +0000] "GET /assets/js/number-utils.js?v=3.5 HTTP/1.1" 304 0 "http://localhost/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:42 +0000] "GET /assets/js/facture-utils.js?v=3.5 HTTP/1.1" 304 0 "http://localhost/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:42 +0000] "GET /resources/demos/style.css HTTP/1.1" 404 271034 "http://localhost/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:42 +0000] "GET /crm/images/aprentiv-logo-2.png HTTP/1.1" 200 15636 "http://localhost/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:43 +0000] "GET /_wdt/6dd507 HTTP/1.1" 200 19743 "http://localhost/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:55 +0000] "GET /stats HTTP/1.1" 200 80134 "http://localhost/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:56 +0000] "GET /resources/demos/style.css HTTP/1.1" 404 271054 "http://localhost/stats" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:56 +0000] "GET /resources/demos/style.css HTTP/1.1" 404 271031 "http://localhost/stats" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+172.18.0.1 - - [18/Jan/2022:16:03:57 +0000] "GET /_wdt/376cdc HTTP/1.1" 200 19749 "http://localhost/stats" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+>>>>>>> a034b645006f404f734c548aad39aebb20843f75
