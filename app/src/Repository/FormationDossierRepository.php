@@ -325,7 +325,7 @@ class FormationDossierRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->orderBy('d.nom', 'ASC');
     }
-    public function getStatsMonthFormation(FormationDossierFilter $filter = null){
+    public function getStatsMonthFormation(string $commercial = null){
         $qb = $this->createQueryBuilder('d');
         $qb->select('
        MONTH(d.dateEnvoi) AS month,
@@ -343,14 +343,12 @@ $qb
     ->leftJoin('App\Entity\Collaborateur', 'col', 'WITH', 'col.id = d.idCommercial')
     ->leftJoin('App\Entity\Facture','fac','WITH','fac.idDossier = d.id')
 ;
-        if($filter){
-            //filtre commercial
-            if ($filter->getCommercial()) {
-                $sCommercial = $filter->getCommercial();
-                $qb->andWhere($qb->expr()->eq('col.nomPrenom', ':commercial'));
-                $qb->setParameter(':commercial', $sCommercial);
-            }
-        }
+if($commercial){
+    //filtre commercial
+        $qb->andWhere($qb->expr()->eq('col.nomPrenom', ':commercial'));
+        $qb->setParameter(':commercial', $commercial);
+    
+}
 
          return $qb
             ->groupBy("year")
@@ -359,7 +357,7 @@ $qb
             ->execute()
             ;
     }
-    public function getStatsYearFormation(FormationDossierFilter $filter = null){
+    public function getStatsYearFormation(string $commercial = null ){
         $qb = $this->createQueryBuilder('d');
         $qb->select('
        YEAR(d.dateEnvoi) AS year,
@@ -377,13 +375,16 @@ $qb
     ->leftJoin('App\Entity\Facture','fac','WITH','fac.idDossier = d.id')
 ;
 
-         if($filter){
+         if($commercial){
             //filtre commercial
-            if ($filter->getCommercial()) {
-                $sCommercial = $filter->getCommercial();
                 $qb->andWhere($qb->expr()->eq('col.nomPrenom', ':commercial'));
-                $qb->setParameter(':commercial', $sCommercial);
-            }
+                $qb->setParameter(':commercial', $commercial);
+            
+        }         if($commercial){
+            //filtre commercial
+                $qb->andWhere($qb->expr()->eq('col.nomPrenom', ':commercial'));
+                $qb->setParameter(':commercial', $commercial);
+            
         }
          return $qb
             ->groupBy("year")

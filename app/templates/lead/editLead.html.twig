@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block body %}
-	<nav aria-label="breadcrumb" class="sticky-top">
+	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">
 				<a href="{{ path('home.index') }}">
@@ -162,6 +162,10 @@
 												</div>
 												<div class="col-sm-2 form-group">
 													{{ form_widget(comment.children["dateAction"]) }}
+												</div>
+												<div class="col-sm-2 form-group">
+													{{ form_widget(comment.children["idUserAction"]) }}
+												</div>
 												<div class="col-sm-2 form-group">
 													{{ form_widget(comment.children["idActionStatut"]) }}
 												</div>
@@ -180,7 +184,6 @@
 		{% set NomPrenom = Nom.vars.value ~ ' ' ~ Prenom.vars.value %}
 		<div class="col-sm-12 p-3 " id="content_bouton">
 			<div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
-
 				<div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
 					{% if form.societe.vars.value == null %}
 						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 2, nom:form.nom.vars.value, prenom:form.prenom.vars.value, tel:form.telephone.vars.value, mail:form.email.vars.value, id_civilite:form.civilite.vars.value, id_commercial:form.commercial.vars.value, nomprenom:NomPrenom}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutClient()">
@@ -205,10 +208,6 @@
 					{% endif %}
 				</div>
 
-			</div>
-		</div>
-		<div class="col-sm-12 p-3">
-			<div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
 			</div>
 		</div>
 	</div>
@@ -261,7 +260,6 @@
 				$("#canceledit").find('button').prop("disabled", true);
                 $("#ajcom").prop("disabled", true);
             });
-
 
             // Mise à jour de la valeur pour un champ d'autocompletion
             function setSelectValue(key,data) {

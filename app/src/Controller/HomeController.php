@@ -6,7 +6,6 @@ use App\Entity\Filter\NoteFilter;
 use App\Repository\NoteRepository;
 use App\Constants\Note as NoteConstant;
 use App\Entity\Filter\ContactFilter;
-use App\Entity\Filter\FormationDossierFilter;
 use App\Entity\Filter\LeadFilter;
 use App\Entity\Filter\PropalFilter;
 use App\Entity\Lead;
@@ -22,6 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Collaborateur;
 use App\Form\CommercialType;
+use App\Form\FormationDossierFilterType;
+
 
 
 
@@ -44,11 +45,21 @@ class HomeController extends BaseController
     {
         $commercial = new Collaborateur();
         $form = $this->createForm(CommercialType::class, $commercial);
+        $form->handleRequest($request);
+        $data = $form->getData()->getnomPrenom();
+        $dossiersMonth = [];
+        $dossierYears = [];
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $dossiersMonth = $formationDossierRepository->getStatsMonthFormation($data);
+            $dossierYears = $formationDossierRepository->getStatsYearFormation($data);
+        }else{
+
+            $dossiersMonth = $formationDossierRepository->getStatsMonthFormation();
+            $dossierYears = $formationDossierRepository->getStatsYearFormation();
+        }
         
-        $dossiersMonth = $formationDossierRepository->getStatsMonthFormation();
-        $dossierYears = $formationDossierRepository->getStatsYearFormation();
-
-
         $propalsYears = $propalRepository->getStatsYearsPropals();
         $this->viewParams["statsDossiersMonth"] = $dossiersMonth;
         $this->viewParams["statsDossiersYear"] = $dossierYears;
