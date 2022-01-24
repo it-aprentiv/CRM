@@ -9,11 +9,25 @@
 {% endblock %}
 
 {% block body %}
-    <nav aria-label="breadcrumb">
+    <nav class="sticky-top" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
             <li class="breadcrumb-item active"><a href="{{ path('Liste_Client_Prospect_Controller') }}">Liste des clients / Prospects</a></li>
             <li class="breadcrumb-item active" aria-current="page">Création</li>
+            <div class="btn-group mr-2 no-disabled div-left" role="group" aria-label="Third group">
+                <button type="button" id="editthis" class="btn btn-primary btn-block no-disabled">
+                    <i class="fas fa-edit"></i>Modifier
+                </button>
+            </div>
+            <div id="saveedit" class="btn-group mr-2 d-none" role="group" aria-label="">
+                <button type="submit" class="btn btn-success"><i class="fa fa-bookmark"></i>
+                Enregistrer</button>
+            </div>
+            <div id="canceledit" class="btn-group mr-2 d-none" role="group" aria-label="First group">
+                <button type="button" class="btn btn-danger">
+                <i class="fas fa-ban"></i>
+                Annuler</button>
+            </div>
         </ol>
     </nav>
 
@@ -587,9 +601,6 @@
                     <div class="btn-group mr-2" role="group" aria-label="Second group">
                         <a name="editerdocument" data-toggle="modal" data-target="#modalEditerDocument" class="btn btn-primary btn-block" style="color:white;">Editer un document</a>
                     </div>
-                    <div class="btn-group mr-2" role="group" aria-label="Third group">
-                        <button type="button" id="editthis" class="btn btn-primary btn-block">MAJ Fiche</button>
-                    </div>
                     <div class="btn-group mr-2" role="group" aria-label="Fourth group">
                         <a href="{{ path("Liste_Dossiers_Controller", { 'client' : contact.nomStr } ) }}" class="btn btn-primary btn-block">Dossiers</a>
                     </div>
@@ -600,9 +611,6 @@
             </div>
             <div class="col-sm-12 p-3">
                 <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
-                    <div id="saveedit" class="btn-group mr-2 d-none" role="group" aria-label="First group">
-                        <button type="submit" class="btn btn-danger btn-block">Mettre à jour</button>
-                    </div>
                 </div>
             </div>
 
@@ -709,20 +717,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
     {% include 'contact/Parts/contact.js.html.twig' %}
     <script language="javascript">
+        /*function editbtn() {
+            document.getElementById("btn-disapear").innerHTML = ""
+        }*/
         $(document).ready( function() {
             $("#contactgenerale *").prop("disabled", true);
             $("#content_bouton .btn").prop("disabled", false);
             $("#editthis").click(function(){
                 $("#contactgenerale *").prop("disabled", false);
                 $("#saveedit").removeClass("d-none");
+                $("#canceledit").removeClass("d-none");
+                $("#editthis").addClass("d-none");
                 {% if app.user == "MUNIER Pascal" or app.user == "CREPEAU Francis" %}
                     
                 {% else %}
                 $("#contact_id_commercial").prop("disabled",true)
                 {% endif %}
                 $("#saveedit").find('button').prop("disabled", false);
+                $("#canceledit").find('button').prop("disabled", false);
                 $("#ajcom").prop("disabled", false);
+            $("#canceledit").click(function(){
+                $("#contactgenerale *").prop("disabled", true);
+                $("#saveedit").addClass("d-none");
+                $("#canceledit").addClass("d-none");
+                $("#editthis").removeClass("d-none");
+
             });
+            });
+
             // Ajout valeur par défaut des societés liées selon leur valeur pourle contact
             var societelie = {{ societeliedata|json_encode|raw }};
             for (let key in societelie){

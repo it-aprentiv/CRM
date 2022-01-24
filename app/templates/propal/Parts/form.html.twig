@@ -251,15 +251,6 @@
 </div>
 <div class="col-sm-12 p-3 " id="content_bouton">
     <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
-        <div class="btn-group mr-2" role="group" aria-label="Third group">
-            <button type="submit" class="btn btn-primary btn-md btn-block" id="SaveBtn">
-                {% if type is defined and type == 'create' %}
-                    Ajouter
-                {% else %}
-                    Enregistrer les modifications
-                {% endif %}
-            </button>
-        </div>
         {% if type is not defined %}
         {% if propal.entitypropal == 'proform' %}
             <div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">

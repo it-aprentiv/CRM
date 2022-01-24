@@ -97,7 +97,7 @@ class HomeController extends BaseController
         $propalquery = $propalRepository->findallpropalportail($propalfilter);
         $paginationPropal = $paginator->paginate($propalquery, $request->query->get('page', 1), 10);
         $this->viewParams['paginationPropal'] = $paginationPropal;
-        if ($currentUser != 29) {
+        if ($currentUser != 29) {;
             $propalStats = [
                 count($propalRepository->findBy(["fiabilite" => "Froid","commercialpropal" => $commercial])),
                 count($propalRepository->findBy(["fiabilite" => "Tiede","commercialpropal" => $commercial])),

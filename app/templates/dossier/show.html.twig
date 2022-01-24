@@ -12,7 +12,8 @@
 {% endblock %}
 
 {% block body %}
-    <nav aria-label="breadcrumb">
+{{ form_start(doc_form,{ 'attr' : {'class': 'popUp-ajout' , 'method' : 'post', 'onsubmit': 'checkRequireField();' }  }) }}
+    <nav aria-label="breadcrumb" class="sticky-top">
         <div class="d-flex justify-content-between breadcrumb">
             <ol class="list-unstyled d-flex my-0">
                 <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
@@ -22,13 +23,16 @@
 
             <div>
                 {% if is_granted('edit', 'Dossiers') %}
-                    <a href="javascript:void(0)" class="update">
+                    <a href="javascript:void(0)" class="btn btn-primary update" onclick="hide()">
                         <i class="fas fa-edit"></i>
-                        Modifier le dossier
+                        Modifier
                     </a>
-                    <a href="javascript:void(0)" class="text-danger cancel-update d-none">
+                    <div class="btn-group mr-2 d-none no-disabled not-disabling" role="group" aria-label="First group" id="SaveBtn">
+                        <button class="btn btn-success no-disabled not-disabling" type="submit" style="border-radius: 5%;"><i class="fa fa-bookmark"></i> Enregistrer</button>
+                    </div>
+                    <a href="javascript:void(0)" class="btn btn-danger cancel-update d-none" onclick="hide2()">
                         <i class="fas fa-ban"></i>
-                        Annuler la modification
+                        Annuler
                     </a>
                 {% endif %}
             </div>
@@ -37,7 +41,7 @@
 
     <h2 class="text-center mt-2 text-primary">DETAIL DU DOSSIER</h2>
     {# BEGIN FORMULAIRE DOSSIER #}
-        {% include 'dossier/part/dossier-form.html.twig' %}
+    {% include 'dossier/part/dossier-form.html.twig' %}
     {# FIN FORMULAIRE DOSSIER #}
 
     {# envoyer les valeurs chcisis #}
@@ -163,4 +167,14 @@
     {% include 'Common/collection-function-js.html.twig' %}
     {% include 'Common/dossier-js.html.twig'%}
 
+    <script>
+        function hide(){
+            let btn = document.getElementById('SaveBtn')
+            btn.classList.remove("d-none")
+            }
+        function hide2(){
+            let btn2 = document.getElementById('SaveBtn')
+            btn2.classList.add("d-none")
+            }
+    </script>
 {% endblock %}

@@ -1,6 +1,6 @@
-app/var/*
-!app/var/log/.gitkeep
-app/var/cache
+#app/var/*
+#!app/var/log/.gitkeep
+#app/var/cache
 
 # Parameters
 app/config/parameters.yml
@@ -35,5 +35,5 @@ app/composer.phar
 app/.web-server-pid
 logs/nginx
 app/var/cache/dev/profiler/index.csv
-app/var/log/dev.log
+#app/var/log/dev.log
 logs/nginx/access.log

@@ -280,10 +280,23 @@ table td{
 }
 
 .portail:hover, .btn-portail:hover {
-    background-color:#7b38d8;
+    background-color:#138496;
     color: white;
     }
 
-
     
 .idType {display: none;}
+
+
+.div-left {
+    margin-left: auto ! important;
+}
+
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+    z-index: 2000;
+}
+
+#navbarSupportedContent {
+    z-index: 2000 !important;  
+}
+

@@ -15,13 +15,21 @@
             <canvas id="stats-by-years"></canvas>
         </div>   
         <div class="col-md-6">
+        <fieldset class="mb-3 list-filter">
+        <legend>Filtre</legend>
           <p>
             <label for="amount">Entre :</label>
             <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
           </p> 
         <div id="slider-range"></div>
-        {{ form(form) }}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.nomPrenom) }}
+        {{ form_row(form.valider) }}
+        {{ form_end(form) }}
+     </fieldset>
       </div>
+
       <div class="col-md-6">
             <canvas id="propals"></canvas>
         </div>  

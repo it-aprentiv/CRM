@@ -86,31 +86,31 @@
             </td>
         </tr>
     {% endmacro %}
+    {{ form_start(opca_form) }}
+        <nav aria-label="breadcrumb" class="sticky-top">
+            <div class="d-flex justify-content-between breadcrumb">
+                <ol class="list-unstyled d-flex my-0">
+                    <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a href="{{ path('OPCA_Controller') }}" title="Liste des encaissements">Liste des OPCO</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Détails OPCO</li>
+                </ol>
 
-    <nav aria-label="breadcrumb">
-        <div class="d-flex justify-content-between breadcrumb">
-            <ol class="list-unstyled d-flex my-0">
-                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    <a href="{{ path('OPCA_Controller') }}" title="Liste des encaissements">Liste des OPCO</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Détails OPCO</li>
-            </ol>
-
-            <div>
-                {% if is_granted('edit', 'OPCO') %}
-                    <a href="javascript:void(0)" class="update">
-                        <i class="fas fa-edit"></i>
-                        Modifier l'OPCO
-                    </a>
-                    <a href="javascript:void(0)" class="text-danger cancel-update d-none">
-                        <i class="fas fa-ban"></i>
-                        Annuler la modification
-                    </a>
-                {% endif %}
-            </div>
+                <div class="div-left">
+                    {% if is_granted('edit', 'OPCO') %}
+                        <a href="javascript:void(0)" class="btn btn-primary update" onclick="hide()">
+                            <i class="fas fa-edit"></i>
+                            Modifier
+                        </a>
+                        <button id="SaveBtn" type="submit" class="btn btn-success d-none"><i class="fas fa-ban"></i><i class="fa fa-bookmark"></i> Enregistrer</button>
+                        <a href="javascript:void(0)" class="btn-danger btn cancel-update d-none" onclick="hide2()">
+                            <i class="fas fa-ban"></i>
+                            Annuler
+                        </a>
+                    {% endif %}
+                </div>
         </div>
-
     </nav>
     {% for msg in app.session.flashBag.get('success') %}
         <div class="alert alert-success">
@@ -119,7 +119,6 @@
     {% endfor %}
     <h2 class="text-center mt-2 text-primary">Détail OPCO</h2>
 
-    {{ form_start(opca_form) }}
 
     <div class="row">
         <div class="col-sm-9">
@@ -292,10 +291,6 @@
             </div>
         </div>
     </fieldset>
-
-    <div class="text-center my-3">
-        <button type="submit" class="btn btn-primary" >Sauvegarder</button>
-    </div>
     {{ form_end(opca_form,{'render_rest': false}) }}
 
      {% block modal %}
@@ -464,7 +459,7 @@
 
     </script>
     <script>
-                $(document).ready(function() {
+    $(document).ready(function() {
         deleteHide();
         });
         var $wrapper = $('.detail-wrapper');
@@ -502,6 +497,15 @@
             e.preventDefault();
             element.parents('tr').fadeOut().remove();
             deleteHide();
+        }
+
+    function hide(){
+        let btn = document.getElementById('SaveBtn')
+        btn.classList.remove("d-none")
+        }
+    function hide2(){
+        let btn2 = document.getElementById('SaveBtn')
+        btn2.classList.add("d-none")
         }
     </script>
 
