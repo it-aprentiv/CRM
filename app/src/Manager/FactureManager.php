@@ -284,7 +284,7 @@ class FactureManager {
         $drawing2 = clone $drawing;
         $drawing2->setPath('DocPrint/Templates/logoproform2.png')
         ->setName('logoproform')
-        ->setCoordinates('A46');
+        ->setCoordinates('A47');
  //       dd($_SERVER['DOCUMENT_ROOT']);
 
 //        $drawing2 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
@@ -298,6 +298,7 @@ class FactureManager {
 
         if ($facture->getDest1() == "C") {
             $drawing->setWorksheet($worksheet);
+            $drawing2->setWorksheet($worksheet);
             $worksheet->getCell('A13')->setValue("Paris le, " . $todaylong);
             $worksheet->getCell('A15')->setValue("Facture : " . $facture->getRef());
             $worksheet->getCell('A20')->setValue("Stagiaire(s) :" . $nomstagiaire);
