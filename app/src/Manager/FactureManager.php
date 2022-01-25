@@ -29,6 +29,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpParser\Node\Expr\Clone_;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FactureManager {
@@ -119,7 +120,6 @@ class FactureManager {
 //            $this->createdocfactprosper($facture, $contact, $contactadressedata, $worksheet);
             return null;
         }
-        dd($templatefiles);
         $spreadsheet = IOFactory::load('DocPrint/Templates/' . $templatefiles);
         $worksheet = $spreadsheet->getActiveSheet();
         if (!is_null($structure) && StructureConst::APRENTIV === $structure->getId()) {
@@ -274,6 +274,21 @@ class FactureManager {
 
         $month = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre");
         $todaylong = date("d") . " " . $month[date("m") - 1] . " " . date("Y");
+        $imgurl = 'https://www.sauvonslaforet.org/uploads/photos/base/baby-pangolin-interpoliert.jpg';
+
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setPath('DocPrint/Templates/logoproform.png')
+                ->setName('logoproform')
+                ->setCoordinates('A1');
+
+        $drawing2 = clone $drawing;
+        $drawing2->setPath('DocPrint/Templates/logoproform2.png')
+        ->setName('logoproform')
+        ->setCoordinates('A46');
+ //       dd($_SERVER['DOCUMENT_ROOT']);
+
+//        $drawing2 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+//        $drawing2->setPath('../../public/DocPrint/Templates/logoproform2.jpg');
 
         $datatotalfact = $this->getfacturetotal($facture);
 
@@ -282,6 +297,7 @@ class FactureManager {
         $worksheet->getCell('E11')->setValue($aDataContact['cpcontact'] . " " . $aDataContact['nomville']);
 
         if ($facture->getDest1() == "C") {
+            $drawing->setWorksheet($worksheet);
             $worksheet->getCell('A13')->setValue("Paris le, " . $todaylong);
             $worksheet->getCell('A15')->setValue("Facture : " . $facture->getRef());
             $worksheet->getCell('A20')->setValue("Stagiaire(s) :" . $nomstagiaire);
