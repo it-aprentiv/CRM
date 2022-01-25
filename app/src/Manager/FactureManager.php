@@ -284,11 +284,10 @@ class FactureManager {
         $drawing2 = clone $drawing;
         $drawing2->setPath('DocPrint/Templates/logoproform2.png')
         ->setName('logoproform')
-        ->setCoordinates('A47');
- //       dd($_SERVER['DOCUMENT_ROOT']);
+        ->setCoordinates('A48')
+        ->setResizeProportional(false)
+        ->setWidthAndHeight(740,69);
 
-//        $drawing2 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-//        $drawing2->setPath('../../public/DocPrint/Templates/logoproform2.jpg');
 
         $datatotalfact = $this->getfacturetotal($facture);
 
