@@ -22,9 +22,12 @@
             <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
           </p> 
         <div id="slider-range"></div>
+        <br>
+        <p class="h2 div-left"> &nbsp Nom :</p>
         {{ form_start(form) }}
         {{ form_errors(form) }}
         {{ form_row(form.nomPrenom) }}
+        <br>
         {{ form_row(form.valider) }}
         {{ form_end(form) }}
      </fieldset>

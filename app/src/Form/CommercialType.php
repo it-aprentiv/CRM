@@ -19,9 +19,11 @@ class CommercialType extends AbstractType
             ->add('nomPrenom',EntityType::class,
             ['class' => Collaborateur::class,
             'choice_label' => 'nomPrenom',
-            'attr'=>['class'=>'no-disabled']
+            'attr'=>['class'=>'no-disabled'],
+            'label'=>false
             ])
-            ->add('valider',SubmitType::class);
+            ->add('valider',SubmitType::class,[
+            'attr'=>['class'=>'btn-primary']]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

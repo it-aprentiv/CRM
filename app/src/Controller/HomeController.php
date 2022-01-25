@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Collaborateur;
 use App\Form\CommercialType;
 use App\Form\FormationDossierFilterType;
+use App\Entity\Filter\FormationDossierFilter;
 
 
 
@@ -92,8 +93,8 @@ class HomeController extends BaseController
         $this->viewParams['date'] = $date;
         $this->viewParams['currentDate'] = $currentDate;
 
-        $oFormationDossierFilter = new FormationDossierFilter();
-        $oFormationDossierFilter->setCommercial($nomCommercial);
+       $oFormationDossierFilter = new FormationDossierFilter();
+       $oFormationDossierFilter->setCommercial($nomCommercial);
 
         $formationDossierQuery = $formationDossierRepository->findAllFormationDossierPortail($oFormationDossierFilter);
         $paginationDossier = $paginator->paginate($formationDossierQuery, $request->query->get('page', 1), 10);

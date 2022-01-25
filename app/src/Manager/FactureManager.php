@@ -119,6 +119,7 @@ class FactureManager {
 //            $this->createdocfactprosper($facture, $contact, $contactadressedata, $worksheet);
             return null;
         }
+        dd($templatefiles);
         $spreadsheet = IOFactory::load('DocPrint/Templates/' . $templatefiles);
         $worksheet = $spreadsheet->getActiveSheet();
         if (!is_null($structure) && StructureConst::APRENTIV === $structure->getId()) {
