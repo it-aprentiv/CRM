@@ -1089,7 +1089,7 @@ class FormationDossierManager {
         if ($IdVille != null)
         {        
             $ville =  $this->em->getRepository(\App\Entity\Ville::class)->find($IdVille);
-            $devisPapierDocTemplate->setValue("ville",$ville);
+            $devisPapierDocTemplate->setValue("ville",utf8_decode($ville));
         }
         else
         {
@@ -1099,8 +1099,8 @@ class FormationDossierManager {
         $datepropal = !is_null($dossier->getDateDebutPeriode())? $dossier->getDateDebutPeriode()->format("d/m/Y") : "-";
         $datepropal .= !is_null($dossier->getDateFinPeriode())? " au ".$dossier->getDateFinPeriode()->format("d/m/Y") : "";
         $datefr = Date::MOIS_FR;
-        $devisPapierDocTemplate->setValue("nomclient",$nomclient);
-        $devisPapierDocTemplate->setValue("adresseclient",$adresseclient);
+        $devisPapierDocTemplate->setValue("nomclient",utf8_decode($nomclient));
+        $devisPapierDocTemplate->setValue("adresseclient",utf8_decode($adresseclient));
         $devisPapierDocTemplate->setValue("codepostal",$codepostal);             
         $devisPapierDocTemplate->setValue("datedujour", date("d")." ".$datefr[date("m") - 1]." ".date("Y"));
         
@@ -1116,7 +1116,7 @@ class FormationDossierManager {
         $devisPapierDocTemplate->setValue("prerequis","fgdgsd");
         $devisPapierDocTemplate->setValue("duree",$aParams["formated_dates_stage"]["total_jours"]);
         $devisPapierDocTemplate->setValue("horaires", "dfgsgs");
-        $devisPapierDocTemplate->setValue("lieu",$aParams["ville"]);
+        $devisPapierDocTemplate->setValue("lieu",utf8_decode($aParams["ville"]));
         $devisPapierDocTemplate->setValue("date", $datepropal);
         $devisPapierDocTemplate->setValue("tva", "20");
         
