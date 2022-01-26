@@ -50,11 +50,14 @@ class HomeController extends BaseController
         $data = $form->getData()->getnomPrenom();
         $dossiersMonth = [];
         $dossierYears = [];
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $dossiersMonth = $formationDossierRepository->getStatsMonthFormation($data);
-            $dossierYears = $formationDossierRepository->getStatsYearFormation($data);
+            if($data == null){
+                $dossiersMonth = $formationDossierRepository->getStatsMonthFormation();
+                $dossierYears = $formationDossierRepository->getStatsYearFormation();
+            }else{
+                $dossiersMonth = $formationDossierRepository->getStatsMonthFormation($data);
+                $dossierYears = $formationDossierRepository->getStatsYearFormation($data);
+            }
         }else{
 
             $dossiersMonth = $formationDossierRepository->getStatsMonthFormation();

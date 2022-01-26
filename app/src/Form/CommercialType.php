@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Repository\CollaborateurRepository;
 
 class CommercialType extends AbstractType
 {
@@ -18,9 +19,14 @@ class CommercialType extends AbstractType
         $builder
             ->add('nomPrenom',EntityType::class,
             ['class' => Collaborateur::class,
+            'query_builder' => function(CollaborateurRepository $repository) { 
+                return $repository->createQueryBuilder('u')->orderBy('u.nomPrenom', 'ASC');
+            },
             'choice_label' => 'nomPrenom',
             'attr'=>['class'=>'no-disabled'],
-            'label'=>false
+            'label'=>false,
+            'placeholder'=>'Stats globales',
+            'required'=>false
             ])
             ->add('valider',SubmitType::class,[
             'attr'=>['class'=>'btn-primary']]);

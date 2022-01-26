@@ -112,7 +112,7 @@ class FactureManager {
             }
         } elseif (!is_null($structure) && StructureConst::PROFORM === $structure->getId()) {
             if ($facture->getDest1() == "C") {
-                $templatefiles = "factclientproform.xls";
+                $templatefiles = "factopcaproform.xls";
             } else {
                 $templatefiles = "factopcaproform.xls";
             }
@@ -274,20 +274,6 @@ class FactureManager {
 
         $month = array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre");
         $todaylong = date("d") . " " . $month[date("m") - 1] . " " . date("Y");
-        $imgurl = 'https://www.sauvonslaforet.org/uploads/photos/base/baby-pangolin-interpoliert.jpg';
-
-        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-        $drawing->setPath('DocPrint/Templates/logoproform.png')
-                ->setName('logoproform')
-                ->setCoordinates('A1');
-
-        $drawing2 = clone $drawing;
-        $drawing2->setPath('DocPrint/Templates/logoproform2.png')
-        ->setName('logoproform')
-        ->setCoordinates('A48')
-        ->setResizeProportional(false)
-        ->setWidthAndHeight(740,69);
-
 
         $datatotalfact = $this->getfacturetotal($facture);
 
@@ -296,22 +282,23 @@ class FactureManager {
         $worksheet->getCell('E11')->setValue($aDataContact['cpcontact'] . " " . $aDataContact['nomville']);
 
         if ($facture->getDest1() == "C") {
-            $drawing->setWorksheet($worksheet);
-            $drawing2->setWorksheet($worksheet);
-            $worksheet->getCell('A13')->setValue("Paris le, " . $todaylong);
-            $worksheet->getCell('A15')->setValue("Facture : " . $facture->getRef());
+            $worksheet->getCell('E13')->setValue("Paris, le " . $todaylong);
+            $worksheet->getCell('B15')->setValue("Facture : " . $facture->getRef());
             $worksheet->getCell('A20')->setValue("Stagiaire(s) :" . $nomstagiaire);
             $worksheet->getCell('A21')->setValue("Session de formation : " . $nomdossier);
             $worksheet->getCell('A22')->setValue("Dates :" . $dateduau);
             $worksheet->getCell('A23')->setValue("Nb jour(s) :" . $res['nbJ']);
             $worksheet->getCell('A24')->setValue("Nb heure(s) :" . $res['nbH']);
+            $worksheet->getCell('A25')->setValue("");
+            $worksheet->getCell('A26')->setValue("");
+            $worksheet->getCell('A27')->setValue("");
 
-            $worksheet->getCell('G20')->setValue($datatotalfact['httalfact'] . " €");
-            $worksheet->getCell('G27')->setValue($datatotalfact['httalfact'] . " €");
-            $worksheet->getCell('G28')->setValue($datatotalfact['tvatotalfact'] . " €");
-            $worksheet->getCell('G29')->setValue($datatotalfact['ttctotalfact'] . " €");
+            $worksheet->getCell('G22')->setValue($datatotalfact['httalfact'] . " €");
+            $worksheet->getCell('G29')->setValue($datatotalfact['httalfact'] . " €");
+            $worksheet->getCell('G30')->setValue($datatotalfact['tvatotalfact'] . " €");
+            $worksheet->getCell('G31')->setValue($datatotalfact['ttctotalfact'] . " €");
         } else {
-            $worksheet->getCell('E13')->setValue("Paris le, " . $todaylong);
+            $worksheet->getCell('E13')->setValue("Paris, le " . $todaylong);
             $worksheet->getCell('B15')->setValue("FACTURE N° " . $facture->getRef());
             $worksheet->getCell('A20')->setValue("Société :" . $contact->getNomStr());
             $worksheet->getCell('A21')->setValue("Adhérent n° :" . $contact->getNoAdherent());

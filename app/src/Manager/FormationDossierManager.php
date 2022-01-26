@@ -4,6 +4,8 @@ namespace App\Manager;
 
 use App\Constants\Contact as ContactConst;
 use App\Constants\ExtractionDossierType;
+use App\Entity\Competence;
+use App\Constants\Date;
 use App\Entity\Adresse;
 use App\Entity\Avoir;
 use App\Entity\Collaborateur;
@@ -979,40 +981,22 @@ class FormationDossierManager {
      */
     public function generateDevisPapier($aParams) {
         // Chargement 
-        $devisPapierDocTemplate = new TemplateProcessor("DocPrint/Templates/Devis_Papier_template_new.docx");
+        $devisPapierDocTemplate = "";
         /**@var FormationDossier $dossier */
         $dossier = $aParams['dossier'];
         /** APR-191: Gestion header et footer pour chaque type de structure */
         $structure = $dossier->getIdStructure()->getId();
         if($structure == 2) {
             // PROFORM: header et footer
-            //header
-            $devisPapierDocTemplate->setImageValue("StructureLogo",
-                array('path' => 'crm/images/DocPrint/logo_proform.png', 'width' => 297, 'height' => 100, 'ratio' => false));
-            //footer ici
-            $devisPapierDocTemplate->setValue("num_declaration",'');
-            $devisPapierDocTemplate->setValue("logo_opfq",'');
-            $devisPapierDocTemplate->setValue("charte_diversite",'');
-            $devisPapierDocTemplate->setImageValue("footer_base",
-                array('path' => 'crm/images/DocPrint/foot_proform.jpg', 'width' => 600, 'height' => 60, 'ratio' => false));
+         $devisPapierDocTemplate = new TemplateProcessor("DocPrint/Templates/FichePPL_templateProform.docx");
         } else {
             //header
-
-            $devisPapierDocTemplate->setImageValue("StructureLogo",
-                array('path' => 'crm/images/DocPrint/aprentiv.png', 'width' => 180, 'height' => 97, 'ratio' => false));
-            //footer ici
-            $devisPapierDocTemplate->setValue("num_declaration",'N° DÉCLARATION : 11 75 372 1875');
-            $devisPapierDocTemplate->setImageValue("logo_opfq",
-                array('path' => 'crm/images/DocPrint/imgl.jpg', 'width' => 100, 'height' => 47, 'ratio' => false));
-            $devisPapierDocTemplate->setImageValue("charte_diversite",
-                array('path' =>'crm/images/DocPrint/imgr.jpg', 'width' => 75, 'height' => 47, 'ratio' => false));
-            $devisPapierDocTemplate->setImageValue("footer_base",
-                array('path' => 'crm/images/DocPrint/foot.jpg', 'width' => 600, 'height' => 50, 'ratio' => false));
+            $devisPapierDocTemplate = new TemplateProcessor("DocPrint/Templates/FichePPL_template.docx");
 
         }
-        // Mise à jour des paramètres dans le ficher word
+       // Mise à jour des paramètres dans le ficher word
         // Client
-        $devisPapierDocTemplate->setValue("client_nom",$aParams['client']);
+      /*   $devisPapierDocTemplate->setValue("client_nom",$aParams['client']);
         $sCP = $aParams['o_adresse'] instanceof Adresse ? $aParams['o_adresse']->getCodePostal() : '';
         $sVille = $aParams['ville'] instanceof Ville ? $aParams['ville']->getNomVille() : '';
         $devisPapierDocTemplate->setValue("client_code_postal_ville", $sCP . " ". $sVille);
@@ -1025,6 +1009,7 @@ class FormationDossierManager {
         $dateFormation = isset($aParams['o_dates_formation'][0]) ? $aParams['o_dates_formation'][0] : null ;
         
         $sDateDebutFin = "Du ";
+        */
         /*if ($dateFormation) {
             
             if ($dateFormation['dateD'] instanceof DateTime) {
@@ -1036,7 +1021,7 @@ class FormationDossierManager {
                 $sDateDebutFin .= $dateFormation['dateF']->format('d-m-Y');
             }
         }*/
-        $aFormatedDatesStage = $aParams['formated_dates_stage'];
+       /* $aFormatedDatesStage = $aParams['formated_dates_stage'];
         $sStageHoraire = "";
         
         if ($aFormatedDatesStage) {
@@ -1076,7 +1061,82 @@ class FormationDossierManager {
         $devisPapierDocTemplate->setValue("cout_total_ht", number_format($aParams['montant_ht'], 2, ",", " ") . " €");
         $devisPapierDocTemplate->setValue("montant_tva", number_format($aParams['montant_tva'], 2, ",", " "). " €");
         $devisPapierDocTemplate->setValue("cout_total_ttc", number_format($aParams['montant_ttc'], 2, ",", " "). " €");
+
+*/
+        // Nouvelle fonction
+        $nomclient = $aParams['client'];
+        $contactadressedata = $aParams['o_adresse'];
+        $adressedata = [
+            "adresse" => "",
+            "compAdresse"=>"",
+            "codePostal"=>"",
+            "ville"=>"",
+            "principale"=>0,
+        ];
+        if(array_key_exists(0,$contactadressedata)){
+            $adressedata = $contactadressedata[0];
+        }
+        if((int)$adressedata["principale"] != 1){
+            foreach ($contactadressedata as $cntadr){
+                if((int)$cntadr["principale"] == 1){
+                    $adressedata = $cntadr;
+                }
+            }
+        }
+        $adresseclient = $aParams['adresse'];
+        $codepostal = $contactadressedata->getCodepostal();
+        $IdVille = $contactadressedata->getIdVille();
+        if ($IdVille != null)
+        {        
+            $ville =  $this->em->getRepository(\App\Entity\Ville::class)->find($IdVille);
+            $devisPapierDocTemplate->setValue("ville",$ville);
+        }
+        else
+        {
+            $devisPapierDocTemplate->setValue("ville","");
+
+        }
+        $datepropal = !is_null($dossier->getDateDebutPeriode())? $dossier->getDateDebutPeriode()->format("d/m/Y") : "-";
+        $datepropal .= !is_null($dossier->getDateFinPeriode())? " au ".$dossier->getDateFinPeriode()->format("d/m/Y") : "";
+        $datefr = Date::MOIS_FR;
+        $devisPapierDocTemplate->setValue("nomclient",$nomclient);
+        $devisPapierDocTemplate->setValue("adresseclient",$adresseclient);
+        $devisPapierDocTemplate->setValue("codepostal",$codepostal);             
+        $devisPapierDocTemplate->setValue("datedujour", date("d")." ".$datefr[date("m") - 1]." ".date("Y"));
         
+        $sCompetence = "";
+        // APR-105 : Champ Besoin > Formation = Compétence
+        if ($dossier->getIdFormation() instanceof Competence) {
+            $sCompetence = $this->em->getRepository(Competence::class)->find($dossier->getIdFormation())->getCompetence();
+        }
+        
+        $devisPapierDocTemplate->setValue("formation", $sCompetence);
+        $devisPapierDocTemplate->setValue("obectif", "fgsgsd");
+        $devisPapierDocTemplate->setValue("personne", implode("<w:br/>", $aParams['stagiaires']));
+        $devisPapierDocTemplate->setValue("prerequis","fgdgsd");
+        $devisPapierDocTemplate->setValue("duree",$aParams["formated_dates_stage"]["total_jours"]);
+        $devisPapierDocTemplate->setValue("horaires", "dfgsgs");
+        $devisPapierDocTemplate->setValue("lieu",$aParams["ville"]);
+        $devisPapierDocTemplate->setValue("date", $datepropal);
+        $devisPapierDocTemplate->setValue("tva", "20");
+        
+
+        // APR-131
+        $tva = 20;
+        $montantHT = $dossier->getMntDemande() ? $dossier->getMntDemande() : ""; 
+        $montantTTC = floatval($montantHT) + (floatval($montantHT) * $tva / 100);
+        $montantTTCTxt = $montantTTC > 0 ? number_format($montantTTC, 2, ',', ' ') . " €"  : '';
+        $montahtHTTxt = !empty($montantHT) ? number_format($montantHT, 2, ',', ' ') . " €" : '';
+        $tvaTxt = $tva > 0 ? "{".$tva."%}" : '';
+            
+        $tvaMnt = floatval($montantHT) / 100 * 20;
+        $devisPapierDocTemplate->setValue("tvaMnt", $tvaMnt);
+        $devisPapierDocTemplate->setValue("cout", $montahtHTTxt);
+        $devisPapierDocTemplate->setValue("tvaTxt", $tvaTxt);
+        $devisPapierDocTemplate->setValue("coutTTC", $montantTTCTxt);
+
+
+
         // Génération du nom de fichier
         $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/devis_papier_' . $dossier->getIdClient() . '_' . $dossier . '.docx';
         $rep = 'DocPrint/Dossier/'.date("Y-m-d");
