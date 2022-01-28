@@ -300,3 +300,14 @@ table td{
     z-index: 2000 !important;  
 }
 
+.table-striped tbody tr:nth-of-type(2n+1):hover {
+    background-color: rgb(218, 208, 208);
+}
+
+tbody > tr:hover {
+    background-color: rgb(218, 208, 208);
+}
+
+.fa-trash-alt {
+    cursor: no-drop;
+}
