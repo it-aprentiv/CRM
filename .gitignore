@@ -17,6 +17,11 @@ app/vendor/
 # Assets and user uploads
 app/web/bundles/
 app/web/uploads/
+!app/public/DocPrint/Dossier/*
+!app/public/DocPrint/Contact/*
+!app/public/DocPrint/Emmargement/*
+!app/public/DocPrint/Facture/*
+!app/public/DocPrint/Propal/*
 
 # PHPUnit
 /app/phpunit.xml
@@ -24,7 +29,6 @@ app/web/uploads/
 
 # Build data
 app/build/
-
 # Composer PHAR
 app/composer.phar
 
@@ -35,8 +39,5 @@ app/composer.phar
 app/.web-server-pid
 logs/nginx
 app/var/cache/dev/profiler/index.csv
-<<<<<<< HEAD
-#app/var/log/dev.log
-=======
->>>>>>> a034b645006f404f734c548aad39aebb20843f75
 logs/nginx/access.log
+app/var/log/dev.log

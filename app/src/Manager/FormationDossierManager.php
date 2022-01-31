@@ -1106,15 +1106,15 @@ class FormationDossierManager {
         
         $sCompetence = "";
         // APR-105 : Champ Besoin > Formation = Compétence
-        if ($dossier->getIdFormation() instanceof Competence) {
-            $sCompetence = $this->em->getRepository(Competence::class)->find($dossier->getIdFormation())->getCompetence();
+        if ($dossier->getNom() != '') {
+            $catalogue = $this->em->getRepository(Competence::class)->findOneBy(["competence" => $dossier->getNom()]);
+            $sCompetence = !is_null($catalogue) ? utf8_decode("Formation : ".$catalogue->getCompetence()): null;
         }
-        
         $devisPapierDocTemplate->setValue("formation", $sCompetence);
         $devisPapierDocTemplate->setValue("obectif", "fgsgsd");
         $devisPapierDocTemplate->setValue("personne", implode("<w:br/>", $aParams['stagiaires']));
         $devisPapierDocTemplate->setValue("prerequis","fgdgsd");
-        $devisPapierDocTemplate->setValue("duree",$aParams["formated_dates_stage"]["total_jours"]);
+        $devisPapierDocTemplate->setValue("duree",utf8_decode("Durée : ").$aParams["formated_dates_stage"]["total_jours"]);
         $devisPapierDocTemplate->setValue("horaires", "dfgsgs");
         $devisPapierDocTemplate->setValue("lieu",utf8_decode($aParams["ville"]));
         $devisPapierDocTemplate->setValue("date", $datepropal);
@@ -1130,7 +1130,7 @@ class FormationDossierManager {
         $tvaTxt = $tva > 0 ? "{".$tva."%}" : '';
             
         $tvaMnt = floatval($montantHT) / 100 * 20;
-        $devisPapierDocTemplate->setValue("tvaMnt", $tvaMnt);
+        $devisPapierDocTemplate->setValue("tvaMnt", number_format($tvaMnt, 2, ',', ' '));
         $devisPapierDocTemplate->setValue("cout", $montahtHTTxt);
         $devisPapierDocTemplate->setValue("tvaTxt", $tvaTxt);
         $devisPapierDocTemplate->setValue("coutTTC", $montantTTCTxt);

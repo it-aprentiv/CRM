@@ -39,6 +39,7 @@ class EncaissementRepository extends ServiceEntityRepository {
             IF(enc.source = 'dossier', {$fIfFacNull('noDossierRef')}, dom.ref) AS no_dossier_ref, 
             IF(enc.source = 'dossier', {$fIfFacNull('ref')}, facDom.numero) AS num_facture,  
             enc.payeur, enc.dateReelleEncaiss AS date_encaissement, 
+            enc.mntHt AS montantHt, enc.mntTtc AS montantTTC,
             IF(enc.source = 'dossier', fd.tauxCom, '-') AS taux_commission, 
             IF(enc.source = 'dossier', IF(fac.id IS NULL, col2.nomPrenom, col.nomPrenom), coldom.nomPrenom) AS commercial, 
             IF(enc.source = 'dossier', comstat.statut, '-') AS statut_commission

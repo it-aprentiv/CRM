@@ -63,6 +63,8 @@
                 <th>Payeur</th>
                 <th>Date encaissement</th>
                 <th>Taux commission</th>
+                <th>Montant HT</th>
+                <th>Montant TTC</th>
                 <th>Cial</th>
                 <th>Statut commission</th>
                 <th>Actions</th>
@@ -83,6 +85,8 @@
                     <td>{{ encaissement.payeur }}</td>
                     <td>{{ encaissement.date_encaissement | date('d/m/Y') }}</td>
                     <td>{{ encaissement.taux_commission }}</td>
+                    <td>{{ encaissement.montantHt }}</td>
+                    <td>{{ encaissement.montantTTC }} </td>
                     <td>{{ encaissement.commercial }}</td>
                     <td>{{ encaissement.statut_commission }}</td>
                     <td>
