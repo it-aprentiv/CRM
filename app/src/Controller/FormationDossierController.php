@@ -1618,13 +1618,6 @@ class FormationDossierController extends BaseController {
         }
         
         $aFDStagiaire = $this->em->getRepository(FormationDossierStagiaire::class)->findBy(['dossier' => $dossier]);
-        $stagiaires = [];
-        $stagiairesNom = [];
-        $stagiairesPrenom = [];
-        foreach ($aFDStagiaire as $fDStagiaire) {
-            $stagiairesNom[] = $fDStagiaire->getStagiaire()->getNom();
-            $stagiairesPrenom[] = $fDStagiaire->getStagiaire()->getPrenom();
-        }
         $contactdata = $contactManager->preparebdcdata($client);
 
         
@@ -1635,7 +1628,6 @@ class FormationDossierController extends BaseController {
         if (1 === count($datestagecomplet) && $datestagecomplet[0]["joursSemaine"] != null && $datestagecomplet[0]["nbH"] != null) {
             $datestagecomplet = $manager->generatenewdate($datestagecomplet);
         }
-
         // Calendrier de stage
         //$aDatesStage = $em->getRepository(FormationDossierDate::class)->getDossierDate($dossier->getId());
         $aDatesStage = $formationDossierDateRepository->getDossierDate($dossier->getId());
@@ -1681,7 +1673,7 @@ class FormationDossierController extends BaseController {
         $convProform = $manager->generateConvocPro([
             'dossier' => $dossier,
             'client' => $client->getNomStr(),
-            'stagiaires' => $stagiaires,
+            'stagiaires' => $aFDStagiaire,
             //'duree_par_stagiaire' => ($dossier->getNbStagiaires()) ? $fDureeJours / $dossier->getNbStagiaires() : $fDureeJours,
             'duree_par_stagiaire' => $dossier->getDureeHeures(), // APR-208
             'montant_ht' => $dossier->getMntDemande(),
@@ -1691,8 +1683,6 @@ class FormationDossierController extends BaseController {
             'aNbJoursEtHeures' => $aNbJoursEtHeures,
             'o_dates_formation' => $oDatesFormation,
             'formated_dates_stage' => $aFormatedDatesStage,
-            'stagiairesNom' => $fDStagiaire->getStagiaire()->getNom(),
-            'stagiairesPrenom' => $fDStagiaire->getStagiaire()->getPrenom(),
             'SST' => $SST,
             'MACSST' => $MACSST,
             'SSIAP1' => $SSIAP1,

@@ -629,8 +629,7 @@ $qb
     public function extractFactureDossier($iStatut, $aField, $aFilters = []){
         $sColumn = $this->getExtractColumn($aField);
 
-        $qb = $this->getDossierBaseQuery()
-            ->leftJoin(Facture::class, 'f', 'WITH', 'd.id = f.idDossier');
+        $qb = $this->getDossierBaseQuery();
 
         $qb->select($sColumn)
             ->where($qb->expr()->eq('d.idStatut', ':statut'))
@@ -638,7 +637,6 @@ $qb
             ->orderBy('d.id', 'DESC');
 
         $qb = $this->filterDossierByYearExtract($aFilters, $qb, 'd.dateEnvoi');
-
         return $qb->getQuery()->getResult();
     }
 

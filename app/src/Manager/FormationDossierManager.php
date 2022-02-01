@@ -7,6 +7,7 @@ use App\Constants\ExtractionDossierType;
 use App\Entity\Competence;
 use App\Constants\Date;
 use App\Entity\Adresse;
+use ZipArchive;
 use App\Entity\Avoir;
 use App\Entity\Collaborateur;
 use App\Entity\Contact;
@@ -1155,113 +1156,143 @@ class FormationDossierManager {
      */
     public function generateConvocPro($aParams) {
         // Chargement 
-        $devisPapierDocTemplate = new TemplateProcessor("DocPrint/Templates/ConvProform.docx");
+        $devisPapierDocTemplate = "";
         /**@var FormationDossier $dossier */
         $dossier = $aParams['dossier'];
-
-        if ($dossier->getNom() == "SST")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['SST']);
-        }
-        elseif ($dossier->getNom() == "MAC SST")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['MACSST']);
-        }
-        elseif ($dossier->getNom() == "SSIAP 1")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['SSIAP1']);
-        }
-        elseif ($dossier->getNom() == "RECYCLAGE SSIAP")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['RecyclageSSIAP1']);
-        }
-        elseif ($dossier->getNom() == "REMISE A NIVEAU SSIAP1")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['ranSSIAP1']);
-        }
-        elseif ($dossier->getNom() == "SSIAP 2")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['SSIAP2']);
-        }
-        elseif ($dossier->getNom() == "Recyclage SSIAP 2")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['RecyclageSSIAP2']);
-        }
-        elseif ($dossier->getNom() == "Remise à niveau SSIAP 2")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['ranSSIAP2']);
-        }
-        elseif ($dossier->getNom() == "SSIAP 3")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['SSIAP3']);
-        }
-        elseif ($dossier->getNom() == "Recyclage SSIAP 3")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['RecyclageSSIAP3']);
-        }
-        elseif ($dossier->getNom() == "Remise à niveau SSIAP 3")
-        {
-            $devisPapierDocTemplate->setValue("condition", $aParams['ranSSIAP3']);
-        }
-        else {
-            $devisPapierDocTemplate->setValue("condition", "");
-        }
-
-        $devisPapierDocTemplate->setValue("stagiairesNom", $aParams['stagiairesNom']);
-        $devisPapierDocTemplate->setValue("stagiairesPrenom",$aParams['stagiairesPrenom']);
-        $devisPapierDocTemplate->setValue("stage_intitule", $dossier->getNom());
-        
-        // Date debut/fin stage
-        $dateFormation = isset($aParams['o_dates_formation'][0]) ? $aParams['o_dates_formation'][0] : null ;
-        
-        $sDateDebutFin = "Du ";
-     
-        $aFormatedDatesStage = $aParams['formated_dates_stage'];
-        $sStageHoraire = "";
-        
-        if ($aFormatedDatesStage) {
-
-            if ($aFormatedDatesStage['date_debut']['dateD'] instanceof DateTime) {
-                $sDateDebutFin .= $aFormatedDatesStage['date_debut']['dateD']->format('d-m-Y');
-            }
-            $sDateDebutFin .= " au ";
-
-            if ($aFormatedDatesStage['date_fin']['dateD'] instanceof DateTime) {
-                $sDateDebutFin .= $aFormatedDatesStage['date_fin']['dateD']->format('d-m-Y');
-            }
-            
-            
-            if (isset($aFormatedDatesStage['hour_start_am']) && !empty($aFormatedDatesStage['hour_start_am'])) {
-                $sStageHoraire .=  "de " . $aFormatedDatesStage['hour_start_am'] . " à ". $aFormatedDatesStage['hour_end_am'];
-            }
-            
-            if (isset($aFormatedDatesStage['hour_start_pm']) && !empty($aFormatedDatesStage['hour_start_pm']) ) {
-                $sStageHoraire .= (isset($aFormatedDatesStage['hour_start_am']) && !empty($aFormatedDatesStage['hour_start_am']) ? " et " : "") . $aFormatedDatesStage['hour_start_pm'] . " à " . $aFormatedDatesStage['hour_end_pm'];
-            }
-        }
-
-        $devisPapierDocTemplate->setValue("stage_debut_fin", $sDateDebutFin);
-        $devisPapierDocTemplate->setValue("stage_dates", str_replace('/', '<w:br/>', $aParams['calendrier']));
-        $devisPapierDocTemplate->setValue("stage_duree_jour", $dossier->getDureeJours() . " Jours");
-        //$sDureeParStagiaire = $dateFormation && $dateFormation['nbH'] ? number_format($dateFormation['nbH'], 1, ',', ' ') . " Heures " : "";
-        $sDureeParStagiaire = isset($aParams['duree_par_stagiaire']) ? $aParams['duree_par_stagiaire'] . " Heures " : "";
-        $devisPapierDocTemplate->setValue("stage_duree_par_stagiaire", $sDureeParStagiaire);
-        
-        // APR-208 : Problème de fusion : durée par stagiaire / Horaires du stage
-//        $sStageHoraire = $dateFormation && $dateFormation['dHeureM'] ? $dateFormation['dHeureM'] . "/" .$dateFormation['fHeureM'] : "";
-//        $sStageHoraire .= $dateFormation && $dateFormation['dHeureAm'] ?  "-" . $dateFormation['dHeureAm'] . "/" .$dateFormation['fHeureAm'] : "";
-        
-        $devisPapierDocTemplate->setValue("stage_horaire", $sStageHoraire);
-        
-        // Génération du nom de fichier
-        $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_' . $dossier->getIdClient() . '_' . $dossier . '.docx';
+        $stagiaire = $aParams["stagiaires"];
         $rep = 'DocPrint/Dossier/'.date("Y-m-d");
-        
         if(!is_dir($rep)){
             mkdir($rep);
         }
+        $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_' . $dossier->getIdClient() . '_' . $dossier . '.docx';
+        $i = 1;
+        $zip ="";
+        $res = "";
+        if(count($stagiaire) === 1){
+                
+        }else{
+            $zip = new ZipArchive;
+            $res = $zip->open('DocPrint/Dossier/'.date("Y-m-d").'/Convocation_' . $dossier->getIdClient() . '_' . $dossier . '.zip', ZipArchive::CREATE);
+        }
+        foreach ($stagiaire as $fDStagiaire) {
+            $i++;
+            $devisPapierDocTemplate = new TemplateProcessor("DocPrint/Templates/ConvProform.docx");
+            if ($dossier->getNom() == "SST")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['SST']);
+            }
+            elseif ($dossier->getNom() == "MAC SST")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['MACSST']);
+            }
+            elseif ($dossier->getNom() == "SSIAP 1")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['SSIAP1']);
+            }
+            elseif ($dossier->getNom() == "RECYCLAGE SSIAP")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['RecyclageSSIAP1']);
+            }
+            elseif ($dossier->getNom() == "REMISE A NIVEAU SSIAP1")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['ranSSIAP1']);
+            }
+            elseif ($dossier->getNom() == "SSIAP 2")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['SSIAP2']);
+            }
+            elseif ($dossier->getNom() == "Recyclage SSIAP 2")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['RecyclageSSIAP2']);
+            }
+            elseif ($dossier->getNom() == "Remise à niveau SSIAP 2")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['ranSSIAP2']);
+            }
+            elseif ($dossier->getNom() == "SSIAP 3")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['SSIAP3']);
+            }
+            elseif ($dossier->getNom() == "Recyclage SSIAP 3")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['RecyclageSSIAP3']);
+            }
+            elseif ($dossier->getNom() == "Remise à niveau SSIAP 3")
+            {
+                $devisPapierDocTemplate->setValue("condition", $aParams['ranSSIAP3']);
+            }
+            else {
+                $devisPapierDocTemplate->setValue("condition", "");
+            }
+            $devisPapierDocTemplate->setValue("stagiairesNom", $fDStagiaire->getStagiaire()->getNom(),1);
+            $devisPapierDocTemplate->setValue("stagiairesPrenom",$fDStagiaire->getStagiaire()->getPrenom(),1);
+            $devisPapierDocTemplate->setValue("stage_intitule", $dossier->getNom());
+            
+            // Date debut/fin stage
+            $dateFormation = isset($aParams['o_dates_formation'][0]) ? $aParams['o_dates_formation'][0] : null ;
+            
+            $sDateDebutFin = "Du ";
+         
+            $aFormatedDatesStage = $aParams['formated_dates_stage'];
+            $sStageHoraire = "";
+            
+            if ($aFormatedDatesStage) {
+    
+                if ($aFormatedDatesStage['date_debut']['dateD'] instanceof DateTime) {
+                    $sDateDebutFin .= $aFormatedDatesStage['date_debut']['dateD']->format('d-m-Y');
+                }
+                $sDateDebutFin .= " au ";
+    
+                if ($aFormatedDatesStage['date_fin']['dateD'] instanceof DateTime) {
+                    $sDateDebutFin .= $aFormatedDatesStage['date_fin']['dateD']->format('d-m-Y');
+                }
+                
+                
+                if (isset($aFormatedDatesStage['hour_start_am']) && !empty($aFormatedDatesStage['hour_start_am'])) {
+                    $sStageHoraire .=  "de " . $aFormatedDatesStage['hour_start_am'] . " à ". $aFormatedDatesStage['hour_end_am'];
+                }
+                
+                if (isset($aFormatedDatesStage['hour_start_pm']) && !empty($aFormatedDatesStage['hour_start_pm']) ) {
+                    $sStageHoraire .= (isset($aFormatedDatesStage['hour_start_am']) && !empty($aFormatedDatesStage['hour_start_am']) ? " et " : "") . $aFormatedDatesStage['hour_start_pm'] . " à " . $aFormatedDatesStage['hour_end_pm'];
+                }
+            }
+    
+            $devisPapierDocTemplate->setValue("stage_debut_fin", $sDateDebutFin);
+            $devisPapierDocTemplate->setValue("stage_dates", str_replace('/', '<w:br/>', $aParams['calendrier']));
+            $devisPapierDocTemplate->setValue("stage_duree_jour", $dossier->getDureeJours() . " Jours");
+            //$sDureeParStagiaire = $dateFormation && $dateFormation['nbH'] ? number_format($dateFormation['nbH'], 1, ',', ' ') . " Heures " : "";
+            $sDureeParStagiaire = isset($aParams['duree_par_stagiaire']) ? $aParams['duree_par_stagiaire'] . " Heures " : "";
+            $devisPapierDocTemplate->setValue("stage_duree_par_stagiaire", $sDureeParStagiaire);
+            
+            // APR-208 : Problème de fusion : durée par stagiaire / Horaires du stage
+    //        $sStageHoraire = $dateFormation && $dateFormation['dHeureM'] ? $dateFormation['dHeureM'] . "/" .$dateFormation['fHeureM'] : "";
+    //        $sStageHoraire .= $dateFormation && $dateFormation['dHeureAm'] ?  "-" . $dateFormation['dHeureAm'] . "/" .$dateFormation['fHeureAm'] : "";
+            
+            $devisPapierDocTemplate->setValue("stage_horaire", $sStageHoraire);
+            if(count($stagiaire) === 1){
+                
+            }else{
+                $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_' . $dossier->getIdClient() . '_' . $dossier .$i.'.docx';
+            }
+
+            $devisPapierDocTemplate->saveAs($nomfile);
+
+            if ($res) {
+                $zip->addFile($nomfile,'Convocation_' . $dossier->getIdClient() . '_' . $dossier .$i.'.docx');
+            }
+
+        }
+        sleep(5);
+        if(count($stagiaire) === 1){
+                
+        }else{
+            $zip->close();
+            $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_' . $dossier->getIdClient() . '_' . $dossier . '.zip';
+        }       
         
-        $devisPapierDocTemplate->saveAs($nomfile);
+        // Génération du nom de fichier
+        
+        
 
         return $nomfile;
     }
