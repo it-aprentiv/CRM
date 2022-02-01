@@ -125,8 +125,6 @@ const date_spliter = (fakedate) => {
 }
 let date_debut_edt = document.getElementById("debutEDT")
 let current_set_date_edt = date_debut_edt.value;
-let date_debut = document.getElementById("dossier_dateDebutPeriode")
-let current_set_date = date_debut.value;
 setInterval(()=>{
     if(current_set_date_edt === date_debut_edt.value){
 
@@ -137,14 +135,6 @@ setInterval(()=>{
     autoclose: true
 }).datepicker("update",date_spliter(current_set_date_edt)).datepicker('fill'); // setDate()
     }
-      if(current_set_date === date_debut.value){
-
-    }else{
-        current_set_date = date_debut.value;
-        $('#dossier_dateFinPeriode').datepicker({
-    format: 'dd/mm/yyyy',
-    autoclose: true
-}).datepicker("update",date_spliter(current_set_date)).datepicker('fill'); // setDate()
-    }
+    
 },500)
 </script>
