@@ -441,7 +441,6 @@ class FormationDossierController extends BaseController {
             
              // APR-149 : Client et OPCA n'est pas repris lors d'une création de dossier à partir d'une fiche client
             if ($oClient instanceof Contact) {
-                dd($oClient);
                 $dossier->setIdClient($oClient);
                 // Récupération OPCA
                 $oClientOPCA = $contactRepository->findOneBy(['id' => $oClient->getOpca()]);
