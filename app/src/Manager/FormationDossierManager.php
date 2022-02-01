@@ -9,6 +9,7 @@ use App\Constants\Date;
 use App\Entity\Adresse;
 use ZipArchive;
 use App\Entity\Avoir;
+use App\Entity\Civilite;
 use App\Entity\Collaborateur;
 use App\Entity\Contact;
 use App\Entity\Dossier;
@@ -1168,11 +1169,12 @@ class FormationDossierManager {
         $i = 1;
         $zip ="";
         $res = "";
+        $time = time();
         if(count($stagiaire) === 1){
                 
         }else{
             $zip = new ZipArchive;
-            $res = $zip->open('DocPrint/Dossier/'.date("Y-m-d").'/Convocation_' . $dossier->getIdClient() . '_' . $dossier . '.zip', ZipArchive::CREATE);
+            $res = $zip->open('DocPrint/Dossier/'.date("Y-m-d").'/Convocation_' . $dossier->getIdClient() . '_' . $dossier .$time.'.zip', ZipArchive::CREATE);
         }
         foreach ($stagiaire as $fDStagiaire) {
             $i++;
@@ -1224,8 +1226,9 @@ class FormationDossierManager {
             else {
                 $devisPapierDocTemplate->setValue("condition", "");
             }
-            $devisPapierDocTemplate->setValue("stagiairesNom", $fDStagiaire->getStagiaire()->getNom(),1);
-            $devisPapierDocTemplate->setValue("stagiairesPrenom",$fDStagiaire->getStagiaire()->getPrenom(),1);
+            $devisPapierDocTemplate->setValue("stagiairesNom", $fDStagiaire->getStagiaire()->getNom());
+            $devisPapierDocTemplate->setValue("stagiairesPrenom",$fDStagiaire->getStagiaire()->getPrenom());
+            $devisPapierDocTemplate->setValue("stagiairesCivilite",$this->em->getRepository(Civilite::class)->find($fDStagiaire->getStagiaire()->getIdCivilite())->getCivilite());
             $devisPapierDocTemplate->setValue("stage_intitule", $dossier->getNom());
             
             // Date debut/fin stage
@@ -1268,26 +1271,25 @@ class FormationDossierManager {
     //        $sStageHoraire = $dateFormation && $dateFormation['dHeureM'] ? $dateFormation['dHeureM'] . "/" .$dateFormation['fHeureM'] : "";
     //        $sStageHoraire .= $dateFormation && $dateFormation['dHeureAm'] ?  "-" . $dateFormation['dHeureAm'] . "/" .$dateFormation['fHeureAm'] : "";
             
+    $stagiaireFullName = $this->em->getRepository(Civilite::class)->find($fDStagiaire->getStagiaire()->getIdCivilite())->getCivilite() ."_". $fDStagiaire->getStagiaire()->getNom() . '_' . $fDStagiaire->getStagiaire()->getPrenom();
             $devisPapierDocTemplate->setValue("stage_horaire", $sStageHoraire);
             if(count($stagiaire) === 1){
-                
+                $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_de_'.$stagiaireFullName.'.docx';
             }else{
-                $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_' . $dossier->getIdClient() . '_' . $dossier .$i.'.docx';
+                $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_de_' .$stagiaireFullName.'.docx';
             }
 
             $devisPapierDocTemplate->saveAs($nomfile);
 
             if ($res) {
-                $zip->addFile($nomfile,'Convocation_' . $dossier->getIdClient() . '_' . $dossier .$i.'.docx');
+                $zip->addFile($nomfile,'Convocation_de_' . $stagiaireFullName.'.docx');
             }
 
         }
-        sleep(5);
-        if(count($stagiaire) === 1){
-                
-        }else{
+        sleep(2);
+        if(count($stagiaire) > 1){
             $zip->close();
-            $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_' . $dossier->getIdClient() . '_' . $dossier . '.zip';
+            $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_' . $dossier->getIdClient() . '_' . $dossier .$time.'.zip';
         }       
         
         // Génération du nom de fichier

@@ -17,16 +17,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Form\DataTransformer\DateTimeTransformer;
 use App\Entity\Contact;
+use App\Form\DataTransformer\CiviliteTransformer;
+use App\Entity\Civilite;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class StagiaireType extends AbstractType
 {
     private $datetimetransformer;
+    private $civilitetransformer;
+
     public function __construct(
+        CiviliteTransformer $civilitetransformer,
         DateTimeTransformer $datetimetransformer
     )
     {
         $this->datetimetransformer = $datetimetransformer;
+        $this->civilitetransformer          = $civilitetransformer;
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -36,6 +43,11 @@ class StagiaireType extends AbstractType
                 'attr' => array(
                     'readonly' => true,
                 ),
+            ])
+            ->add('idCivilite', EntityType::class, [
+                'class'         => Civilite::class,
+                'choice_label'  => 'civilite',
+                'required'      => true,
             ])
             ->add('nom',TextType::class, [
                 'label' => 'Nom',
@@ -85,6 +97,8 @@ class StagiaireType extends AbstractType
             ]);
         //$builder->get("dateNaissance")->addModelTransformer($this->datetimetransformer);
         //$builder->get("dateNaissance")->resetViewTransformers();
+        $builder->get("idCivilite")->addModelTransformer($this->civilitetransformer);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
