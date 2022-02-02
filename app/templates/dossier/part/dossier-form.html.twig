@@ -426,7 +426,7 @@
                     <a href="{{ path('Formation_Dossier_ConvProform', {'id': dossier ? dossier.id : 0}) }}" class="btn btn-primary btn-block">Convocation</a>
                 </div>
                 <div class="btn-group mr-2" role="group" aria-label="Fourth group">
-                    <a name="emmargementpapier" data-toggle="modal" data-target="#emmargementpapier" class="btn btn-primary btn-block" style="color:white;">Emmargement papier</a>
+                    <a  href="{{ path('generate_doc_emmargement', {'id': dossier ? dossier.id : 0}) }}" class="btn btn-primary btn-block" style="color:white;">Emmargement papier</a>
                 </div>
                 <div class="btn-group mr-2" role="group" aria-label="Fourth group">
                     <a href="javascript:void(0)" id="pagedegarde" class="btn btn-primary btn-block">Page de garde dossier</a>

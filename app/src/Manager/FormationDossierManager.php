@@ -490,12 +490,25 @@ class FormationDossierManager {
      * @param type $stagiaireid
      * @return type
      */
-    public function CreateEmargDoc(FormationDossier $dossier, $stagiaireid, FormationDossierDateRepository $formationDossierDateRepository) {
+    public function CreateEmargDoc(FormationDossier $dossier, $stagiaires, FormationDossierDateRepository $formationDossierDateRepository) {
         $fichier = null;
+        $fichier = "";
         $contact = $dossier->getIdClient();
         $opca = !is_null($dossier->getIdOpca()) ? trim($dossier->getIdOpca()->getNomStr()) : (!is_null($contact->getOpca()) ? trim($contact->getOpca()->getNomStr()) : "");
         $structure = !is_null($dossier->getIdStructure()) ? $dossier->getIdStructure()->getId() : (!is_null($contact->getStructure()) ? $contact->getStructure()->getId() : 0);
-        $stagiaire = $this->em->getRepository(Contact::class)->find($stagiaireid);
+        $i = 1;
+        $zip ="";
+        $res = false;
+        $time = time();
+        if(count($stagiaires) === 1){
+                
+        }else{
+            $zip = new ZipArchive;
+            $res = $zip->open('DocPrint/Emmargement/Emmargement' . $dossier->getIdClient().'.zip', ZipArchive::CREATE);
+        }
+        
+        foreach($stagiaires as $contactStagiaire){
+        $stagiaire = $contactStagiaire->getStagiaire();
         $nomstagiaire = !is_null($stagiaire) ? $stagiaire->getNom() . " " . $stagiaire->getPrenom() : " ";
         //$datestagecomplet = $this->em->getRepository(FormationDossierDate::class)->getDossierDate($dossier->getId());
         $datestagecomplet = $formationDossierDateRepository->getDossierDate($dossier->getId());
@@ -528,7 +541,16 @@ class FormationDossierManager {
         }
         
         $fichier = $docword->saveDocument("Emargement_" . $dossier->getIdClient() . '_' . $nomstagiaire . ".docx", "Emmargement");
-        
+            if ($res) {
+                $zip->addFile($fichier,"Emargement_" . $dossier->getIdClient() . '_' . $nomstagiaire . ".docx");
+            }
+        }
+        if(count($stagiaires) === 1){
+                
+        }else{
+            $fichier = 'DocPrint/Emmargement/Emmargement' . $dossier->getIdClient().'.zip';
+        }
+
         return $fichier;
     }
 
@@ -1273,11 +1295,8 @@ class FormationDossierManager {
             
     $stagiaireFullName = $this->em->getRepository(Civilite::class)->find($fDStagiaire->getStagiaire()->getIdCivilite())->getCivilite() ."_". $fDStagiaire->getStagiaire()->getNom() . '_' . $fDStagiaire->getStagiaire()->getPrenom();
             $devisPapierDocTemplate->setValue("stage_horaire", $sStageHoraire);
-            if(count($stagiaire) === 1){
                 $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_de_'.$stagiaireFullName.'.docx';
-            }else{
                 $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/Convocation_de_' .$stagiaireFullName.'.docx';
-            }
 
             $devisPapierDocTemplate->saveAs($nomfile);
 

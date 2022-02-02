@@ -1442,11 +1442,11 @@ class FormationDossierController extends BaseController {
      * @param FormationDossier $dossier
      * @param FormationDossierManager $manager
      *
-     * @Route("/dossier/{id}/generatedocEmmargement/{stagiaireid}",
+     * @Route("/dossier/{id}/generatedocEmmargement",
      *     name="generate_doc_emmargement",
-     *     requirements={"page"="\d+","page"="\d+"})
+     *     requirements={"page"="\d+"})
      */
-    public function generateDocEmmargement(FormationDossier $dossier, $stagiaireid, FormationDossierDateRepository $formationDossierDateRepository, FormationDossierManager $manager) {
+    public function generateDocEmmargement(FormationDossier $dossier, FormationDossierDateRepository $formationDossierDateRepository, FormationDossierManager $manager) {
          $client = !in_array($dossier->getIdClient()->getId(), [75530]) ? $dossier->getIdClient() : null;
         
          if (!$client) {
@@ -1454,10 +1454,10 @@ class FormationDossierController extends BaseController {
             //return $this->redirectToRoute('Liste_Dossiers_Controller');
             return $this->redirectToRoute('Liste_Dossiers_Controller/visualiserDossier', ['id' => $dossier->getId() ]);
         }
-        
+        $stagiaires = $this->em->getRepository(FormationDossierStagiaire::class)->findBy(['dossier' => $dossier]);
         $fichier = null;
         // Ajout d'un 3eme paramètre 'FormationDossierDateRepository $formationDossierDateRepository' qui était deja present dant FormationDossierManager dans la methode CreateEmargDoc. (27/01)
-        $fichier = $manager->CreateEmargDoc($dossier, $stagiaireid, $formationDossierDateRepository);
+        $fichier = $manager->CreateEmargDoc($dossier, $stagiaires, $formationDossierDateRepository);
 
         return $this->returnFile($fichier);
     }
