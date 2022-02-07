@@ -380,11 +380,6 @@ $qb
                 $qb->andWhere($qb->expr()->eq('col.nomPrenom', ':commercial'));
                 $qb->setParameter(':commercial', $commercial);
             
-        }         if($commercial){
-            //filtre commercial
-                $qb->andWhere($qb->expr()->eq('col.nomPrenom', ':commercial'));
-                $qb->setParameter(':commercial', $commercial);
-            
         }
          return $qb
             ->groupBy("year")
