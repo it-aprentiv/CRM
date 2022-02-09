@@ -602,7 +602,7 @@
                         <a name="editerdocument" data-toggle="modal" data-target="#modalEditerDocument" class="btn btn-primary btn-block" style="color:white;">Editer un document</a>
                     </div>
                     <div class="btn-group mr-2" role="group" aria-label="Fourth group">
-                        <a href="{{ path("Liste_Dossiers_Controller", { 'client' : contact.nomStr } ) }}" class="btn btn-primary btn-block">Dossiers</a>
+                        <a href="{{ path("Liste_Dossiers_Controller", { 'client' : contact.nomStr , 'clientid':contact.id } ) }}" class="btn btn-primary btn-block">Dossiers</a>
                     </div>
                     <div class="btn-group mr-2" role="group" aria-label="Fourth group">
                         <a href="{{ path("Liste_Formation_Mise_Place_Controller") }}" class="btn btn-primary btn-block">Formations</a>

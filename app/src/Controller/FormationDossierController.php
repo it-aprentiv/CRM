@@ -326,7 +326,7 @@ class FormationDossierController extends BaseController {
         $oClient = null;
         
         if (!empty($sClient)) {
-            $oClient = $contactRepository->findOneBy(["nomStr" => $sClient]);
+            $oClient = $contactRepository->find($sClient);
 
             if ($oClient instanceof Contact) {
                 $dossier->setIdClient($oClient);
@@ -385,6 +385,7 @@ class FormationDossierController extends BaseController {
 
         $docForm = $this->createForm(DossierType::class, $dossier, ['signature' => $signature]);
         $docForm->handleRequest($request);
+        
         $stagiaires = $docForm->get('stagiaires')->getData();
         $propalClient ="";
         if (!empty($idClient)) {
