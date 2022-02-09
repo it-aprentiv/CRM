@@ -243,7 +243,7 @@ class ContactController extends BaseController {
             $this->viewParams["adressesvilledata"][] = $adres->getIdVille();
         }
 
-        $nomContact = $contact->getNomStr();
+        $nomContact = $contact->getId();
         $dossierClient = $this->em->getRepository(FormationDossier::class)->getAllContactDossier($nomContact);
         //dd($dossierClient);
         $this->viewParams["dossierClient"] = $dossierClient;

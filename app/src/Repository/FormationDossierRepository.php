@@ -104,7 +104,8 @@ class FormationDossierRepository extends ServiceEntityRepository
             //filtre client
             if ($filter->getClient()) {
                 $sClient= $filter->getClient();
-                $qb->andWhere($qb->expr()->eq('cli.nomStr', ':client'));
+                $qb->andWhere('cli.nomStr = :client OR cli.id = :client');
+
                 $qb->setParameter(':client',$sClient);
             }
             //filtre intitulé stage
@@ -419,6 +420,7 @@ $qb
             $qb->andWhere($qb->expr()->in('d.idStatut', ':statut'))
                 ->setParameter('statut', $aFilters['statut']);
         }
+        dd($qb->getQuery()->getSQL());
 
         return $qb->getQuery()->getResult();
     }
@@ -588,7 +590,6 @@ $qb
 
         $qb = self::filterDossierByYearExtract($aFilters, $qb, 'd.dateEnvoi')
             ->orderBy('d.id', 'DESC');
-
         return $qb->getQuery()->getResult();
     }
 
@@ -711,7 +712,7 @@ $qb
             ->leftJoin(Structure::class, 'str', 'WITH', 'str.id = fd.idStructure')
             ->leftJoin(Collaborateur::class, 'col', 'WITH', 'fd.idCommercial = col.id')
             ->leftJoin(Contact::class, 'cnt', 'WITH', 'cnt.id = fd.idClient')
-            ->where($qb->expr()->eq('cnt.nomStr',":nomContact"))
+            ->where($qb->expr()->eq('cnt.id',":nomContact"))
             ->setParameter("nomContact", $nomContact)
             ->getQuery()
             ->getResult();
