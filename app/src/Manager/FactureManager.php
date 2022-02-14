@@ -231,7 +231,8 @@ class FactureManager {
             $worksheet->getCell('A22')->setValue("Dates : " . $dateduau);
             $worksheet->getCell('A23')->setValue("Nb jour(s) : " . $res['nbJ']);
             $worksheet->getCell('A24')->setValue("Nb heure(s) : " . $res['nbH']);
-            
+            !$ndossopca ? $worksheet->getCell('A25')->setValue("") : $worksheet->getCell('A25')->setValue("Dossier n° : " . $ndossopca);
+
             $worksheet->getCell('F21')->setValue($datatotalfact['httalfact'] . " €");
             $worksheet->getCell('F27')->setValue($datatotalfact['httalfact'] . " €");
             $worksheet->getCell('F28')->setValue($datatotalfact['tvatotalfact'] . " €");
@@ -289,7 +290,7 @@ class FactureManager {
             $worksheet->getCell('A22')->setValue("Dates :" . $dateduau);
             $worksheet->getCell('A23')->setValue("Nb jour(s) :" . $res['nbJ']);
             $worksheet->getCell('A24')->setValue("Nb heure(s) :" . $res['nbH']);
-            $worksheet->getCell('A25')->setValue("");
+            !$ndossopca ? $worksheet->getCell('A25')->setValue("") : $worksheet->getCell('A25')->setValue("Dossier n° : " . $ndossopca);
             $worksheet->getCell('A26')->setValue("");
             $worksheet->getCell('A27')->setValue("");
 
