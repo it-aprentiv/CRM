@@ -54,6 +54,9 @@ class EncaissementFilterType extends AbstractType
             ->add('dateEncaissement', Type\CrmDateType::class, [
                 'required' => false
             ])
+            ->add('dateEncaissement2', Type\CrmDateType::class, [
+                'required' => false
+            ])
             ->add('tauxCommission', ChoiceType::class, [
                 'choices' => $this->getTauxCommissionsChoices(),
                 'required' => false,
@@ -72,6 +75,7 @@ class EncaissementFilterType extends AbstractType
         
         // Modification format date
         $builder->get('dateEncaissement')->addModelTransformer($this->dateTimeTransformer);
+        $builder->get('dateEncaissement2')->addModelTransformer($this->dateTimeTransformer);
         // Hack Autocompletion commercial
         $builder->get('commercial')->resetViewTransformers();
     }

@@ -90,6 +90,13 @@ class EncaissementRepository extends ServiceEntityRepository {
                 $qb->andWhere($qb->expr()->eq('DATE(enc.dateReelleEncaiss)', 'DATE(:dateEncaissement)'));
                 $qb->setParameter('dateEncaissement', $filter->getDateEncaissement()->format('Y-m-d'));
             }
+            
+            if ($filter->getDateEncaissement2()) {
+                $qb->Where($qb->expr()->between('DATE(enc.dateReelleEncaiss)','DATE(:dateEncaissement)', 'DATE(:dateEncaissement2)'));
+                $qb->setParameter('dateEncaissement', $filter->getDateEncaissement()->format('Y-m-d'));
+                $qb->setParameter('dateEncaissement2', $filter->getDateEncaissement2()->format('Y-m-d'));
+
+            }
 
             if ($filter->getTauxCommission() !== null) {
                 $qb->andWhere($qb->expr()->eq('fd.tauxCom', ':tauxCommission'));

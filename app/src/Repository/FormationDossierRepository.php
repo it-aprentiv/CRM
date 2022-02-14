@@ -420,7 +420,7 @@ $qb
             $qb->andWhere($qb->expr()->in('d.idStatut', ':statut'))
                 ->setParameter('statut', $aFilters['statut']);
         }
-        dd($qb->getQuery()->getSQL());
+        //dd($qb->getQuery()->getSQL());
 
         return $qb->getQuery()->getResult();
     }

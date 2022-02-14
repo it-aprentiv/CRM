@@ -14,6 +14,7 @@ class EncaissementFilter
     private $numFacture;
     private $payeur;
     private $dateEncaissement;
+    private $dateEncaissement2;
     private $tauxCommission;
     private $commercial;
     private $statutCommission;
@@ -66,6 +67,14 @@ class EncaissementFilter
         return $this->dateEncaissement;
     }
 
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getDateEncaissement2() {
+        return $this->dateEncaissement2;
+    }
+        
+
     public function getTauxCommission() {
         return $this->tauxCommission;
     }
@@ -95,6 +104,11 @@ class EncaissementFilter
 
     public function setDateEncaissement($dateEncaissement) {
         $this->dateEncaissement = $dateEncaissement;
+        return $this;
+    }
+
+    public function setDateEncaissement2($dateEncaissement2) {
+        $this->dateEncaissement2 = $dateEncaissement2;
         return $this;
     }
 

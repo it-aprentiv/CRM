@@ -47,7 +47,7 @@ class EncaissementType extends AbstractType {
 
         $builder
             ->add('structure', StructureType::class, [
-                'label' => 'structure'
+                'label' => 'Structure'
         ]);
 
         $fMntHtEncaisse = $this->factureManager->getFloatAmount($options['encaissement_infos']['montant_ht_facture']);
