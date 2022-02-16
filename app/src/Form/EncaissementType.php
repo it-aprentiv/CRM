@@ -117,8 +117,9 @@ class EncaissementType extends AbstractType {
                     'label' => 'Date du chèque',
                     'attr' => [
                         'class' => 'js-datepicker text-center cli_choice choice-payeur',
-                        'autocomplete' => 'off'
+                        'autocomplete' => 'off',
                     ],
+                    'required'   => false,
                 ])
                 ->add('mntantReglementclient', Type\CrmMoneyType::class, [
                     'label' => 'Montant',
