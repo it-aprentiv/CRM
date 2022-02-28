@@ -1201,6 +1201,11 @@ class FormationDossierManager {
         foreach ($stagiaire as $fDStagiaire) {
             $i++;
             $devisPapierDocTemplate = new TemplateProcessor("DocPrint/Templates/ConvProform.docx");
+            if($dossier->getIdStructure()->getId() == 2){
+                $devisPapierDocTemplate = new TemplateProcessor("DocPrint/Templates/ConvProform.docx");
+            }else{
+                $devisPapierDocTemplate = new TemplateProcessor("DocPrint/Templates/ConvAprentiv.docx");
+            }
             if ($dossier->getNom() == "SST")
             {
                 $devisPapierDocTemplate->setValue("condition", $aParams['SST']);
