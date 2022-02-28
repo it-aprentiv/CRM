@@ -78,6 +78,31 @@ class Lead
      * @ORM\Column(name="statut", type="string", length=255)
      */
     private $statut;
+
+    /**
+     * @ORM\Column(name="formation", type="string", length=255)
+     */
+    private $formation;
+
+    /**
+     * @ORM\Column(name="periode", type="string", length=255)
+     */
+    private $periode;
+
+    /**
+     * @ORM\Column(name="typerequest", type="string", length=255)
+     */
+    private $typerequest;
+
+    /**
+     * @ORM\Column(name="message", type="string", length=255)
+     */
+    private $message;
+
+    /**
+     * @ORM\Column(name="financement", type="string", length=255)
+     */
+    private $financement;
     
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -259,6 +284,66 @@ class Lead
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getFormation(): ?string
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(string $formation): self
+    {
+        $this->formation = $formation;
+
+        return $this;
+    }
+
+    public function getPeriode(): ?string
+    {
+        return $this->periode;
+    }
+
+    public function setPeriode(string $periode): self
+    {
+        $this->periode = $periode;
+
+        return $this;
+    }
+
+    public function getTyperequest(): ?string
+    {
+        return $this->typerequest;
+    }
+
+    public function setTyperequest(string $typerequest): self
+    {
+        $this->typerequest = $typerequest;
+
+        return $this;
+    }
+
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    public function setMessage(string $message): self
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    public function getFinancement(): ?string
+    {
+        return $this->financement;
+    }
+
+    public function setFinancement(string $financement): self
+    {
+        $this->financement = $financement;
 
         return $this;
     }
