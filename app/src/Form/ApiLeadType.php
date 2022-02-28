@@ -7,17 +7,18 @@ use App\Entity\Civilite;
 use App\Entity\ContactNote;
 use App\Entity\LeadNote;
 use App\Form\DataTransformer\CiviliteTransformer;
-use App\Repository\CollaborateurRepository;
 use Doctrine\DBAL\Types\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LeadType extends AbstractType
+class ApiLeadType extends AbstractType
 {
     private $civilitetransformer;
 
@@ -28,13 +29,15 @@ class LeadType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $exceptedcollab = null;
-        if(isset($options['attr']) && isset($options['attr']['editform']) && $options['attr']['editform']) {
+    /*    if(isset($options['attr']) && isset($options['attr']['editform']) && $options['attr']['editform']) {
             $exceptedcollab = $options['attr']['editform'];
-        }
+        }*/
         $builder
             ->add('societe', TextType::class, [
-                'required' => false
+                'required' => false,
+                'label'=>'Société'
             ])
             ->add('civilite', EntityType::class, [
                 'class'         => Civilite::class,
@@ -56,17 +59,6 @@ class LeadType extends AbstractType
             ->add('ville', TextType::class, [
                 'required' => false
             ])
-            ->add('commercial', EntityType::class, [
-                'class' => \App\Entity\Collaborateur::class,
-                'required' => false,
-                'choice_label' => 'nomPrenom',
-                'attr' => [
-                    'required' => 'required',
-                ],
-                'query_builder' => function (CollaborateurRepository $c) use ($exceptedcollab) {
-                    return $c->findAllCollaborateur($exceptedcollab);
-                },
-            ])
             ->add('origine', ChoiceType::class,[
                 'choices' => [
                     'Site web' => 'Site web',
@@ -80,22 +72,17 @@ class LeadType extends AbstractType
                     'Autre' => 'Autre'
             ]])
             ->add('statut', ChoiceType::class,[
+                'label' =>false,
                 'choices' => [
                     'En cours' => 'En cours',
                     'Devenu client' => 'Devenu client',
                     'Devenu prospect' => 'Devenu prospect',
                     'Sans suite' => 'Sans suite',
-            ]])
-            ->add('commentaires', CollectionType::class,[
-                "entry_type"    => NoteType::class,
-                'attr'          => [ 'label' => false ],
-                'by_reference'  => false,
-                'allow_add'     => true,
-                'allow_delete'  => true,
-                'required'      => false,
-                'entry_options' => ['data_class' => LeadNote::class]
-            ])
-            ->add('message', TextType::class)
+                    
+                ],
+                'attr'=>[
+                    'hidden'=>'hidden',
+                ]])
             ->add('formation', ChoiceType::class,[
                 'choices' => [
                     'Formation 1' => 'Formation 1',
@@ -112,10 +99,18 @@ class LeadType extends AbstractType
             ->add('typerequest', ChoiceType::class,[
                 'label'=>'Type de demande',
                 'choices'=>[
-                    'Fonds personnels' =>'Fonds personnels',
-                    'CPF'=>'CPF',
-                    'OPCO'=>'OPCO',
-                    
+                    'Particulier' =>'Particulier',
+                    'Entreprise'=>'Entreprise'
+                ]
+            ])
+            ->add('financement', ChoiceType::class,[
+                'choices'=>[
+                    'P' =>'Particulier',
+                    'Entreprise'=>'Entreprise'
+                ],
+                'label'=>'Financement',
+                'attr'=>[
+                    'placeholder'=>'Financement'
                 ]
             ])
             ->add('periode', ChoiceType::class,[
@@ -125,6 +120,10 @@ class LeadType extends AbstractType
                     'Dans 3 mois'=>'3 mois',
                     'Dans 3 mois '=>'3 mois'
                 ]
+            ])
+            ->add('message', TextareaType::class)
+            ->add('envoyer', SubmitType::class,[
+                'label' => 'Envoyer'
             ])
             ;
             $builder->get("civilite")->addModelTransformer($this->civilitetransformer);
