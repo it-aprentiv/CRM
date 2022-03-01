@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Collaborateur;
 use phpDocumentor\Reflection\Types\Void_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +29,11 @@ class ApiLeadController extends AbstractController
         {            
             $commentaire = new LeadNote();
             $commentaire->setTexteNote($lead->getMessage());
+            $dispatchCom = $em->getRepository(Collaborateur::class)->find(21);
+            $lead->setCommercial($dispatchCom);
             $lead->addCommentaire($commentaire);
-            //$em->persist($lead);
-            //$em->flush();
+            $em->persist($lead);
+            $em->flush();
             $message = (new \Swift_Message('Hello Email'))
             ->setFrom($lead->getEmail())
             ->setTo('abdulah@aprentiv.com')
@@ -40,7 +43,6 @@ class ApiLeadController extends AbstractController
             );
     
         $mailer->send($message);
-        $this->addFlash('success', 'Lead créé avec succés!');
             //return $this->redirectToRoute('Fiche_lead_Controller/editLead', array('id' => $lead->getId()));
         }
         $this->viewParams['lead'] = $lead;

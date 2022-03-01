@@ -43,7 +43,7 @@ class LeadController extends BaseController
         $this->viewParams['leadPage'] = $leadPage;
         $this->viewParams['can_edit'] = $this->isGranted('edit', Menu::MENU_CLIENT_PROSPECT);
         $this->viewParams['can_view'] = $this->isGranted('view', Menu::MENU_CLIENT_PROSPECT);
-        
+            
         return $this->render('lead/index.html.twig', $this->viewParams);
     }
 

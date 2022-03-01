@@ -45,16 +45,16 @@ class ApiLeadType extends AbstractType
                 'required'      => false,
             ])
             ->add('nom', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('prenom', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('telephone', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('email', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('ville', TextType::class, [
                 'required' => false
@@ -70,6 +70,9 @@ class ApiLeadType extends AbstractType
                     'EDOF' => 'EDOF',
                     'Pole Emploi' => 'Pole Emploi',
                     'Autre' => 'Autre'
+            ],
+            'attr'=>[
+                'hidden'=>'hidden',
             ]])
             ->add('statut', ChoiceType::class,[
                 'label' =>false,
@@ -83,29 +86,20 @@ class ApiLeadType extends AbstractType
                 'attr'=>[
                     'hidden'=>'hidden',
                 ]])
-            ->add('formation', ChoiceType::class,[
-                'choices' => [
-                    'Formation 1' => 'Formation 1',
-                    'Formation 2' => 'Formation 2',
-                    'Formation 3' => 'Formation 3',
-                    'Formation 4' => 'Formation 4',
-                    'Formation 5' => 'Formation 5',
-                    'Formation 6' => 'Formation 6',
-                    'Formation 7' => 'Formation 7',
-                    'Formation 8' => 'Formation 8',
-                ]
-            ] 
-            )
+            ->add('formation', TextType::class,[
+                'required' => true
+            ])
             ->add('typerequest', ChoiceType::class,[
                 'label'=>'Type de demande',
                 'choices'=>[
                     'Particulier' =>'Particulier',
                     'Entreprise'=>'Entreprise'
-                ]
+                ],
+                'required' => true
             ])
             ->add('financement', ChoiceType::class,[
                 'choices'=>[
-                    'P' =>'Particulier',
+                    'Particulier' =>'Particulier',
                     'Entreprise'=>'Entreprise'
                 ],
                 'label'=>'Financement',
@@ -123,7 +117,10 @@ class ApiLeadType extends AbstractType
             ])
             ->add('message', TextareaType::class)
             ->add('envoyer', SubmitType::class,[
-                'label' => 'Envoyer'
+                'label' => 'Envoyer',
+                'attr' => [
+                    'class' => 'btn btn-primary'
+                ]
             ])
             ;
             $builder->get("civilite")->addModelTransformer($this->civilitetransformer);
