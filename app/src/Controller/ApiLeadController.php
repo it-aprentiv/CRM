@@ -29,8 +29,8 @@ class ApiLeadController extends AbstractController
             $commentaire = new LeadNote();
             $commentaire->setTexteNote($lead->getMessage());
             $lead->addCommentaire($commentaire);
-            $em->persist($lead);
-            $em->flush();
+            //$em->persist($lead);
+            //$em->flush();
             $message = (new \Swift_Message('Hello Email'))
             ->setFrom($lead->getEmail())
             ->setTo('abdulah@aprentiv.com')
