@@ -11,10 +11,12 @@ use Doctrine\DBAL\Types\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -37,27 +39,51 @@ class ApiLeadType extends AbstractType
         $builder
             ->add('societe', TextType::class, [
                 'required' => false,
-                'label'=>'Société'
+                'label'=>'Société',
+                'attr'=>[
+                    'placeholder'=>'Veuillez renseigner le nom de votre société si vous appartenez à une'
+                ]
+                
             ])
             ->add('civilite', EntityType::class, [
                 'class'         => Civilite::class,
                 'choice_label'  => 'civilite',
                 'required'      => false,
+                'label'=>'Civilité'
             ])
             ->add('nom', TextType::class, [
-                'required' => true
+                'required' => true,
+                'attr'=>[
+                    'placeholder'=>''
+                ],
+                'label'=>'Nom *'
             ])
             ->add('prenom', TextType::class, [
+                'label'=>'Prénom *',
+                'required' => true,
+                'attr'=>[
+                    'placeholder'=>''
+                ],
+            ])
+            ->add('telephone', TelType::class, [
+                'label'=>'Téléphone *',
                 'required' => true
             ])
-            ->add('telephone', TextType::class, [
-                'required' => true
+            ->add('email', EmailType::class, [
+                'required' => true,
+                'label'=>'Email *'
             ])
-            ->add('email', TextType::class, [
-                'required' => true
-            ])
-            ->add('ville', TextType::class, [
-                'required' => false
+            ->add('ville', ChoiceType::class, [
+                'choices'=>[
+                    'Paris'=>'Paris',
+                    'Marseille'=>'Marseille'
+                ],
+                'placeholder'=>'',
+                'required' => true,
+                'attr'=>[
+
+                ],
+                'label'=>'Ville *'
             ])
             ->add('origine', ChoiceType::class,[
                 'choices' => [
@@ -87,10 +113,11 @@ class ApiLeadType extends AbstractType
                     'hidden'=>'hidden',
                 ]])
             ->add('formation', TextType::class,[
-                'required' => true
+                'required' => true,
+                'label'=>'Formation*'
             ])
             ->add('typerequest', ChoiceType::class,[
-                'label'=>'Type de demande',
+                'label'=>'Type de demande *',
                 'choices'=>[
                     'Particulier' =>'Particulier',
                     'Entreprise'=>'Entreprise'
@@ -99,27 +126,36 @@ class ApiLeadType extends AbstractType
             ])
             ->add('financement', ChoiceType::class,[
                 'choices'=>[
-                    'Particulier' =>'Particulier',
-                    'Entreprise'=>'Entreprise'
+                    'Pôle emploi' =>'Pôle emploi',
+                    'Compte personnel de formation (CPF)'=>'Compte personnel de formation (CPF)',
+                    'Pôle emploi' =>'Pôle emploi',
+                    'Fonds personnels'=>'Fonds personnels',
+                    'Opérateur de compétence (OPCO)'=>'Opérateur de compétence (OPCO)',
+                    'Autre'=>'Autre'
                 ],
                 'label'=>'Financement',
+                'placeholder'=>'',
+                'required'=>false,
                 'attr'=>[
-                    'placeholder'=>'Financement'
                 ]
             ])
             ->add('periode', ChoiceType::class,[
+                'label'=> 'Quand envisagez-vous de faire la formation ?',
                 'choices'=>[
-                    'Dés que possible'=>'Dés que possible',
-                    'Dans 1 mois'=>'1 mois',
-                    'Dans 3 mois'=>'3 mois',
-                    'Dans 3 mois '=>'3 mois'
+                    'Dès que possible'=>'Dès que possible',
+                    'Dans 1 mois'=>'Dans 1 mois',
+                    'Dans 3 mois'=>'Dans 3 mois',
+                    'Dans plus de 3 mois '=>'Dans plus de 3 mois'
                 ]
             ])
-            ->add('message', TextareaType::class)
+            ->add('message', TextareaType::class,[
+                'empty_data' => '',
+                'required'=>false
+            ])
             ->add('envoyer', SubmitType::class,[
                 'label' => 'Envoyer',
                 'attr' => [
-                    'class' => 'btn btn-primary'
+                    'class' => 'btn btn-primary m-auto pr-5 pl-5'
                 ]
             ])
             ;

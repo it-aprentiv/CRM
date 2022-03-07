@@ -95,26 +95,17 @@ class LeadType extends AbstractType
                 'required'      => false,
                 'entry_options' => ['data_class' => LeadNote::class]
             ])
-            ->add('message', TextType::class)
-            ->add('formation', ChoiceType::class,[
-                'choices' => [
-                    'Formation 1' => 'Formation 1',
-                    'Formation 2' => 'Formation 2',
-                    'Formation 3' => 'Formation 3',
-                    'Formation 4' => 'Formation 4',
-                    'Formation 5' => 'Formation 5',
-                    'Formation 6' => 'Formation 6',
-                    'Formation 7' => 'Formation 7',
-                    'Formation 8' => 'Formation 8',
-                ]
+            ->add('message', TextType::class,[
+                'empty_data' => ''
+            ])
+            ->add('formation', TextType::class,[
             ] 
             )
             ->add('typerequest', ChoiceType::class,[
                 'label'=>'Type de demande',
                 'choices'=>[
-                    'Fonds personnels' =>'Fonds personnels',
-                    'CPF'=>'CPF',
-                    'OPCO'=>'OPCO',
+                    'Particulier' =>'Particulier',
+                    'Entreprise'=>'Entreprise',
                     
                 ]
             ])

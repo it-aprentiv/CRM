@@ -1,0 +1,7 @@
+.form-control {
+    border-radius: 0 !important;
+    border: 2px solid #a5afb9;
+}
+label {
+    font-weight: 700;
+}
