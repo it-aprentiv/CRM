@@ -170,7 +170,10 @@ class ContactController extends BaseController {
             // APR-121
             $contact->setIdSecteur($request->request->all()['contact']['idSecteur']);
             $contact->setActiviteTns($request->request->all()['contact']['activiteTns']);
-            
+            if (!$contact->getCommercial()) {
+                $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->find($idCommercial);
+                $contact->setIdCommercial($commercial);
+            }
             $site = $contact->getSiteweb();
             if (null !== $site && '' != $site) {
                 $em->persist($site);

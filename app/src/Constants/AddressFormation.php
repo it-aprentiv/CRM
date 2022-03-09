@@ -9,6 +9,7 @@
 namespace App\Constants;
 
 
+
 class AddressFormation
 {
     const VIVIENNE_ADDRESS = "47 rue Vivienne 75002 Paris";
