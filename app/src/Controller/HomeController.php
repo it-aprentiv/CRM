@@ -174,7 +174,7 @@ class HomeController extends BaseController
                 'sSuite' => count($leadRepository->findBy(["statut" => "Sans suite"]))
             ];        
         }
-                
+
         
         $this->viewParams['leadStats'] = $leadStats;
 

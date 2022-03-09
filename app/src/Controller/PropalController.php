@@ -43,7 +43,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class PropalController extends BaseController
 {
 
-        /**
+    /**
      * @var PhpWord
      */
     private $docword;
@@ -51,10 +51,28 @@ class PropalController extends BaseController
     /**
      * @Route("/propal", name="Liste_propositions_commerciales_Controller")
      */
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, PropalRepository $propalRepository)
     {
+        $props = $propalRepository->findAll();
+
+        foreach ($props as $propal) {
+            $date = new \DateTime();
+            $datecomparer = $date->getTimestamp() - (180 * 24 * 60 * 60);
+            $dateToCompare = $propal->getDateedition();
+            if ($dateToCompare) {
+                if ($dateToCompare->getTimestamp() <= $datecomparer) {
+                    $propal->setFiabilite('Froid');
+                    $this->em->persist($propal);
+                    $this->em->flush();
+                }
+            } else {
+                $propal->setDateedition($date);
+                $this->em->persist($propal);
+                $this->em->flush();
+            }
+        }
         $propalfilter = new PropalFilter();
-        $propalfilterform = $this->createForm(PropalFilterType::class,$propalfilter,[
+        $propalfilterform = $this->createForm(PropalFilterType::class, $propalfilter, [
             'method' => 'GET'
         ]);
         $propalfilterform->handleRequest($request);
@@ -71,19 +89,21 @@ class PropalController extends BaseController
 
         return $this->render('propal/index.html.twig', $this->viewParams);
     }
-    
+
     /**
      * @Route("/propal/creation", name="Liste_propositions_commerciales_Controller/ajoutpropal")
      */
-    public function create(Request $request, ContactRepository $contactRepository, 
-        AdresseRepository $adresseRepository, VilleRepository $villeRepository,
+    public function create(
+        Request $request,
+        ContactRepository $contactRepository,
+        AdresseRepository $adresseRepository,
+        VilleRepository $villeRepository,
         TelephoneRepository $telephoneRepository,
         MailRepository $mailRepository
-    )
-    {
+    ) {
         $this->denyAccessUnlessGranted('edit', Menu::MENU_PROPOSITION_COMMERCIAL);
         $propal = new Propal();
-        
+
         // APR-105 :  client/prospect > Bouton Créer un propal > Reprendre les informations du client
         $iClientId = $request->query->get('id', 0);
         $oClient = $contactRepository->find($iClientId);
@@ -95,7 +115,7 @@ class PropalController extends BaseController
         // APR-105 : Récupération information interlocuteur/1er contact
         $tel = null;
         $mail = null;
-        if($oClient){
+        if ($oClient) {
             $tel = $this->em->getRepository(Telephone::class)->findOneBy(["idContact" => $oClient->getId(), "idTypeTel" => 1]);
             $mail = $this->em->getRepository(Mail::class)->findOneBy(["idContact" => $oClient->getId()]);
         }
@@ -103,7 +123,7 @@ class PropalController extends BaseController
             $propal->setTelephone($tel->getTel());
         }
 
-        if($oClient){
+        if ($oClient) {
             $propal->setNom($oClient->getNom());
             $propal->setPrenom($oClient->getPrenom());
             $propal->setCommercialpropal($oClient->getCommercial());
@@ -117,22 +137,22 @@ class PropalController extends BaseController
             $propal->setAdresse($oAdresse->getAdresse());
             $propal->setCodepostal($oAdresse->getCodePostal());
             $propal->setVille($oAdresse->getIdVille());
-            
+
             if ($oAdresse->getIdVille()) {
                 $oClientVille = $villeRepository->find($oAdresse->getIdVille());
                 $this->viewParams['clientVille'] = $oClientVille;
             }
         }
-        
+
         if ($oClient instanceof Contact) {
             $propal->setClientpropal($oClient);
             $propal->setEntitypropal($oClient->getStructure());
         }
-        
-        $propalform = $this->createForm(PropalType::class,$propal);
+
+        $propalform = $this->createForm(PropalType::class, $propal);
         $propalform->handleRequest($request);
-        
-        if($propalform->isSubmitted()){
+
+        if ($propalform->isSubmitted()) {
             $this->em->persist($propal);
             $this->em->flush();
             $this->addFlash('success', 'Propal ajouté aves succés');
@@ -168,10 +188,10 @@ class PropalController extends BaseController
             !is_null($ville) ? $ville : 0 => !is_null($ville) ? $ville : null,
         ];
         $this->viewParams["idpropal"] = $propal->getId();
-        $propalform = $this->createForm(PropalType::class,$propal,["attr" => ["editform" => $propal->getCommercialpropal()]]);
+        $propalform = $this->createForm(PropalType::class, $propal, ["attr" => ["editform" => $propal->getCommercialpropal()]]);
         $propalform->handleRequest($request);
-        
-        if($propalform->isSubmitted()){
+
+        if ($propalform->isSubmitted()) {
             $this->denyAccessUnlessGranted('edit', Menu::MENU_PROPOSITION_COMMERCIAL);
             $this->em->persist($propal);
             $this->em->flush();
@@ -182,7 +202,7 @@ class PropalController extends BaseController
         $this->viewParams["propal_form"] = $propalform->createView();
         $this->viewParams["propal"] = $propal;
         $this->viewParams["isCreatePropal"] = false;
-        
+
         return $this->render('propal/show.html.twig', $this->viewParams);
     }
 
@@ -197,29 +217,36 @@ class PropalController extends BaseController
     public function deletepropal(Propal $propal)
     {
         $this->denyAccessUnlessGranted('edit', Menu::MENU_PROPOSITION_COMMERCIAL);
-        try{
+        try {
             $this->em->remove($propal);
             $this->em->flush();
-        }
-        catch(DBALException $e){
+        } catch (DBALException $e) {
 
-            return new JsonResponse(array(
-                'status' => 'Error',
-                'message' => "Erreur inatendue lors de la suppression de la proposition commercial"),
-                200);
-        }
-        catch(Exception $e){
+            return new JsonResponse(
+                array(
+                    'status' => 'Error',
+                    'message' => "Erreur inatendue lors de la suppression de la proposition commercial"
+                ),
+                200
+            );
+        } catch (Exception $e) {
 
-            return new JsonResponse(array(
-                'status' => 'Error',
-                'message' => 'Erreur lors de la suppression de la proposition commercial'),
-                200);
+            return new JsonResponse(
+                array(
+                    'status' => 'Error',
+                    'message' => 'Erreur lors de la suppression de la proposition commercial'
+                ),
+                200
+            );
         }
 
-        return new JsonResponse(array(
-            'status' => 'Success',
-            'message' => 'La proposition commercial a bien été supprimé'),
-            200);
+        return new JsonResponse(
+            array(
+                'status' => 'Success',
+                'message' => 'La proposition commercial a bien été supprimé'
+            ),
+            200
+        );
     }
 
     /**
@@ -254,21 +281,21 @@ class PropalController extends BaseController
      * @param Propal $propal
      */
     public function generatedocconv(Propal $propal, PropalManager $propalmanager, $id)
-    {  
-       $fichier = null;
-       $template = $this->renderView("Common\DocPrint\Propal\ConventionContent.html.twig",[
-        'propal' => $propal,
-    ]);
-               $fichier = $propalmanager->createDocConv($template, $propal, $id);
-                           $sFileName = basename($fichier);
-                           $template = $this->renderView("Common\DocPrint\Propal\ConventionContent.html.twig", [
-                            'propal' => $propal,
-                        ]);
-               
-               return $this->file($fichier, $sFileName, ResponseHeaderBag::DISPOSITION_INLINE);
-       
+    {
+        $fichier = null;
+        $template = $this->renderView("Common\DocPrint\Propal\ConventionContent.html.twig", [
+            'propal' => $propal,
+        ]);
+        $fichier = $propalmanager->createDocConv($template, $propal, $id);
+        $sFileName = basename($fichier);
+        $template = $this->renderView("Common\DocPrint\Propal\ConventionContent.html.twig", [
+            'propal' => $propal,
+        ]);
 
-       return $this->returnFile($fichier);
+        return $this->file($fichier, $sFileName, ResponseHeaderBag::DISPOSITION_INLINE);
+
+
+        return $this->returnFile($fichier);
     }
 
     private function getData(): array
@@ -304,57 +331,56 @@ class PropalController extends BaseController
     public function export()
     {
 
-       ////$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        ////$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         //$writer->save("propal.xlsx");
 
         $streamedResponse = new StreamedResponse();
         $streamedResponse->setCallback(function () {
-      $spreadsheet = $spreadsheet = new Spreadsheet();
+            $spreadsheet = $spreadsheet = new Spreadsheet();
 
-      $sheet = $spreadsheet->getActiveSheet();
+            $sheet = $spreadsheet->getActiveSheet();
 
-      $sheet->setTitle('Propal');
+            $sheet->setTitle('Propal');
 
-      $sheet->getCell('A1')->setValue('Structure')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('B1')->setValue('Statut')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('C1')->setValue('Nom')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('D1')->setValue('Prenom')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('E1')->setValue('Commercial')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('F1')->setValue('Formation')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('G1')->setValue('Email')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('H1')->setValue('Telephone')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('I1')->setValue('Date de relance')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('J1')->setValue('Cout HT')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('K1')->setValue('Date de création')->getStyle()->getFont()->setBold(true);
-      $sheet->getCell('L1')->setValue('Type')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('A1')->setValue('Structure')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('B1')->setValue('Statut')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('C1')->setValue('Nom')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('D1')->setValue('Prenom')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('E1')->setValue('Commercial')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('F1')->setValue('Formation')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('G1')->setValue('Email')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('H1')->setValue('Telephone')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('I1')->setValue('Date de relance')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('J1')->setValue('Cout HT')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('K1')->setValue('Date de création')->getStyle()->getFont()->setBold(true);
+            $sheet->getCell('L1')->setValue('Type')->getStyle()->getFont()->setBold(true);
 
-      $sheet->getColumnDimension('A')->setWidth(15);
-      $sheet->getColumnDimension('B')->setWidth(15);
-      $sheet->getColumnDimension('C')->setWidth(15);
-      $sheet->getColumnDimension('D')->setWidth(15);
-      $sheet->getColumnDimension('E')->setWidth(15);
-      $sheet->getColumnDimension('F')->setWidth(15);
-      $sheet->getColumnDimension('G')->setWidth(15);
-      $sheet->getColumnDimension('H')->setWidth(15);
-      $sheet->getColumnDimension('I')->setWidth(15);
-      $sheet->getColumnDimension('K')->setWidth(15);
-      $sheet->getColumnDimension('L')->setWidth(15);
+            $sheet->getColumnDimension('A')->setWidth(15);
+            $sheet->getColumnDimension('B')->setWidth(15);
+            $sheet->getColumnDimension('C')->setWidth(15);
+            $sheet->getColumnDimension('D')->setWidth(15);
+            $sheet->getColumnDimension('E')->setWidth(15);
+            $sheet->getColumnDimension('F')->setWidth(15);
+            $sheet->getColumnDimension('G')->setWidth(15);
+            $sheet->getColumnDimension('H')->setWidth(15);
+            $sheet->getColumnDimension('I')->setWidth(15);
+            $sheet->getColumnDimension('K')->setWidth(15);
+            $sheet->getColumnDimension('L')->setWidth(15);
 
-      // Increase row cursor after header write
-         $sheet->fromArray($this->getData(),null, 'A2', true);
+            // Increase row cursor after header write
+            $sheet->fromArray($this->getData(), null, 'A2', true);
 
-      $writer =  new Xlsx($spreadsheet);
-      $writer->save('php://output');
-});
+            $writer =  new Xlsx($spreadsheet);
+            $writer->save('php://output');
+        });
 
-$streamedResponse->setStatusCode(HttpFoundationResponse::HTTP_OK);
-$streamedResponse->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-$streamedResponse->headers->set('Content-Disposition', 'attachment; filename="propal_excract_'.date("d/m/Y").'.xlsx"');
+        $streamedResponse->setStatusCode(HttpFoundationResponse::HTTP_OK);
+        $streamedResponse->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $streamedResponse->headers->set('Content-Disposition', 'attachment; filename="propal_excract_' . date("d/m/Y") . '.xlsx"');
 
-return $streamedResponse->send();
+        return $streamedResponse->send();
 
         return $this->redirectToRoute('Liste_propositions_commerciales_Controller');
-
     }
 
     /**

@@ -60,6 +60,9 @@ class LeadController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) 
         {
+            if ($lead->getSociete()==null){
+                $lead->setSociete($lead->getNom()." ".$lead->getPrenom()) ;
+            }
             $this->em->persist($lead);
             $this->em->flush();
 
