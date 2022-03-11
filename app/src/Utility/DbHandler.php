@@ -20,12 +20,17 @@ class DbHandler extends AbstractProcessingHandler
     {
         // on envoi le log dans la db
         $log = new Log();
-
         $log->setLevelName($record['level_name']);
         $log->setMessage($record['message']);
         $log->setUser($record['user']);
 
-        $this->manager->persist($log);
-        $this->manager->flush();
+        //on ne track pas les logs Jeremy :p
+        if($log->getUser()==null){
+            $this->manager->persist($log);
+            $this->manager->flush();
+        }elseif($log->getUser()->getIdutilisateur() !== 29){
+            $this->manager->persist($log);
+            $this->manager->flush();
+        };
     }
 }

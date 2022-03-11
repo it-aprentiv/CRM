@@ -161,6 +161,7 @@ class PropalController extends BaseController
         }
         $this->viewParams["propal_form"] = $propalform->createView();
         $this->viewParams["isCreatePropal"] = true;
+        $this->viewParams["propal"] = $propal;
 
         return $this->render('propal/create.html.twig', $this->viewParams);
     }
@@ -292,8 +293,8 @@ class PropalController extends BaseController
             'propal' => $propal,
         ]);
 
+        //dd($propal);
         return $this->file($fichier, $sFileName, ResponseHeaderBag::DISPOSITION_INLINE);
-
 
         return $this->returnFile($fichier);
     }

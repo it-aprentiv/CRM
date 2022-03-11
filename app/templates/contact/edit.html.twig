@@ -312,13 +312,9 @@
         </div>                     
                   
     <div class="row col-md-12">
-        <fieldset class="mx-3">
+        <fieldset class="col-sm-12 p-3 m-3 well">
             <legend>CONTACTS</legend>
-            <a href="javascript:void(0)" id="adcontact" class="row plus-link" title="Ajouter un nouveau contact">
-                <span class="fa-stack fa-1x">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
-                </span>
+            <a href="javascript:void(0)" id="adcontact" class="fas fa-plus plus-link text-light bg-primary" title="Ajouter un nouveau contact">
             </a>
             <div class="col-md-12 p-0" id="contactadded" data-prototype="{{ form_widget(contact_forme.contactsoc.vars.prototype)|e('html_attr') }}">
                     <div class="row">
