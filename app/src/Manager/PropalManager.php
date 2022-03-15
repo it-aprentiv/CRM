@@ -85,7 +85,7 @@ class PropalManager
         $tvaTxt = $tva > 0 ? "{".$tva."%}" : '';
             
         $tvaMnt = floatval($montantHT) / 100 * $propal->getMontantTVA();
-        $docword->setValue("tvaMnt", $tvaMnt);
+        $docword->setValue("tvaMnt", number_format($tvaMnt, 2, ',', ' '));
         $docword->setValue("cout", $montahtHTTxt);
         $docword->setValue("tvaTxt", $tvaTxt);
         $docword->setValue("coutTTC", $montantTTCTxt);

@@ -50,7 +50,7 @@ class Propal
     private $durreh;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $durrej;
 
@@ -245,12 +245,12 @@ class Propal
         return $this;
     }
 
-    public function getDurrej(): ?int
+    public function getDurrej(): ?float
     {
         return $this->durrej;
     }
 
-    public function setDurrej(?int $durrej): self
+    public function setDurrej(?float $durrej): self
     {
         $this->durrej = $durrej;
 
