@@ -102,12 +102,17 @@
                             </div>
 
                             <div class="col-md-3 text-center">
-
-                                {{ form_label(contact_forme.id_commercial, 'Commercial',{
+{% if app.user == "MUNIER Pascal" or app.user == "CREPEAU Francis" or app.user == "Soler Jérémy" or app.user == "OUAHABI Abdulah"%} 
+                     {{ form_label(contact_forme.id_commercial, 'Commercial',{
                                     'label_attr': {'class': 'font-weight-bold'}
                                 }) }}
                                 {{ form_widget(contact_forme.id_commercial, { attr: {autocomplete : 'off'} } ) }}
-        
+                {% else %}
+                        {{ form_label(contact_forme.id_commercial, 'Commercial',{
+                                    'label_attr': {'class': 'font-weight-bold'}
+                                }) }}
+                                {{ form_widget(contact_forme.id_commercial, { attr: {autocomplete : 'off', readonly:true} } ) }}         
+        {% endif %}
                             </div>
                             
                             <div class="col-md-2 text-center">
@@ -724,11 +729,6 @@
                 $("#saveedit").removeClass("d-none");
                 $("#canceledit").removeClass("d-none");
                 $("#editthis").addClass("d-none");
-                {% if app.user == "MUNIER Pascal" or app.user == "CREPEAU Francis" or app.user == "Soler Jérémy" or app.user == "OUAHABI Abdulah"%} 
-                    
-                {% else %}
-                $("#contact_id_commercial").prop("disabled",true)
-                {% endif %}
                 $("#saveedit").find('button').prop("disabled", false);
                 $("#canceledit").find('button').prop("disabled", false);
                 $("#ajcom").prop("disabled", false);

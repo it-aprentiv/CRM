@@ -329,7 +329,7 @@ class ContactController extends BaseController
         ] : null;
 
         $contact->setSocietelie($sl);
-
+        $lastCommercial = $contact->getCommercial();
         $othercontact = $em->getRepository(Contact::class)->findBy(["contactLiee" => $contact->getId()]);
         $acontact[] = $contact;
         if (count($othercontact) > 0) {
@@ -341,6 +341,10 @@ class ContactController extends BaseController
         $contactForm->handleRequest($request);
 
         if ($contactForm->isSubmitted()) {
+            $currentUserId = $this->security->getUser()->getIdutilisateur();
+            if(($currentUserId != 58) || ($currentUserId != 59) || ($currentUserId != 29) ||($currentUserId != 56) ){
+                $contact->setCommercial($lastCommercial);
+            }
             $this->denyAccessUnlessGranted('edit', Menu::MENU_CLIENT_PROSPECT);
             // APR-121
             $contact->setIdSecteur($request->request->all()['contact']['idSecteur']);
