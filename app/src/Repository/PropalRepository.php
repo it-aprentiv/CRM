@@ -36,7 +36,10 @@ class PropalRepository extends ServiceEntityRepository
                 $qb->andWhere($qb->expr()->eq("ppl.statutpropal", ":statut"))
                     ->setParameter("statut", $propalFilter->getStatutpropal());
             }
-
+            if($propalFilter->getFiabilite()){
+                $qb->andWhere($qb->expr()->eq("ppl.fiabilite", ":fiabilite"))
+                    ->setParameter("fiabilite", $propalFilter->getFiabilite());
+            }
             if($propalFilter->getEntitypropal()){
                 $qb->andWhere($qb->expr()->eq("ppl.entitypropal", ":entity"))
                     ->setParameter("entity", $propalFilter->getEntitypropal());

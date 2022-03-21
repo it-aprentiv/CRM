@@ -78,7 +78,6 @@ class PropalController extends BaseController
         $propalfilterform->handleRequest($request);
         $this->viewParams["propal_filter_form"] = $propalfilterform->createView();
 
-
         $propalquery = $this->em->getRepository(Propal::class)->findallpropal($propalfilter);
 
         $pagination = $paginator->paginate($propalquery, $request->query->get('page', 1), 10);

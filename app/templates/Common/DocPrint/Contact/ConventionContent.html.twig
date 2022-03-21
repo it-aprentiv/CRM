@@ -10,7 +10,7 @@ Modalité de sanction : Attestation d’assiduité et de fin de stage
     </li>
     <li>
 <span style="font-family: Arial Black;font-size: 10px">DATE, DURÉE ET LIEU :</span><br/>
-La formation a une durée de {{ formated_dates_stage ? formated_dates_stage.total_jours | round : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }} jours (soit {{ formated_dates_stage ? formated_dates_stage.total_heures : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }}h) et se tiendra du {{ formated_dates_stage.date_debut ? formated_dates_stage.date_debut.dateD | date('d/m/Y') : '...' }} au {{ formated_dates_stage.date_fin ? formated_dates_stage.date_fin.dateF | date('d/m/Y')  : '...' }}<br/>
+La formation a une durée de {{ formated_dates_stage ? formated_dates_stage.total_jours | round : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }} jours (soit {{ formated_dates_stage ? formated_dates_stage.total_heures : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }}h) et se tiendra du {{ formated_dates_stage and formated_dates_stage.date_debut ? formated_dates_stage.date_debut.dateD | date('d/m/Y') : '...' }} au {{ formated_dates_stage and formated_dates_stage.date_fin ? formated_dates_stage.date_fin.dateF | date('d/m/Y')  : '...' }}<br/>
 Calendrier du stage : {{ formated_dates_stage ? formated_dates_stage.calendar_text : ""  }} 
 <br/>
 Horaires du stage : {{ formated_dates_stage and formated_dates_stage.hour_start_am is not empty ? "de "~formated_dates_stage.hour_start_am ~" à "~ formated_dates_stage.hour_end_am ~  (formated_dates_stage and formated_dates_stage.hour_start_pm ? " et "~formated_dates_stage.hour_start_pm  ~ " à " ~ formated_dates_stage.hour_end_pm ) : ''  }} <br/>

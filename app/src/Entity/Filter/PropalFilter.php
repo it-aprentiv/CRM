@@ -12,6 +12,23 @@ class PropalFilter
     private $client;
     private $type;
     private $entitypropal;
+    private $fiabilite;
+
+    /**
+     * @return mixed
+     */
+    public function getFiabilite()
+    {
+        return $this->fiabilite;
+    }
+
+    /**
+     * @param mixed $statutpropal
+     */
+    public function setFiabilite($fiabilite): void
+    {
+        $this->fiabilite = $fiabilite;
+    }
 
     /**
      * @return mixed

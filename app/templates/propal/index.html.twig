@@ -48,6 +48,9 @@
                     <div class="form-group col-md-2">
                         {{ form_widget(propal_filter_form.type, { 'placeholder' : '-- type --',  attr: {'class' : 'w-100','required': false} }) }}
                     </div>
+                     <div class="form-group col-md-2">
+                        {{ form_widget(propal_filter_form.fiabilite, { 'placeholder' : '-- Fiabilite --',  attr: {'class' : 'w-100','required': false} }) }}
+                    </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-info py-1">Rechercher</button>
                         <a href="{{ path('Liste_propositions_commerciales_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>

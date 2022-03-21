@@ -1,2 +1,1 @@
-sudo docker-compose up --build -d
-brave http://localhost -d
+sudo docker-compose up --build

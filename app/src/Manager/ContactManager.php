@@ -498,7 +498,7 @@ class ContactManager
         $dossier = $data['dossier'];
         $contact = $data['contact'];
 
-        //dd($contact);
+        //   dd($dossier);
         $this->addcontenttemplate($templatehtml,$docword);
         $sections = $docword->getsectiondoc();
         $table = $sections->addTable('convention');
@@ -511,7 +511,7 @@ class ContactManager
         $table->addCell(2500)->addText("Cachet et Signature ", array('name'=> 'Arial','size' => 9));
         if ($dossier != null)
         { 
-            if ($dossier->getIdStructure()->getId() == 2) 
+            if ($dossier["structure"] == 2) 
                 { 
                     $sections->addImage('crm/images/sign_pro.jpg', array(
                         'width' => 150,

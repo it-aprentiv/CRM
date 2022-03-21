@@ -40,6 +40,22 @@ class PropalFilterType extends AbstractType
                 'required'      => false,
                 'attr'          => [ 'required' => true ],
             ])
+            ->add('fiabilite', ChoiceType::class, [
+                'label'         => false,
+                'required'      => false,
+                'choices'       => [
+                    'Froid'  =>  'Froid' ,
+                    'Tiede' =>  'Tiede' ,
+                    'Chaud' => 'Chaude'
+                ],
+                'attr'          => [ 'required' => true ]
+            ])
+            ->add('entitypropal', StructureType::class, [
+                'choice_label'  => 'structure',
+                'label'         => false,
+                'required'      => false,
+                'attr'          => [ 'required' => true ],
+            ])
             ->add('commercial', EntityType::class, [
                 'class'             => Collaborateur::class,
                 'choice_label'      => 'nom_prenom',

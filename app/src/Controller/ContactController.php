@@ -7,6 +7,7 @@ use App\Constants\Menu;
 use App\Constants\Structure;
 use App\Entity\Adresse;
 use App\Entity\Contact;
+use App\Form\ContactLiteType;
 use App\Entity\ContactNote;
 use App\Entity\ContactType as ContactType2;
 use App\Entity\Filter\ContactFilter;
@@ -39,16 +40,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 use function dump;
 
 /**
  * Gestion client / prospect (contacts)
  */
-class ContactController extends BaseController {
+class ContactController extends BaseController
+{
 
     const TYPE_TELEPHONE = 1;
     const TYPE_FAX = 3;
@@ -56,7 +59,7 @@ class ContactController extends BaseController {
     const TABLE_CONTACT = "1_contact";
     const TYPE_OPCA = 3;
 
-    
+
     /**
      *
      * @Route("/contact", name="Liste_Client_Prospect_Controller")
@@ -64,17 +67,19 @@ class ContactController extends BaseController {
     public function index(
         ContactRepository $contactRepository,
         PaginatorInterface $paginator,
-        Request $request
+        Request $request,
+        FormFactoryInterface $form
     ) {
         // Filtrer les contacts (client ou prospect)
+
         $contactFilter = new ContactFilter();
-        
+
         $contactFilterForm = $this->createForm(ContactFilterType::class, $contactFilter, [
             'method' => 'GET'
         ]);
-        
+
         $contactFilterForm->handleRequest($request);
-        
+
         $this->viewParams['contact_filter_form'] = $contactFilterForm->createView();
 
         // Initialisation du filtre type de contact
@@ -83,11 +88,35 @@ class ContactController extends BaseController {
         if (!$contactFilter->getIdType()) {
             $contactFilter->setIdType([1, 2]);
         }
-        
+
         $contactsQuery = $contactRepository->findContactsQuery($contactFilter);
         $pagination = $paginator->paginate($contactsQuery, $request->query->get('page', 1), 10);
+        $reflectionProperty = new \ReflectionProperty(ParameterBag::class, "parameters");
+        $reflectionProperty->setAccessible(true);
+        $params =  $reflectionProperty->getValue($request->request);
         $this->viewParams['pagination'] = $pagination;
-
+        foreach ($pagination as $ctt) { 
+            $contact = $this->em->getRepository(Contact::class)->find($ctt["contact_id"]);
+            $contactForm = $form->createNamed("contact_lite_" . $ctt["contact_id"],ContactLiteType::class, $contact, ["method" => "POST", "attr" => ["id" => "contactgenerale" . $ctt["contact_id"]]]);
+            $contactForm->handleRequest($request);
+            $this->viewParams['contact_forme'][$ctt["contact_id"]] = $contactForm->createView();
+            if (count($params) > 0) {                    
+                if ($contactForm->isSubmitted()) {            
+                    if ($ctt["contact_id"] == $params["contact_lite_" . $ctt["contact_id"]]["id"]) {
+                        $this->denyAccessUnlessGranted('edit', Menu::MENU_CLIENT_PROSPECT);
+                        // APR-121
+                        $this->em->persist($contact);
+                        $this->em->flush();
+                        $this->addFlash('success', 'Client/Prospect Modifié avec succés!');
+                        $this->viewParams['contact_forme'][$ctt["contact_id"]] = $contactForm->createView();
+                    }
+                }
+            }
+        }
+        $query = $reflectionProperty->getValue($request->query);
+        if(count($params) > 0){
+            return $this->redirectToRoute("Liste_Client_Prospect_Controller",$query);
+        }
         $this->viewParams['can_edit'] = $this->isGranted('edit', Menu::MENU_CLIENT_PROSPECT);
         $this->viewParams['can_view'] = $this->isGranted('view', Menu::MENU_CLIENT_PROSPECT);
         return $this->render('contact/index.html.twig', $this->viewParams);
@@ -98,13 +127,14 @@ class ContactController extends BaseController {
      *
      * @Route("/contact/creation", name="Fiche_client_prospect_Controller/ajoutclient")
      */
-    public function create(Request $request, EntityManagerInterface $em, ContactManager $contactmanager) {
+    public function create(Request $request, EntityManagerInterface $em, ContactManager $contactmanager)
+    {
         $this->denyAccessUnlessGranted('edit', Menu::MENU_CLIENT_PROSPECT);
         $contact = new Contact();
         $adresse = new Adresse();
         $contact->addAdress($adresse);
 
-       
+
         $nom = $request->query->get('nom');
         $prenom = $request->query->get('prenom');
         $tel = $request->query->get('tel');
@@ -126,32 +156,26 @@ class ContactController extends BaseController {
         }*/
         if (!empty($societe)) {
             $contact->setNomStr($societe);
-            
         }
         if (!empty($nom)) {
             $contact->setNom($nom);
-            
         }
         if (!empty($prenom)) {
             $contact->setPrenom($prenom);
-           
         }
         if (!empty($tel)) {
             $contact->setTelephone($tel);
-           
         }
         if (!empty($mail)) {
             $contact->setEmail($mail);
-           
         }
         if (!empty($idCivilite)) {
             $contact->setIdCivilite($idCivilite);
-           
         }
         if (!empty($idCommercial)) {
             $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->find($idCommercial);
             $contact->setIdCommercial($commercial);
-        }else{
+        } else {
             $idUser = $this->security->getUser()->getIdutilisateur();
             $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->findBy(["idUser" => $idUser]);
             $contact->setIdCommercial($commercial[0]);
@@ -160,11 +184,10 @@ class ContactController extends BaseController {
         if (!empty($idType)) {
             $type = $em->getRepository(\App\Entity\ContactType::class)->find($idType);
             $contact->setIdType($type);
-            
         }
 
         $contactForm = $this->createForm(ContactType::class, $contact, ['method' => 'POST']);
-                $contactForm->handleRequest($request);
+        $contactForm->handleRequest($request);
 
         if ($contactForm->isSubmitted()) {
             // APR-121
@@ -224,7 +247,8 @@ class ContactController extends BaseController {
      *      requirements={"page"="\d+"}
      * )
      */
-    public function edit(EntityManagerInterface $em, Request $request, Contact $contact, ContactManager $contactmanager) {
+    public function edit(EntityManagerInterface $em, Request $request, Contact $contact, ContactManager $contactmanager)
+    {
         $this->denyAccessUnlessGranted('view', Menu::MENU_CLIENT_PROSPECT);
         $siteweb = $em->getRepository(Url::class)->findOneBy(["idContact" => $contact->getId()]);
         if (!is_null($siteweb)) {
@@ -254,7 +278,7 @@ class ContactController extends BaseController {
         $idContact = $contact->getId();
         $clientPropal = $this->em->getRepository(Propal::class)->getContactPropal($idContact);
         $this->viewParams["clientPropal"] = $clientPropal;
-      
+
         $societelie = $this->em->getRepository(SocieteLiee::class)->findOneBy(["idContact" => $contact->getId()]);
         $sl = new ArrayCollection();
         $this->viewParams["contact"] = $contact;
@@ -270,7 +294,7 @@ class ContactController extends BaseController {
                 "societelie2" => $scl2 != null ? $scl2->getNomStr() : null,
                 "societelie3" => $scl3 != null ? $scl3->getNomStr() : null,
                 "societelie4" => $scl4 != null ? $scl4->getNomStr() : null,
-                
+
                 "societeId1" => $scl1 != null ? $scl1->getId() : null,
                 "societeId2" => $scl2 != null ? $scl2->getId() : null,
                 "societeId3" => $scl3 != null ? $scl3->getId() : null,
@@ -284,7 +308,7 @@ class ContactController extends BaseController {
 
         $this->viewParams["opca1"] = $opca1 ? array('id' => $opca1->getId(), 'text' => $opca1->getNomStr()) : null;
         $this->viewParams["idOpcaTns"] = $opcaTnsOptions;
-        
+
         // APR-121 : Activite entreprise => Autocompletion
         $idSecteurActivite = $contact->getIdSecteur();
         $secteurActite = $idSecteurActivite ? $this->em->getRepository(SecteurActivite::class)->findOneBy([
@@ -295,7 +319,7 @@ class ContactController extends BaseController {
             'text' => $secteurActite->getSecteur()
         ] : null;
         $this->viewParams['secteurActiviteOptions'] = $secteurActiteOptions;
-        
+
         // APR-121 : Activite TNS => Autocompletion
         $sActiviteTNSLabel = $contact->getActiviteTns();
         $activiteTNS = $sActiviteTNSLabel ? $this->em->getRepository(SecteurActivite::class)->findOneByIdOrLabel($sActiviteTNSLabel) : null;
@@ -303,7 +327,7 @@ class ContactController extends BaseController {
             'id' => $activiteTNS->getId(),
             'text' => $activiteTNS->getSecteur()
         ] : null;
-        
+
         $contact->setSocietelie($sl);
 
         $othercontact = $em->getRepository(Contact::class)->findBy(["contactLiee" => $contact->getId()]);
@@ -321,7 +345,7 @@ class ContactController extends BaseController {
             // APR-121
             $contact->setIdSecteur($request->request->all()['contact']['idSecteur']);
             $contact->setActiviteTns($request->request->all()['contact']['activiteTns']);
-            
+
             $site = $contact->getSiteweb();
             if (null !== $site && '' != $site) {
                 $sitedn = $em->getRepository(Url::class)->findOneBy(["idContact" => $contact->getId()]);
@@ -356,7 +380,7 @@ class ContactController extends BaseController {
                     $em->persist($societelie);
                 }
                 $em->flush();
-            }            
+            }
 
             $oldcontactsoc = $em->getRepository(Contact::class)->findBy(["contactLiee" => $contact->getId()]);
             $newcontaactsoc = $contact->getContactsoc();
@@ -395,7 +419,7 @@ class ContactController extends BaseController {
                     }
                 }
             }
-            $this->addFlash('success', 'Client/Prospect Modifié avec succés!');            
+            $this->addFlash('success', 'Client/Prospect Modifié avec succés!');
             return $this->redirectToRoute('Fiche_client_prospect_Controller/editClient', array('id' => $contact->getId()));
         }
         $this->viewParams['contact_forme'] = $contactForm->createView();
@@ -409,31 +433,44 @@ class ContactController extends BaseController {
      *     requirements={"page"="\d+"}
      * )
      */
-    public function delete(Request $request, $id, ContactManager $contactmanager) {
+    public function delete(Request $request, $id, ContactManager $contactmanager)
+    {
         $this->denyAccessUnlessGranted('edit', Menu::MENU_CLIENT_PROSPECT);
         try {
             $delete = $contactmanager->deletecontact($id);
             if ($delete) {
-                return new JsonResponse(array(
-                    'status' => 'Success',
-                    'message' => 'Line successfully Deleted'),
-                    200);
+                return new JsonResponse(
+                    array(
+                        'status' => 'Success',
+                        'message' => 'Line successfully Deleted'
+                    ),
+                    200
+                );
             } else {
-                return new JsonResponse(array(
-                    'status' => 'Error',
-                    'message' => 'Le Contact ne peut pas être supprimé car rattaché à d\'autres informations (Dossier, formations, ...)'),
-                    200);
+                return new JsonResponse(
+                    array(
+                        'status' => 'Error',
+                        'message' => 'Le Contact ne peut pas être supprimé car rattaché à d\'autres informations (Dossier, formations, ...)'
+                    ),
+                    200
+                );
             }
         } catch (DBALException $e) {
-            return new JsonResponse(array(
-                'status' => 'Error',
-                'message' => "Le Contact ne peut pas être supprimé car rattaché à d'autres informations (Dossier, formations, ...)"),
-                200);
+            return new JsonResponse(
+                array(
+                    'status' => 'Error',
+                    'message' => "Le Contact ne peut pas être supprimé car rattaché à d'autres informations (Dossier, formations, ...)"
+                ),
+                200
+            );
         } catch (Exception $e) {
-            return new JsonResponse(array(
-                'status' => 'Error',
-                'message' => "Le Contact ne peut pas être supprimé car rattaché à d'autres informations (Dossier, formations, ...)"),
-                200);
+            return new JsonResponse(
+                array(
+                    'status' => 'Error',
+                    'message' => "Le Contact ne peut pas être supprimé car rattaché à d'autres informations (Dossier, formations, ...)"
+                ),
+                200
+            );
         }
     }
 
@@ -442,7 +479,8 @@ class ContactController extends BaseController {
      *
      * @Route("/contact/societe/list", name="crm.contact.societe.asynch-search", methods={"GET","POST"})
      */
-    public function asynchFindSocietes(Request $request, ContactRepository $contactRepository) {
+    public function asynchFindSocietes(Request $request, ContactRepository $contactRepository)
+    {
         $response = array();
         $searchTerm = $request->query->get('search', '');
 
@@ -465,7 +503,8 @@ class ContactController extends BaseController {
      *
      * @Route("/contact/search-contact", name="crm.contact.client.search_json", methods={"GET"})
      */
-    public function searchContactByTypeJson(Request $request, ContactRepository $contactRepository) {
+    public function searchContactByTypeJson(Request $request, ContactRepository $contactRepository)
+    {
         $sSearchQuery = $request->query->get('search', '');
         $sLimit = $request->query->get('limit', 50);
         $sType = $request->query->get('type', '');
@@ -492,7 +531,8 @@ class ContactController extends BaseController {
     /**
      * @Route("/contact/opca/modaladd", name="opca.modal.add", methods={"POST"})
      */
-    public function OpcaModalAdd(Request $request, EntityManagerInterface $em, ContactManager $contactmanager) {
+    public function OpcaModalAdd(Request $request, EntityManagerInterface $em, ContactManager $contactmanager)
+    {
         $contact = new Contact();
         $adresse = new Adresse();
         $contact->addAdress($adresse);
@@ -530,14 +570,14 @@ class ContactController extends BaseController {
                         "code_success" => 1,
                         "lastinsertion_id" => $contact->getId(),
                         "oopca" => $contact->getNomStr()
-                        ], 200);
+                    ], 200);
                 } catch (Exception $ex) {
                     $this->addFlash('error_message', "l'ajout de l'opca a échoué");
 
                     return $this->json([
-                            "error_message" => $ex->getMessage(),
-                            "code_erreur" => $ex->getCode()
-                            ], 500);
+                        "error_message" => $ex->getMessage(),
+                        "code_erreur" => $ex->getCode()
+                    ], 500);
                 }
             }
         }
@@ -549,7 +589,8 @@ class ContactController extends BaseController {
     /**
      * @Route("/createStagiaire", name="ajout_stagiaire")
      */
-    public function createStagiaire(Request $oRequest) {
+    public function createStagiaire(Request $oRequest)
+    {
         $stagiaire = new Contact();
         $stagiaireForm = $this->createForm(StagiaireType::class, $stagiaire);
         $stagiaireForm->handleRequest($oRequest);
@@ -568,11 +609,14 @@ class ContactController extends BaseController {
      *     name="client_prospect_printdocument",
      *     requirements={"page"="\d+","page"="\d+"})
      */
-    public function printdocument(Contact $contact, int $type, ContactManager $manager,
+    public function printdocument(
+        Contact $contact,
+        int $type,
+        ContactManager $manager,
         Request $request,
         FormationDossierRepository $formationDossierRepository,
         EntityManagerInterface $em,
-        FormationDossierDateManager $formationDossierDateManager, 
+        FormationDossierDateManager $formationDossierDateManager,
         FormationDossierDateRepository $formationDossierDateRepository
     ) {
         $fichier = null;
@@ -599,7 +643,7 @@ class ContactController extends BaseController {
                     // stagiaire
                     /** @var FormationDossierStagiaire[] $aFDStagiaire */
                     $aFDStagiaire = $em->getRepository(FormationDossierStagiaire::class)->findBy(['dossier' => $dossier]);
-                    
+
                     foreach ($aFDStagiaire as $fDStagiaire) {
                         $stagiaires[] = $fDStagiaire->getStagiaire()->getNom() . " " . $fDStagiaire->getStagiaire()->getPrenom();
                     }
@@ -636,7 +680,8 @@ class ContactController extends BaseController {
      * @return JsonResponse
      * @Route("formation/get-adress-client",name="formation_get_address_client")
      */
-    public function getAddressClientById(Request $request) {
+    public function getAddressClientById(Request $request)
+    {
         $res = [];
         $idClient = (int) $request->query->get('idClient');
         $em = $this->getDoctrine()->getManager();
@@ -662,7 +707,8 @@ class ContactController extends BaseController {
      *
      * @Route("/contact/search-opca", name="crm.contact.opca.search_json", methods={"GET"})
      */
-    public function searchOPCAByTypeJson(Request $request, ContactRepository $contactRepository) {
+    public function searchOPCAByTypeJson(Request $request, ContactRepository $contactRepository)
+    {
         $sSearchQuery = $request->query->get('search', '');
         $sLimit = $request->query->get('limit', 50);
 
@@ -678,7 +724,8 @@ class ContactController extends BaseController {
      * @param $id
      * @return JsonResponse
      */
-    public function getcontactadresse($id) {
+    public function getcontactadresse($id)
+    {
         $adrestr = "";
         $success = false;
         try {
@@ -693,15 +740,14 @@ class ContactController extends BaseController {
             }
             $success = true;
         } catch (Exception $ex) {
-            
         }
 
         return new JsonResponse(["success" => $success, "adresse" => $adrestr]);
     }
 
-  /**
+    /**
      * @Route("/export/a",  name="export_ect")
-     */    
+     */
     public function getData(): array
     {
         $list = [];
@@ -720,15 +766,14 @@ class ContactController extends BaseController {
         }
         return $list;
     }
-    
+
     /**
      * @Route("/export/prospect",  name="export_prospect")
      */
     public function export()
     {
         $streamedResponse = new StreamedResponse();
-        $streamedResponse->setCallback(function () 
-        {
+        $streamedResponse->setCallback(function () {
             $spreadsheet = $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             $sheet->setTitle('Prospects');
@@ -751,17 +796,17 @@ class ContactController extends BaseController {
             $sheet->getColumnDimension('H')->setWidth(20);
 
             // Increase row cursor after header write
-            $sheet->fromArray($this->getData(),null, 'A2', true);
+            $sheet->fromArray($this->getData(), null, 'A2', true);
             //$sheet->fromArray($this->getDataTel(),null, 'D2', true);
-            
+
             $writer =  new Xlsx($spreadsheet);
             $writer->save('php://output');
         });
-            $streamedResponse->setStatusCode(HttpFoundationResponse::HTTP_OK);
-            $streamedResponse->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            $streamedResponse->headers->set('Content-Disposition', 'attachment; filename="prospect_excract_'.date("d/m/Y").'.xlsx"');
-            return $streamedResponse->send();
-            return $this->redirectToRoute('Liste_Client_Prospect_Controller'); 
+        $streamedResponse->setStatusCode(HttpFoundationResponse::HTTP_OK);
+        $streamedResponse->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $streamedResponse->headers->set('Content-Disposition', 'attachment; filename="prospect_excract_' . date("d/m/Y") . '.xlsx"');
+        return $streamedResponse->send();
+        return $this->redirectToRoute('Liste_Client_Prospect_Controller');
     }
 
     /**
@@ -769,7 +814,8 @@ class ContactController extends BaseController {
      * @return JsonResponse
      * @Route("propal/get-adress-client",name="propal_get_address_client")
      */
-    public function getAddressClientPropal(Request $request) {
+    public function getAddressClientPropal(Request $request)
+    {
         $res = [];
         $idClient = (int) $request->query->get('idClient');
         $em = $this->getDoctrine()->getManager();
@@ -783,23 +829,23 @@ class ContactController extends BaseController {
                     $res['mail'] = "";
                     $tel = $this->em->getRepository(Telephone::class)->findOneBy(["idContact" => $oContact->getId(), "idTypeTel" => 1]);
                     $mail = $this->em->getRepository(Mail::class)->findOneBy(["idContact" => $oContact->getId()]);
-                    
+
                     if ($tel instanceof Telephone) {
                         $res['telephone'] = $tel->getTel();
                     }
-                    
+
                     if ($mail instanceof Mail) {
                         $res['mail'] = $mail->getMail() != "@" ? $mail->getMail() : "";
                     }
-                    
+
                     $idVille = $oContact->getAdresses()[0] ? $oContact->getAdresses()[0]->getIdVille() : '';
                     $oVille = $em->getRepository(Ville::class)->find($idVille);
                     $res['ville']['id'] = $idVille;
-                    $res['ville']['nomVille'] = $oVille ? $oVille->getNomVille(): '';
+                    $res['ville']['nomVille'] = $oVille ? $oVille->getNomVille() : '';
                     // APR-129 : suite commentaire
                     $res['commercial_id'] = $oContact->getCommercial() ? $oContact->getCommercial()->getId() : "";
                     $res['entite_id'] = $oContact->getStructure() ? $oContact->getStructure()->getId() : "";
-                    
+
                     return new JsonResponse($res);
                 }
             }
