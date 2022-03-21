@@ -232,7 +232,7 @@ class Lead
         return $this->ville;
     }
 
-    public function setVille(string $ville): self
+    public function setVille($ville): self
     {
         $this->ville = ucfirst(strtolower($ville));
 
