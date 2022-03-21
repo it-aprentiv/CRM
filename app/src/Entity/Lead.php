@@ -58,7 +58,7 @@ class Lead
     private $email;
 
     /**
-     * @ORM\Column(name="ville", type="string", length=255)
+     * @ORM\Column(name="ville", type="string", length=255, nullable=true)
      */
     private $ville;
 
