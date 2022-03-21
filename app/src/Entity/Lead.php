@@ -184,7 +184,7 @@ class Lead
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
+    public function setNom(?string $nom): self
     {
         $this->nom = $nom;
 
@@ -196,7 +196,7 @@ class Lead
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): self
+    public function setPrenom(?string $prenom): self
     {
         $this->prenom = $prenom;
 
@@ -208,7 +208,7 @@ class Lead
         return $this->telephone;
     }
 
-    public function setTelephone(string $telephone): self
+    public function setTelephone(?string $telephone): self
     {
         $this->telephone = $telephone;
 
@@ -220,7 +220,7 @@ class Lead
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
@@ -232,7 +232,7 @@ class Lead
         return $this->ville;
     }
 
-    public function setVille($ville): self
+    public function setVille(?string $ville): self
     {
         $this->ville = ucfirst(strtolower($ville));
 
@@ -257,7 +257,7 @@ class Lead
         return $this->origine;
     }
 
-    public function setOrigine(string $origine): self
+    public function setOrigine(?string $origine): self
     {
         $this->origine = $origine;
 
@@ -269,7 +269,7 @@ class Lead
         return $this->statut;
     }
 
-    public function setStatut(string $statut): self
+    public function setStatut(?string $statut): self
     {
         $this->statut = $statut;
 
@@ -293,7 +293,7 @@ class Lead
         return $this->formation;
     }
 
-    public function setFormation(string $formation): self
+    public function setFormation(?string $formation): self
     {
         $this->formation = $formation;
 
@@ -305,7 +305,7 @@ class Lead
         return $this->periode;
     }
 
-    public function setPeriode(string $periode): self
+    public function setPeriode(?string $periode): self
     {
         $this->periode = $periode;
 
@@ -317,7 +317,7 @@ class Lead
         return $this->typerequest;
     }
 
-    public function setTyperequest(string $typerequest): self
+    public function setTyperequest(?string $typerequest): self
     {
         $this->typerequest = $typerequest;
 
@@ -329,7 +329,7 @@ class Lead
         return $this->message;
     }
 
-    public function setMessage(string $message): self
+    public function setMessage(?string $message): self
     {
         $this->message = $message;
 
@@ -341,7 +341,7 @@ class Lead
         return $this->financement;
     }
 
-    public function setFinancement(string $financement): self
+    public function setFinancement(?string $financement): self
     {
         $this->financement = $financement;
 
