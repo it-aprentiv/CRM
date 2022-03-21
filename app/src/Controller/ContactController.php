@@ -342,7 +342,8 @@ class ContactController extends BaseController
 
         if ($contactForm->isSubmitted()) {
             $currentUserId = $this->security->getUser()->getIdutilisateur();
-            if(($currentUserId != 58) || ($currentUserId != 59) || ($currentUserId != 29) ||($currentUserId != 56) ){
+            if($currentUserId == 58 || $currentUserId == 59|| $currentUserId == 29 ||$currentUserId != 56) {
+            }else{
                 $contact->setCommercial($lastCommercial);
             }
             $this->denyAccessUnlessGranted('edit', Menu::MENU_CLIENT_PROSPECT);

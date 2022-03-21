@@ -115,6 +115,7 @@
                     <td>    {{ form_widget(contact_forme[contact.contact_id].id_commercial, { attr: { 'class' : 'w-100', placeholder : '-- Commercial --', disabled:true} }) }}</td>
                     {% endif %}
                     <td>
+
                         {% if can_view is defined and can_view %}
                         <a href="{{ path('Fiche_client_prospect_Controller/editClient', { id : contact.contact_id} ) }}">
                             <i class="fas fa-eye fa-2x"  style="margin-right: 10px;"></i>
