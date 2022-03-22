@@ -10,7 +10,7 @@
         <div class="row">
              <div class="col-sm-3">
                 {{ form_label(propal_form.clientpropal, 'Client', {
-                    'label_attr': {'class': 'font-weight-bold required', 'data-toggle': 'tooltip', 'data-placement':'top', 'title': 'Nom de la société ou prénom du client'}
+                    'label_attr': {'class': 'font-weight-bold required'}
                 }) }}
                 {% if propal.clientpropal %}
                                 {# APR-140 : Lien vers fiche client #}
@@ -163,13 +163,13 @@
                     </div>
                     <div class="col-sm-4">
                         {{ form_label(propal_form.prerequis, 'Prérequis', {
-                            'label_attr': {'class': 'font-weight-bold', 'required': "false"}
+                            'label_attr': {'class': 'font-weight-bold'}
                         }) }}
                         {{ form_widget(propal_form.prerequis) }}
                     </div>
                     <div class="col-sm-4">
                         {{ form_label(propal_form.objectif, 'Objectif', {
-                            'label_attr': {'class': 'font-weight-bold', 'required': "false"}
+                            'label_attr': {'class': 'font-weight-bold'}
                         }) }}
                         {{ form_widget(propal_form.objectif, {'attr' : {'autocomplete' : 'off'}}) }}
                     </div>
@@ -251,6 +251,15 @@
 </div>
 <div class="col-sm-12 p-3 " id="content_bouton">
     <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2" role="group" aria-label="Third group">
+            <button type="submit" class="btn btn-primary btn-md btn-block" id="SaveBtn">
+                {% if type is defined and type == 'create' %}
+                    Ajouter
+                {% else %}
+                    Enregistrer les modifications
+                {% endif %}
+            </button>
+        </div>
         {% if type is not defined %}
         {% if propal.entitypropal == 'proform' %}
             <div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
