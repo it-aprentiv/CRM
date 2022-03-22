@@ -202,6 +202,7 @@ class DossierType extends AbstractType
             ->add('durparjour', ChoiceType::class, [
                 'required' => false,
                 'choices' => [
+                    '0.5'=>'0.5',
                     '1' => '1',
                     '1.5' => '1.5',
                     '2' => '2',
