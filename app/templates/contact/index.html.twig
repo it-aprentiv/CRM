@@ -77,7 +77,7 @@
         {{ form_end(contact_filter_form)  }}
     </fieldset>
 
-    <table class="table table-sm mb-0 table-striped">
+    <table class="table table-sm mb-0 table-striped list-filter">
         <thead>
             <tr class="bg-info text-light">
                 <th>Entité</th>
@@ -209,7 +209,7 @@
                 }
             });
         }
-
+    
         $(function () {
             $('#societe').select2({
                 placeholder: "-- Société --",
@@ -226,6 +226,40 @@
                     }
                 }
             });
+            let commercialDefault = [],
+                structureDefault = [];
+
+            {% for contact in pagination %}
+                {% if can_edit is defined and can_edit %}
+                         structureDefault["{{ contact.contact_id }}"] = document.getElementById("contact_lite_{{ contact.contact_id }}_structure").selectedOptions[0].value,
+                        commercialDefault["{{ contact.contact_id }}"] = document.getElementById("contact_lite_{{ contact.contact_id }}_structure").selectedOptions[0].value;
+
+                   $("#contact_lite_{{ contact.contact_id }}_structure").change(function () {    
+                       fetch("{{ path("Liste_Client_Prospect_Controller") }}",{
+                           method:"POST",
+                           headers:{
+                               "Content-Type": "application/x-www-form-urlencoded",
+                               "Cookie":document.cookie
+                           },
+                           body:`contact_lite_{{ contact.contact_id }}[structure]=${$( this ).val()}&contact_lite_{{ contact.contact_id }}[id]={{ contact.contact_id }}&contact_lite_{{ contact.contact_id }}[id_commercial]=${commercialDefault["{{ contact.contact_id }}"]}`
+                       }).then(res => res.json()).then(json => console.log(json));
+                       structureDefault["{{ contact.contact_id }}"] = $( this ).val();
+                   })  
+
+                   $("#contact_lite_{{ contact.contact_id }}_id_commercial").change(function () {    
+                       fetch("{{ path("Liste_Client_Prospect_Controller") }}",{
+                           method:"POST",
+                           headers:{
+                               "Content-Type": "application/x-www-form-urlencoded",
+                               "Cookie":document.cookie
+                           },
+                           body:`contact_lite_{{ contact.contact_id }}[structure]=${structureDefault["{{ contact.contact_id }}"]}&contact_lite_{{ contact.contact_id }}[id]={{ contact.contact_id }}&contact_lite_{{ contact.contact_id }}[id_commercial]=${$( this ).val()}`
+                       }).then(res => res.json()).then(json => console.log(json));
+                       commercialDefault["{{ contact.contact_id }}"] = $( this ).val();
+                   })        
+                {% endif %}
+            {% endfor %}
+
 
             {% if app.request.query.get('societe') %}
                     var data = {
@@ -236,8 +270,8 @@
                     var newOption = new Option(data.text, data.id, true, true);
                     $('#societe').append(newOption).trigger('change');
 
-            {% endif  %}
-            
+            {% endif  %}        
+        
              $('#{{ contact_filter_form.opca.vars.id }}').select2({
                 placeholder: "-- OPCO --",
                 minimumInputLength: 3,

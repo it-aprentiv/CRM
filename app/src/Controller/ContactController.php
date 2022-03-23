@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\Constants\ContactType as ContactTypeConst;
 use App\Constants\Menu;
-use App\Constants\Structure;
+use App\Entity\Structure;
 use App\Entity\Adresse;
+use App\Entity\Collaborateur;
 use App\Entity\Contact;
 use App\Form\ContactLiteType;
 use App\Entity\ContactNote;
@@ -40,6 +41,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -93,30 +95,34 @@ class ContactController extends BaseController
         $pagination = $paginator->paginate($contactsQuery, $request->query->get('page', 1), 10);
         $reflectionProperty = new \ReflectionProperty(ParameterBag::class, "parameters");
         $reflectionProperty->setAccessible(true);
-        $params =  $reflectionProperty->getValue($request->request);
+        $params =  $request->request->all();
         $this->viewParams['pagination'] = $pagination;
-        foreach ($pagination as $ctt) { 
+        $send = false;
+        foreach ($pagination as $ctt) {
             $contact = $this->em->getRepository(Contact::class)->find($ctt["contact_id"]);
-            $contactForm = $form->createNamed("contact_lite_" . $ctt["contact_id"],ContactLiteType::class, $contact, ["method" => "POST", "attr" => ["id" => "contactgenerale" . $ctt["contact_id"]]]);
+            $contactForm = $form->createNamed("contact_lite_" . $ctt["contact_id"], ContactLiteType::class, $contact, ["method" => "POST", "attr" => ["id" => "contactgenerale" . $ctt["contact_id"]]]);
             $contactForm->handleRequest($request);
             $this->viewParams['contact_forme'][$ctt["contact_id"]] = $contactForm->createView();
-            if (count($params) > 0) {                    
-                if ($contactForm->isSubmitted()) {            
-                    if ($ctt["contact_id"] == $params["contact_lite_" . $ctt["contact_id"]]["id"]) {
-                        $this->denyAccessUnlessGranted('edit', Menu::MENU_CLIENT_PROSPECT);
-                        // APR-121
-                        $this->em->persist($contact);
-                        $this->em->flush();
-                        $this->addFlash('success', 'Client/Prospect Modifié avec succés!');
-                        $this->viewParams['contact_forme'][$ctt["contact_id"]] = $contactForm->createView();
-                    }
-                }
+        }
+        if (count($params) > 0) {
+        if ($send) {
+        } else {
+            $currentContact = array_values($params)[0];
+            $filteredContact = $this->em->getRepository(Contact::class)->find($currentContact["id"]);
+            $currentCommercial = $this->em->getRepository(Collaborateur::class)->find($currentContact["id_commercial"]);
+            if($currentCommercial){
+                $filteredContact->setIdCommercial($currentCommercial);
             }
+            $currentStructure = $this->em->getRepository(Structure::class)->find($currentContact["structure"]);
+            if($currentStructure){
+                $filteredContact->setStructure($currentStructure);
+            }
+            $this->em->persist($filteredContact);
+            $this->em->flush();
+            $send = true;
+            return new JsonResponse(["message" => "Édité correctement", "code" => true]);
         }
-        $query = $reflectionProperty->getValue($request->query);
-        if(count($params) > 0){
-            return $this->redirectToRoute("Liste_Client_Prospect_Controller",$query);
-        }
+    }   
         $this->viewParams['can_edit'] = $this->isGranted('edit', Menu::MENU_CLIENT_PROSPECT);
         $this->viewParams['can_view'] = $this->isGranted('view', Menu::MENU_CLIENT_PROSPECT);
         return $this->render('contact/index.html.twig', $this->viewParams);
@@ -342,8 +348,8 @@ class ContactController extends BaseController
 
         if ($contactForm->isSubmitted()) {
             $currentUserId = $this->security->getUser()->getIdutilisateur();
-            if($currentUserId == 58 || $currentUserId == 59|| $currentUserId == 29 ||$currentUserId != 56) {
-            }else{
+            if ($currentUserId == 58 || $currentUserId == 59 || $currentUserId == 29 || $currentUserId != 56) {
+            } else {
                 $contact->setCommercial($lastCommercial);
             }
             $this->denyAccessUnlessGranted('edit', Menu::MENU_CLIENT_PROSPECT);
