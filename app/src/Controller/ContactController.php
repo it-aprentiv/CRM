@@ -868,4 +868,13 @@ class ContactController extends BaseController
         $res['error'] = "The request is not ajax";
         return new JsonResponse($res);
     }
+    /**
+     * Importation de client ou de prospect
+     *
+     * @Route("/contact/import", name="Fiche_client_prospect_Controller/import")
+     */
+    public function import(Request $request){
+        
+    }
+
 }
