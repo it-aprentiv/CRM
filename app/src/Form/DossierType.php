@@ -410,9 +410,9 @@ class DossierType extends AbstractType
      * @return type
      */
     public function getOpcaData(?Contact $oContact) {
-         if (is_null($oContact) || ($oContact instanceof Contact && $oContact->getId() == 0)) {
+        // if (is_null($oContact) || ($oContact instanceof Contact && $oContact->getId() == 0)) {
             return null;
-        }
+        //}
 
         return $this
                 ->contactRepository

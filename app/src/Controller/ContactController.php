@@ -46,6 +46,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use App\Constants\Structure as StructureConst;
 
 use function dump;
 
@@ -348,7 +349,7 @@ class ContactController extends BaseController
 
         if ($contactForm->isSubmitted()) {
             $currentUserId = $this->security->getUser()->getIdutilisateur();
-            if ($currentUserId == 58 || $currentUserId == 59 || $currentUserId == 29 || $currentUserId == 56) {
+            if ($currentUserId /*== 58 || $currentUserId == 59 || $currentUserId == 29 || $currentUserId == 56*/) {
             } else {
                 $contact->setCommercial($lastCommercial);
             }
@@ -527,7 +528,7 @@ class ContactController extends BaseController
         }
 
         $sStructure = $request->query->get('structure', '');
-        $aTypeStructure = Structure::TYPE_STRUCTURE;
+        $aTypeStructure = StructureConst::TYPE_STRUCTURE;
         if (array_key_exists($sStructure, $aTypeStructure)) {
             $iStructure = $aTypeStructure[$sStructure];
         } else {

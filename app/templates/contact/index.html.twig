@@ -109,11 +109,11 @@
                     <td>{{ contact.telephone }}</td>
                     <td>{{ contact.email}}</td>
                     <td>{{ contact.opca }}</td>
-                     {% if app.user == "MUNIER Pascal" or app.user == "Soler Jérémy" or app.user == "OUAHABI Abdulah" %}
+                     {#{% if app.user == "MUNIER Pascal" or app.user == "Soler Jérémy" or app.user == "OUAHABI Abdulah" %}#}
                     <td>    {{ form_widget(contact_forme[contact.contact_id].id_commercial, { attr: { 'class' : 'w-100', placeholder : '-- Commercial --'} }) }}</td>
-                    {% else %}
+                    {#{% else %}
                     <td>    {{ form_widget(contact_forme[contact.contact_id].id_commercial, { attr: { 'class' : 'w-100', placeholder : '-- Commercial --', disabled:true} }) }}</td>
-                    {% endif %}
+                    {% endif %}#}
                     <td>
 
                         {% if can_view is defined and can_view %}
