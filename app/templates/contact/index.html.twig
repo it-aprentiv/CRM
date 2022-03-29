@@ -157,20 +157,96 @@
             <div class="btn-group mr-2" role="group" aria-label="Third group">
                 <a href="{{ path("export_prospect") }}" class="btn btn-primary btn-block">Exporter prospects</a>    
             </div>
+            <div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Launch demo modal
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {{ form_start(contact_import,{'multipart': true}) }}
+                    <div class="modal-body">
+                        
+                        <div class="form-group">
+                            {{ form_row(contact_import.Importy) }}
+                        </div>
+                          <progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
+                        <h3 id="status"></h3>
+                        <p id="loaded_n_total"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Importer </button>
+                    </div>
+                    {{ form_end(contact_import) }}
+                    </div>
+                </div>
+                </div>
+                            </div>
             {% endif %}
         </div>
         
     </div>
-    
+    <br />
+
 
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     
-
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
     <script>
+    $(document).ready(function () {
+        bsCustomFileInput.init()
+    });
+    function _(el) {
+  return document.getElementById(el);
+}
 
+function uploadFile() {
+  var file = _("contact_import_Importy").files[0];
+  // alert(file.name+" | "+file.size+" | "+file.type);
+  var formdata = new FormData();
+  formdata.append("file", file);
+  var ajax = new XMLHttpRequest();
+  ajax.upload.addEventListener("progress", progressHandler, false);
+  ajax.addEventListener("load", completeHandler, false);
+  ajax.addEventListener("error", errorHandler, false);
+  ajax.addEventListener("abort", abortHandler, false);
+  ajax.open("POST", "{{ path('contact_import') }}");
+  ajax.send(formdata);
+}
+
+function progressHandler(event) {
+  _("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bytes of " + event.total;
+  var percent = (event.loaded / event.total) * 100;
+  _("progressBar").value = Math.round(percent);
+  _("status").innerHTML = Math.round(percent) + "% uploaded... please wait";
+}
+
+function completeHandler(event) {
+  _("status").innerHTML = event.target.responseText;
+  _("progressBar").value = 0; //wil clear progress bar after successful upload
+}
+
+function errorHandler(event) {
+  _("status").innerHTML = "Upload Failed";
+}
+
+function abortHandler(event) {
+  _("status").innerHTML = "Upload Aborted";
+}
+   
         function deleteClientProspect(elem)
         {
             var clientprospect_id = elem.closest('tr').attr('data-clientprospect-id');

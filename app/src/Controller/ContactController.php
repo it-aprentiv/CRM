@@ -47,6 +47,9 @@ use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use App\Constants\Structure as StructureConst;
+use App\Form\ImportType;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 use function dump;
 
@@ -84,7 +87,6 @@ class ContactController extends BaseController
         $contactFilterForm->handleRequest($request);
 
         $this->viewParams['contact_filter_form'] = $contactFilterForm->createView();
-
         // Initialisation du filtre type de contact
         // Filtre le type de contact : tableau [1, 2] 
         // Afficher seulement les contacts de type client (1) ou prospect (2)
@@ -105,6 +107,28 @@ class ContactController extends BaseController
             $contactForm->handleRequest($request);
             $this->viewParams['contact_forme'][$ctt["contact_id"]] = $contactForm->createView();
         }
+
+        $contactImport = $form->createNamed("contact_import",ImportType::class,null,["method" => "POST", "attr" => ["id" => "contactimport"]]);
+        $contactImport->handleRequest($request);
+        $this->viewParams['contact_import'] = $contactImport->createView();
+        if($contactImport->isSubmitted() && $contactImport->isValid()){
+            $send = true;
+            // Move the file to the storage directory
+            $file = $contactImport->get('Importy')->getData();
+            dd($file);
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                try {
+                    $file->move(
+                        $this->getParameter('import_directory'),
+                        $fileName
+                    );
+                    return $this->redirectToRoute('contact_import',['fileName'=>$fileName]);
+
+                } catch (FileException $e) {
+                    dd($e);
+                }
+        }
+
         if (count($params) > 0) {
         if ($send) {
         } else {
@@ -869,13 +893,22 @@ class ContactController extends BaseController
         $res['error'] = "The request is not ajax";
         return new JsonResponse($res);
     }
-    /**
-     * Importation de client ou de prospect
-     *
-     * @Route("/contact/import", name="Fiche_client_prospect_Controller/import")
-     */
-    public function import(Request $request){
-        
+   /**
+    * Une fonction qui permet d'importer un fichier excel pour créer des clients 
+    * Un algorithme est utilisé pour créer les clients
+    * Il regarde la première ligne du fichier excel et demande à l'utilisateur de choisir les colonnes qui correspondent aux champs du client
+    * @param Request $request
+    * @return JsonResponse
+    * @Route("/contact/import", name="contact_import")
+    */
+    public function import(Request $request)
+    {
+        $file = $request->files->get('file');
+        if(!$file)
+        {
+            return new JsonResponse(['error' => 'No file because of '. ini_get('upload_max_filesize')]);
+        }else{
+            return new JsonResponse(['success' => 'File uploaded']);
+        }
     }
-
 }

@@ -9,5 +9,6 @@ RUN docker-php-ext-configure \
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
-CMD composer install ;  php-fpm 
+CMD composer install ;  php-fpm
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" 
 EXPOSE 9000
