@@ -46,6 +46,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use App\Constants\Structure as StructureConst;
 use App\Entity\ContactNote;
 use App\Form\ImportType;
+use App\Entity\ContactType as ContactType1;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Form\ImportContactType;
 use function dump;
@@ -988,6 +989,7 @@ class ContactController extends BaseController
                     $commercial = $this->em->getRepository(Collaborateur::class)->find(6);
                     $structure = $this->em->getRepository(Structure::class)->find(1);
                     $secteur = $this->em->getRepository(SecteurActivite::class)->findOneBy(["secteur" => "Autres"])->getId();
+                    $contactType = $this->em->getRepository(ContactType1::class)->findOneBy(["typeContact" => "Client"]);
                 $contacts = [];
                 foreach($rows as $row)
                 {
@@ -998,7 +1000,7 @@ class ContactController extends BaseController
                     $client->setNomStr($row[$mappedData['nomSociete']]);
                     $client->setCommercial($commercial);
                     $client->setStructure($structure);
-                    $client->setIdCivilite(1);
+                    $client->setIdCivilite(3);
                     $client->setIdSecteur($secteur);
                     if(!empty($row[$mappedData["noSiret"]])){
                         $client->setNoSiret($row[$mappedData["noSiret"]]);
@@ -1021,14 +1023,16 @@ class ContactController extends BaseController
                         $note = new ContactNote();
                         $note->setTexteNote($row[$mappedData["siteWeb"]]);
                         $client->addCommentaire($note);
-                    }
+                    }                    
+                    $client->setIdType($contactType);
                     array_push($contacts,$client);
                     }
                 }
                 foreach($contacts as $contact){
                     $this->em->persist($contact);
-                    $this->em->flush();
-                }
+                }                    
+                $this->em->flush();
+                return $this->redirectToRoute('Liste_Client_Prospect_Controller');
             }
 
             $this->viewParams['form'] = $form->createView();
