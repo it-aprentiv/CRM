@@ -1018,75 +1018,7 @@ class FormationDossierManager {
             $devisPapierDocTemplate = new TemplateProcessor("DocPrint/Templates/FichePPL_template.docx");
 
         }
-       // Mise à jour des paramètres dans le ficher word
-        // Client
-      /*   $devisPapierDocTemplate->setValue("client_nom",$aParams['client']);
-        $sCP = $aParams['o_adresse'] instanceof Adresse ? $aParams['o_adresse']->getCodePostal() : '';
-        $sVille = $aParams['ville'] instanceof Ville ? $aParams['ville']->getNomVille() : '';
-        $devisPapierDocTemplate->setValue("client_code_postal_ville", $sCP . " ". $sVille);
-        // Info stage
-        $devisPapierDocTemplate->setValue("stagiaires", implode("<w:br/>", $aParams['stagiaires']));
-        $devisPapierDocTemplate->setValue("stage_intitule", $dossier->getNom());
-        $devisPapierDocTemplate->setValue("stage_lieu", $dossier->getLieu());
-        
-        // Date debut/fin stage
-        $dateFormation = isset($aParams['o_dates_formation'][0]) ? $aParams['o_dates_formation'][0] : null ;
-        
-        $sDateDebutFin = "Du ";
-        */
-        /*if ($dateFormation) {
-            
-            if ($dateFormation['dateD'] instanceof DateTime) {
-                $sDateDebutFin .= $dateFormation['dateD']->format('d-m-Y'); 
-            }
-            $sDateDebutFin .= " au ";
-            
-            if ($dateFormation['dateF'] instanceof DateTime) {
-                $sDateDebutFin .= $dateFormation['dateF']->format('d-m-Y');
-            }
-        }*/
-       /* $aFormatedDatesStage = $aParams['formated_dates_stage'];
-        $sStageHoraire = "";
-        
-        if ($aFormatedDatesStage) {
 
-            if ($aFormatedDatesStage['date_debut']['dateD'] instanceof DateTime) {
-                $sDateDebutFin .= $aFormatedDatesStage['date_debut']['dateD']->format('d-m-Y');
-            }
-            $sDateDebutFin .= " au ";
-
-            if ($aFormatedDatesStage['date_fin']['dateD'] instanceof DateTime) {
-                $sDateDebutFin .= $aFormatedDatesStage['date_fin']['dateD']->format('d-m-Y');
-            }
-            
-            
-            if (isset($aFormatedDatesStage['hour_start_am']) && !empty($aFormatedDatesStage['hour_start_am'])) {
-                $sStageHoraire .=  "de " . $aFormatedDatesStage['hour_start_am'] . " à ". $aFormatedDatesStage['hour_end_am'];
-            }
-            
-            if (isset($aFormatedDatesStage['hour_start_pm']) && !empty($aFormatedDatesStage['hour_start_pm']) ) {
-                $sStageHoraire .= (isset($aFormatedDatesStage['hour_start_am']) && !empty($aFormatedDatesStage['hour_start_am']) ? " et " : "") . $aFormatedDatesStage['hour_start_pm'] . " à " . $aFormatedDatesStage['hour_end_pm'];
-            }
-        }
-
-        $devisPapierDocTemplate->setValue("stage_debut_fin", $sDateDebutFin);
-        $devisPapierDocTemplate->setValue("stage_dates", str_replace('/', '<w:br/>', $aParams['calendrier']));
-        $devisPapierDocTemplate->setValue("stage_duree_jour", $dossier->getDureeJours() . " Jours");
-        //$sDureeParStagiaire = $dateFormation && $dateFormation['nbH'] ? number_format($dateFormation['nbH'], 1, ',', ' ') . " Heures " : "";
-        $sDureeParStagiaire = isset($aParams['duree_par_stagiaire']) ? $aParams['duree_par_stagiaire'] . " Heures " : "";
-        $devisPapierDocTemplate->setValue("stage_duree_par_stagiaire", $sDureeParStagiaire);
-        
-        // APR-208 : Problème de fusion : durée par stagiaire / Horaires du stage
-//        $sStageHoraire = $dateFormation && $dateFormation['dHeureM'] ? $dateFormation['dHeureM'] . "/" .$dateFormation['fHeureM'] : "";
-//        $sStageHoraire .= $dateFormation && $dateFormation['dHeureAm'] ?  "-" . $dateFormation['dHeureAm'] . "/" .$dateFormation['fHeureAm'] : "";
-        
-        $devisPapierDocTemplate->setValue("stage_horaire", $sStageHoraire);
-        // Coût
-        $devisPapierDocTemplate->setValue("cout_total_ht", number_format($aParams['montant_ht'], 2, ",", " ") . " €");
-        $devisPapierDocTemplate->setValue("montant_tva", number_format($aParams['montant_tva'], 2, ",", " "). " €");
-        $devisPapierDocTemplate->setValue("cout_total_ttc", number_format($aParams['montant_ttc'], 2, ",", " "). " €");
-
-*/
         // Nouvelle fonction
         $nomclient = $aParams['client'];
         $contactadressedata = $aParams['o_adresse'];
@@ -1107,6 +1039,7 @@ class FormationDossierManager {
                 }
             }
         }
+
         $adresseclient = $aParams['adresse'];
         $codepostal = $contactadressedata->getCodepostal();
         $IdVille = $contactadressedata->getIdVille();
@@ -1162,15 +1095,16 @@ class FormationDossierManager {
 
 
         // Génération du nom de fichier
-        $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/devis_papier_' . $dossier->getIdClient() . '_' . $dossier . '.docx';
+        $fileName = $dossier->getIdClient() . '_' . preg_replace('/^|\//', '_',$dossier);
+        $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/devis_papier_' .preg_replace('/\s+/', '_', $fileName). '.docx';
         $rep = 'DocPrint/Dossier/'.date("Y-m-d");
         
         if(!is_dir($rep)){
             mkdir($rep);
         }
-        
         $devisPapierDocTemplate->saveAs($nomfile);
-
+ 
+        
         return $nomfile;
     }
     

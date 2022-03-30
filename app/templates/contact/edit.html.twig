@@ -102,17 +102,15 @@
                             </div>
 
                             <div class="col-md-3 text-center">
-{#{% if app.user == "MUNIER Pascal" or app.user == "CREPEAU Francis" or app.user == "Soler Jérémy" or app.user == "OUAHABI Abdulah"%}#} 
-                     {{ form_label(contact_forme.id_commercial, 'Commercial',{
-                                    'label_attr': {'class': 'font-weight-bold'}
-                                }) }}
-                                {{ form_widget(contact_forme.id_commercial, { attr: {autocomplete : 'off'} } ) }}
-                {#{% else %}
-                        {{ form_label(contact_forme.id_commercial, 'Commercial',{
-                                    'label_attr': {'class': 'font-weight-bold'}
-                                }) }}
-                                {{ form_widget(contact_forme.id_commercial, { attr: {autocomplete : 'off',readonly:true} } ) }}         
-        {% endif %}#}
+                        {% if app.user == "MUNIER Pascal" or app.user == "CREPEAU Francis" or app.user == "Soler Jérémy" or app.user == "OUAHABI Abdulah"%}
+                                            {{ form_label(contact_forme.id_commercial, 'Commercial',{
+                                                            'label_attr': {'class': 'font-weight-bold'}
+                                                        }) }}
+                                                        {{ form_widget(contact_forme.id_commercial, { attr: {autocomplete : 'off'} } ) }}
+                                        {% else %}
+                                                {{ form_label(contact_forme.id_commercial, 'Commercial',{'label_attr': {'class': 'font-weight-bold'}}) }}
+                                                        {{ form_widget(contact_forme.id_commercial, { attr: {autocomplete : 'off',readonly:true} } ) }}         
+                                {% endif %}
                             </div>
                             
                             <div class="col-md-2 text-center">
