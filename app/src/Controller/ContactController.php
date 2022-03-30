@@ -900,7 +900,7 @@ class ContactController extends BaseController
             {
                 return new Response('Fichier non importé car l\'extension n\'est pas valide, doit être xls, xlsx ou csv');
             }
-            // if the file is not readable
+            // if the$this->em->getRepository(SecteurActivite::class)->findOneBy(["secteur" => "Autres"])->getId() file is not readable
             if(!$file->isReadable())
             {
                 return new Response('Fichier non importé car il n\'est pas lisible');
@@ -985,7 +985,10 @@ class ContactController extends BaseController
                         }
                     }
                 }
-
+                    $commercial = $this->em->getRepository(Collaborateur::class)->find(6);
+                    $structure = $this->em->getRepository(Structure::class)->find(1);
+                    $secteur = $this->em->getRepository(SecteurActivite::class)->findOneBy(["secteur" => "Autres"])->getId();
+                $contacts = [];
                 foreach($rows as $row)
                 {
                     if(!empty($row[$mappedData['nomContact']]) && !empty($row[$mappedData['prenomContact']]) && !empty($row[$mappedData['nomSociete']])){
@@ -993,18 +996,21 @@ class ContactController extends BaseController
                     $client->setNom($row[$mappedData['nomContact']]);
                     $client->setPrenom($row[$mappedData['prenomContact']]);
                     $client->setNomStr($row[$mappedData['nomSociete']]);
-                    $commercial = $this->getDoctrine()->getRepository(Commercial::class)->find(6);
                     $client->setCommercial($commercial);
-                    $client->setStructure($this->getDoctrine()->getRepository(Structure::class)->find(1));
+                    $client->setStructure($structure);
+                    $client->setIdCivilite(1);
+                    $client->setIdSecteur($secteur);
                     if(!empty($row[$mappedData["noSiret"]])){
                         $client->setNoSiret($row[$mappedData["noSiret"]]);
                     }
                     if(!empty($row[$mappedData['noNaf']])){
                         $client->setNoNaf($row[$mappedData['noNaf']]);
                     }
+                    /*
                     if(!empty($row[$mappedData['sexe']])){
-                        $client->setSexe($row[$mappedData['sexe']]);
+                        $client->setSexe(substr($row[$mappedData['sexe']], 0, 1));
                     }
+                    */
                     if(!empty($row[$mappedData["effectif"]])){
                         $client->setEffectif($row[$mappedData["effectif"]]);
                     }
@@ -1016,9 +1022,12 @@ class ContactController extends BaseController
                         $note->setTexteNote($row[$mappedData["siteWeb"]]);
                         $client->addCommentaire($note);
                     }
-                    $this->getDoctrine()->getManager()->persist($client);
-                    $this->getDoctrine()->getManager()->flush();
+                    array_push($contacts,$client);
                     }
+                }
+                foreach($contacts as $contact){
+                    $this->em->persist($contact);
+                    $this->em->flush();
                 }
             }
 
