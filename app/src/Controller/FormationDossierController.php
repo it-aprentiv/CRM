@@ -1544,30 +1544,7 @@ class FormationDossierController extends BaseController {
         }
         
         $sCalendrier = ltrim($sCalendrier, "/");
-        
-//        $html = $this->renderView(
-//            'dossier/devisPapier.html.twig',
-//            [
-//                'dossier' => $dossier,
-//                'client' => $client->getNomStr(),
-//                'adresse' => $aAdresse,
-//                'stagiaire' => implode("/", $stagiaires),
-//                'dureParStagiaire' => ($dossier->getNbStagiaires()) ? $dossier->getDureeJours(
-//                ) / $dossier->getNbStagiaires() : $dossier->getDureeJours(),
-//                'montant' => $dossier->getMntDemande(),
-//                'tva' => (float) $dossier->getMntDemande() * 0.2,
-//                'ttc' => (float) $dossier->getMntDemande() * 0.2 + (float) $dossier->getMntDemande(),
-//                'ville' => $oVille,
-//                'oAdresse' => $oAdresse,
-//                'calendrier' => $sCalendrier,
-//                'aNbJoursEtHeures' => $aNbJoursEtHeures,
-//                'oDatesFormation' => $oDatesFormation
-//            ]
-//        );
-        
-        //$devisPapier = $manager->createDevisPapier($html, $dossier, $contactdata["contact"]["structure"]);
-        // Utilisation d'un template pour garder la mise en forme
-        
+
         $fDureeJours = floatval(str_replace(",", ".", $dossier->getDureeJours()));
 
         $devisPapier = $manager->generateDevisPapier([
