@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Client/Prospect - CRM Aprentiv v2.0{% endblock %}
+{% block title %}Importation - CRM Aprentiv v2.0{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -11,28 +11,91 @@
         <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
-            <li class="breadcrumb-item active" aria-current="page">importation Client/Prospect</li>
+            <li class="breadcrumb-item"><a href="{{ path('Liste_Client_Prospect_Controller') }}">Liste des clients / Prospects</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Importation</li>
         </ol>
     </nav>
    {# Make a form using ImportContactType #}
-    {{ form_start(form) }}
+    
     <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
+        <div class="col-md-8 m-auto">
+            <div class="card list-filter">
+            {{ form_start(form) }}
+                <div class="card-header text-center">
                     <h3 class="card-title">Importation des contacts</h3>
                 </div>
                 <div class="card-body">
-                
-                    
+                    {{ form_row(form.path) }}                  
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                            {{ form_row(form.sexe) }}
+                        </div>
+                    <div class="form-group col-md-4">
+                        {{ form_row(form.nomContact) }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ form_row(form.prenomContact) }}
+                    </div>
+                </div>                        
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form_row(form.email) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(form.telephone) }}
+                    </div>
                 </div>
-                <div class="card-footer">
+                <div class="form-row">  
+                    <div class="form-group col-md-4">
+                        {{ form_row(form.adresse) }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ form_row(form.codePostal) }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ form_row(form.ville) }}
+                    </div>
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-6">
+                        {{ form_row(form.nomSociete) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(form.noNaf) }}
+                    </div>
+                </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-3">
+                            {{ form_row(form.noSiret) }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            {{ form_row(form.typeSociete) }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            {{ form_row(form.secteurActivite) }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            {{ form_row(form.effectif) }}
+                        </div>
+                    </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {{ form_row(form.qualite) }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ form_row(form.siteWeb)}}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
                     <button type="submit" class="btn btn-primary">Importer</button>
                 </div>
+                {{ form_end(form) }}   
+
             </div>
         </div>
     </div>
-    {{ form_end(form) }}
+    
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

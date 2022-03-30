@@ -9,11 +9,9 @@ use App\Entity\Adresse;
 use App\Entity\Collaborateur;
 use App\Entity\Contact;
 use App\Form\ContactLiteType;
-use App\Entity\ContactNote;
 use App\Entity\ContactType as ContactType2;
 use App\Entity\Filter\ContactFilter;
 use App\Entity\FormationDossier;
-use App\Entity\FormationDossierDate;
 use App\Entity\FormationDossierStagiaire;
 use App\Entity\Mail;
 use App\Entity\Propal;
@@ -30,7 +28,6 @@ use App\Manager\FormationDossierDateManager;
 use App\Repository\ContactRepository;
 use App\Repository\FormationDossierDateRepository;
 use App\Repository\FormationDossierRepository;
-use App\Repository\TelephoneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,16 +38,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use App\Constants\Structure as StructureConst;
+use App\Entity\ContactNote;
 use App\Form\ImportType;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-
+use App\Form\ImportContactType;
 use function dump;
 
 /**
@@ -115,18 +112,8 @@ class ContactController extends BaseController
             $send = true;
             // Move the file to the storage directory
             $file = $contactImport->get('Importy')->getData();
-            dd($file);
-                $fileName = md5(uniqid()).'.'.$file->guessExtension();
-                try {
-                    $file->move(
-                        $this->getParameter('import_directory'),
-                        $fileName
-                    );
-                    return $this->redirectToRoute('contact_import',['fileName'=>$fileName]);
-
-                } catch (FileException $e) {
-                    dd($e);
-                }
+            $fileName = $_SERVER["DOCUMENT_ROOT"].'/DocPrint/import_directory/' . $file->getClientOriginalName();
+            return $this->redirectToRoute('contact_import',['fileName'=>$fileName]);
         }
 
         if (count($params) > 0) {
@@ -898,7 +885,7 @@ class ContactController extends BaseController
     * Un algorithme est utilisé pour créer les clients
     * Il regarde la première ligne du fichier excel et demande à l'utilisateur de choisir les colonnes qui correspondent aux champs du client
     * @param Request $request
-    * @return JsonResponse
+    * @return Response
     * @Route("/contact/import", name="contact_import")
     */
     public function import(Request $request)
@@ -906,9 +893,137 @@ class ContactController extends BaseController
         $file = $request->files->get('file');
         if(!$file)
         {
-            return new JsonResponse(['error' => 'No file because of '. ini_get('upload_max_filesize')]);
         }else{
-            return new JsonResponse(['success' => 'File uploaded']);
+            // handle the file
+            // if the file is not an excel or csv file
+            if(!in_array($file->getClientOriginalExtension(), ['xls', 'xlsx', 'csv']))
+            {
+                return new Response('Fichier non importé car l\'extension n\'est pas valide, doit être xls, xlsx ou csv');
+            }
+            // if the file is not readable
+            if(!$file->isReadable())
+            {
+                return new Response('Fichier non importé car il n\'est pas lisible');
+            }
+            // save the file to the directory
+            $file->move(
+                $_SERVER["DOCUMENT_ROOT"].'/DocPrint/import_directory',
+                $file->getClientOriginalName()
+            );
+            return new Response('ok');
         }
+            // get the file path
+           if($request->query->get('fileName'))
+           {
+            $filePath = $request->query->get('fileName');
+           // open the file
+            $fileHandle = fopen($filePath, 'r');
+            // get the first line
+            $firstLine = fgetcsv($fileHandle, 0, ',');
+            // get the number of columns
+            $numberOfColumns = count($firstLine);
+            // get the number of rows
+            $numberOfRows = 0;
+            while(!feof($fileHandle))
+            {
+                $row = fgetcsv($fileHandle, 0, ',');
+                if($row)
+                {
+                    $numberOfRows++;
+                }
+            }
+            // close the file
+            fclose($fileHandle);
+            // get the columns
+            
+            // get the rows
+            $columnNames = [];
+            for($i = 0; $i < $numberOfColumns; $i++)
+            {
+                $columnNames[$firstLine[$i]] = $firstLine[$i];
+            }
+            
+            $columnNames["Rien à afficher"] = "Rien à afficher";
+            
+            $datas = [
+                'choices' => $columnNames,
+                'path' => $filePath,
+            ];
+            $form = $this->createForm(ImportContactType::class, $datas);
+            $form->handleRequest($request);
+            if($form->isSubmitted() && $form->isValid())
+            {
+                $data = $form->getData();
+                $path = $data['path'];
+                $fileHandle = fopen($path, 'r');
+                $rows = [];
+                $fileHandle = fopen($filePath, 'r');
+                for($i = 0; $i < $numberOfRows; $i++)
+                {
+                    $row = fgetcsv($fileHandle, 0, ',');
+                    if($row)
+                    {
+                        $column = [];
+                        for($j = 0; $j < $numberOfColumns; $j++)
+                        {
+                            $column[$firstLine[$j]] = $row[$j];
+                        }
+                        $rows[] = $column;
+                    }
+                }
+                // close the file
+                fclose($fileHandle);
+                // make a loop for each row
+                $mappedData = [];
+                foreach($data as $key => $value)
+                {
+                    if($key != 'path' && $key != 'choices')
+                    {
+                        if($value != "Rien à afficher")
+                        {
+                            $mappedData[$key] = $value;
+                        }
+                    }
+                }
+
+                foreach($rows as $row)
+                {
+                    if(!empty($row[$mappedData['nomContact']]) && !empty($row[$mappedData['prenomContact']]) && !empty($row[$mappedData['nomSociete']])){
+                    $client = new Contact();
+                    $client->setNom($row[$mappedData['nomContact']]);
+                    $client->setPrenom($row[$mappedData['prenomContact']]);
+                    $client->setNomStr($row[$mappedData['nomSociete']]);
+                    $commercial = $this->getDoctrine()->getRepository(Commercial::class)->find(6);
+                    $client->setCommercial($commercial);
+                    $client->setStructure($this->getDoctrine()->getRepository(Structure::class)->find(1));
+                    if(!empty($row[$mappedData["noSiret"]])){
+                        $client->setNoSiret($row[$mappedData["noSiret"]]);
+                    }
+                    if(!empty($row[$mappedData['noNaf']])){
+                        $client->setNoNaf($row[$mappedData['noNaf']]);
+                    }
+                    if(!empty($row[$mappedData['sexe']])){
+                        $client->setSexe($row[$mappedData['sexe']]);
+                    }
+                    if(!empty($row[$mappedData["effectif"]])){
+                        $client->setEffectif($row[$mappedData["effectif"]]);
+                    }
+                    if(!empty($row[$mappedData["qualite"]])){
+                        $client->setQualite($row[$mappedData["qualite"]]);
+                    }
+                    if(!empty($row[$mappedData["siteWeb"]])){
+                        $note = new ContactNote();
+                        $note->setTexteNote($row[$mappedData["siteWeb"]]);
+                        $client->addCommentaire($note);
+                    }
+                    $this->getDoctrine()->getManager()->persist($client);
+                    $this->getDoctrine()->getManager()->flush();
+                    }
+                }
+            }
+
+            $this->viewParams['form'] = $form->createView();
+        return $this->render('contact/import.html.twig', $this->viewParams);
+        }else return $this->redirectToRoute('Liste_Client_Prospect_Controller');
     }
 }
