@@ -150,17 +150,18 @@
     <div class="col-sm-12 p-0" id="content_bouton">
         <div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group mr-2" role="group" aria-label="Third group">
-                <a href="{{ path("Fiche_client_prospect_Controller/ajoutclient") }}" class="btn btn-primary btn-block">Ajouter une fiche</a>
+                <a href="{{ path("Fiche_client_prospect_Controller/ajoutclient") }}" class="btn btn-primary btn-block"><i class='fa fa-book'></i> Ajouter une fiche</a>
             </div>
             {% endif %}
             {% if app.user  == 'MUNIER Pascal'%}
             <div class="btn-group mr-2" role="group" aria-label="Third group">
-                <a href="{{ path("export_prospect") }}" class="btn btn-primary btn-block">Exporter prospects</a>    
+                <a href="{{ path("export_prospect") }}" class="btn btn-primary btn-block"><i class="fas fa-file"></i></i> Exporter prospects</a>    
             </div>
             <div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                Launch demo modal
+                <i class="fa fa-upload"></i>
+                Importer des contacts
                 </button>
 
                 <!-- Modal -->

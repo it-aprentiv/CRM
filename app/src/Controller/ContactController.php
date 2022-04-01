@@ -48,6 +48,11 @@ use App\Entity\ContactNote;
 use App\Form\ImportType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Form\ImportContactType;
+use App\Entity\ContactType as ContactTypeEntity;
+use App\Repository\VilleRepository;
+use Doctrine\ORM\EntityManager;
+use phpDocumentor\Reflection\Types\Null_;
+
 use function dump;
 
 /**
@@ -888,7 +893,7 @@ class ContactController extends BaseController
     * @return Response
     * @Route("/contact/import", name="contact_import")
     */
-    public function import(Request $request)
+    public function import(Request $request, EntityManagerInterface $entityManager, VilleRepository $villeRepository)
     {
         $file = $request->files->get('file');
         if(!$file)
@@ -974,56 +979,113 @@ class ContactController extends BaseController
                 // close the file
                 fclose($fileHandle);
                 // make a loop for each row
-                $mappedData = [];
+                $mappedDat = [];
                 foreach($data as $key => $value)
                 {
                     if($key != 'path' && $key != 'choices')
                     {
                         if($value != "Rien à afficher")
                         {
-                            $mappedData[$key] = $value;
+                            $mappedDat[$key] = $value;
                         }
                     }
                 }
 
                 foreach($rows as $row)
                 {
-                    if(!empty($row[$mappedData['nomContact']]) && !empty($row[$mappedData['prenomContact']]) && !empty($row[$mappedData['nomSociete']])){
+                   // if(!empty($row[$mappedDat['nomContact']]) && !empty($row[$mappedDat['prenomContact']]) && !empty($row[$mappedDat['nomSociete']])){
                     $client = new Contact();
-                    $client->setNom($row[$mappedData['nomContact']]);
-                    $client->setPrenom($row[$mappedData['prenomContact']]);
-                    $client->setNomStr($row[$mappedData['nomSociete']]);
-                    $commercial = $this->getDoctrine()->getRepository(Commercial::class)->find(6);
+                    $client->setNom($row[$mappedDat['nomContact']]);
+                    $client->setPrenom($row[$mappedDat['prenomContact']]);
+                    $client->setNomStr($row[$mappedDat['nomSociete']]);
+                    $commercial = $this->getDoctrine()->getRepository(Collaborateur::class)->find(6);
                     $client->setCommercial($commercial);
                     $client->setStructure($this->getDoctrine()->getRepository(Structure::class)->find(1));
-                    if(!empty($row[$mappedData["noSiret"]])){
-                        $client->setNoSiret($row[$mappedData["noSiret"]]);
+                    $client->setIdType($this->getDoctrine()->getRepository(ContactTypeEntity::class)->find(2));
+                    //ajout de date d'importation
+                    $date = new \DateTime();
+                    $client->setDateAdd($date);
+                    if(!empty($row[$mappedDat["noSiret"]])){
+                        $client->setNoSiret($row[$mappedDat["noSiret"]]);
                     }
-                    if(!empty($row[$mappedData['noNaf']])){
-                        $client->setNoNaf($row[$mappedData['noNaf']]);
+                    //on 
+                    if(!empty($row[$mappedDat['noNaf']])){
+                        $client->setNoNaf(str_replace('.','',$row[$mappedDat['noNaf']]));
                     }
-                    if(!empty($row[$mappedData['sexe']])){
-                        $client->setSexe($row[$mappedData['sexe']]);
+                    /*if(!empty($row[$mappedDat['sexe']])){
+                        $client->setSexe($row[$mappedDat['sexe']]);
+                    }*/
+                    if(!empty($row[$mappedDat["effectif"]])){
+                        $client->setEffectif($row[$mappedDat["effectif"]]);
                     }
-                    if(!empty($row[$mappedData["effectif"]])){
-                        $client->setEffectif($row[$mappedData["effectif"]]);
+                    if(!empty($row[$mappedDat["qualite"]])){
+                        $client->setQualite($row[$mappedDat["qualite"]]);
                     }
-                    if(!empty($row[$mappedData["qualite"]])){
-                        $client->setQualite($row[$mappedData["qualite"]]);
+                    if(!empty($row[$mappedDat["ville"]])){
+
+                        // TRY 1 AVEC QB ça ne return rien
+                        /*$conn = $entityManager->getConnection();
+                        $v = $row[$mappedDat["ville"]];
+                        $sql = "SELECT * FROM 5_ville WHERE nom_ville = ";
+                        $concatinatedQuery = $sql.' '."'".$v."'";
+                        $stmt = $conn->prepare($concatinatedQuery);
+                        $stmt->execute();
+                        $selectdata = $stmt->fetchAll();
+                        dd($selectdata);*/
+
+                        // TRY 2 AVEC QB return an array vide
+                        //$conn = $entityManager->getConnection();
+                        //$sql = 'SELECT id FROM 5_ville v WHERE v.nom_ville = '."'".$row[$mappedDat["ville"]]."'"; ;
+                        //$stmt = $conn->prepare($sql);
+                        //$resultSet = $stmt->executeQuery();
+                        //var_dump($resultSet->fetchAllAssociative());
+                        //var_dump($row[$mappedDat["ville"]]);
+                        //$qb = $villeRepository->createQueryBuilder('v')
+                            //->select('v.id')
+                            //->where('v.nomVille =' ."'".$row[$mappedDat["ville"]]."'");
+                            //$result = $qb->getQuery()->getResult();
+                            //dd(print_r($result));
+
+
+                        $ville = new Ville ;
+                        $ville->setNomVille($row[$mappedDat['ville']]);
+                        $ville->setIdUserAdd(29);
+                        $ville->setDateAdd(new \DateTime());
+                        $ville->setIdb(0);
+                        $this->getDoctrine()->getManager()->persist($ville);
+                        $this->getDoctrine()->getManager()->flush();
+
+                        //Faut trouver un meilleur pour eviter la creation de doublons 
                     }
-                    if(!empty($row[$mappedData["siteWeb"]])){
+                    
+                    if(!empty($row[$mappedDat["codePostal"]])){
+
+
+
+                        $adresse = new Adresse;
+                        //regex pour corriger le bug de 1er ligne du cp
+                        $adresse->setCodePostal(preg_replace("/[^0-9]/", "",$row[$mappedDat["codePostal"]]));
+                        $adresse->setAdresse($row[$mappedDat["adresse"]]);
+                        $adresse->setIdVille($ville->getId());
+                        $client->addAdress($adresse);
+                    }
+                    
+                    if(!empty($row[$mappedDat["siteWeb"]])){
                         $note = new ContactNote();
-                        $note->setTexteNote($row[$mappedData["siteWeb"]]);
+                        $note->setTexteNote($row[$mappedDat["siteWeb"]]);
                         $client->addCommentaire($note);
+                    }
+                    if(!empty($row[$mappedDat['noNaf']])){
+                        $client->setNoNaf(str_replace('.','',$row[$mappedDat['noNaf']]));
                     }
                     $this->getDoctrine()->getManager()->persist($client);
                     $this->getDoctrine()->getManager()->flush();
-                    }
+                    //}
                 }
             }
 
             $this->viewParams['form'] = $form->createView();
         return $this->render('contact/import.html.twig', $this->viewParams);
-        }else return $this->redirectToRoute('Liste_Client_Prospect_Controller');
+        }//else return $this->redirectToRoute('Liste_Client_Prospect_Controller');
     }
 }
