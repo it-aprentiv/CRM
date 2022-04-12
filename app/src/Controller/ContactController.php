@@ -61,6 +61,7 @@ use function dump;
  */
 class ContactController extends BaseController
 {
+    
 
     const TYPE_TELEPHONE = 1;
     const TYPE_FAX = 3;
@@ -896,6 +897,7 @@ class ContactController extends BaseController
     */
     public function import(Request $request, EntityManagerInterface $entityManager, VilleRepository $villeRepository)
     {
+        ini_set('memory_limit', '1024M');
         $file = $request->files->get('file');
         if(!$file)
         {
@@ -992,36 +994,24 @@ class ContactController extends BaseController
                     }
                 }
                     $commercial = $this->em->getRepository(Collaborateur::class)->find(6);
-                    $structure = $this->em->getRepository(Structure::class)->find(1);
-                    $secteur = $this->em->getRepository(SecteurActivite::class)->findOneBy(["secteur" => "Autres"])->getId();
-                    $contactType = $this->em->getRepository(ContactType1::class)->findOneBy(["typeContact" => "Client"]);
+                    $structure = $this->getDoctrine()->getRepository(Structure::class)->find(1);
+                    $contactType = $this->getDoctrine()->getRepository(ContactTypeEntity::class)->find(2);
                 $contacts = [];
                 foreach($rows as $row)
                 {
                    // if(!empty($row[$mappedDat['nomContact']]) && !empty($row[$mappedDat['prenomContact']]) && !empty($row[$mappedDat['nomSociete']])){
                     $client = new Contact();
-
                     $client->setNom($row[$mappedDat['nomContact']]);
                     $client->setPrenom($row[$mappedDat['prenomContact']]);
                     $client->setNomStr($row[$mappedDat['nomSociete']]);
-                    $commercial = $this->getDoctrine()->getRepository(Collaborateur::class)->find(6);
                     $client->setCommercial($commercial);
-                    $client->setStructure($this->getDoctrine()->getRepository(Structure::class)->find(1));
-                    $client->setIdType($this->getDoctrine()->getRepository(ContactTypeEntity::class)->find(2));
+                    $client->setStructure($structure);
+                    $client->setIdType($contactType);
                     //ajout de date d'importation
                     $date = new \DateTime();
                     $client->setDateAdd($date);
                     if(!empty($row[$mappedDat["noSiret"]])){
                         $client->setNoSiret($row[$mappedDat["noSiret"]]);
-                    $client->setNom($row[$mappedData['nomContact']]);
-                    $client->setPrenom($row[$mappedData['prenomContact']]);
-                    $client->setNomStr($row[$mappedData['nomSociete']]);
-                    $client->setCommercial($commercial);
-                    $client->setStructure($structure);
-                    $client->setIdCivilite(3);
-                    $client->setIdSecteur($secteur);
-                    if(!empty($row[$mappedData["noSiret"]])){
-                        $client->setNoSiret($row[$mappedData["noSiret"]]);
                     }
                     //on 
                     if(!empty($row[$mappedDat['noNaf']])){
@@ -1035,60 +1025,31 @@ class ContactController extends BaseController
                     }
                     if(!empty($row[$mappedDat["qualite"]])){
                         $client->setQualite($row[$mappedDat["qualite"]]);
-                    /*
-                    if(!empty($row[$mappedData['sexe']])){
-                        $client->setSexe(substr($row[$mappedData['sexe']], 0, 1));
-                    }
-                    */
-                    if(!empty($row[$mappedData["effectif"]])){
-                        $client->setEffectif($row[$mappedData["effectif"]]);
                     }
                     if(!empty($row[$mappedDat["ville"]])){
 
-                        // TRY 1 AVEC QB ça ne return rien
-                        /*$conn = $entityManager->getConnection();
-                        $v = $row[$mappedDat["ville"]];
-                        $sql = "SELECT * FROM 5_ville WHERE nom_ville = ";
-                        $concatinatedQuery = $sql.' '."'".$v."'";
-                        $stmt = $conn->prepare($concatinatedQuery);
-                        $stmt->execute();
-                        $selectdata = $stmt->fetchAll();
-                        dd($selectdata);*/
-
-                        // TRY 2 AVEC QB return an array vide
-                        //$conn = $entityManager->getConnection();
-                        //$sql = 'SELECT id FROM 5_ville v WHERE v.nom_ville = '."'".$row[$mappedDat["ville"]]."'"; ;
-                        //$stmt = $conn->prepare($sql);
-                        //$resultSet = $stmt->executeQuery();
-                        //var_dump($resultSet->fetchAllAssociative());
-                        //var_dump($row[$mappedDat["ville"]]);
-                        //$qb = $villeRepository->createQueryBuilder('v')
-                            //->select('v.id')
-                            //->where('v.nomVille =' ."'".$row[$mappedDat["ville"]]."'");
-                            //$result = $qb->getQuery()->getResult();
-                            //dd(print_r($result));
-
-
-                        $ville = new Ville ;
-                        $ville->setNomVille($row[$mappedDat['ville']]);
-                        $ville->setIdUserAdd(29);
-                        $ville->setDateAdd(new \DateTime());
-                        $ville->setIdb(0);
-                        $this->getDoctrine()->getManager()->persist($ville);
-                        $this->getDoctrine()->getManager()->flush();
-
-                        //Faut trouver un meilleur pour eviter la creation de doublons 
+ 
                     }
                     
                     if(!empty($row[$mappedDat["codePostal"]])){
-
-
-
                         $adresse = new Adresse;
                         //regex pour corriger le bug de 1er ligne du cp
                         $adresse->setCodePostal(preg_replace("/[^0-9]/", "",$row[$mappedDat["codePostal"]]));
                         $adresse->setAdresse($row[$mappedDat["adresse"]]);
-                        $adresse->setIdVille($ville->getId());
+                        $ville2 = $this->getDoctrine()->getRepository(Ville::class)
+                        ->findOneBy(['nomVille' => $row[$mappedDat['ville']]]);
+                        if(!is_null($ville2)){
+                            $adresse->setIdVille($ville2->getId());
+                        }else {
+                            $ville = new Ville ;
+                            $ville->setNomVille($row[$mappedDat['ville']]);
+                            $ville->setIdUserAdd(29);
+                            $ville->setDateAdd(new \DateTime());
+                            $ville->setIdb(0);
+                            $this->em->persist($ville);
+                            $this->em->flush();
+                            $adresse->setIdVille($ville->getId());
+                        }
                         $client->addAdress($adresse);
                     }
                     
@@ -1101,13 +1062,7 @@ class ContactController extends BaseController
                     if(!empty($row[$mappedDat['noNaf']])){
                         $client->setNoNaf(str_replace('.','',$row[$mappedDat['noNaf']]));
                     }
-                    $this->getDoctrine()->getManager()->persist($client);
-                    $this->getDoctrine()->getManager()->flush();
-                    //}
-                    }                    
-                    $client->setIdType($contactType);
-                    array_push($contacts,$client);
-                    }
+                    array_push($contacts, $client);
 
                 }
                 foreach($contacts as $contact){
