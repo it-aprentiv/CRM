@@ -1000,7 +1000,7 @@ class ContactController extends BaseController
                 {
                    // if(!empty($row[$mappedDat['nomContact']]) && !empty($row[$mappedDat['prenomContact']]) && !empty($row[$mappedDat['nomSociete']])){
                     $client = new Contact();
-<<<<<<< HEAD
+
                     $client->setNom($row[$mappedDat['nomContact']]);
                     $client->setPrenom($row[$mappedDat['prenomContact']]);
                     $client->setNomStr($row[$mappedDat['nomSociete']]);
@@ -1013,7 +1013,6 @@ class ContactController extends BaseController
                     $client->setDateAdd($date);
                     if(!empty($row[$mappedDat["noSiret"]])){
                         $client->setNoSiret($row[$mappedDat["noSiret"]]);
-=======
                     $client->setNom($row[$mappedData['nomContact']]);
                     $client->setPrenom($row[$mappedData['prenomContact']]);
                     $client->setNomStr($row[$mappedData['nomSociete']]);
@@ -1023,13 +1022,11 @@ class ContactController extends BaseController
                     $client->setIdSecteur($secteur);
                     if(!empty($row[$mappedData["noSiret"]])){
                         $client->setNoSiret($row[$mappedData["noSiret"]]);
->>>>>>> 1273533591b527a48deb37ebad2374e01896ff32
                     }
                     //on 
                     if(!empty($row[$mappedDat['noNaf']])){
                         $client->setNoNaf(str_replace('.','',$row[$mappedDat['noNaf']]));
                     }
-<<<<<<< HEAD
                     /*if(!empty($row[$mappedDat['sexe']])){
                         $client->setSexe($row[$mappedDat['sexe']]);
                     }*/
@@ -1038,7 +1035,6 @@ class ContactController extends BaseController
                     }
                     if(!empty($row[$mappedDat["qualite"]])){
                         $client->setQualite($row[$mappedDat["qualite"]]);
-=======
                     /*
                     if(!empty($row[$mappedData['sexe']])){
                         $client->setSexe(substr($row[$mappedData['sexe']], 0, 1));
@@ -1046,7 +1042,6 @@ class ContactController extends BaseController
                     */
                     if(!empty($row[$mappedData["effectif"]])){
                         $client->setEffectif($row[$mappedData["effectif"]]);
->>>>>>> 1273533591b527a48deb37ebad2374e01896ff32
                     }
                     if(!empty($row[$mappedDat["ville"]])){
 
@@ -1101,7 +1096,7 @@ class ContactController extends BaseController
                         $note = new ContactNote();
                         $note->setTexteNote($row[$mappedDat["siteWeb"]]);
                         $client->addCommentaire($note);
-<<<<<<< HEAD
+
                     }
                     if(!empty($row[$mappedDat['noNaf']])){
                         $client->setNoNaf(str_replace('.','',$row[$mappedDat['noNaf']]));
@@ -1109,12 +1104,11 @@ class ContactController extends BaseController
                     $this->getDoctrine()->getManager()->persist($client);
                     $this->getDoctrine()->getManager()->flush();
                     //}
-=======
                     }                    
                     $client->setIdType($contactType);
                     array_push($contacts,$client);
                     }
->>>>>>> 1273533591b527a48deb37ebad2374e01896ff32
+
                 }
                 foreach($contacts as $contact){
                     $this->em->persist($contact);

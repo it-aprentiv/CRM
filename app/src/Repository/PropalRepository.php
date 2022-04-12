@@ -62,7 +62,7 @@ class PropalRepository extends ServiceEntityRepository
         }
 
         return $qb
-            ->orderBy('ppl.id', 'DESC')
+            ->orderBy('ppl.id', 'ASC')
             ->getQuery();
     }
 
@@ -135,7 +135,7 @@ class PropalRepository extends ServiceEntityRepository
             ->setParameter('val3', 'Classée sans suite')
             ->andWhere('stt.statutDevis != :val4')
             ->setParameter('val4', 'Dossier créé')
-            ->orderBy('ppl.daterelance', 'ASC')
+            ->orderBy('ppl.daterelance', 'DESC')
             ->getQuery();
     }
 

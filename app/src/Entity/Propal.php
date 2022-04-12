@@ -157,6 +157,11 @@ class Propal
     /**
      * @ORM\Column(type="string", nullable=true)
      */
+    private $typeendroit;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     private $fiabilite;
 
     public function __toString()
@@ -511,6 +516,17 @@ class Propal
     public function setFiabilite(?string $fiabilite): string
     {
         $this->fiabilite = $fiabilite;
+
+        return $this;
+    }
+    public function getTypeendroit(): ?string
+    {
+        return $this->typeendroit;
+    }
+
+    public function setTypeendroit(?string $typeendroit): string
+    {
+        $this->typeendroit = $typeendroit;
 
         return $this;
     }

@@ -82,6 +82,12 @@
                 }) }}
                 {{ form_widget(propal_form.fiabilite) }}
             </div>
+            <div class="col-sm-3">
+                {{ form_label(propal_form.typeendroit, 'INTER / INTRA', {
+                    'label_attr': {'class': 'font-weight-bold'}
+                }) }}
+                {{ form_widget(propal_form.typeendroit) }}
+            </div>
         </div>
     </fieldset>
 </div>

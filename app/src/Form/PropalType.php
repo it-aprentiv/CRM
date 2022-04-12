@@ -205,7 +205,14 @@ class PropalType extends AbstractType
                     'Froid' => 'Froid',
                     'Tiede' => 'Tiede',
                     'Chaud' => 'Chaud',
-            ]])        
+            ]]) 
+            ->add('typeendroit', ChoiceType::class,[
+                'choices' => [
+                    'INTER' => 'INTER',
+                    'INTRA' => 'INTRA'
+                ],
+                'placeholder'=>'--OFF--',
+                'required' => false])        
         ;
         $builder->get("clientpropal")->addModelTransformer($this->societeobjecttransformer);
         $builder->get("clientpropal")->resetViewTransformers();

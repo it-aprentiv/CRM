@@ -369,3 +369,10 @@
 2022/03/30 15:11:31 [error] 32#32: *137 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Maximum execution time of 300 seconds exceeded in /var/www/vendor/doctrine/orm/lib/Doctrine/ORM/EntityManager.php on line 288PHP message: PHP Fatal error:  Maximum execution time of 300 seconds exceeded in /var/www/vendor/twig/twig/src/Extension/CoreExtension.php on line 1398" while reading response header from upstream, client: 172.18.0.1, server: localhost, request: "POST /contact/import?fileName=/var/www/public/DocPrint/import_directory/Aprentiv_Export%20-%20Data.csv HTTP/1.1", upstream: "fastcgi://172.18.0.4:9000", host: "localhost", referrer: "http://localhost/contact/import?fileName=/var/www/public/DocPrint/import_directory/Aprentiv_Export%20-%20Data.csv"
 2022/03/30 15:11:31 [warn] 32#32: *137 an upstream response is buffered to a temporary file /var/cache/nginx/fastcgi_temp/0/01/0000000010 while reading upstream, client: 172.18.0.1, server: localhost, request: "POST /contact/import?fileName=/var/www/public/DocPrint/import_directory/Aprentiv_Export%20-%20Data.csv HTTP/1.1", upstream: "fastcgi://172.18.0.4:9000", host: "localhost", referrer: "http://localhost/contact/import?fileName=/var/www/public/DocPrint/import_directory/Aprentiv_Export%20-%20Data.csv"
 >>>>>>> 1273533591b527a48deb37ebad2374e01896ff32
+2022/04/12 08:15:14 [emerg] 1#1: "client_max_body_size" directive is not allowed here in /etc/nginx/nginx.conf:4
+2022/04/12 08:25:12 [emerg] 1#1: "client_max_body_size" directive is not allowed here in /etc/nginx/nginx.conf:4
+2022/04/12 08:35:48 [emerg] 1#1: "client_max_body_size" directive is not allowed here in /etc/nginx/nginx.conf:4
+2022/04/12 08:38:22 [emerg] 1#1: "client_max_body_size" directive is not allowed here in /etc/nginx/nginx.conf:4
+2022/04/12 08:38:44 [emerg] 1#1: "client_max_body_size" directive is not allowed here in /etc/nginx/nginx.conf:4
+2022/04/12 08:38:53 [emerg] 1#1: "client_max_body_size" directive is not allowed here in /etc/nginx/nginx.conf:4
+2022/04/12 08:40:40 [emerg] 1#1: "client_max_body_size" directive is not allowed here in /etc/nginx/nginx.conf:4
