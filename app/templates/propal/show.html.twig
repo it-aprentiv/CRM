@@ -69,6 +69,7 @@
     
     {% include 'Common/client-ajax-js.html.twig' with { attrs: propal_form.clientpropal.vars } %}
     {% include 'propal/Parts/propal.js.html.twig' %}
+    {% include 'Common/collection-function-js.html.twig' %}
     <script>
         $(document).ready(function(){
             // Ajout valeur par défaut des societés liées selon leur valeur pourle contact
@@ -207,6 +208,20 @@ setInterval(()=>{
         let btn2 = document.getElementById('SaveBtn')
         btn2.classList.add("d-none")
         }
-
+        $('#tag-form-submit').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{{ path('ajout_competence') }}",
+                data: $('form.tagForm').serialize(),
+                success: function(response) {
+                    $('#popupAddStage').modal('hide');
+                },
+                error: function() {
+                    alert('Error');
+                }
+            });
+            return false;
+        });
     </script>
 {% endblock %}

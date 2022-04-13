@@ -145,7 +145,7 @@ class CompetenceController extends BaseController
         $form->handleRequest($request);
         $this->viewParams['data'] = $form->createView();
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             //dd($form); APR-195 : comment du dd()
             $programmefile = $form['catalogueprogramme']->getData();
             //dd($form); APR-195 : comment du dd()

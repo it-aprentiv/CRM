@@ -510,3 +510,7 @@ class FormationController extends BaseController {
     }
 
 }
+
+// request.CRITICAL: Uncaught PHP Exception TypeError: "Argument 2 passed to Knp\Bundle\PaginatorBundle\Twig\Extension\PaginationExtension::render() must be an instance of Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination, null given, called in /home/customer/www/crm.aprentiv.fr/public_html/crm/var/cache/prod/twig/53/539f3cd6995b286ccc19557f3302fb6b7ad9e261286e9b05f22c856f92ec6fe8.php on line 391" at /home/customer/www/crm.aprentiv.fr/public_html/crm/vendor/knplabs/knp-paginator-bundle/Twig/Extension/PaginationExtension.php 
+//line 46 {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Argument 2 passed to Knp\\Bundle\\PaginatorBundle\\Twig\\Extension\\PaginationExtension::render() must be an instance of Knp\\Bundle\\PaginatorBundle\\Pagination\\SlidingPagination, null given, called in /home/customer/www/crm.aprentiv.fr/public_html/crm/var/cache/prod/twig/53/539f3cd6995b286ccc19557f3302fb6b7ad9e261286e9b05f22c856f92ec6fe8.php 
+// on line 391 at /home/customer/www/crm.aprentiv.fr/public_html/crm/vendor/knplabs/knp-paginator-bundle/Twig/Extension/PaginationExtension.php:46
