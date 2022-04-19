@@ -453,6 +453,7 @@
                             <th>Date estimée pour récépt accord</th>
                             <th>Montant demandé</th>
                             <th>Montant accordé</th>
+                            <th>Statut</th>
                             <th>Date estimée pour clôture</th>
                             <th>Commercial</th>
                         </tr>
@@ -476,6 +477,7 @@
                                 </td>
                                 <td>{{ dossier.mntDemande |number_format(2, ',', ' ') }}</td>
                                 <td>{{ dossier.mntAccorde |number_format(2, ',', ' ') }}</td>
+                                <td>{{ dossier.statut }}</td>
             {#                    <td>  {{ (( (dossier.dateFinPeriode | date('d-m-Y')) == '31-12-1969') or ((dossier.dateFinPeriode | date('d-m-Y')) == '01-01-1970') or ((dossier.dateFinPeriode | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateFinPeriode | date('d-m-Y')}}</td>#}
                                 {# APR-194 : Date estimee pour clôtre = date de création du dossier + 6 mois #}
                                 <td>{{ dossier.dateEnvoi | date_modify('+6 month') | date('d-m-Y') }}</td>

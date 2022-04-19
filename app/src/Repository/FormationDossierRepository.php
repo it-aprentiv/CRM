@@ -708,8 +708,9 @@ $qb
     {
         $qb = $this->createQueryBuilder("fd");
 
-        return $qb->select("str.structure, cnt.nomStr, fd.dateEnvoi, fd.nom, fd.totalHt, fd.mntDemande, fd.themeformation, fd.dateFinPeriode, fd.mntAccorde, fd.dateAccord, fd.id, col.nomPrenom AS commercial")
+        return $qb->select("str.structure, cnt.nomStr, fd.dateEnvoi, fd.nom, fd.totalHt, fd.mntDemande, fd.themeformation, fd.dateFinPeriode, fd.mntAccorde, fd.dateAccord, fd.id, fds.statut, col.nomPrenom AS commercial")
             ->leftJoin(Structure::class, 'str', 'WITH', 'str.id = fd.idStructure')
+            ->leftJoin(FormationDossierStatut::class, 'fds', 'WITH', 'fds.id = fd.idStatut')
             ->leftJoin(Collaborateur::class, 'col', 'WITH', 'fd.idCommercial = col.id')
             ->leftJoin(Contact::class, 'cnt', 'WITH', 'cnt.id = fd.idClient')
             ->where($qb->expr()->eq('cnt.id',":nomContact"))

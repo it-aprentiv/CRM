@@ -28,6 +28,7 @@ use App\Repository\ContactRepository;
 use App\Repository\ContactTypeRepository;
 use App\Repository\SecteurActiviteRepository;
 use App\Repository\StructureRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -37,6 +38,9 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 
 class ContactType extends AbstractType
 {
@@ -53,6 +57,7 @@ class ContactType extends AbstractType
     private $structuretransformer;
     private $datetimetransformer;
     private $secteuractivitetnstransfo;
+    private $em;
 
 
     public function __construct(ContactRepository $contactRepository,
@@ -67,7 +72,8 @@ class ContactType extends AbstractType
                                 DateTimeTransformer $datetimetransformer,
                                 SiteWebTransformer $sitewebtransformer,
                                 SecteurActiviteTnsTransformer $secteuractivitetnstransfo,
-                                StructureRepository $structureRepository
+                                StructureRepository $structureRepository,
+                                EntityManagerInterface $em
                                 )
     {
         $this->contactRepository            = $contactRepository;
@@ -83,6 +89,7 @@ class ContactType extends AbstractType
         $this->sitewebtransformer           = $sitewebtransformer;
         $this->secteuractivitetnstransfo    = $secteuractivitetnstransfo;
         $this->structureRepository = $structureRepository;
+        $this->em = $em;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
