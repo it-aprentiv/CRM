@@ -35,6 +35,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -105,6 +106,11 @@ class ContactType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Nom de la société ou prénom du client',
                 ]
+            ])
+            ->add('exist', HiddenType::class, [
+                'mapped' => false,
+                'required'  => false,
+                'empty_data' => 'false',
             ])
             ->add('noSiret', TextType::class, [
                 'label'     => "Siret entreprise",

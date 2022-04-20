@@ -214,29 +214,39 @@ class ContactController extends BaseController
             $contact->setIdType($type);
         }
         
-        $contactForm = $this->createForm(ContactType::class, $contact, ['method' => 'POST']);
+        $contactForm = $this->createForm(ContactType::class, $contact, ['method' => 'GET']); 
+        $contactHandle = $this->createForm(ContactType::class, $contact, ['method' => 'POST']);
         $contactForm->handleRequest($request);
+        if($request->request->get('contact')){
+            $contactForm->get("exist")->setData("true");
+        }
         $numero =  $contactForm['Telephone']->getData();
-        if ($contactForm->isSubmitted()) {
+        $this->viewParams['contactsExistants'] = false;
 
+        if ($contactForm->isSubmitted() && !$request->query->get('exist')) {
+            
             $numero =  $contactForm['Telephone']->getData();
             $email = $contactForm['adresseEmail']->getData();
             if($contactRepository->findOneBy(['numero' => $numero]) AND !is_null($numero)) {
-                return $this->render('contact/contactexistant.html.twig', $this->viewParams);
                 $contactsExistants = $contactRepository->findBy(['numero'=>$numero]);
-                $emptylist = [];
-                foreach ($contactsExistants as $contactExistant){
-                    array_push($emptylist, $contactExistant);
-                    $this->addFlash('danger', "L'ajout a échoué car un contact avec le même numéro de téléphone existe déjà.");
+                if(count($contactsExistants) > 0){
+                    $this->addFlash('danger', "L'ajout a échoué car un contact avec le même numéro de téléphone existe déjà.\n Si vous pensez qu'il s'agit d'une erreur, veuillez cliquer sur le bouton 'ajouter quand même'.");
+                    $request->query->set('exist', ['exist' => true]);
+                    $dataToSend = $request->query->all(); // On récupère les données du formulaire                                              
+                    return $this->redirectToRoute('Fiche_client_prospect_Controller/ajoutclient',$dataToSend);
                 }
                 //dd($emptylist);
             }
             elseif($contactRepository->findOneBy(['adresseEmail'=>$email]) AND !is_null($email)){
-                $this->addFlash('danger', "L'ajout a échoué car un contact avec le même adresse email existe déjà.");
+                $this->addFlash('danger', "L'ajout a échoué car un contact avec le même adresse email existe déjà.\n Si vous pensez qu'il s'agit d'une erreur, veuillez cliquer sur le bouton 'ajouter quand même'.");
+                
+                $request->query->set('exist', ['exist' => true]);
+                $dataToSend = $request->query->all();
+                return $this->redirectToRoute('Fiche_client_prospect_Controller/ajoutclient',$dataToSend);
             }
             else{
-                $contact->setIdSecteur($request->request->all()['contact']['idSecteur']);
-                $contact->setActiviteTns($request->request->all()['contact']['activiteTns']);
+                $contact->setIdSecteur($request->query->all()['contact']['idSecteur']);
+                $contact->setActiviteTns($request->query->all()['contact']['activiteTns']);
                 $contact->setNumero($numero);
                 if (!$contact->getCommercial()) {
                     $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->find($idCommercial);
@@ -283,11 +293,71 @@ class ContactController extends BaseController
             }
 
             $numero =  $contactForm['Telephone']->getData();
-            dd($numero);
             $this->viewParams['contact_existant_num'] = $contactRepository->findBy(['numero'=>$numero]);
      }
+     if($request->query->get('exist') && $contactForm->get("exist")->getData() == true){
+        $this->viewParams['contactsExistants'] = true;
 
-        $this->viewParams['contact_forme'] = $contactForm->createView();
+        $contactHandle->handleRequest($request);
+        if($contactHandle->isSubmitted()){
+            
+            $numero =  $contactHandle['Telephone']->getData();
+            $email = $contactHandle['adresseEmail']->getData();
+            $contact->setIdSecteur($request->query->all()['contact']['idSecteur']);
+                $contact->setActiviteTns($request->query->all()['contact']['activiteTns']);
+                $contact->setNumero($numero);
+                if (!$contact->getCommercial()) {
+                    $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->find($idCommercial);
+                    $contact->setIdCommercial($commercial);
+                }
+                $site = $contact->getSiteweb();
+                if (null !== $site && '' != $site) {
+                    $em->persist($site);
+                    $em->flush();
+                    $contact->setSiteweb($site);
+                }
+                if ('' == $site) {
+                    $contact->setSiteweb(null);
+                }
+                $contact->setDateMaj(null);
+                $contact->setDateAdd(null);
+                $em->persist($contact);
+                $em->flush();
+
+                if (is_object($site)) {
+                    $site->setIdContact($contact->getId());
+                    $em->persist($site);
+                    $em->flush();
+                }
+
+                $societelie = $contact->getSocietelie()->get("__name__");
+                if (null !== $societelie) {
+                    $societelie->setIdContact($contact->getId());
+                    $em->persist($societelie);
+                    $em->flush();
+                }
+                foreach ($contact->getContactsoc() as $contactlie) {
+                    $contactlie->setContactLiee($contact);
+                    $em->persist($contactlie);
+                }
+                $em->flush();
+                $acontact[] = $contact;
+                if (count($contact->getContactsoc()) > 0) {
+                    $acontact = array_merge($acontact, $contact->getContactsoc()->getValues());
+                }
+                $contactmanager->addContactSocData($acontact);
+
+                return $this->redirectToRoute("Liste_Client_Prospect_Controller");
+            }
+      
+     }
+        if($request->query->get('exist')){
+            $this->viewParams['contact_forme'] = $contactHandle->createView();
+        }else{
+            $this->viewParams['contact_forme'] = $contactForm->createView();
+        }
+        
+
         return $this->render('contact/create.html.twig', $this->viewParams);
     }
 
