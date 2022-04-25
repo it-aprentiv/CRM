@@ -108,6 +108,7 @@
                     'label_attr': {'class': 'font-weight-bold required'}
                 }) }}
                 {{ form_widget(propal_form.statutpropal) }}
+             
             </div>
             <div class="col-sm-2">
                 {{ form_label(propal_form.commercialpropal, 'Commercial', {
@@ -291,12 +292,21 @@
                     Editer conv
                 </a>
             </div>
+                {% if propal_form.statutpropal.vars.value == '4' %}
+                    <div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
+                        <a href="javascript:void(0)" id="btnajoutdossierornot" data-toggle="modal" data-target="#popupAddOrNot" class="btn btn-primary btn-md btn-block">
+                             Créer dossier                
+                        </a>
+                    </div>
+                        {% else %}
+                    <div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
+                        <a href="{{ path('Liste_Dossiers_Controller/ajoutdossier', {id_entite:propal_form.entitypropal.vars.value, id_formation:propal.formation.id, id_commercial:propal_form.commercialpropal.vars.value, coutht:propal_form.coutht.vars.value, clientPropal:propal.clientpropal.id}) }}", target="_blank" class="btn btn-primary btn-md btn-block" id="createdossier" onclick="ModifStatut()">
+                             Créer dossier                
+                        </a>
+                    </div>
+                {% endif %}
 
-        <div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
-                <a href="{{ path('Liste_Dossiers_Controller/ajoutdossier', {id_entite:propal_form.entitypropal.vars.value, id_formation:propal.formation.id, id_commercial:propal_form.commercialpropal.vars.value, coutht:propal_form.coutht.vars.value, clientPropal:propal.clientpropal.id}) }}", target="_blank" class="btn btn-primary btn-md btn-block" id="createdossier" onclick="ModifStatut()">
-                    Ajouter Dossier
-                </a>
-            </div>
+            
         {% endif %}
     </div>
 </div>
@@ -412,6 +422,31 @@ if (propal_statutpropal.value != 4)
 
     }
 </script>
+
+
+<div class="modal fade " id="popupAddOrNot" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content list-filter">
+            <div class="modal-header">
+                <h5 class="modal-title edit-rdv">
+                   Un dossier existe déja pour cette propal
+                </h5>
+                <button type="button" class="fas close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <p>Un dossier existe déja pour cette propal voulez vous vraiment en recréer un ?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ path('Liste_Dossiers_Controller/ajoutdossier', {id_entite:propal_form.entitypropal.vars.value, id_formation:propal.formation.id, id_commercial:propal_form.commercialpropal.vars.value, coutht:propal_form.coutht.vars.value, clientPropal:propal.clientpropal.id}) }}", target="_blank" class="btn btn-primary btn-md btn-block" id="createdossier" onclick="ModifStatut()">
+                    Créer dossier malgré tout            
+                </a>                
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {{ form_end(propal_form,{'render_rest':false}) }}
 
