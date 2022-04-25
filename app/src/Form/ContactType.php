@@ -144,7 +144,7 @@ class ContactType extends AbstractType
 //                'query_builder' => function (SecteurActiviteRepository $sa) {
 //                    return $sa->findallSecteur();
 //                },
-//            ])
+//            ]) 
             // APR-121 : Rendre autocompletion : Activités entreprises 
             ->add('idSecteur', EntityType::class, [
                 'choices'       => [],

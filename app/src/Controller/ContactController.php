@@ -216,33 +216,44 @@ class ContactController extends BaseController
         
         $contactForm = $this->createForm(ContactType::class, $contact, ['method' => 'GET']); 
         $contactHandle = $this->createForm(ContactType::class, $contact, ['method' => 'POST']);
-        $contactForm->handleRequest($request);
         if($request->request->get('contact')){
             $contactForm->get("exist")->setData("true");
         }
+        $contactForm->handleRequest($request);
+        
         $numero =  $contactForm['Telephone']->getData();
         $this->viewParams['contactsExistants'] = false;
 
         if ($contactForm->isSubmitted() && !$request->query->get('exist')) {
             
             $numero =  $contactForm['Telephone']->getData();
-            $email = $contactForm['adresseEmail']->getData();
-            if($contactRepository->findOneBy(['numero' => $numero]) AND !is_null($numero)) {
+            $email = $contactForm['Email']->getData();
+            $contactsExistants = $em->getRepository(Mail::class)->findBy(['mail'=>$email]);
+            if($contactRepository->findOneBy(['numero' => $numero]) && !is_null($numero)) {
                 $contactsExistants = $contactRepository->findBy(['numero'=>$numero]);
                 if(count($contactsExistants) > 0){
-                    $this->addFlash('danger', "L'ajout a échoué car un contact avec le même numéro de téléphone existe déjà.\n Si vous pensez qu'il s'agit d'une erreur, veuillez cliquer sur le bouton 'ajouter quand même'.");
+                    $this->addFlash('danger', "L'ajout a échoué car un contact avec le même numéro de téléphone existe déjà.<br /> Si vous pensez qu'il s'agit d'une erreur, veuillez cliquer sur le bouton 'ajouter quand même'.");
                     $request->query->set('exist', ['exist' => true]);
                     $dataToSend = $request->query->all(); // On récupère les données du formulaire                                              
                     return $this->redirectToRoute('Fiche_client_prospect_Controller/ajoutclient',$dataToSend);
                 }
                 //dd($emptylist);
             }
-            elseif($contactRepository->findOneBy(['adresseEmail'=>$email]) AND !is_null($email)){
-                $this->addFlash('danger', "L'ajout a échoué car un contact avec le même adresse email existe déjà.\n Si vous pensez qu'il s'agit d'une erreur, veuillez cliquer sur le bouton 'ajouter quand même'.");
-                
+            elseif($em->getRepository(Mail::class)->findOneBy(['mail'=>$email]) && !is_null($email)){
+                $contactsExistants = $em->getRepository(Mail::class)->findBy(['mail'=>$email]);
+                $contactList = "";
+                if(count($contactsExistants) > 0){
+                    foreach($contactsExistants as $contactCourant){
+                        $currentContactEntity = $contactRepository->find($contactCourant->getIdContact()->getId());
+                        $contactList .= "<li><a href='/contact/".$currentContactEntity->getId()."/edition' target='_blank' >".$currentContactEntity->getPrenom()." ".$currentContactEntity->getNom()."</a><br /></li>";    
+                    }                
+                $this->addFlash('danger', "<div class='ml-2'> L'ajout a échoué car un contact avec le même adresse email existe déjà.<br /> Si vous pensez qu'il s'agit d'une erreur, veuillez cliquer sur le bouton 'ajouter quand même'.</div><br /><ul>".$contactList."</ul>");
+
                 $request->query->set('exist', ['exist' => true]);
                 $dataToSend = $request->query->all();
                 return $this->redirectToRoute('Fiche_client_prospect_Controller/ajoutclient',$dataToSend);
+                }
+
             }
             else{
                 $contact->setIdSecteur($request->query->all()['contact']['idSecteur']);
@@ -295,6 +306,10 @@ class ContactController extends BaseController
             $numero =  $contactForm['Telephone']->getData();
             $this->viewParams['contact_existant_num'] = $contactRepository->findBy(['numero'=>$numero]);
      }
+     if($request->query->get('exist')){ 
+        $contactHandle->setData($contactForm->getData());  
+     }
+
      if($request->query->get('exist') && $contactForm->get("exist")->getData() == true){
         $this->viewParams['contactsExistants'] = true;
 
