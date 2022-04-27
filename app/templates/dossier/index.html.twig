@@ -256,6 +256,7 @@
     <table class="table table-sm table-striped">
         <thead>
             <tr class="bg-info text-light">
+                <th scope="col">#</th>
                 <th>Structure</th>
                 <th>Mois de signature</th>
                 <th>Année de signature</th>
@@ -277,37 +278,61 @@
         <tbody>
             
             {% for dossier in pagination %}
-                <tr data-id="{{ dossier.id }}" data-href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id:dossier.id}) }}">
-                    <td>{{ dossier.structure }}</td>
-                    <td>{{ dossier.mois | month_letter }}</td>
-                    <td>{{ dossier.annee }}</td>
-                    <td>{{ (( (dossier.dateEnvoi | date('d-m-Y')) == '31-12-1969') or ((dossier.dateEnvoi | date('d-m-Y')) == '01-01-1970') or ((dossier.dateEnvoi | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateEnvoi | date('d-m-Y') }}</td>
-                    <td>{{ dossier.numInterne }}</td>
-                    <td>{{ dossier.client }}</td>
-                    <td>{{ dossier.intituleStage }}</td>
-                    <td>{{ (( (dossier.dateFinPeriode | date('d-m-Y')) == '31-12-1969') or ((dossier.dateFinPeriode | date('d-m-Y')) == '01-01-1970') or ((dossier.dateFinPeriode | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateFinPeriode | date('d-m-Y')}}</td>
-                    <td>
-                        {% if dossier.dateAccord is not empty %}
-                            {{ (( (dossier.dateAccord | date('d-m-Y')) == '31-12-1969') or ((dossier.dateAccord | date('d-m-Y')) == '01-01-1970') or ((dossier.dateAccord | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateAccord | date('d-m-Y')}}
-                        {% else %}
-                            {{ dossier.dateEnvoi | date_modify('+3 month') | date('d-m-Y') }}
-                        {% endif %}
-                    </td>
-                    <td>{{ dossier.montantSigne |number_format(2, ',', ' ') }}</td>
-                    <td>{{ dossier.montantAccorde |number_format(2, ',', ' ') }}</td>
-{#                    <td>  {{ (( (dossier.dateFinPeriode | date('d-m-Y')) == '31-12-1969') or ((dossier.dateFinPeriode | date('d-m-Y')) == '01-01-1970') or ((dossier.dateFinPeriode | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateFinPeriode | date('d-m-Y')}}</td>#}
-                    {# APR-194 : Date estimee pour clôtre = date de création du dossier + 6 mois #}
-                    <td>{{ dossier.dateEnvoi | date_modify('+6 month') | date('d-m-Y') }}</td>
-                    <td>{{ dossier.statut }}</td>
-                    <td>{{ dossier.opca }}</td>
-                    <td>{{ dossier.commercial }}</td>
-                    <td>
-                        <a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id:dossier.id}) }}">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        <a onclick="deleteDossier($(this))">
-                            <i class="fas fa-trash-alt text-danger"></i>
-                        </a>
+             <tr data-id="{{ dossier.id }}" data-href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id:dossier.id}) }}">
+            <td> <a class="btn btn-primary btn-sm collapsed" aria-expanded="false" type="button" data-toggle="collapse" href="#dossier-{{ dossier.id }}" ><i class="fas fa-solid fa-angle-right"></i></a></td>
+
+    <td>{{ dossier.structure }}</td>
+    <td>{{ dossier.mois | month_letter }}</td>
+    <td>{{ dossier.annee }}</td>
+    <td>{{ (( (dossier.dateEnvoi | date('d-m-Y')) == '31-12-1969') or ((dossier.dateEnvoi | date('d-m-Y')) ==
+        '01-01-1970') or ((dossier.dateEnvoi | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateEnvoi |
+        date('d-m-Y') }}</td>
+    <td>{{ dossier.numInterne }}</td>
+    <td>{{ dossier.client }}</td>
+    <td>{{ dossier.intituleStage }}</td>
+    <td>{{ (( (dossier.dateFinPeriode | date('d-m-Y')) == '31-12-1969') or ((dossier.dateFinPeriode | date('d-m-Y')) ==
+        '01-01-1970') or ((dossier.dateFinPeriode | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateFinPeriode |
+        date('d-m-Y')}}</td>
+    <td>
+        {% if dossier.dateAccord is not empty %}
+        {{ (( (dossier.dateAccord | date('d-m-Y')) == '31-12-1969') or ((dossier.dateAccord | date('d-m-Y')) ==
+        '01-01-1970') or ((dossier.dateAccord | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateAccord |
+        date('d-m-Y')}}
+        {% else %}
+        {{ dossier.dateEnvoi | date_modify('+3 month') | date('d-m-Y') }}
+        {% endif %}
+    </td>
+    <td>{{ dossier.montantSigne |number_format(2, ',', ' ') }}</td>
+    <td>{{ dossier.montantAccorde |number_format(2, ',', ' ') }}</td>
+    {# <td> {{ (( (dossier.dateFinPeriode | date('d-m-Y')) == '31-12-1969') or ((dossier.dateFinPeriode | date('d-m-Y'))
+        == '01-01-1970') or ((dossier.dateFinPeriode | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateFinPeriode |
+        date('d-m-Y')}}</td>#}
+    {# APR-194 : Date estimee pour clôtre = date de création du dossier + 6 mois #}
+    <td>{{ dossier.dateEnvoi | date_modify('+6 month') | date('d-m-Y') }}</td>
+    <td>{{ dossier.statut }}</td>
+    <td>{{ dossier.opca }}</td>
+    <td>{{ dossier.commercial }}</td>
+    <td>
+        <a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id:dossier.id}) }}">
+            <i class="fas fa-eye"></i>
+        </a>
+        <a onclick="deleteDossier($(this))">
+            <i class="fas fa-trash-alt text-danger"></i>
+        </a>
+    </td>
+</tr>
+<tr>
+                    <td colspan="12" style="padding: 0 !important;">
+                        <div class="accordian-body collapse" id="dossier-{{ dossier.id }}">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {% include 'Common/commentaire-bloc.html.twig' with { prototype: doc_form[dossier.id].commentaires.vars.prototype, commentaires: doc_form[dossier.id].commentaires } %}
+                                        {% do doc_form[dossier.id].commentaires.setRendered %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}

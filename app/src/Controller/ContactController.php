@@ -103,6 +103,18 @@ class ContactController extends BaseController
 
         $contactsQuery = $contactRepository->findContactsQuery($contactFilter);
         $pagination = $paginator->paginate($contactsQuery, $request->query->get('page', 1), 10);
+        $contact_arrays = [];
+        foreach($pagination->getItems() as $contactH){
+            $contactCourantH = $this->em->getRepository(Contact::class)->find($contactH['contact_id']);
+            $contact_arrays[$contactH['contact_id']] = $this->createForm(ContactType::class, $contactCourantH,['attr' => 
+            [
+            'disabled' => true,
+            ],
+        ])->createView();
+        }
+
+        $this->viewParams["doc_form"] = $contact_arrays;
+
         $reflectionProperty = new \ReflectionProperty(ParameterBag::class, "parameters");
         $reflectionProperty->setAccessible(true);
         $params =  $request->request->all();

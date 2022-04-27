@@ -147,6 +147,17 @@ class FormationDossierController extends BaseController {
         $formationDossierQuery = $formationDossierRepository->findAllFormationDossier($oFormationDossierFilter);
         $this->viewParams['formation_dossier_filter_form'] = $oFormationDossierForm->createView();
         $pagination = $paginator->paginate($formationDossierQuery, $request->query->get('page', 1), 10);
+        $dossier_array = [];
+        foreach($pagination->getItems() as $dossier){
+            $dossierCourant = $this->em->getRepository(FormationDossier::class)->find($dossier['id']);
+            $dossier_array[$dossier['id']] = $this->createForm(DossierType::class, $dossierCourant,['attr' => 
+            [
+            'disabled' => true,
+            ],
+        ])->createView();
+        }
+
+        $this->viewParams["doc_form"] = $dossier_array;
         $this->viewParams['pagination'] = $pagination;
         // variable pour accéder aux constantes "type extraction"
         $this->viewParams['extractConst'] = new ExtractionDossierType();

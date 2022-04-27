@@ -80,6 +80,7 @@
     <table class="table table-sm mb-0 table-striped list-filter">
         <thead>
             <tr class="bg-info text-light">
+                <th scope="col">#</th>
                 <th>Entité</th>
                 <th>Statut</th>
                 <th>Societe</th>
@@ -99,6 +100,7 @@
                 
                 <tr data-clientprospect-id="{{ contact.contact_id }}" data-href="{{ path('Fiche_client_prospect_Controller/editClient', { id : contact.contact_id} ) }}">
                     {{ form_start(contact_forme[contact.contact_id]) }}
+                    <td> <a class="btn btn-primary btn-sm collapsed" aria-expanded="false" type="button" data-toggle="collapse" href="#contact-{{ contact.contact_id }}" ><i class="fas fa-solid fa-angle-right"></i></a></td>
                     <td>{{ form_widget(contact_forme[contact.contact_id].structure) }}</td>
                     <td>{{ contact.statut }}</td>
                     <td>{{ contact.societe }}</td>
@@ -129,8 +131,20 @@
                     </td>
                 {{ form_end(contact_forme[contact.contact_id]) }}
                 </tr>
-                
-
+                <tr>
+                    <td colspan="12" style="padding: 0 !important;">
+                        <div class="accordian-body collapse" id="contact-{{ contact.contact_id }}">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                         {% include 'Common/commentaire-bloc.html.twig' with { prototype: doc_form[contact.contact_id].commentaires.vars.prototype, commentaires: doc_form[contact.contact_id].commentaires } %}
+                                        {% do doc_form[contact.contact_id].commentaires.setRendered %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
             {% endfor %}
         </tbody>
 
