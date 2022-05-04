@@ -71,6 +71,7 @@
             <table class="table table-sm mb-0 table-striped">
                 <thead>
                 <tr class="bg-info text-light">
+                    <th scope="col">#</th>
                     <th>Societe</th>
                     <th>Statut</th>
                     <th>Commercial</th>
@@ -84,6 +85,7 @@
                 <tbody>
                 {% for lead in leadPage %}
                     <tr data-lead-id="{{ lead.id }}" data-href="{{ path('Fiche_lead_Controller/editLead', { id : lead.id} ) }}">
+                        <td> <a class="btn btn-primary btn-sm collapsed" aria-expanded="false" type="button" data-toggle="collapse" href="#lead-{{ lead.id }}" ><i class="fas fa-solid fa-angle-right"></i></a></td>
                         <td>{{ lead.societe }}</td>
                         <td>{{ lead.statut }}</td>
                         <td>{{ lead.commercial }}</td>
@@ -104,7 +106,20 @@
                             {% endif %}
                         </td>
                     </tr>
-                    
+                    <tr>
+                    <td colspan="12" style="padding: 0 !important;">
+                        <div class="accordian-body collapse" id="lead-{{ lead.id }}">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                         {% include 'Common/commentaire-bloc.html.twig' with { prototype: doc_form[lead.id].commentaires.vars.prototype, commentaires: doc_form[lead.id].commentaires } %}
+                                        {% do doc_form[lead.id].commentaires.setRendered %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
                 {% endfor %}
                 </tbody>
                 <tfoot>

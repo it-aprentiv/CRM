@@ -39,6 +39,17 @@ class LeadController extends BaseController
         $leadQuery = $repository->findLeadQuery($leadFilter);
         //$leads = $repository->findAll();
         $leadPage = $paginator->paginate($leadQuery, $request->query->get('page', 1), 10);
+        $leads_arrays = [];
+        foreach($leadPage->getItems() as $lead){
+            $leads_arrays[$lead->getId()] = $this->createForm(LeadType::class, $lead,['attr' => 
+            [
+            'disabled' => true,
+            ],
+        ])->createView();
+        }
+
+        $this->viewParams["doc_form"] = $leads_arrays;
+
         //$this->viewParams['leads'] = $leads;
         $this->viewParams['leadPage'] = $leadPage;
         $this->viewParams['can_edit'] = $this->isGranted('edit', Menu::MENU_CLIENT_PROSPECT);
