@@ -25,7 +25,8 @@ class ContactFilter
     private $commercial;
     private $email;
     private $statutlead;
-    
+    private $statusClient;
+
     public function getEmail() {
         return $this->email;
     }
@@ -166,4 +167,12 @@ class ContactFilter
         return $this;
     }
 
+    public function getStatusClient() {
+        return $this->statusClient;
+    }
+
+    public function setStatusClient($statusClient) {
+        $this->statusClient = $statusClient;
+        return $this;
+    }
 }

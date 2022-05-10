@@ -59,6 +59,17 @@ class ContactFilterType extends AbstractType
                 'query_builder' => function (CollaborateurRepository $c) {
                     return $c->findAllCollaborateur();
                 },
+            ])->add('statusClient', ChoiceType::class, [
+                'required' => false,
+                'placeholder' => '-- Status Client --',
+                'choices' => [
+                    'Tous' => 'Tous',
+                    'Aucun' => 'Aucun',
+                    'Froid' => 'Froid',
+                    'Tiede' => "Tiede",
+                    'Chaud' => "Chaud",
+                    'Classé définitif' => 'Classé définitif',
+                ]
             ]);
 
         // Utilisé pour prevenir l'erreur avec autocompletion de la liste des sociétés

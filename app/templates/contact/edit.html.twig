@@ -126,6 +126,12 @@
                                     }) }}
                                     {{ form_widget(contact_forme.sexe) }}
                                 </div>
+                                 <div class="form-group col-md-2 text-center">
+                                    {{ form_label(contact_forme.statusClient, 'Status du Client',{
+                                        'label_attr': {'class': 'font-weight-bold required'}
+                                    }) }}
+                                    {{ form_widget(contact_forme.statusClient) }}
+                                </div>
                         </div>
                     </fieldset>
                     

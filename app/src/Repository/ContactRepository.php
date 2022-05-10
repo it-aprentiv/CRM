@@ -53,7 +53,8 @@ class ContactRepository extends ServiceEntityRepository
                 adr.codePostal as codePostal,
                 cnt.numero AS numero,
                 cnt.adresseEmail AS adresseEmail,
-                cnt.villeLead AS villeLead
+                cnt.villeLead AS villeLead,
+                cnt.statusClient As statusClient
             ');
         
         $qb
@@ -82,6 +83,18 @@ class ContactRepository extends ServiceEntityRepository
                 $qb->andWhere($qb->expr()->in('typ.id', $contactTypeIds));
             }
             
+            if($filter->getStatusClient()) {
+                if($filter->getStatusClient() == "Tous") {
+                        
+                    } else {
+                $qb->andWhere('cnt.statusClient = :statusClient');
+                $qb->setParameter('statusClient', $filter->getStatusClient());
+                    }
+            }else{
+                $qb->andWhere('cnt.statusClient != :statusClient');
+                $qb->setParameter('statusClient', "Classé définitif");
+            }
+
             // Filtre par structure (entité)
             if ($filter->getStructure() && $filter->getStructure() instanceof Structure) {
                 $qb->andWhere($qb->expr()->eq('cnt.structure', ':structure'));

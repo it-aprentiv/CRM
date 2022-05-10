@@ -733,7 +733,12 @@ class Contact {
      */
     private $villeLead;
 
-
+    /**
+     * @var string|null
+     * 
+     * @ORM\Column(name="statusclient", type="string", length=50, nullable=true)
+     */
+    private $statusClient;
 
     public function __construct()
     {
@@ -2185,6 +2190,16 @@ class Contact {
 
     public function setVilleLead(?string $villeLead): self {
         $this->villeLead = ucfirst(strtolower($villeLead));
+
+        return $this;
+    }
+
+    public function getStatusClient(): ?string {
+        return $this->statusClient;
+    }
+
+    public function setStatusClient(?string $statusClient): self {
+        $this->statusClient = $statusClient;
 
         return $this;
     }

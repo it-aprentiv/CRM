@@ -68,7 +68,10 @@
                 {#{{ form_label(contact_filter_form.commercial) }}#}
                 {{ form_widget(contact_filter_form.commercial, { attr: { 'class' : 'w-100', placeholder : '-- Commercial --'} }) }}
             </div>
-            
+            <div class="col-md-2">
+                {#{{ form_label(contact_filter_form.commercial) }}#}
+                {{ form_widget(contact_filter_form.statusClient, { attr: { 'class' : 'w-100', placeholder : '-- Status client --'} }) }}
+            </div>
             <div class="col-md-2 mt-2">
                 <button type="submit" class="btn btn-info py-1">Rechercher</button>
                 <a href="{{ path('Liste_Client_Prospect_Controller') }}" class="text-warning" title="Réinitialiser filtre"><i class="fas fa-undo"></i></a>
@@ -92,7 +95,9 @@
                 <th>Email</th>
                 <th>OPCO</th>
                 <th>Cial</th>
+                <th>Fiabilité</th>
                 <th>Actions</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -116,8 +121,19 @@
                     {% else %}
                     <td>    {{ form_widget(contact_forme[contact.contact_id].id_commercial, { attr: { 'class' : 'w-100', placeholder : '-- Commercial --', disabled:true} }) }}</td>
                     {% endif %}
+                    {% if contact.statusClient == "Froid" %}
+                    <td class="bg-info text-white"> {{ contact.statusClient }}</td>
+                    {% elseif contact.statusClient == "Chaud" %}
+                    <td class="bg-warning text-white">{{ contact.statusClient }}</td>
+                    {% elseif contact.statusClient == "Tiede" %}
+                    <td class="bg-warning text-white">{{ contact.statusClient }}</td>
+                    {% elseif contact.statusClient == "Classé définitif" %}
+                    <td class="bg-dark text-white">{{ contact.statusClient }}</td>
+                    {% else %}
+                    <td>{{ contact.statusClient }}</td>
+                    {% endif %}
                     <td>
-
+                    
                         {% if can_view is defined and can_view %}
                         <a href="{{ path('Fiche_client_prospect_Controller/editClient', { id : contact.contact_id} ) }}">
                             <i class="fas fa-eye fa-2x"  style="margin-right: 10px;"></i>

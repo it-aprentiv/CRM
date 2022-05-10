@@ -375,6 +375,17 @@ class ContactType extends AbstractType
             ->add('villeLead', TextType::class, [
                 'label'     => "Ville",
                 'required'  => false,
+            ])->add('statusClient', ChoiceType::class, [
+                'required' => true,
+                'placeholder' => '-- Status Client --',
+                'choices' => [
+                    'Tous' => 'Tous',
+                    'Aucun' => 'Aucun',
+                    'Froid' => 'Froid',
+                    'Tiede' => "Tiede",
+                    'Chaud' => "Chaud",
+                    'Classé définitif' => 'Classé définitif',
+                ]
             ])      
             /*->add('competence', ChoiceType::class,
                 [
