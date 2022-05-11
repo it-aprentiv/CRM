@@ -11,6 +11,7 @@ namespace App\Manager;
 
 use App\Entity\Contact;
 use App\Entity\CritFinOpca;
+use App\ENtity\ContactType;
 use App\Entity\Mail;
 use App\Entity\Telephone;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,12 +35,13 @@ class OpcaManager
         foreach($aContact as $key => $contact) {
             $aDataComplementaire = $aOpcaContactOtherData[$key];
             if(null != $contact->getId() && ''!= $contact->getId()) {
-                $opcaContact = $this->em->getRepository(Contact::class)->findOneBy(array('id' => $contact->getId()));
+                $opcaContact = $this->em->getRepository(Contact::class)->findOneBy(array('id' => $contact->getId(), 'idType' => 15));
                 $opcaContact->setOpca($opca);
                 $opcaContact->setIdCivilite($contact->getIdCivilite());
                 $opcaContact->setNom($contact->getNom());
                 $opcaContact->setPrenom($contact->getPrenom());
                 $opcaContact->setQualite($contact->getQualite());
+                $opcaContact->setIdType($this->em->getRepository(ContactType::class)->find(15));
                 $this->em->flush();
                 //Mail
                 $oMail = $this->em->getRepository(Mail::class)->findOneBy(array('idContact' => $contact->getId()));
@@ -113,6 +115,7 @@ class OpcaManager
                     $opcaContact->setNom($contact->getNom());
                     $opcaContact->setPrenom($contact->getPrenom());
                     $opcaContact->setQualite($contact->getQualite());
+                    $opcaContact->setIdType($this->em->getRepository(ContactType::class)->find(15));
                     $this->em->persist($opcaContact);
                     $this->em->flush();
 

@@ -202,7 +202,7 @@ class OpcaController extends BaseController
         //Adresse
         $adresse = $adresseRepository->findOneBy(array('idContact' => $idOpca)) ?? new Adresse();
         $opca->addAdress($adresse);
-        $opcaContacts = $contactRepository->findBy(array('opca' => $idOpca));
+        $opcaContacts = $contactRepository->findBy(array('opca' => $idOpca, 'idType' => 15));
         //fax, telephone, portable, email
         $dataComplementaire = array();
         $i = 0;
@@ -352,8 +352,9 @@ class OpcaController extends BaseController
                 }
             }
             //Les contacts opca
-            $oldcontactopca = $em->getRepository(Contact::class)->findBy(["opca" => $opca->getId(), "contactLiee" => $opca->getId()]);
+            // $oldcontactopca = $em->getRepository(Contact::class)->findBy(["opca" => $opca->getId(), "contactLiee" => $opca->getId(), 'idType' => 15]);
             
+
             if( count($opcaData->getOpcas()) > 0) {
                 $manager->handleContact($opcaData->getOpcas(), $aOpcaContactOtherData, $opca, $em);
             }
