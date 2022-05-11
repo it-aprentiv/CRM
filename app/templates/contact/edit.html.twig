@@ -453,6 +453,7 @@
                     <thead>
                         <tr class="bg-info text-light">
                             <th>Structure</th>
+                            <th>N°Interne</th>
                             <th>Date de création</th>
                             <th>Intitulé du stage</th>
                             <th>Date fin stage</th>
@@ -471,6 +472,7 @@
                         
                             <tr data-id="{{ dossier.id }}" data-href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id:dossier.id}) }}">
                                 <td>{{ dossier.structure }}</td>
+                                <td>{{ dossier.numInterne }}</td>
                                 <td>{{ (( (dossier.dateEnvoi | date('d-m-Y')) == '31-12-1969') or ((dossier.dateEnvoi | date('d-m-Y')) == '01-01-1970') or ((dossier.dateEnvoi | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateEnvoi | date('d-m-Y') }}</td>
                                 <td>{{ dossier.nom }}</td>
                                 <td>{{ (( (dossier.dateFinPeriode | date('d-m-Y')) == '31-12-1969') or ((dossier.dateFinPeriode | date('d-m-Y')) == '01-01-1970') or ((dossier.dateFinPeriode | date('d-m-Y')) == '30-11--0001')) ? '' : dossier.dateFinPeriode | date('d-m-Y')}}</td>
