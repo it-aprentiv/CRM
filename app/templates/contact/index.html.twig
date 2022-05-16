@@ -151,6 +151,59 @@
                     <td colspan="12" style="padding: 0 !important;">
                         <div class="accordian-body collapse" id="contact-{{ contact.contact_id }}">
                             <div class="col-sm-12">
+                                    <label class="font-weight-bold text-center col-sm-12">Sociétés liées</label>
+                                    <div class="row">
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                                {% if societeliedata[contact.contact_id].societelie1 is defined and societeliedata[contact.contact_id].societelie1 != "" %}
+                                                    <a href="{{ path('Fiche_client_prospect_Controller/editClient', {id : societeliedata[contact.contact_id].societeId1} ) }}" title="Voir fiche client" target="_blank">
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                        <input type="text" class="form-control" value="{{ societeliedata[contact.contact_id].societelie1 }}" disabled>
+                                                    </a>
+                                                {% else %}
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                        <input type="text" class="form-control" value="Aucune" disabled>
+                                                {% endif %}
+                                        
+                                        </div>
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                                {% if societeliedata[contact.contact_id].societelie2 is defined and societeliedata[contact.contact_id].societelie2 != "" %}
+                                                    <a href="{{ path('Fiche_client_prospect_Controller/editClient', {id : societeliedata[contact.contact_id].societeId2} ) }}" title="Voir fiche client" target="_blank">
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                        <input type="text" class="form-control" value="{{ societeliedata[contact.contact_id].societelie2 }}" disabled>
+                                                    </a>
+                                                {% else %}
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                        <input type="text" class="form-control" value="Aucune" disabled>
+                                                {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                                {% if societeliedata[contact.contact_id].societelie3 is defined and societeliedata[contact.contact_id].societelie3 != "" %}
+                                                    <a href="{{ path('Fiche_client_prospect_Controller/editClient', {id : societeliedata[contact.contact_id].societeId3} ) }}" title="Voir fiche client" target="_blank">
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                        <input type="text" class="form-control" value="{{ societeliedata[contact.contact_id].societelie3 }}" disabled>
+                                                    </a>
+                                                {% else %}
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                        <input type="text" class="form-control" value="Aucune" disabled>
+                                                {% endif %}
+                                        </div>
+                                        <div class="text-center col-sm-6 pl-0 pr-0">
+                                                {% if societeliedata[contact.contact_id].societelie4 is defined and societeliedata[contact.contact_id].societelie4 != "" %}
+                                                    <a href="{{ path('Fiche_client_prospect_Controller/editClient', {id : societeliedata[contact.contact_id].societeId4} ) }}" title="Voir fiche client" target="_blank">
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                        <input type="text" class="form-control" value="{{ societeliedata[contact.contact_id].societelie4 }}" disabled>
+                                                    </a>
+                                                {% else %}
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                        <input type="text" class="form-control" value="Aucune" disabled>
+                                                {% endif %}
+                                       
+                                        </div>                                    
+                                    </div>
+                                </div>
+                            <div class="col-sm-12">
                                 <div class="row">
                                     <div class="col-md-12">
                                          {% include 'Common/commentaire-bloc.html.twig' with { prototype: doc_form[contact.contact_id].commentaires.vars.prototype, commentaires: doc_form[contact.contact_id].commentaires } %}

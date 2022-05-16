@@ -104,6 +104,7 @@ class ContactController extends BaseController
         $contactsQuery = $contactRepository->findContactsQuery($contactFilter);
         $pagination = $paginator->paginate($contactsQuery, $request->query->get('page', 1), 10);
         $contact_arrays = [];
+        $this->viewParams["societeliedata"] = array();
         foreach($pagination->getItems() as $contactH){
             $contactCourantH = $this->em->getRepository(Contact::class)->find($contactH['contact_id']);
             $contact_arrays[$contactH['contact_id']] = $this->createForm(ContactType::class, $contactCourantH,['attr' => 
@@ -111,6 +112,25 @@ class ContactController extends BaseController
             'disabled' => true,
             ],
         ])->createView();
+        $societelie = $this->em->getRepository(SocieteLiee::class)->findOneBy(["idContact" => $contactCourantH->getId()]);
+        $sl = new ArrayCollection();
+        if (null != $societelie) {
+            $sl["__name__"] = $societelie;
+            $scl1 = $societelie->getIdSociete1() != null ? $this->em->find(Contact::class, $societelie->getIdSociete1()) : null;
+            $scl2 = $societelie->getIdSociete2() != null ? $this->em->find(Contact::class, $societelie->getIdSociete2()) : null;
+            $scl3 = $societelie->getIdSociete3() != null ? $this->em->find(Contact::class, $societelie->getIdSociete3()) : null;
+            $scl4 = $societelie->getIdSociete4() != null ? $this->em->find(Contact::class, $societelie->getIdSociete4()) : null;
+            $this->viewParams["societeliedata"][$contactCourantH->getId()] = array(
+                "societelie1" => $scl1 != null ? $scl1->getNomStr() : null,
+                "societelie2" => $scl2 != null ? $scl2->getNomStr() : null,
+                "societelie3" => $scl3 != null ? $scl3->getNomStr() : null,
+                "societelie4" => $scl4 != null ? $scl4->getNomStr() : null,
+                "societeId1" => $scl1 != null ? $scl1->getId() : null,
+                "societeId2" => $scl2 != null ? $scl2->getId() : null,
+                "societeId3" => $scl3 != null ? $scl3->getId() : null,
+                "societeId4" => $scl4 != null ? $scl4->getId() : null,
+            );
+            }
         }
 
         $this->viewParams["doc_form"] = $contact_arrays;
