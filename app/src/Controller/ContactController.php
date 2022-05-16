@@ -812,6 +812,7 @@ class ContactController extends BaseController
 
                 if ($dossierId) {
                     $dossier = $formationDossierRepository->find($dossierId);
+                    $opca = $this->em->getRepository(Contact::class)->find($dossier->getIdOpca())->getNomStr();
                     // stagiaire
                     /** @var FormationDossierStagiaire[] $aFDStagiaire */
                     $aFDStagiaire = $em->getRepository(FormationDossierStagiaire::class)->findBy(['dossier' => $dossier]);

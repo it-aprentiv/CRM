@@ -471,10 +471,10 @@ class FormationDossierController extends BaseController {
 
             // Save lieu de stage : par default lieu = adresse autre
             if($dossier->getAdresseClient()) {
-                $dossier->setLieu($datas["lieu"]['vivienne']);
+                $dossier->setLieu($datas["lieu"]['client']);
             }
             if($dossier->getAdresseVivienne()) {
-                $dossier->setLieu($datas["lieu"]['client']);
+                $dossier->setLieu($datas["lieu"]['vivienne']);
             }
 
             // APR-194

@@ -124,7 +124,7 @@
                     {% if contact.statusClient == "Froid" %}
                     <td class="bg-info text-white"> {{ contact.statusClient }}</td>
                     {% elseif contact.statusClient == "Chaud" %}
-                    <td class="bg-warning text-white">{{ contact.statusClient }}</td>
+                    <td class="bg-danger text-white">{{ contact.statusClient }}</td>
                     {% elseif contact.statusClient == "Tiede" %}
                     <td class="bg-warning text-white">{{ contact.statusClient }}</td>
                     {% elseif contact.statusClient == "Classé définitif" %}
@@ -198,6 +198,7 @@
                                                 {% else %}
                                                         <i class="fa fa-user" aria-hidden="true"></i>
                                                         <input type="text" class="form-control" value="Aucune" disabled>
+                                                        
                                                 {% endif %}
                                        
                                         </div>                                    

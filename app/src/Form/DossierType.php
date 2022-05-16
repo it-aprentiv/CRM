@@ -82,6 +82,7 @@ class DossierType extends AbstractType
                     'INTRA' => 'INTRA',
                     'INTER' => 'INTER',
                     'SOUS-TRAITANCE' => 'SOUS-TRAITANCE',
+                    'À DISTANCE' => 'À DISTANCE'
                 ],
                 'attr' => [
                     'required' => 'required',
@@ -147,20 +148,20 @@ class DossierType extends AbstractType
             ->add('dateDebutPeriode', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => false,
-                'attr'          => ['class' => 'js-datepicker text-center date'],
+                'attr'          => ['class' => 'js-datepicker text-center date', 'autocomplete' => 'off'],
                 'required'      => false,
                 'input' => 'datetime',
                 'format' => 'dd/MM/yyyy',
-                'data' => $options['formated_formation_dates'] ? $options['formated_formation_dates']['date_debut']['dateD'] : null
+                'data' => $options['formated_formation_dates'] ? ($options['formated_formation_dates']['date_debut'] ? $options['formated_formation_dates']['date_debut']['dateD'] : null) : null
             ])
             ->add('dateFinPeriode', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => false,
-                'attr'          => ['class' => 'js-datepicker text-center date'],
+                'attr'          => ['class' => 'js-datepicker text-center date', 'autocomplete' => 'off'],
                 'required'      => false,
                 'input' => 'datetime',
                 'format' => 'dd/MM/yyyy',
-                'data' => $options['formated_formation_dates'] ? $options['formated_formation_dates']['date_fin']['dateF'] : null
+                'data' => $options['formated_formation_dates'] ? ($options['formated_formation_dates']['date_fin'] ? $options['formated_formation_dates']['date_fin']['dateF'] : null) : null
             ])
             ->add('dispositif', ChoiceType::class, [
                 'required' => false,
@@ -202,7 +203,7 @@ class DossierType extends AbstractType
             ->add('durparjour', ChoiceType::class, [
                 'required' => false,
                 'choices' => [
-                    '0.5'=>'0.5',
+                    '0.5' => '0.5',
                     '1' => '1',
                     '1.5' => '1.5',
                     '2' => '2',
@@ -410,9 +411,9 @@ class DossierType extends AbstractType
      * @return type
      */
     public function getOpcaData(?Contact $oContact) {
-        // if (is_null($oContact) || ($oContact instanceof Contact && $oContact->getId() == 0)) {
+         if (is_null($oContact) || ($oContact instanceof Contact && $oContact->getId() == 0)) {
             return null;
-        //}
+        }
 
         return $this
                 ->contactRepository

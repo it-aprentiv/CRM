@@ -511,7 +511,7 @@ class ContactManager
         $table->addCell(2500)->addText("Cachet et Signature ", array('name'=> 'Arial','size' => 9));
         if ($dossier != null)
         { 
-            if ($dossier["structure"] == 2) 
+            if ($dossier->getIdStructure()->getId() == 2) 
                 { 
                     $sections->addImage('crm/images/sign_pro.jpg', array(
                         'width' => 150,
