@@ -110,20 +110,6 @@
                             {% endif %}
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="12" style="padding: 0 !important;">
-                            <div class="accordian-body collapse" id="propal-{{ propal.idpropal }}">
-                                <div class="col-sm-12">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            {% include 'Common/commentaire-bloc.html.twig' with { prototype: doc_form[propal.idpropal].commentaires.vars.prototype, commentaires: doc_form[propal.idpropal].commentaires } %}
-                                            {% do doc_form[propal.idpropal].commentaires.setRendered %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
                 {% endfor %}
                 </tbody>
                 <tfoot>

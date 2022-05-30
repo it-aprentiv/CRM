@@ -199,7 +199,9 @@ class PropalType extends AbstractType
                 'choices' => [
                     'Client' => 'Client',
                     'Prospect' => 'Prospect'
-                    ]])
+                    ],
+                "empty_data" => $options['data']->getTypepropal(),
+                ])
             ->add('fiabilite', ChoiceType::class,[
                 'choices' => [
                     'Froid' => 'Froid',

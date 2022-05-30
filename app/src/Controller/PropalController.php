@@ -6,6 +6,7 @@ use App\Constants\Date;
 use App\Constants\Menu;
 use App\Entity\Adresse;
 use App\Entity\Contact;
+use App\Entity\ContactType;
 use App\Entity\Filter\PropalFilter;
 use App\Entity\FormationDossier;
 use App\Entity\Mail;
@@ -147,7 +148,8 @@ class PropalController extends BaseController
             $propal->setClientpropal($oClient);
             $propal->setEntitypropal($oClient->getStructure());
         }
-
+        $currentType = $this->em->getRepository(ContactType::class)->find($oClient->getIdType())->getTypeContact() === "CLIENT" ? "Client" : "Prospect";
+        $propal->setTypepropal($currentType);
         $propalform = $this->createForm(PropalType::class, $propal);
         $propalform->handleRequest($request);
 
