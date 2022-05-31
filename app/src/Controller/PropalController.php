@@ -148,8 +148,12 @@ class PropalController extends BaseController
             $propal->setClientpropal($oClient);
             $propal->setEntitypropal($oClient->getStructure());
         }
-        $currentType = $this->em->getRepository(ContactType::class)->find($oClient->getIdType())->getTypeContact() === "CLIENT" ? "Client" : "Prospect";
-        $propal->setTypepropal($currentType);
+        
+        if($oClient){
+            $currentType = $this->em->getRepository(ContactType::class)->find($oClient->getIdType())->getTypeContact() === "CLIENT" ? "Client" : "Prospect";
+            $propal->setTypepropal($currentType);
+        }
+        
         $propalform = $this->createForm(PropalType::class, $propal);
         $propalform->handleRequest($request);
 
