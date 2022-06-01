@@ -52,7 +52,7 @@ class FormateurType extends AbstractType
                 'choices' => [
                     'Actif' => 1,
                     'Inactif' => 2,
-                    'Black listé' => 3,
+                    'Classé(e)' => 3,
                     'Potentiel' => 4
                 ],
                 'expanded' => true,

@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création formation - CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.css">
+    <style>
+    #calendar {
+        margin: 40px auto;
+        max-width: 1100px;
+    }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item active" aria-current="page">calendrier formation</li>
+            </ol>
+        </div>
+    </nav>
+    <h2 class="text-center mt-2 text-primary">CALENDRIER FORMATION</h2>
+    <div id="calendar"></div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        timeZone: 'UTC',
+        initialView: 'dayGridMonth',
+        events: [{
+    "title": "All Day Event",
+    "start": "2022-05-01"
+},
+{
+    "title": "Long Event",
+    "start": "2022-05-07",
+    "end": "2022-05-10"
+},
+{
+    "groupId": "999",
+    "title": "Repeating Event",
+    "start": "2022-05-09T16:00:00+00:00"
+},
+{
+    "groupId": "999",
+    "title": "Repeating Event",
+    "start": "2022-05-16T16:00:00+00:00"
+},
+{
+    "title": "Conference",
+    "start": "2022-05-30",
+    "end": "2022-06-01"
+},
+{
+    "title": "Meeting",
+    "start": "2022-05-31T10:30:00+00:00",
+    "end": "2022-05-31T12:30:00+00:00"
+},
+{
+    "title": "Lunch",
+    "start": "2022-05-31T12:00:00+00:00"
+},
+{
+    "title": "Birthday Party",
+    "start": "2022-06-01T07:00:00+00:00"
+},
+{
+    "url": "http:\/\/google.com\/",
+    "title": "Click for Google",
+    "start": "2022-05-28"
+}],
+        editable: true,
+        selectable: true
+    });
+
+    calendar.render();
+    });
+</script>
+{% endblock %}
