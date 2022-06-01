@@ -419,3 +419,13 @@
 2022/05/23 09:21:10 [warn] 30#30: *619 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000012, client: 172.18.0.1, server: localhost, request: "POST /contact HTTP/1.1", host: "localhost", referrer: "http://localhost/contact"
 2022/05/23 09:21:43 [warn] 30#30: *627 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000013, client: 172.18.0.1, server: localhost, request: "POST /contact/import HTTP/1.1", host: "localhost", referrer: "http://localhost/contact"
 2022/05/23 09:21:45 [warn] 30#30: *627 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000014, client: 172.18.0.1, server: localhost, request: "POST /contact HTTP/1.1", host: "localhost", referrer: "http://localhost/contact"
+2022/06/01 09:04:35 [warn] 33#33: *55 an upstream response is buffered to a temporary file /var/cache/nginx/fastcgi_temp/1/00/0000000001 while reading upstream, client: 172.18.0.1, server: localhost, request: "GET /calendriers/dossier/inter HTTP/1.1", upstream: "fastcgi://172.18.0.4:9000", host: "localhost"
+2022/06/01 09:14:27 [warn] 33#33: *71 an upstream response is buffered to a temporary file /var/cache/nginx/fastcgi_temp/2/00/0000000002 while reading upstream, client: 172.18.0.1, server: localhost, request: "GET /calendriers/dossier/inter HTTP/1.1", upstream: "fastcgi://172.18.0.4:9000", host: "localhost"
+2022/06/01 09:28:19 [error] 33#33: *169 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Uncaught ErrorException: Notice: Array to string conversion in /var/www/src/Controller/CalendrierFormationController.php:54
+Stack trace:
+#0 /var/www/vendor/symfony/http-kernel/HttpKernel.php(158): App\Controller\CalendrierFormationController->type(Object(Symfony\Component\HttpFoundation\Request), 'propal', 'intra')
+#1 /var/www/vendor/symfony/http-kernel/HttpKernel.php(80): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#2 /var/www/vendor/symfony/http-kernel/Kernel.php(201): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#3 /var/www/public/index.php(25): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#4 {main}
+  thrown in /var/www/src/Controller/CalendrierFormationController.php on line 54" while reading response header from upstream, client: 172.18.0.1, server: localhost, request: "GET /calendriers/propal/intra HTTP/1.1", upstream: "fastcgi://172.18.0.4:9000", host: "localhost"

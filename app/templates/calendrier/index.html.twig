@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Création formation - CRM Aprentiv v2.0{% endblock %}
+{% block title %}{{ title }} - CRM Aprentiv v2.0{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -19,11 +19,13 @@
     <nav aria-label="breadcrumb">
         <div class="d-flex justify-content-between breadcrumb">
             <ol class="list-unstyled d-flex my-0">
-                <li class="breadcrumb-item active" aria-current="page">calendrier formation</li>
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item" aria-current="page">calendriers</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ title|upper }}</li>
             </ol>
         </div>
     </nav>
-    <h2 class="text-center mt-2 text-primary">CALENDRIER FORMATION</h2>
+    <h2 class="text-center mt-2 text-primary">{{ title|upper }}</h2>
     <div id="calendar"></div>
 {% endblock %}
 {% block javascripts %}
@@ -36,52 +38,36 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        timeZone: 'UTC',
+        timeZone: 'GMT+2',
+        locale: 'fr',
+        headerToolbar: {
+            left: 'dayGridMonth,timeGridWeek,listMonth,listWeek,listDay',
+            center: 'title',
+            right: 'prevYear,prev,next,nextYear'
+        },
+        views: {
+            dayGridMonth: { buttonText: 'Grille Mois' },
+            timeGridWeek: { buttonText: 'Grille Semaine' },
+            listDay: { buttonText: 'Liste Jour' },
+            listWeek: { buttonText: 'Liste Semaine' },
+            listMonth: { buttonText: 'Liste Mois' }
+        },
         initialView: 'dayGridMonth',
-        events: [{
-    "title": "All Day Event",
-    "start": "2022-05-01"
-},
-{
-    "title": "Long Event",
-    "start": "2022-05-07",
-    "end": "2022-05-10"
-},
-{
-    "groupId": "999",
-    "title": "Repeating Event",
-    "start": "2022-05-09T16:00:00+00:00"
-},
-{
-    "groupId": "999",
-    "title": "Repeating Event",
-    "start": "2022-05-16T16:00:00+00:00"
-},
-{
-    "title": "Conference",
-    "start": "2022-05-30",
-    "end": "2022-06-01"
-},
-{
-    "title": "Meeting",
-    "start": "2022-05-31T10:30:00+00:00",
-    "end": "2022-05-31T12:30:00+00:00"
-},
-{
-    "title": "Lunch",
-    "start": "2022-05-31T12:00:00+00:00"
-},
-{
-    "title": "Birthday Party",
-    "start": "2022-06-01T07:00:00+00:00"
-},
-{
-    "url": "http:\/\/google.com\/",
-    "title": "Click for Google",
-    "start": "2022-05-28"
-}],
-        editable: true,
-        selectable: true
+        eventClick: function(info) {
+            var eventObj = info.event;
+            if (eventObj.url) {
+                info.jsEvent.preventDefault();
+                window.open(eventObj.url,eventObj.title,`scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+width=0,height=0,left=-1000,top=-1000`);
+                 // prevents browser from following link in current tab.
+            } else {
+                return;
+                }
+        },
+        events:{{ data|raw }},
+        editable: false,
+        weekends: false,
+        selectable: false
     });
 
     calendar.render();
