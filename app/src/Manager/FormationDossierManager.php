@@ -373,7 +373,7 @@ class FormationDossierManager {
             ->addTextRun($aTextRunConfig);
         //$oTimeTextRun->addTextBreak();
         $oTimeTextRun->addText("CONTENU : ", $aBold);
-        $oTimeTextRun->addText($aPost['intitstage']);
+        $oTimeTextRun->addText(htmlspecialchars($aPost['intitstage'], ENT_QUOTES));
         $oTimeTextRun->addTextBreak();
 
         $oTimeTextRun->addText("DATE de STAGE : ", $aBold);
