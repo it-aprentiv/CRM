@@ -429,3 +429,6 @@ Stack trace:
 #3 /var/www/public/index.php(25): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
 #4 {main}
   thrown in /var/www/src/Controller/CalendrierFormationController.php on line 54" while reading response header from upstream, client: 172.18.0.1, server: localhost, request: "GET /calendriers/propal/intra HTTP/1.1", upstream: "fastcgi://172.18.0.4:9000", host: "localhost"
+2022/06/27 15:53:51 [warn] 31#31: *348 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000001, client: 172.18.0.1, server: localhost, request: "POST /froalaeditor/upload_image HTTP/1.1", host: "localhost", referrer: "http://localhost/email/sender"
+2022/06/27 15:56:17 [warn] 31#31: *354 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000002, client: 172.18.0.1, server: localhost, request: "POST /froalaeditor/upload_image HTTP/1.1", host: "localhost", referrer: "http://localhost/email/sender"
+2022/06/28 08:59:55 [warn] 34#34: *405 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000003, client: 172.18.0.1, server: localhost, request: "POST /froalaeditor/upload_image HTTP/1.1", host: "localhost", referrer: "http://localhost/email/sender"

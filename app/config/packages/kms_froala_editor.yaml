@@ -1,0 +1,19 @@
+kms_froala_editor:
+    language: 'fr'
+    imageUploadFolder: "/assets/images/uploads"
+
+    # The image upload URL base.
+    # Usage: if you are using URL rewritting for your assets.
+    # Default: same value as provided as folder.
+    imageUploadPath: "/assets/images/uploads"
+    fileUploadFolder: "/assets/uploads"
+
+    # The file upload URL base.
+    # Usage: if you are using URL rewritting for your assets.
+    # Default: same value as provided as folder.
+    fileUploadPath: "/assets/uploads"
+
+    # Your public directory, from the root directory.
+    # Default: "/public"
+    publicDir: "/public"
+    saveInterval: 0

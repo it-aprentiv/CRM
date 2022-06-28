@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MAils- CRM Aprentiv v2.0{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+    <link href="{{ asset('assets/css/dossier.css') }}" rel="stylesheet"/>
+    <link href="/bundles/kmsfroalaeditor/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Envoyé mails</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col col-md-12 mx-auto list-filter">
+  {#
+   Make the form to send an email
+   
+   #}
+   {{ form_start(form) }}
+    {{ form_row(form.from) }}
+    {{ form_row(form.to) }}
+    {{ form_row(form.subject) }}
+    {{ form_row(form.body) }}
+  <button type="submit" class="btn btn-primary">Envoyer</button>
+   {{ form_end(form) }}
+   
+   </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
