@@ -560,10 +560,10 @@ class FormationDossierManager {
      * @param type $docword
      * @param type $isagefos
      * @param type $datahoraire
-     * @param type $datestagecomplet
-     * @param type $nomstagiaire
+     * @param array $datestagecomplet
+     * @param string $nomstagiaire
      */
-    private function createcontentemmargement($docword, $datahoraire, $datestagecomplet, $nomstagiaire) {
+    private function createcontentemmargement($docword, $datahoraire, $datestagecomplet,$nomstagiaire) {
         $fancyTableStyleName = 'Fancy Table';
         $fancyTableStyle = array('borderSize' => 2, 'borderColor' => '000000', 'align' => 'center', 'valign'=> 'center', 'v-text-anchor' => 'middle');
         $fancyTableFirstRowStyle = array('borderBottomColor' => '000000');

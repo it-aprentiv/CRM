@@ -578,7 +578,7 @@ class WordService
             $imageentete = 'crm/images/DocPrint/logo_proform.png';
             $width = 150;
             $height = 80;
-            $titre = "FEUILLE D’EMARGEMENT INDIVIDUELLE - ".htmlentities($contact->getnomStr());
+            $titre = "FEUILLE D’EMARGEMENT INDIVIDUELLE - ".htmlspecialchars($contact->getnomStr());
         }
 
         $fancyTableStyleName = 'Fancy Table';
