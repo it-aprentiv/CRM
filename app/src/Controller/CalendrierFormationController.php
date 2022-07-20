@@ -47,7 +47,7 @@ class CalendrierFormationController extends BaseController
                                     "url" => "/propal/".$value->getId()."/edit",
                                     "start" => $value->getDatedebutpropal()->format('Y-m-d'),
                                     "end" => $value->getDatefinpropal()->format('Y-m-d'),
-                                    "title" => $value->getFormation()->getCompetence(),
+                                    "title" => strtoupper($value->getFormation()->getCompetence()),
                                 ]);
                             }
                             }
@@ -65,7 +65,7 @@ class CalendrierFormationController extends BaseController
                                     "url" => "/propal/".$value->getId()."/edit",
                                     "start" => $value->getDatedebutpropal()->format('Y-m-d'),
                                     "end" => $value->getDatefinpropal()->format('Y-m-d'),
-                                    "title" => $value->getFormation()->getCompetence(),
+                                    "title" => strtoupper($value->getFormation()->getCompetence()),
                                 ]);
                             }
                             }
@@ -87,7 +87,7 @@ class CalendrierFormationController extends BaseController
                                     "url" => "/dossier/".$value->getId()."/visualiser",
                                     "start" => $value->getDateDebutPeriode()->format('Y-m-d'),
                                     "end" => $value->getDateFinPeriode()->format('Y-m-d'),
-                                    "title" => $value->getNom(),
+                                    "title" => strtoupper($value->getNom()),
                                 ]);
                             }
                             }
@@ -105,7 +105,7 @@ class CalendrierFormationController extends BaseController
                                     "url" => "/dossier/".$value->getId()."/visualiser",
                                     "start" => $value->getDateDebutPeriode()->format('Y-m-d'),
                                     "end" => $value->getDateFinPeriode()->format('Y-m-d'),
-                                    "title" => $value->getNom(),
+                                    "title" => strtoupper($value->getNom()),
                                 ]);
                             }
                             }
@@ -118,6 +118,6 @@ class CalendrierFormationController extends BaseController
                     return $this->redirectToRoute('calendrier_formation');
                     break;
             }
-            return $this->render('calendrier/index.html.twig', $this->viewParams);
+            return $this->render('calendrier/show.html.twig', $this->viewParams);
     }
 }
