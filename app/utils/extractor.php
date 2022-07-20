@@ -28,4 +28,3 @@ $output = shell_exec('rm ../aprentiv-crm-bin.tar.gz');
 echo "<pre>$output</pre>";
 
 
-

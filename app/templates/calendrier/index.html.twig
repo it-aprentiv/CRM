@@ -1,64 +1,76 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Calendriers - CRM Aprentiv v2.0{% endblock %}
+{% block title %}{{ title }} - CRM Aprentiv v2.0{% endblock %}
 
 {% block stylesheets %}
-{{ parent() }}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.css">
-<style>
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.css">
+    <style>
     #calendar {
         margin: 40px auto;
         max-width: 1100px;
     }
-</style>
+    </style>
 {% endblock %}
 
 {% block body %}
-<nav aria-label="breadcrumb">
-    <div class="d-flex justify-content-between breadcrumb">
-        <ol class="list-unstyled d-flex my-0">
-            <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
-            <li class="breadcrumb-item active" aria-current="page">calendriers</li>
-        </ol>
-    </div>
-</nav>
-<a>
-    <html
-</a>
-<h2 class="text-center mt-2 text-primary">Liste des calendriers</h2>
-<div class="row">
-    <div class="col-sm-12">
-        <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-center">
-            <div class="col-sm-3">
-                <a class="nav-link btn btn-info" href="/calendriers/propal/intra">Calendrier formations PROPALES
-                    INTRA</a>
-            </div>
-            <div class="col-sm-3">
-                <a class="nav-link btn btn-info" href="/calendriers/propal/inter">Calendrier formations PROPALES
-                    INTER</a>
-            </div>
-        </nav>
-    </div>
-    <div class="col-sm-12">
-        <nav class="navbar navbar-expand-sm bg-light navbar-light justify-content-center">
-            <div class="col-sm-3">
-                <a class="nav-link btn btn-info" href="/calendriers/dossier/intra">Calendrier formations DOSSIERS
-                    INTRA</a>
-            </div>
-            <div class="col-sm-3">
-                <a class="nav-link btn btn-info" href="/calendriers/dossier/inter">Calendrier formations DOSSIERS
-                    INTER</a>
-            </div>
-        </nav>
-    </div>
-</div>
+    <nav aria-label="breadcrumb">
+        <div class="d-flex justify-content-between breadcrumb">
+            <ol class="list-unstyled d-flex my-0">
+                <li class="breadcrumb-item"><a href="{{ path('home.index') }}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item" aria-current="page">calendriers</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ title|upper }}</li>
+            </ol>
+        </div>
+    </nav>
+    <h2 class="text-center mt-2 text-primary">{{ title|upper }}</h2>
+    <div id="calendar"></div>
 {% endblock %}
 {% block javascripts %}
-{{ parent() }}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        timeZone: 'GMT+2',
+        locale: 'fr',
+        headerToolbar: {
+            left: 'dayGridMonth,timeGridWeek,listMonth,listWeek,listDay',
+            center: 'title',
+            right: 'prevYear,prev,next,nextYear'
+        },
+        views: {
+            dayGridMonth: { buttonText: 'Grille Mois' },
+            timeGridWeek: { buttonText: 'Grille Semaine' },
+            listDay: { buttonText: 'Liste Jour' },
+            listWeek: { buttonText: 'Liste Semaine' },
+            listMonth: { buttonText: 'Liste Mois' }
+        },
+        initialView: 'dayGridMonth',
+        eventClick: function(info) {
+            var eventObj = info.event;
+            if (eventObj.url) {
+                info.jsEvent.preventDefault();
+                window.open(eventObj.url,eventObj.title,`scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+width=0,height=0,left=-1000,top=-1000`);
+                 // prevents browser from following link in current tab.
+            } else {
+                return;
+                }
+        },
+        events:{{ data|raw }},
+        editable: false,
+        weekends: false,
+        selectable: false
+    });
+
+    calendar.render();
+    });
+</script>
 {% endblock %}
