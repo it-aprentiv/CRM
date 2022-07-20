@@ -24,7 +24,7 @@ class MailingType extends AbstractType
                 ],
                 'required' => true,
             ])
-            ->add('to', EmailType::class, [
+            ->add('to', TextType::class, [
                 'label' => 'Email du destinataire',
                 'required' => true,
             ])

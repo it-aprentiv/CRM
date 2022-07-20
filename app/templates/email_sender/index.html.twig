@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
     <link href="{{ asset('assets/css/dossier.css') }}" rel="stylesheet"/>
-    <link href="/bundles/kmsfroalaeditor/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block body %}
@@ -36,5 +36,22 @@
 {% endblock %}
 
 {% block javascripts %}
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<script>
+    var tagify = new Tagify(document.getElementById('mailing_to'), {
+        enforceWhitelist : true,
+        delimiters       : null,
+        whitelist        : [
+            {% for emails in contactsEmails %}
+                "{{ emails }}",
+            {% endfor %}
+        ],
+        callbacks        : {
+            add    : console.log,  // callback when adding a tag
+            remove : console.log   // callback when removing a tag
+        }
 
+    });
+</script>
 {% endblock %}
