@@ -48,9 +48,11 @@
                             <div class="col-md-6 my-2">
                                 <button type="button" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#suivicom-modal" >Gestion et Suivis des comissions </button>
                             </div>
+                       
                             <div class="col-md-6 my-2">
                                 <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#customextract-modal" ><b>Extraction des dossiers personnalisé</b></button>
                             </div>
+                    
                             <div class="col-md-6 my-2">
                                 <button type="submit" name="filtreextract" class="btn btn-primary w-100" data-toggle="modal" data-dismiss="modal" data-target="#dossprospere-modal" >Gestion des Dossiers PROSPERE </button>
                             </div>
@@ -351,8 +353,11 @@
     </table>
 
     <div class="d-flex justify-content-center my-4 no-disabled">
+              {% if app.user  == 'MUNIER Pascal'%}
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#extract-modal"><b>Extractions</b></button>
-        
+                {% else %}
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#extract-modal" disabled><b>Module indispo</b></button>
+                {% endif %}
         <a href="{{ path('Liste_Dossiers_Controller/ajoutdossier', {client : app.request.query.get("clientid") ? app.request.query.get("clientid") : app.request.query.get("client") } ) }}" class="ml-3 btn btn-primary">Créer</a>
     </div>
 

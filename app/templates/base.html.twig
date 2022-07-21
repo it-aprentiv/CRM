@@ -1,166 +1,182 @@
 <!doctype html>
 <html lang="fr">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!-- Bootstrap CSS -->
-        {% block stylesheets %}
-        	<link rel="stylesheet" href="https://stackedit.io/style.css"/>
-            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
-                  integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-                  crossorigin="anonymous">
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-                  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-                  crossorigin="anonymous">
-            <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"-->
-            <link rel="stylesheet" href="{{ asset('crm/common.css') }}?v={{ asset_version }}"/>
-        {% endblock %}
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta
+		name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap CSS -->
+		{% block stylesheets %}
+			<link rel="stylesheet" href="https://stackedit.io/style.css"/>
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+			<link
+			rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+			<!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"-->
+			<link rel="stylesheet" href="{{ asset('crm/common.css') }}?v={{ asset_version }}"/>
+			<style>
+				@media print{
+					html,
+					body{display:none;/* hide whole page */
+					}
+				}
+			</style>
+		{% endblock %}
 
-        <title>{% block title %}CRM v2.0{% endblock %}</title>
-    </head>
-    <body>
-        <div class="container-fluid">
+		<title>
+			{% block title %}CRM v2.0
+			{% endblock %}
+		</title>
+	</head>
+	<body>
+		<div class="container-fluid">
 
-            {% block header %}
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <a class="navbar-brand" style="" href="{{ path('home.index') }}">
-                        <img src="{{ asset('crm/images/aprentiv-logo-2.png') }}" class="logo"/>
-                    </a>
-                    <div class="calque01"></div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-    
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto">
-                        {% for key, menu_items in user_menus %}
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {{ key | upper }}
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {% for item in menu_items %}
-                                            <a class="dropdown-item"
-                                               href="{{ item.urlmenu is not empty ?  path(item.urlmenu) : '#' }}">{{ item.nomMenu }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
+			{% block header %}
+				<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+					<a class="navbar-brand" style="" href="{{ path('home.index') }}">
+						<img src="{{ asset('crm/images/aprentiv-logo-2.png') }}" class="logo"/>
+					</a>
+					<div class="calque01"></div>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
 
-                        <a href="{{ path('home.portail') }}" class="portail">PORTAIL</a>
-                        {% if app.user  == 'MUNIER Pascal'%}
-                        <a href="{{ path('home.stats') }}" class="btn btn-info mr-1">Statistiques</a>
-                        <a href="{{ path('Log_Controller') }}" class="btn btn-info mr-1">ACTIVITÉ</a>
-                        {% endif %}
-                        <a href="{{ path('Fiche_lead_Controller/ajoutLead') }}" class="btn btn-info">CREER LEAD</a>
-                        <div class="my-2 my-lg-0 text-light">
-                            <ul class="navbar-nav mr-auto">
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle text-light btn" id="navbarUserDropdown"
-                                       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="fa-stack fa-1x">
-                                            <i class="fas fa-circle fa-stack-2x text-info"></i>
-                                            <i class="fas fa-user fa-stack-1x text-white"></i>
-                                        </span>
-                                            Hello {{ app.user.username }} [{{ app.user.droit }}]
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarUserDropdown">
-                                        <a class="dropdown-item" href="{{ path('user.view') }}" title="Infos profil">
-                                            <i class="fas fa-user"></i> 
-                                            Mon Profil
-                                        </a>
-                                        <a class="dropdown-item" href="{{ path('app_logout') }}" title="Fermer la session">
-                                            <i class="fas fa-sign-out-alt"></i> 
-                                            Deconnexion
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            {% endblock %}
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav mr-auto">
+							{% for key, menu_items in user_menus %}
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										{{ key | upper }}
+									</a>
+									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										{% for item in menu_items %}
+											<a class="dropdown-item" href="{{ item.urlmenu is not empty ? path(item.urlmenu) : '#' }}">{{ item.nomMenu }}</a>
+										{% endfor %}
+									</div>
+								</li>
+							{% endfor %}
+						</ul>
 
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ label }} my-2">
-                        {{ message |raw }}
-                    </div>
-                {% endfor %}
-            {% endfor %}
+						<a href="{{ path('home.portail') }}" class="portail">PORTAIL</a>
+						{% if app.user  == 'MUNIER Pascal'%}
+							<a href="{{ path('home.stats') }}" class="btn btn-info mr-1">Statistiques</a>
+							<a href="{{ path('Log_Controller') }}" class="btn btn-info mr-1">ACTIVITÉ</a>
+						{% endif %}
+						<a href="{{ path('Fiche_lead_Controller/ajoutLead') }}" class="btn btn-info">CREER LEAD</a>
+						<div class="my-2 my-lg-0 text-light">
+							<ul class="navbar-nav mr-auto">
+								<li class="nav-item dropdown">
+									<a href="#" class="nav-link dropdown-toggle text-light btn" id="navbarUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="fa-stack fa-1x">
+											<i class="fas fa-circle fa-stack-2x text-info"></i>
+											<i class="fas fa-user fa-stack-1x text-white"></i>
+										</span>
+										Hello
+										{{ app.user.username }}
+										[{{ app.user.droit }}]
+									</a>
+									<div class="dropdown-menu" aria-labelledby="navbarUserDropdown">
+										<a class="dropdown-item" href="{{ path('user.view') }}" title="Infos profil">
+											<i class="fas fa-user"></i>
+											Mon Profil
+										</a>
+										<a class="dropdown-item" href="{{ path('app_logout') }}" title="Fermer la session">
+											<i class="fas fa-sign-out-alt"></i>
+											Deconnexion
+										</a>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			{% endblock %}
 
-            {% block body %}
+			{% for label, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ label }} my-2">
+						{{ message |raw }}
+					</div>
+				{% endfor %}
+			{% endfor %}
 
-                {% block commentaires %}{% endblock %}
-            {% endblock %}
-        </div>
-        {% block modal %}
-        {% endblock %}
-        {% block javascripts %}
-            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>        
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-            <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/i18n/fr.js"></script>
-            
-            <script src="{{ asset('crm/common.js') }}?v={{ asset_version }}"></script>
-            <script src="{{ asset('assets/js/number-utils.js') }}?v={{ asset_version }}"></script>
-            <script src="{{ asset('assets/js/facture-utils.js') }}?v={{ asset_version }}"></script>
-            <script>
-                {#  Activer et désactiver les champs des formulaires --> #}
-                    common.disableFormFields('#commentaires_collection :input, .list-filter :input, .no-disabled :input, #btn_update_formation, .not-disabling');
+			{% block body %}
 
-                    $('.update').on('click', function (e) {
-                        e.preventDefault();
-                        common.enableFormFields('#commentaire_prototype :input, #commentaires_collection :input');
+				{% block commentaires %}{% endblock %}
+			{% endblock %}
+		</div>
+		{% block modal %}{% endblock %}
+		{% block javascripts %}
+			<script>
+				// prevent Copy in clipboard
+document.oncopy = function (e) { // replace the copied text with another text
+e.clipboardData.setData('text/plain', ' Bah alors quelles informations tu cherches ? Quelles informations tu essayes de prendre ?????');
+e.preventDefault();
+};
+			</script>
+			<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+			<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+			<link rel="stylesheet" href="/resources/demos/style.css">
+			<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+			<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+			<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/i18n/fr.js"></script>
 
-                        $('.cancel-update').removeClass('d-none');
-                        $(this).addClass('d-none');
-                        
-                        $('#btnajoutcom').show();
-                    });
+			<script src="{{ asset('crm/common.js') }}?v={{ asset_version }}"></script>
+			<script src="{{ asset('assets/js/number-utils.js') }}?v={{ asset_version }}"></script>
+			<script src="{{ asset('assets/js/facture-utils.js') }}?v={{ asset_version }}"></script>
+			<script>
+				{
+# Activer et désactiver les champs des formulaires -- > #
+};
+common.disableFormFields('#commentaires_collection :input, .list-filter :input, .no-disabled :input, #btn_update_formation, .not-disabling');
 
-                    $('.cancel-update').on('click', function (e) {
-                        e.preventDefault();
-                        $(this).addClass('d-none');
-                        $('.update').removeClass('d-none');
-                        common.disableFormFields('#commentaires_collection :input');
-                        
-                        $('#btnajoutcom').hide();
-                    });
-                {# Activer et désactiver les champs du formulaire <-- #}
+$('.update').on('click', function (e) {
+e.preventDefault();
+common.enableFormFields('#commentaire_prototype :input, #commentaires_collection :input');
+
+$('.cancel-update').removeClass('d-none');
+$(this).addClass('d-none');
+
+$('#btnajoutcom').show();
+});
+
+$('.cancel-update').on('click', function (e) {
+e.preventDefault();
+$(this).addClass('d-none');
+$('.update').removeClass('d-none');
+common.disableFormFields('#commentaires_collection :input');
+
+$('#btnajoutcom').hide();
+});
+{
+# Activer et désactiver les champs du formulaire < -- #;
+}
 
 
-                    function chargement(parameters) {
-                        var selecteur = parameters.selecteur;
-                        var modal = parameters.modal;
-                        var chiffre = parameters.chiffre;
-                        var html = "";
+function chargement(parameters) {
+var selecteur = parameters.selecteur;
+var modal = parameters.modal;
+var chiffre = parameters.chiffre;
+var html = "";
 
-                        if (chiffre !== undefined) {
-                            html = '<div class="progress progress-striped" style="margin-bottom:0;"><div class="progress-bar" role="progressbar" style="width: ' + chiffre + '%"> ' + chiffre + '% Complete </div></div>';
-                            /* html = html + "<div class='text-center'>"
+if (chiffre !== undefined) {
+html = '<div class="progress progress-striped" style="margin-bottom:0;"><div class="progress-bar" role="progressbar" style="width: ' + chiffre + '%"> ' + chiffre + '% Complete </div></div>';
+/* html = html + "<div class='text-center'>"
                              + chiffre
                              + "</div>"*/
-                        } else {
-                            html = '<div class="progress progress-striped" style="margin-bottom:0;"><div class="progress-bar" role="progressbar" aria-valuenow="5" style="width: 100%"> Chargement </div></div>';
-                        }
+} else {
+html = '<div class="progress progress-striped" style="margin-bottom:0;"><div class="progress-bar" role="progressbar" aria-valuenow="5" style="width: 100%"> Chargement </div></div>';
+}
 
 
-                        $(selecteur).html(html);
+$(selecteur).html(html);
 
-                    }
-            </script>
-        {% endblock %}
-    </body>
+}
+			</script>
+		{% endblock %}
+	</body>
 </html>

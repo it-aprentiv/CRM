@@ -10,6 +10,7 @@ parameters:
   catalogue_dossier_dir: '%kernel.project_dir%/catalogues_dir'
   #APR-141
   facturation.legal_mode: false
+  session_max_idle_time: 300
 
 services:
   # default configuration for services in *this* file
@@ -57,7 +58,11 @@ services:
         class: App\Utility\DbProcessor
         tags:
             - {name: monolog.processor, handler: dbHandler}
-  
+  App\EventListener\SessionListener:
+        class: App\EventListener\SessionHandle
+        arguments: ["@session", "@security.token_storage", "@router", '%session_max_idle_time%']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
   doctrine.doctrineSuscriber:
         class: App\EventListener\DoctrineSuscriber
         tags:

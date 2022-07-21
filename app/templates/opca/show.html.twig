@@ -316,6 +316,11 @@
 {% endblock %}
 
 {% block javascripts %}
+<script>
+document.oncopy = () => {
+    
+}
+</script>
     {{ parent() }}
     
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -326,6 +331,9 @@
     {% include 'contact/Parts/contact.js.html.twig' %}
     
     <script type="text/javascript">
+        document.oncopy = () => {
+
+        }
         $(document).ready(function(){
             $('#bntEdit').click(function(e){
             e.preventDefault();

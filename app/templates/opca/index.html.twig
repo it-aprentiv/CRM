@@ -135,6 +135,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+      document.oncopy = () => {
+
+        }
         function deleteOpca(elem)
         {
             var opca_id = elem.closest('tr').attr('data-opca-id');
