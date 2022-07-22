@@ -129,9 +129,7 @@ e.preventDefault();
 			<script src="{{ asset('assets/js/number-utils.js') }}?v={{ asset_version }}"></script>
 			<script src="{{ asset('assets/js/facture-utils.js') }}?v={{ asset_version }}"></script>
 			<script>
-				{
-# Activer et désactiver les champs des formulaires -- > #
-};
+		
 common.disableFormFields('#commentaires_collection :input, .list-filter :input, .no-disabled :input, #btn_update_formation, .not-disabling');
 
 $('.update').on('click', function (e) {
@@ -152,10 +150,6 @@ common.disableFormFields('#commentaires_collection :input');
 
 $('#btnajoutcom').hide();
 });
-{
-# Activer et désactiver les champs du formulaire < -- #;
-}
-
 
 function chargement(parameters) {
 var selecteur = parameters.selecteur;
