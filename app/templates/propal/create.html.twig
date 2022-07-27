@@ -138,5 +138,20 @@ setInterval(()=>{
             var newOption = new Option(data.text, data.text, true, true);
             dossierNom.append(newOption).trigger('change');
         {% endif  %}
+          $('#tag-form-submit').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{{ path('ajout_competence') }}",
+                data: $('form.tagForm').serialize(),
+                success: function(response) {
+                    $('#popupAddStage').modal('hide');
+                },
+                error: function() {
+                    alert('Error');
+                }
+            });
+            return false;
+        });
     </script>
 {% endblock %}
