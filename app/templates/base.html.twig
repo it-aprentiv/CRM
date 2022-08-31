@@ -106,13 +106,6 @@
 		</div>
 		{% block modal %}{% endblock %}
 		{% block javascripts %}
-			<script>
-				// prevent Copy in clipboard
-document.oncopy = function (e) { // replace the copied text with another text
-e.clipboardData.setData('text/plain', ' Bah alors quelles informations tu cherches ? Quelles informations tu essayes de prendre ?????');
-e.preventDefault();
-};
-			</script>
 			<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 			<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 			<link rel="stylesheet" href="/resources/demos/style.css">
