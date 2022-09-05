@@ -29,6 +29,8 @@ app/web/uploads/
 
 # Build data
 app/build/
+docker-compose.yml
+
 # Composer PHAR
 app/composer.phar
 
