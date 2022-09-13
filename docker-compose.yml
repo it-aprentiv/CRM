@@ -10,7 +10,7 @@ services:
       - MYSQL_PASSWORD=${DATABASE_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
     ports:
-      - "3306:3306"
+      - "2020:80"
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - /var/lib/mysql
@@ -19,19 +19,20 @@ services:
     image: phpmyadmin
     restart: always
     ports:
-      - 8080:80
+      - 5050:80
     environment:
       - PMA_ARBITRARY=1
 
   php-fpm:
     build:
       context: ./php-fpm
+   
     depends_on:
       - db
     environment:
       - APP_ENV=${APP_ENV}
       - APP_SECRET=${APP_SECRET}
-      - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@db:3306/${DATABASE_NAME}
+      - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@149.91.80.94:3306/${DATABASE_NAME}
     volumes:
       - ./app:/var/www
 
@@ -47,4 +48,4 @@ services:
     depends_on:
       - php-fpm
     ports:
-      - "80:80"
+      - "4040:80"

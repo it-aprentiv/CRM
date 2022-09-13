@@ -30,7 +30,7 @@ app/web/uploads/
 # Build data
 app/build/
 docker-compose.yml
-
+docker-compose-sample.yml
 # Composer PHAR
 app/composer.phar
 

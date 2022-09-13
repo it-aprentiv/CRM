@@ -95,7 +95,7 @@
                 <td>{{ facture.dateCreation | date('d-m-Y') }}</td>
                 <td>{{ facture.ref }}</td>
                 <td>
-                    <a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id: facture.id_dossier }) }}" target="_black" title="Voir dossier">{{ facture.noDossierRef }}</a>
+                    <a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {id: facture.id_dossier == "" ? 0 : facture.id_dossier }) }}" target="_black" title="Voir dossier">{{ facture.noDossierRef }}</a>
                 </td>
                 <td>{{ facture.numDossierOpca }}</td>
                 <td>
