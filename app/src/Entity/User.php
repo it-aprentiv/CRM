@@ -33,6 +33,12 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=GestionSceance::class, inversedBy="createdid")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $stop;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,5 +110,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getStop(): ?GestionSceance
+    {
+        return $this->stop;
+    }
+
+    public function setStop(?GestionSceance $stop): self
+    {
+        $this->stop = $stop;
+
+        return $this;
     }
 }

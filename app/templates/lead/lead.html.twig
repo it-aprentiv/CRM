@@ -104,6 +104,24 @@
                             }) }}
 							{{ form_widget(form.statut) }}
 						</div>
+                        	<div class="col-sm-2 text-center">
+							{{ form_label(form.formation, 'Formation',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+							{{ form_widget(form.formation) }}
+						</div>
+						<div class="col-sm-2 text-center">
+							{{ form_label(form.typerequest, 'Type de Demande',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+							{{ form_widget(form.typerequest) }}
+						</div>
+						<div class="col-sm-2 text-center">
+							{{ form_label(form.periode, 'Periode souhaitée',{
+                                'label_attr': {'class': 'font-weight-bold'}
+                            }) }}
+							{{ form_widget(form.periode) }}
+					</div>
 					</div>
 				</div>
 			</fieldset>
