@@ -176,7 +176,7 @@ class PropalManager
         $docword->setValue("tvaTxt", $tvaTxt);
         $docword->setValue("coutTTC", $montantTTCTxt);
 
-        $nomfile = 'DocPrint/Propal/'.date("Y-m-d").'/propal_'.$propal->getId().'.docx';
+        $nomfile = 'DocPrint/Propal/'.date("Y-m-d").'/Proposition_commerciale.docx';
         $rep = 'DocPrint/Propal/'.date("Y-m-d");
         if(!is_dir($rep)){
             mkdir($rep);
@@ -233,7 +233,7 @@ class PropalManager
         ));
         }
        
-        $fichier = $docword->saveDocument("PropalConvention_" . $propal->getId() . ".docx");
+        $fichier = $docword->saveDocument("Devis.docx");
 
         return $fichier;
     }
