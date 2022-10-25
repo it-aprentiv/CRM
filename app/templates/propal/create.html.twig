@@ -35,6 +35,8 @@
         $(document).ready(function () {
             $("#propal_durreh").attr('required', 'required');
             $("#propal_durrej").attr('required', 'required');
+            document.querySelector("#propal_entitypropal").selectedIndex = 2;
+            document.querySelector("#propal_statutpropal").selectedIndex = 1;
         });
 
         $("#propal_ville").select2({
