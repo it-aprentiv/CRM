@@ -288,9 +288,7 @@
             </div>
         {% endif %}          
             <div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
-                <a href="{{ path('propal_generate_conv',{id:idpropal}) }}" class="btn btn-primary btn-md btn-block" id="createconvpropal">
-                    Editer conv
-                </a>
+                <a name="editerconv" data-toggle="modal" data-target="#convpapier" class="btn btn-primary btn-block text-white">Conv papier</a>
             </div>
                 {% if propal_form.statutpropal.vars.value == '4' %}
                     <div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
@@ -331,12 +329,68 @@
         {% endif %}
     </div>
 </div>
+<div class="modal fade " id="convpapier" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-lg " role="document">
+        <div class="modal-content list-filter">
+            <div class="modal-header">
+                <h5 class="modal-title edit-rdv">
+                    Convention papier 
+                </h5>
+                <button type="button" class="fas close not-disabling" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <input type="checkbox" name="check" class="not-disabling" value="0">
+                <label for="check">En entreprise (intra)</label><br>
+                <input type="checkbox" name="check" class="not-disabling" value="1">
+                <label for="check">Hors entreprise (inter)</label><br>
+                <input type="checkbox" name="check" class="not-disabling" value="2">
+                <label for="check">Formation en présentielle</label><br>
+                <input type="checkbox" name="check" class="not-disabling" value="3">
+                <label for="check">Formation à distance</label><br>
+            </div>
+            <div class="modal-footer">
+                <a id="convpapierurl" href="{{ path('propal_generate_conv',{id:idpropal}) }}" class="btn btn-primary btn-md btn-block" id="createconvpropal">
+                    Editer Convocation
+                </a>
+                <button type="button" class="btn btn-secondary not-disabling" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {# APR-204 #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
+
+            setTimeout(() => {
+              document.querySelectorAll(".list-filter").forEach(function(elem){
+                elem.disabled = false;
+            });
+
+            document.querySelectorAll(".not-disabling").forEach(function(elem){
+                elem.disabled = false;
+            });  
+            }, 1000);
+            const convpapierurl = document.getElementById("convpapierurl");
+
+            var checkboxes = document.querySelectorAll("input[type=checkbox][name=check]");
+let enabledSettings = []
+
+checkboxes.forEach(function(checkbox) {
+  checkbox.addEventListener('change', function() {
+    const checkboxInfos = 
+      Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
+      .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+      .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+    const enabledSettings = [false,false,false,false].map((v,i) => checkboxInfos.includes(i.toString())) // Create an array of booleans with the same length as the number of checkboxes.
+    convpapierurl.href = "/propal/{{ idpropal }}/generateconv/?checkeds=[false,false,false,false]".replace('[false,false,false,false]', JSON.stringify(enabledSettings))
+    console.log(convpapierurl.href)
+  })
+});        
 
 if (propal_statutpropal.value != 4)
         {

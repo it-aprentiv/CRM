@@ -286,16 +286,19 @@ class PropalController extends BaseController
      *     requirements={"page"="\d+"})
      * @param Propal $propal
      */
-    public function generatedocconv(Propal $propal, PropalManager $propalmanager, $id)
+    public function generatedocconv(Propal $propal, PropalManager $propalmanager, Request $request, $id)
     {
         $fichier = null;
+        $checkeds = json_decode($request->query->get('checkeds','[false,false,false,false]'));
         $template = $this->renderView("Common\DocPrint\Propal\ConventionContent.html.twig", [
             'propal' => $propal,
+            'checked' => $checkeds,
         ]);
         $fichier = $propalmanager->createDocConv($template, $propal, $id);
         $sFileName = basename($fichier);
         $template = $this->renderView("Common\DocPrint\Propal\ConventionContent.html.twig", [
             'propal' => $propal,
+            'checked' => $checkeds,
         ]);
 
         //dd($propal);
