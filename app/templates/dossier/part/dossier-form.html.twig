@@ -439,16 +439,9 @@
                     {% endif %}
                 </div>
                 {# Retour APR-102 #}
-                {% if client_non_exists is defined and client_non_exists %}
-                    <div class="btn-group mr-2" role="group" aria-label="Second group">
-                        <a href="#" class="btn btn-primary btn-block disabled" title="Client non disponible">Convention papier</a>
-                    </div>
-                {% else %}
-
-                    <div class="btn-group mr-2" role="group" aria-label="Second group">
-                        <a href="{{ path("client_prospect_printdocument", { id : dossier.idClient.id, type: 2, did: dossier.id }) }}" class="btn btn-primary btn-block">Convention papier</a>
-                    </div>
-                {% endif %}
+                 <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <a name="editerconv" data-toggle="modal" data-target="#convpapier" class="btn btn-primary btn-block text-white">Convention papier</a>
+                </div>
             {% endif %}
 
         </div>
@@ -460,6 +453,45 @@
             </div>
             <div class="btn-group mr-2 " role="group" aria-label="First group">
                 <button class="btn btn-primary" type="submit" style="border-radius: 5%;" id="save">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade " id="convpapier" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-lg " role="document">
+        <div class="modal-content list-filter">
+            <div class="modal-header">
+                <h5 class="modal-title edit-rdv">
+                    Convention papier 
+                </h5>
+                <button type="button" class="fas close not-disabling" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <input type="checkbox" name="check" class="not-disabling" value="0">
+                <label for="check">En entreprise (intra)</label><br>
+                <input type="checkbox" name="check" class="not-disabling" value="1">
+                <label for="check">Hors entreprise (inter)</label><br>
+                <input type="checkbox" name="check" class="not-disabling" value="2">
+                <label for="check">Formation en présentielle</label><br>
+                <input type="checkbox" name="check" class="not-disabling" value="3">
+                <label for="check">Formation à distance</label><br>
+            </div>
+            <div class="modal-footer">
+                 {% if client_non_exists is defined and client_non_exists %}
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <a href="#" class="btn btn-primary btn-block disabled" title="Client non disponible">Convention papier</a>
+                    </div>
+                {% else %}
+
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <a id="convpapierurl" href="{{ path("client_prospect_printdocument", { id : dossier.idClient.id, type: 2, did: dossier.id }) }}" class="btn btn-primary btn-block">Convention papier</a>
+                    </div>
+                {% endif %}
+                <button type="button" class="btn btn-secondary not-disabling" data-dismiss="modal">Fermer</button>
             </div>
         </div>
     </div>
@@ -479,6 +511,32 @@
                     width: 2000,
                         })
         }
+
+            setTimeout(() => {
+              document.querySelectorAll(".list-filter").forEach(function(elem){
+                elem.disabled = false;
+            });
+
+            document.querySelectorAll(".not-disabling").forEach(function(elem){
+                elem.disabled = false;
+            });  
+            }, 1000);
+            const convpapierurl = document.getElementById("convpapierurl");
+
+            var checkboxes = document.querySelectorAll("input[type=checkbox][name=check]");
+let enabledSettings = []
+
+checkboxes.forEach(function(checkbox) {
+  checkbox.addEventListener('change', function() {
+    const checkboxInfos = 
+      Array.from(checkboxes) // Convert checkboxes to an array to use filter and map.
+      .filter(i => i.checked) // Use Array.filter to remove unchecked checkboxes.
+      .map(i => i.value) // Use Array.map to extract only the checkbox values from the array of objects.
+    const enabledSettings = [false,false,false,false].map((v,i) => checkboxInfos.includes(i.toString())) // Create an array of booleans with the same length as the number of checkboxes.
+    convpapierurl.href = "/contact/{{ dossier.idClient.id }}/printdocument/2?did={{ dossier.id }}&checkeds=[false,false,false,false]".replace('[false,false,false,false]', JSON.stringify(enabledSettings))
+    console.log(convpapierurl.href)
+  })
+});            
 </script>
 
 {{ form_end(doc_form,{'render_rest': false}) }}
@@ -507,5 +565,7 @@
         </div>
     </div>
 </div>
+
+
 {# END BEGIN MODAL #}
 

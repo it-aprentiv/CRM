@@ -806,6 +806,7 @@ class ContactController extends BaseController
 
                 // APR-102 : ajout du bouton : Convention papier dans page Edition dossier
                 $dossierId = $request->query->get('did', null);
+                $checkeds = json_decode($request->query->get('checkeds', '[false,false,false,false]'));
                 $dossier = null;
                 $stagiaires = [];
                 $aFormatedDatesStage = [];
@@ -831,6 +832,7 @@ class ContactController extends BaseController
                     'opca' => $opca,
                     'dossier' => $dossier,
                     'stagiaires' => $stagiaires,
+                    'checked' => $checkeds,
                     'formated_dates_stage' => $aFormatedDatesStage
                 ]);
                 // APR-209 : Fix choix structure : dépend de l'entité (Fiche client ou dossier)

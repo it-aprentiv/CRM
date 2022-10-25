@@ -19,13 +19,15 @@ Elle se déroulera au : {{ dossier ? dossier.lieu : '' }}
     <li>
 <span style="font-family: Arial Black;font-size: 10px">MOYENS PEDAGOGIQUES ET TECHNIQUES :</span><br/>
 Le Programme de l’action de formation est joint en annexe.<br/>
-La formation est dispensée selon les conditions générales ci-dessous :<br/>
-                - En entreprise (intra)                                          &#9744;     Hors entreprise (inter)       &#9744;<br/>
-                - Formation en présentielle                                 &#9744;     Formation à distance	 &#9744;<br/>
-- Salle de cours : six stagiaires maximum, animée par un formateur ;<br/>
-- Cours de langue : Supports variés sous forme de CD audio, vidéo et ouvrages pédagogiques ; mises en situations authentiques et jeux de rôles<br/>
-- Stages bureautique : chaque stagiaire travaillant individuellement sur un micro-ordinateur est guidé par un support de cours ;<br/>
-- Les formateurs ont plusieurs années d’expérience dans les domaines qu’ils enseignent.
+<ul style="list-style-type: none;">
+<span>La formation est dispensée selon les conditions générales ci-dessous :</span>
+    <span>- En entreprise (intra)                {{ checked[0] ? "&#9745;" :  "&#9744;" }}    Hors entreprise (inter)        {{ checked[1] ? "&#9745;" :  "&#9744;" }}</span>
+    <span>- Formation en présentielle      {{ checked[2] ? "&#9745;" :  "&#9744;" }}    Formation à distance           {{ checked[3] ? "&#9745;" :  "&#9744;" }}</span>
+    <span>- Salle de cours : six stagiaires maximum, animée par un formateur ;</span>
+    <span>- Cours de langue : Supports variés sous forme de CD audio, vidéo et ouvrages pédagogiques ; mises en situations authentiques et jeux de rôles</span>
+    <span>- Stages bureautique : chaque stagiaire travaillant individuellement sur un micro-ordinateur est guidé par un support de cours ;</span>
+    <span>- Les formateurs ont plusieurs années d’expérience dans les domaines qu’ils enseignent.</span>
+</ul>
     </li>
     <li>
 <span style="font-family: Arial Black;font-size: 10px">ANNEXES :</span><br/>
