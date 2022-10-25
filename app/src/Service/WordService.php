@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Propal;
+use Doctrine\ORM\EntityManager;
 use Exception;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
@@ -232,14 +233,24 @@ class WordService
      * @param array $PidPageSettings
      * @return $this
      */
-    public function createheaderpourconvention(Propal $propal)
+    public function createheaderpourconvention(Propal $propal, EntityManager $em)
     {
 
         $adr="47 Rue Vivienne 75002 PARIS";
         $srt="Siret : 443 287 263 000 34";
         $naf="Numéro de Déclaration d’existence : 11 75 372 18 75";
         $ttl="APRENTIV’ CONSEIL";
-        
+        $currentVille = "";
+        $IdVille = $propal->getVille();
+        if ($IdVille != null)
+        {        
+            $ville = $em->getRepository(\App\Entity\Ville::class)->find($IdVille);        
+            $currentVille = $ville->getNomVille();
+        }
+        else
+        {
+            $currentVille = "";
+        }
         if($propal->getEntitypropal() == "proform"){
             $srt="Siret : 489 748 772 00022";
             $naf="Numéro de Déclaration d’existence : 11 75 408 35 75";
@@ -285,7 +296,7 @@ class WordService
         $sections->addTextBreak(0);
         $sections->addText($adr.htmlspecialchars("\t\t\t\t\t").$propal->getAdresse(), array('name'=> 'Arial','size' => 9));
         $sections->addTextBreak(0);
-        $sections->addText("".htmlspecialchars("\t\t\t\t\t\t\t\t").$propal->getCodepostal(), array('name'=> 'Arial','size' => 9));
+        $sections->addText("".htmlspecialchars("\t\t\t\t\t\t\t\t").$propal->getCodepostal()." ".$currentVille, array('name'=> 'Arial','size' => 9));
         $sections->addTextBreak(0);
         $sections->addText($naf.htmlspecialchars("\t\t\t\t\t\t")."", array('name'=> 'Arial','size' => 9));
         $sections->addTextBreak(1);

@@ -9,6 +9,7 @@ use App\Entity\Propal;
 use App\Service\WordService;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Ville;
+use Doctrine\ORM\EntityManager;
 use PhpOffice\PhpWord\TemplateProcessor;
 use PhpOffice\PhpWord\Style\Image;
 
@@ -191,11 +192,11 @@ class PropalManager
      *
      * @return Exception|string|void
      */
-    public function createDocConv($templatehtml, $propal) {
+    public function createDocConv($templatehtml, $propal,EntityManager $em, $id) {
         $fichier = null;
         $docword = new WordService();
         $docword->createdocword()
-                ->createheaderpourconvention($propal);
+                ->createheaderpourconvention($propal, $em);
         $docword->addcontenttemplate($templatehtml, $docword);
         $sections = $docword->getsectiondoc();
         $table = $sections->addTable('convention');

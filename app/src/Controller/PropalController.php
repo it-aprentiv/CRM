@@ -294,7 +294,7 @@ class PropalController extends BaseController
             'propal' => $propal,
             'checked' => $checkeds,
         ]);
-        $fichier = $propalmanager->createDocConv($template, $propal, $id);
+        $fichier = $propalmanager->createDocConv($template, $propal, $this->em, $id);
         $sFileName = basename($fichier);
         $template = $this->renderView("Common\DocPrint\Propal\ConventionContent.html.twig", [
             'propal' => $propal,
