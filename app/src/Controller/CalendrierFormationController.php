@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Propal;
 use App\Entity\FormationDossier;
+use App\Entity\FormationDossierDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\FormationDossierDateRepository;
+use App\Manager\FormationDossierDateManager;
+ 
 
 class CalendrierFormationController extends BaseController
 {
@@ -31,7 +35,13 @@ class CalendrierFormationController extends BaseController
      * 
      * @return Response
      */
-    public function type(Request $request, $id, $type){
+    public function type(
+            Request $request,
+        FormationDossierDateManager $formationDossierDateManager,
+        FormationDossierDateRepository $formationDossierDateRepository,
+        $id, 
+        $type
+        ){
             switch($id){
                 case 'propal':
                     switch($type){
@@ -65,7 +75,7 @@ class CalendrierFormationController extends BaseController
                                     "url" => "/propal/".$value->getId()."/edit",
                                     "start" => $value->getDatedebutpropal()->format('Y-m-d'),
                                     "end" => $value->getDatefinpropal()->format('Y-m-d'),
-                                    "title" => strtoupper($value->getFormation()->getCompetence()),
+                                    "title" => strtoupper($value->getFormation()->getCompetence())
                                 ]);
                             }
                             }
@@ -81,14 +91,24 @@ class CalendrierFormationController extends BaseController
                             $data = $this->em->getRepository(FormationDossier::class)->findBy(['dossierType' => 'INTRA']);
                             $tab = [];
                             // Format data to display json
+                            // get date of stage and date of formation from dossier and format it
                             foreach($data as $key => $value){
                                 if($value->getDateDebutPeriode() && $value->getDateFinPeriode()){
-                                array_push($tab,[
-                                    "url" => "/dossier/".$value->getId()."/visualiser",
-                                    "start" => $value->getDateDebutPeriode()->format('Y-m-d'),
-                                    "end" => $value->getDateFinPeriode()->format('Y-m-d'),
-                                    "title" => strtoupper($value->getNom()),
-                                ]);
+                                    $dateStages = $formationDossierDateRepository->getDossierDate($value->getId());
+                                    if(count($dateStages) > 0){
+                                        $aFormatedFormationDates = $formationDossierDateManager->formatFormationDates($dateStages);
+                                    $dates = $aFormatedFormationDates['dates'];
+                                    foreach($dates as $key => $date){
+                                        array_push($tab,[
+                                            "groupId" => $value->getId(),
+                                            "url" => "/dossier/".$value->getId()."/visualiser",
+                                            "start" => $date["dateD"]->format('Y-m-d H:i:s'),
+                                            "end" => $date["dateF"]->format('Y-m-d H:i:s'),
+                                            "title" => strtoupper($value->getNom()),
+                                            "allDay" => false
+                                        ]);
+                                    }
+                                    }
                             }
                             }
                             $this->viewParams['data'] = json_encode($tab,JSON_PRETTY_PRINT);
@@ -101,12 +121,21 @@ class CalendrierFormationController extends BaseController
                             // Format data to display json
                             foreach($data as $key => $value){
                                 if($value->getDateDebutPeriode() && $value->getDateFinPeriode()){
-                                array_push($tab,[
-                                    "url" => "/dossier/".$value->getId()."/visualiser",
-                                    "start" => $value->getDateDebutPeriode()->format('Y-m-d'),
-                                    "end" => $value->getDateFinPeriode()->format('Y-m-d'),
-                                    "title" => strtoupper($value->getNom()),
-                                ]);
+                                    $dateStages = $formationDossierDateRepository->getDossierDate($value->getId());
+                                    if(count($dateStages) > 0){
+                                        $aFormatedFormationDates = $formationDossierDateManager->formatFormationDates($dateStages);
+                                    $dates = $aFormatedFormationDates['dates'];
+                                    foreach($dates as $key => $date){
+                                        array_push($tab,[
+                                            "groupId" => $value->getId(),
+                                            "url" => "/dossier/".$value->getId()."/visualiser",
+                                            "start" => $date["dateD"]->format('Y-m-d H:i:s'),
+                                            "end" => $date["dateF"]->format('Y-m-d H:i:s'),
+                                            "title" => strtoupper($value->getNom()),
+                                            "allDay" => false
+                                        ]);
+                                    }
+                                    }
                             }
                             }
                             $this->viewParams['data'] = json_encode($tab,JSON_PRETTY_PRINT);
