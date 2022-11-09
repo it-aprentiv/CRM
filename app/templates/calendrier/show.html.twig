@@ -10,10 +10,9 @@
     <style>
     #calendar {
         margin: 40px auto;
-        max-width: 1500px;
     }
     :root {
-    --fc-small-font-size: 1.5em;
+    --fc-small-font-size: 1.3em;
     --fc-page-bg-color: grey;
     --fc-neutral-bg-color: rgba(208, 208, 208, 0.3);
     --fc-neutral-text-color: #808080;
@@ -82,10 +81,10 @@
             right: 'prevYear,prev,next,nextYear'
         },
         buttonIcons: false, // show the prev/next text
-        weekNumbers: true,
+        weekNumbers: false,
         views: {
-            dayGridMonth: { buttonText: 'Grille Mois' },
-            timeGridWeek: { buttonText: 'Grille Semaine' },
+            dayGridMonth: { buttonText: 'Grille Mois', dayMaxEventRows: 6 },
+            timeGridWeek: { buttonText: 'Grille Semaine'},
             listDay: { buttonText: 'Liste Jour' },
             listWeek: { buttonText: 'Liste Semaine' },
             listMonth: { buttonText: 'Liste Mois' }
@@ -109,8 +108,8 @@ width=0,height=0,left=-1000,top=-1000`);
         expandRows: true,
         navLinks: true,
         stickyHeaderDates: true
-        
-    });
+
+});
 
     calendar.render();
     });

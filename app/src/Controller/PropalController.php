@@ -290,17 +290,14 @@ class PropalController extends BaseController
     {
         $fichier = null;
         $checkeds = json_decode($request->query->get('checkeds','[false,false,false,false]'));
+
         $template = $this->renderView("Common\DocPrint\Propal\ConventionContent.html.twig", [
             'propal' => $propal,
             'checked' => $checkeds,
+            'opca' => $propal->getClientpropal()->getOpca()->getNomStr(),
         ]);
         $fichier = $propalmanager->createDocConv($template, $propal, $this->em, $id);
         $sFileName = basename($fichier);
-        $template = $this->renderView("Common\DocPrint\Propal\ConventionContent.html.twig", [
-            'propal' => $propal,
-            'checked' => $checkeds,
-        ]);
-
         //dd($propal);
         return $this->file($fichier, $sFileName, ResponseHeaderBag::DISPOSITION_INLINE);
 
