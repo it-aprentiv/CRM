@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
 use App\Entity\Propal;
 use App\Entity\FormationDossier;
 use App\Entity\FormationDossierDate;
@@ -90,26 +91,54 @@ class CalendrierFormationController extends BaseController
                             // Get data from dossier
                             $data = $this->em->getRepository(FormationDossier::class)->findBy(['dossierType' => 'INTRA']);
                             $tab = [];
-                            // Format data to display json
-                            // get date of stage and date of formation from dossier and format it
-                            foreach($data as $key => $value){
+                            $bdata = [];
+
+                            array_filter($data,function($value) use (&$bdata){
                                 if($value->getDateDebutPeriode() && $value->getDateFinPeriode()){
-                                    $dateStages = $formationDossierDateRepository->getDossierDate($value->getId());
-                                    if(count($dateStages) > 0){
-                                        $aFormatedFormationDates = $formationDossierDateManager->formatFormationDates($dateStages);
+                                if(array_key_exists($value->getNom().$value->getDateDebutPeriode()->format('Y-m-d'), $bdata)){
+                                        if($bdata[$value->getNom()]["date-fin"] = $value->getDateFinPeriode()->format('Y-m-d')){
+                                            array_push($bdata[$value->getNom().$value->getDateDebutPeriode()->format('Y-m-d')]["dossiers"],$value);
+                                    }else{
+                                        $bdata[$value->getNom().$value->getDateDebutPeriode()->format('Y-m-d')] = [
+                                            "date-debut" => $value->getDateDebutPeriode()->format('Y-m-d'),
+                                            "date-fin" => $value->getDateFinPeriode()->format('Y-m-d'),
+                                            "dossiers" => [$value]
+                                        ];
+                                    }
+                                }else{
+                                    $bdata[$value->getNom().$value->getDateDebutPeriode()->format('Y-m-d')] = [
+                                        "date-debut" => $value->getDateDebutPeriode()->format('Y-m-d'),
+                                        "date-fin" => $value->getDateFinPeriode()->format('Y-m-d'),
+                                        "dossiers" => [$value]
+                                    ];
+                                }
+                                }
+                            });
+
+                            foreach($bdata as $key => $value){
+                                if(array_key_exists("dossiers", $value)){
+                                $dateStages = $formationDossierDateRepository->getDossierDate($value["dossiers"][0]->getId());
+                                if(count($dateStages) > 0){
+                                    $aFormatedFormationDates = $formationDossierDateManager->formatFormationDates($dateStages);
                                     $dates = $aFormatedFormationDates['dates'];
                                     foreach($dates as $key => $date){
                                         array_push($tab,[
-                                            "id" => $value->getId(),
-                                            "url" => "/dossier/".$value->getId()."/visualiser",
                                             "start" => $date["dateD"]->format('Y-m-d H:i:s'),
                                             "end" => $date["dateF"]->format('Y-m-d H:i:s'),
-                                            "title" => strtoupper($value->getNom()),
-                                            "allDay" => false
-                                        ]);
+                                            "title" => strtoupper($value["dossiers"][0]->getNom()). " - Dossiers (".count($value["dossiers"]).")",
+                                            "allDay" => false,
+                                            "extendedProps" => array_map(function($value){
+                                                return [
+                                                    "client" => $value->getIdClient() ? $this->em->getRepository(Contact::class)->find($value->getIdClient())->getNom(): "Inconnu",
+                                                    "entity" => $value->getIdStructure()->getId() > 0 ? $value->getIdStructure()->getStructure() : "Inconnu",
+                                                    "url" => "/dossier/".$value->getId()."/visualiser"
+                                                ];
+                                            },$value["dossiers"])
+                                            ]);
                                     }
-                                    }
+                                }
                             }
+                            
                             }
                             $this->viewParams['data'] = json_encode($tab,JSON_PRETTY_PRINT);
                             break;
@@ -145,23 +174,6 @@ class CalendrierFormationController extends BaseController
                                 }
                             });
 
-
-                            /*
-                            * Make a new array based on $bdata, 
-                            * it look like that : 
-                            * $tab = [
-                            *   0 => [
-                            *       "start" => "2020-01-01 : 00:00:00",
-                            *       "end" => "2020-01-02 : 00:00:00",
-                            *       "title" => "Formation 1",
-                            *       "allDay" => false,
-                            *       "extendedProps" => [
-                            *           "id" => 1,
-                            *           "url" => "/dossier/1/visualiser"
-                            *       ]
-                            *   ],
-                            */
-
                             foreach($bdata as $key => $value){
                                 if(array_key_exists("dossiers", $value)){
                                 $dateStages = $formationDossierDateRepository->getDossierDate($value["dossiers"][0]->getId());
@@ -172,13 +184,16 @@ class CalendrierFormationController extends BaseController
                                         array_push($tab,[
                                             "start" => $date["dateD"]->format('Y-m-d H:i:s'),
                                             "end" => $date["dateF"]->format('Y-m-d H:i:s'),
-                                            "title" => strtoupper($value["dossiers"][0]->getNom()),
+                                            "title" => strtoupper($value["dossiers"][0]->getNom()). " - Dossiers (".count($value["dossiers"]).")",
                                             "allDay" => false,
-                                            "extendedProps" => [
-                                                "id" => $value["dossiers"][0]->getId(),
-                                                "url" => "/dossier/".$value["dossiers"][0]->getId()."/visualiser"
-                                            ]
-                                        ]);
+                                            "extendedProps" => array_map(function($value){
+                                                return [
+                                                    "client" => $value->getIdClient() ? $this->em->getRepository(Contact::class)->find($value->getIdClient())->getNom(): "Inconnu",
+                                                    "entity" => $value->getIdStructure()->getId() > 0 ? $value->getIdStructure()->getStructure() : "Inconnu",
+                                                    "url" => "/dossier/".$value->getId()."/visualiser"
+                                                ];
+                                            },$value["dossiers"])
+                                            ]);
                                     }
                                 }
                             }

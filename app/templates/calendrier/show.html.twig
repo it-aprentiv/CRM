@@ -92,14 +92,38 @@
         initialView: 'dayGridMonth',
         eventClick: function(info) {
             var eventObj = info.event;
-            if (eventObj.url) {
+             if(eventObj.url) {
                 info.jsEvent.preventDefault();
-                window.open(eventObj.url,eventObj.title,`scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+               window.open(eventObj.url,eventObj.title,`scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
 width=0,height=0,left=-1000,top=-1000`);
-                 // prevents browser from following link in current tab.
-            } else {
-                return;
-                }
+            }else{
+            if (eventObj.extendedProps) {
+               // display each values in a modal or a sweetalert
+               var myhtml = document.createElement("div");
+                myhtml.innerHTML = `
+                        <table>
+                            <tr>
+                                <th>Client</th>
+                                <th>Entité</th>
+                                <th>URL</th>
+                            </tr>
+                            
+                                ${Object.keys(eventObj.extendedProps).map(key => `
+                                    <tr>
+                                        <td>${eventObj.extendedProps[key].client}</td>
+                                        <td>${eventObj.extendedProps[key].entity}</td>
+                                        <td><a href="${eventObj.extendedProps[key].url}" target="_blank">${eventObj.extendedProps[key].url}</a></td>
+                                    </tr>
+                                `).join('')}
+                        </table>
+                    `;
+
+               swal({
+                    title: eventObj.title,
+                    content:myhtml,
+                });
+            }
+            }
         },
         events:{{ data|raw }},
         editable: false,
