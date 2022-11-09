@@ -376,7 +376,10 @@
                             }) }}
                             {{ form_widget(contact_forme.Fax,{'attr':{'pattern':'.{14,14}', 'maxlength':"14"}}) }}
                         </div>
-                        <div class="text-center col-sm-2">
+                        <div class="text-center col-sm-2 list-filter">
+                            <a href="mailto:{{ contact_forme.Email.vars.value }}" class="no-disabled btn btn-primary btn-sm" title="Envoyer un mail">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                            </a>
                             {{ form_label(contact_forme.Email, 'Email',{
                                 'label_attr': {'class': 'font-weight-bold text-center'}
                             }) }}
@@ -436,7 +439,10 @@
                                 }) }}
                                 {{ form_widget(contactsoc.Portable) }}
                             </div>
-                            <div class="text-center col-sm-2">
+                            <div class="text-center col-sm-2 list-filter">
+                              <a href="mailto:{{ contactsoc.Email.vars.value }}" class="no-disabled btn btn-primary btn-sm" title="Envoyer un mail">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                            </a>
                                 {{ form_label(contactsoc.Email, 'Email',{
                                     'label_attr': {'class': 'font-weight-bold text-center'}
                                 }) }}
@@ -747,7 +753,7 @@
                 $("#saveedit").addClass("d-none");
                 $("#canceledit").addClass("d-none");
                 $("#editthis").removeClass("d-none");
-
+                $(".no-disabled").prop("disabled", false);
             });
             });
 
