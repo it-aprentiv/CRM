@@ -294,7 +294,7 @@ class PropalController extends BaseController
         $template = $this->renderView("Common\DocPrint\Propal\ConventionContent.html.twig", [
             'propal' => $propal,
             'checked' => $checkeds,
-            'opca' => $propal->getClientpropal()->getOpca()->getNomStr(),
+            'opca' => $propal->getClientpropal()->getOpca() != null ?  $propal->getClientpropal()->getOpca()->getNomStr() : "SANS OPCO",
         ]);
         $fichier = $propalmanager->createDocConv($template, $propal, $this->em, $id);
         $sFileName = basename($fichier);
