@@ -101,11 +101,13 @@ width=0,height=0,left=-1000,top=-1000`);
                // display each values in a modal or a sweetalert
                var myhtml = document.createElement("div");
                 myhtml.innerHTML = `
+                        <p> Nombre de stagiaires : ${Object.keys(eventObj.extendedProps).map(e => parseInt(eventObj.extendedProps[e].stagiaires_count)).reduce((a, b) => a + b)}</p>
                         <table>
                             <tr>
                                 <th>Client</th>
                                 <th>Entité</th>
                                 <th>URL</th>
+                                <th>Nombre de stagiaires</th>
                             </tr>
                             
                                 ${Object.keys(eventObj.extendedProps).map(key => `
@@ -113,6 +115,7 @@ width=0,height=0,left=-1000,top=-1000`);
                                         <td>${eventObj.extendedProps[key].client}</td>
                                         <td>${eventObj.extendedProps[key].entity}</td>
                                         <td><a href="${eventObj.extendedProps[key].url}" target="_blank">${eventObj.extendedProps[key].url}</a></td>
+                                        <td>${eventObj.extendedProps[key].stagiaires_count}</td>
                                     </tr>
                                 `).join('')}
                         </table>

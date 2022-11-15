@@ -131,7 +131,8 @@ class CalendrierFormationController extends BaseController
                                                 return [
                                                     "client" => $value->getIdClient() ? $this->em->getRepository(Contact::class)->find($value->getIdClient())->getNom(): "Inconnu",
                                                     "entity" => $value->getIdStructure()->getId() > 0 ? $value->getIdStructure()->getStructure() : "Inconnu",
-                                                    "url" => "/dossier/".$value->getId()."/visualiser"
+                                                    "url" => "/dossier/".$value->getId()."/visualiser",
+                                                    "stagiaires_count" => count($value->getStagiaires()),
                                                 ];
                                             },$value["dossiers"])
                                             ]);
@@ -190,7 +191,8 @@ class CalendrierFormationController extends BaseController
                                                 return [
                                                     "client" => $value->getIdClient() ? $this->em->getRepository(Contact::class)->find($value->getIdClient())->getNom(): "Inconnu",
                                                     "entity" => $value->getIdStructure()->getId() > 0 ? $value->getIdStructure()->getStructure() : "Inconnu",
-                                                    "url" => "/dossier/".$value->getId()."/visualiser"
+                                                    "url" => "/dossier/".$value->getId()."/visualiser",
+                                                    "stagiaires_count" => count($value->getStagiaires()),
                                                 ];
                                             },$value["dossiers"])
                                             ]);
