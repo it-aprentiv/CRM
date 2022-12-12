@@ -298,7 +298,6 @@ class PropalController extends BaseController
         ]);
         $fichier = $propalmanager->createDocConv($template, $propal, $this->em, $id);
         $sFileName = basename($fichier);
-        //dd($propal);
         return $this->file($fichier, $sFileName, ResponseHeaderBag::DISPOSITION_INLINE);
 
         return $this->returnFile($fichier);

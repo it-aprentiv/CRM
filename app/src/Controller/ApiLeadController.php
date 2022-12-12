@@ -32,6 +32,10 @@ class ApiLeadController extends AbstractController
             $dispatchCom = $em->getRepository(Collaborateur::class)->find(21);
             $lead->setCommercial($dispatchCom);
             $lead->addCommentaire($commentaire);
+            
+            if ($lead->getSociete() == null) {
+                $lead->setSociete($lead->getNom() . " " . $lead->getPrenom());
+            }
             $em->persist($lead);
             $em->flush();
 
@@ -48,9 +52,7 @@ class ApiLeadController extends AbstractController
 
             // si pas de société => société = nom + prenom 
 
-            if ($lead->getSociete() == null) {
-                $lead->setSociete($lead->getNom() . " " . $lead->getPrenom());
-            }
+           
 
             $message = (new \Swift_Message('Nouveau LEAD de ' . $lead->getNom() . ' ' . $lead->getPrenom()))
                 ->setFrom($lead->getEmail())

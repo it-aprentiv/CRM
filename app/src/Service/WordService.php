@@ -242,6 +242,7 @@ class WordService
         $ttl="APRENTIV’ CONSEIL";
         $currentVille = "";
         $IdVille = $propal->getVille();
+        $srtclient = $propal->getClientpropal()->getNoSiret() == "" ? "": "Siret : ".$propal->getClientpropal()->getNoSiret();
         if ($IdVille != null)
         {        
             $ville = $em->getRepository(\App\Entity\Ville::class)->find($IdVille);        
@@ -296,9 +297,9 @@ class WordService
         $sections->addTextBreak(0);
         $sections->addText($adr.htmlspecialchars("\t\t\t\t\t").$propal->getAdresse(), array('name'=> 'Arial','size' => 9));
         $sections->addTextBreak(0);
-        $sections->addText("".htmlspecialchars("\t\t\t\t\t\t\t\t").$propal->getCodepostal()." ".$currentVille, array('name'=> 'Arial','size' => 9));
+        $sections->addText($srt.htmlspecialchars("\t\t\t\t\t\t").$propal->getCodepostal()." ".$currentVille, array('name'=> 'Arial','size' => 9));
         $sections->addTextBreak(0);
-        $sections->addText($naf.htmlspecialchars("\t\t\t\t\t\t")."", array('name'=> 'Arial','size' => 9));
+        $sections->addText($naf.htmlspecialchars("\t\t").$srtclient, array('name'=> 'Arial','size' => 9));
         $sections->addTextBreak(1);
         return $this;
 
