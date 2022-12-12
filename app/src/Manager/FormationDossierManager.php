@@ -17,6 +17,7 @@ use App\Entity\Facture;
 use App\Entity\FormationDossier;
 use App\Entity\FormationDossierDate;
 use App\Entity\FormationDossierStagiaire;
+use App\Entity\Structure;
 use App\Entity\Ville;
 use App\Repository\ContactRepository;
 use App\Repository\FormationDossierDateRepository;
@@ -1095,8 +1096,8 @@ class FormationDossierManager {
 
 
         // Génération du nom de fichier
-        $fileName = $dossier->getIdClient() . '_' . preg_replace('/^|\//', '_',$dossier);
-        $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/devis_papier_' .preg_replace('/\s+/', '_', $fileName). '.docx';
+        $fileName = $this->em->getRepository(Structure::class)->find($dossier->getIdStructure()). '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier->getIdClient()->getNomStr())) . '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier)). '_' . $dossier->getDateMaj()->format('Y-m-d');
+        $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/'.preg_replace('/\s+/', '_', $fileName). '.docx';
         $rep = 'DocPrint/Dossier/'.date("Y-m-d");
         
         if(!is_dir($rep)){
