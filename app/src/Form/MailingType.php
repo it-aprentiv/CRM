@@ -18,9 +18,9 @@ class MailingType extends AbstractType
             ->add('from', ChoiceType::class, [
                 'label' => 'Email de l\'expéditeur',
                 'choices' => [
-                    'no-reply@aprentiv.com' => 'no-reply@aprentiv.com',
-                    'contact@aprentiv.com' => 'contact@aprentiv.com',
-                    'pascal@aprentiv.com' => 'pascal@aprentiv.com',
+                    'no-reply@proformfrance.com' => 'no-reply@proformfrance.com', 
+                    'contact@proformfrance.com' => 'contact@proformfrance.com',
+                    'pascal@proformfrance.com' => 'pascal@proformfrance.com',
                 ],
                 'required' => true,
             ])
