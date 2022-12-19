@@ -120,7 +120,7 @@ class ContactManager
      *
      * @return \Exception|string
      */
-    public function createDocConvention($templatehtml,$contact, FormationDossier $dossier = null)
+    public function createDocConvention($templatehtml,Contact $contact, FormationDossier $dossier = null)
     {
         $data = $this->preparebdcdata($contact);
         
@@ -135,7 +135,11 @@ class ContactManager
             ->createheaderlogoconvention($data);
         $this->addcontentconvention($templatehtml,$docword,$data);
         $date = date("Y-m-d");
-        $fileName = $this->entitymanager->getRepository(Structure::class)->find($dossier->getIdStructure()). '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier->getIdClient()->getNomStr())) . '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier)). '_' . $date;
+        $fileName =$contact->getStructure(). '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$contact->getNomStr())) . '_' . $date;
+        if($dossier){
+            $fileName = $this->entitymanager->getRepository(Structure::class)->find($dossier->getIdStructure()). '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier->getIdClient()->getNomStr())) . '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier)). '_' . $date;
+        }
+        
         return $docword->saveDocument($fileName.".docx","Contact");
     }
 
