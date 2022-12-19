@@ -20,6 +20,7 @@ use App\Entity\FormationDossier;
 use App\Entity\Mail;
 use App\Entity\SecteurActivite;
 use App\Entity\SocieteLiee;
+use App\Entity\Structure;
 use App\Entity\Telephone;
 use App\Entity\Url;
 use App\Service\WordService;
@@ -133,8 +134,9 @@ class ContactManager
         $docword->createdocword()
             ->createheaderlogoconvention($data);
         $this->addcontentconvention($templatehtml,$docword,$data);
-
-        return $docword->saveDocument("Convention_".$data["contact"]["id"].".docx","Contact");
+        $date = date("Y-m-d");
+        $fileName = $this->entitymanager->getRepository(Structure::class)->find($dossier->getIdStructure()). '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier->getIdClient()->getNomStr())) . '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier)). '_' . $date;
+        return $docword->saveDocument($fileName.".docx","Contact");
     }
 
     public function createDocRDV(Contact $contact)

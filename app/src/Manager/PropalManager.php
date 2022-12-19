@@ -177,7 +177,7 @@ class PropalManager
         $docword->setValue("tvaTxt", $tvaTxt);
         $docword->setValue("coutTTC", $montantTTCTxt);
 
-        $filename = $propal->getEntitypropal()->getStructure()."_".preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$propal->getClientpropal()->getNomStr()))."_".preg_replace('/^|\//', '_',$propal->getFormation()->getCompetence())."_".$propal->getDateedition()->format("Y-m-d");
+        $filename = $propal->getEntitypropal()->getStructure()."_".preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$propal->getClientpropal()->getNomStr()))."_".preg_replace('/^|\//', '_',$propal->getFormation()->getCompetence())."_".date("d-m-Y");
         $nomfile = 'DocPrint/Propal/'.date("Y-m-d").'/'.$filename.'.docx';
         $rep = 'DocPrint/Propal/'.date("Y-m-d");
         if(!is_dir($rep)){

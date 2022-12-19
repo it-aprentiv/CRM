@@ -1475,6 +1475,125 @@ class FormationDossierController extends BaseController {
     }
 
     /**
+     * @Route("/dossier/{id}/send-devis-papier", name="Formation_Dossier_Send_Devis_Papier")
+     * @param FormationDossier $dossier
+     * @param FormationDossierManager $manager
+     *
+     * @return JsonResponse|Response
+     */
+
+    public function sendDevisPapier(
+        FormationDossier $dossier,
+        VilleRepository $villeRepository,
+        FormationDossierManager $manager,
+        ContactManager $contactManager,
+        EntityManagerInterface $em,
+        FormationDossierDateManager $formationDossierDateManager,
+        FormationDossierDateRepository $formationDossierDateRepository,
+        \Swift_Mailer $mailer
+    ) {
+
+
+        $client = !in_array($dossier->getIdClient()->getId(), [75530]) ? $dossier->getIdClient() : null;
+        
+        if (!$client) {
+            $this->addFlash('danger', 'Veuillez renseigner le client associé au dossier !');
+            //return $this->redirectToRoute('Liste_Dossiers_Controller');
+            return $this->redirectToRoute('Liste_Dossiers_Controller/visualiserDossier', ['id' => $dossier->getId() ]);
+        }
+        
+        $aFDStagiaire = $this->em->getRepository(FormationDossierStagiaire::class)->findBy(['dossier' => $dossier]);
+        $stagiaires = [];
+        foreach ($aFDStagiaire as $fDStagiaire) {
+            $stagiaires[] = $fDStagiaire->getStagiaire()->getNom() . ' ' . $fDStagiaire->getStagiaire()->getPrenom();
+        }
+        $contactdata = $contactManager->preparebdcdata($client);
+
+        $adresse = $client->getAdresses();
+        //$aAdresse = [];
+        $aAdresse = '';
+        // APR-148 : Code postal manquant dans devis papier
+        $oVille = null;
+        $oAdresse = null;
+        
+        foreach ($adresse as $adr) {
+            $oVille = ($adr->getIdVille()) ? $villeRepository->find($adr->getIdVille()) : '';
+            $aAdresse = $adr->getAdresse();
+            $oAdresse = $adr;
+        }
+        
+        //APR-161 : Mises en forme
+        //$oDatesFormation = $datestagecomplet = $this->em->getRepository(FormationDossierDate::class)->getDossierDate($dossier->getId());
+        $oDatesFormation = $datestagecomplet = $formationDossierDateRepository->getDossierDate($dossier->getId());
+
+        if (1 === count($datestagecomplet) && $datestagecomplet[0]["joursSemaine"] != null && $datestagecomplet[0]["nbH"] != null) {
+            $datestagecomplet = $manager->generatenewdate($datestagecomplet);
+        }
+
+        // Calendrier de stage
+        //$aDatesStage = $em->getRepository(FormationDossierDate::class)->getDossierDate($dossier->getId());
+        $aDatesStage = $formationDossierDateRepository->getDossierDate($dossier->getId());
+
+        $aFormatedDatesStage = $formationDossierDateManager->formatFormationDates($aDatesStage);
+
+        $aNbJoursEtHeures = $manager->calculNbJetHr($datestagecomplet);
+        $calendrier = $manager->generatedateformationdossier($datestagecomplet);
+        $dateStage = $calendrier[1];
+        $sCalendrier = '';
+        
+        foreach ($dateStage as $key => $value) {
+            $calTxt = "";
+            
+            foreach ($value as $indice => $jour) {
+                
+                $calTxt .= $jour;
+                
+                if ($indice < count($value) - 1) {
+                    $calTxt .= ",";
+                }
+            }
+            $calTxt .= " " . $key;
+            $sCalendrier .= "/" . $calTxt;
+        }
+        
+        $sCalendrier = ltrim($sCalendrier, "/");
+
+        $fDureeJours = floatval(str_replace(",", ".", $dossier->getDureeJours()));
+
+        $devisPapier = $manager->generateDevisPapier([
+            'dossier' => $dossier,
+            'client' => $client->getNomStr(),
+            'adresse' => $aAdresse,
+            'o_adresse' => $oAdresse,
+            'ville' => $oVille,
+            'stagiaires' => $stagiaires,
+            //'duree_par_stagiaire' => ($dossier->getNbStagiaires()) ? $fDureeJours / $dossier->getNbStagiaires() : $fDureeJours,
+            'duree_par_stagiaire' => $dossier->getDureeHeures(), // APR-208
+            'montant_ht' => $dossier->getMntDemande(),
+            'montant_tva' => (float) $dossier->getMntDemande() * 0.2,
+            'montant_ttc' => (float) $dossier->getMntDemande() * 0.2 + (float) $dossier->getMntDemande(),
+            'calendrier' => $sCalendrier,
+            'aNbJoursEtHeures' => $aNbJoursEtHeures,
+            'o_dates_formation' => $oDatesFormation,
+            'formated_dates_stage' => $aFormatedDatesStage
+        ]);
+
+        $message = (new \Swift_Message("Devis papier - " . $dossier->getNom()))
+        ->setFrom("contact@proformfrance.com")
+        ->setTo($this->em->getRepository(Mail::class)->findOneBy(['idContact' => $dossier->getIdClient()->getId()])->getMail())
+        ->setBody("Bonjour, <br><br>Veuillez trouver ci-joint le devis papier du dossier " . $dossier->getNom() . ".<br><br>Cordialement, <br><br>Maxence, <br> Commercial Proform France", 'text/html')
+        ->attach(\Swift_Attachment::fromPath($devisPapier));
+        try{
+        $mailer->send($message);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+
+        $this->addFlash('success', 'Devis papier envoyé avec succès');
+        return $this->redirectToRoute('Liste_Dossiers_Controller/visualiserDossier', ['id' => $dossier->getId() ]);
+    }
+
+    /**
      * @Route("/dossier/{id}/devis-papier", name="Formation_Dossier_Devis_Papier")
      * @param FormationDossier $dossier
      * @param VilleRepository $villeRepository
