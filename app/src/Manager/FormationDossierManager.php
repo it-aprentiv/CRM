@@ -1097,7 +1097,7 @@ class FormationDossierManager {
 
         // Génération du nom de fichier
         $date = date("Y-m-d");
-        $fileName = $this->em->getRepository(Structure::class)->find($dossier->getIdStructure()). '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier->getIdClient()->getNomStr())) . '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier)). '_' . $date;
+        $fileName = "Devis_".$this->em->getRepository(Structure::class)->find($dossier->getIdStructure()). '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier->getIdClient()->getNomStr())) . '_' . preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$dossier)). '_' . $date;
         $nomfile = 'DocPrint/Dossier/'.date("Y-m-d").'/'.preg_replace('/\s+/', '_', $fileName). '.docx';
         $rep = 'DocPrint/Dossier/'.date("Y-m-d");
         
