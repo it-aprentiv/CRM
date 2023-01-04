@@ -193,7 +193,7 @@ class PropalManager
      *
      * @return Exception|string|void
      */
-    public function createDocConv($templatehtml, $propal,EntityManager $em, $id) {
+    public function createDocConv($templatehtml,Propal $propal,EntityManager $em, $id) {
         $fichier = null;
         $docword = new WordService();
         $docword->createdocword()
@@ -234,8 +234,8 @@ class PropalManager
             'posVertical' => Image::POSITION_VERTICAL_TOP,
         ));
         }
-       
-        $fichier = $docword->saveDocument("Convention.docx");
+        $filename = $propal->getEntitypropal()->getStructure()."_".preg_replace("/[^a-zA-Z0-9 ]/", "_",preg_replace('/^|\//', '_',$propal->getClientpropal()->getNomStr()))."_".preg_replace('/^|\//', '_',$propal->getFormation()->getCompetence())."_".date("d-m-Y");
+        $fichier = $docword->saveDocument($filename.'.docx');
 
         return $fichier;
     }
