@@ -78,7 +78,7 @@ class FactureAvoirType extends AbstractType {
             ->add('ref', null, [
                 'label' => 'N°Facture',
                 'attr' => [
-                    'readOnly' => true
+                    'readOnly' => false
                 ]
             ])
             ->add('idStructure', ChoiceType::class, [
@@ -287,7 +287,7 @@ class FactureAvoirType extends AbstractType {
             return false;
         }
         
-        return true;
+        return false;
     }
     
     /**

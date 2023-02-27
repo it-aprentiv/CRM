@@ -36,7 +36,7 @@ class Domiciliation
     /**
      * @var Contact
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Contact")
+     * @ORM\ManyToOne(targetEntity=Contact::class)
      * @ORM\JoinColumn(name="client", nullable=false)
      */
     private $client;
@@ -44,7 +44,7 @@ class Domiciliation
     /**
      * @var Typedom
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Typedom")
+     * @ORM\ManyToOne(targetEntity=Typedom::class)
      * @ORM\JoinColumn(name="type", nullable=false)
      */
     private $type;

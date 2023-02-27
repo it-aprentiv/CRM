@@ -93,7 +93,7 @@ class Contact {
     /**
      * @var string|null
      *
-     * @ORM\Column(name="nom_str", type="string", length=400, nullable=true)
+     * @ORM\Column(name="nom_str", type="string", length=200, nullable=true)
      */
     private $nomStr;
 

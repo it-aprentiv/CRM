@@ -457,7 +457,7 @@ class Avoir
     /**
      * @var string|null
      *
-     * @ORM\Column(name="no_dossier_ref", type="string", length=30, nullable=true)
+     * @ORM\Column(name="no_dossier_ref", type="string", length=65, nullable=true)
      */
     private $noDossierRef;
 
