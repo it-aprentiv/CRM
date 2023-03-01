@@ -33,7 +33,7 @@ class Lead
     private $societe;
 
     /**
-     * @ORM\Column(name="civilite", type="integer")
+     * @ORM\Column(name="civilite", type="string", length=255)
      */
     private $civilite;
 

@@ -859,6 +859,7 @@ class ContactManager
         try{
             $oEntityManager = $this->entitymanager;
             $oContact = $oEntityManager->getRepository(Contact::class)->find($contact);
+            if($oContact instanceof Contact){
 
             $siteweb = $oEntityManager->getRepository(Url::class)->findBy(["idContact" => $oContact->getId()]);
             foreach($siteweb as $site){
@@ -920,10 +921,16 @@ class ContactManager
                 $oEntityManager->flush();
             }
 
-            $oEntityManager->remove($oContact);
+            // update contact
+            $oContact->setStatusClient("Classé définitif");
+            $oEntityManager->persist($oContact);
+
             $oEntityManager->flush();
 
             return true;
+        }else{
+            return false;
+        }
         }
         catch (DBALException $ex){
             return $ex->getMessage();
