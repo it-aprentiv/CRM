@@ -659,6 +659,11 @@ class FormationDossier
     private $adresseAutre;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Sessions::class, inversedBy="formationDossiers")
+     */
+    private $session;
+
+    /**
      * @return int|null
      */
     public function getAdresseVivienne(): ?int
@@ -1934,6 +1939,18 @@ class FormationDossier
             $formationDate->setIdDossier($this);
         }
         $this->formationDate = $formationDate;
+
+        return $this;
+    }
+
+    public function getSession(): ?Sessions
+    {
+        return $this->session;
+    }
+
+    public function setSession(?Sessions $session): self
+    {
+        $this->session = $session;
 
         return $this;
     }

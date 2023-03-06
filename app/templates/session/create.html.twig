@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SessionController!
+{% endblock %}
+
+{% block body %}
+	<nav class="sticky-top" aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{ path('home.index') }}">
+					<i class="fas fa-home"></i>
+				</a>
+			</li>
+			<li class="breadcrumb-item active">
+				<a href="{{ path('session') }}">Sessions</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">Création</li>
+		</ol>
+	</nav>
+	<div class="container">
+		{{ form_start(form,{'method' : 'post', 'onsubmit': 'checkRequireField();' }) }}
+		 <div class="row">
+		 	<div class="col-md-12">
+				<div class="form-group">
+					{{ form_label(form.name, 'Nom de la session') }}
+					{{ form_widget(form.name) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.date_debut, 'Date de début') }}
+					{{ form_widget(form.date_debut) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.date_fin, 'Date de fin') }}
+					{{ form_widget(form.date_fin) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.cout_formateur, 'Coût formateur') }}
+					{{ form_widget(form.cout_formateur, {'type': 'number'}) }}
+				</div>
+				<div class="form-group">
+					{{ form_label(form.cout_bspp, 'Coût BSPP') }}
+					{{ form_widget(form.cout_bspp, {'type': 'number'}) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.cout_visite, 'Coût visite') }}
+					{{ form_widget(form.cout_visite, {'type': 'number'}) }}
+				</div>
+				<div class="form-group">
+					{{ form_label(form.cout_jury, 'Coût jury') }}
+					{{ form_widget(form.cout_jury, {'type': 'number'}) }}
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form-group">
+					{{ form_label(form.formateurFormation, 'Formateur') }}
+					{{ form_widget(form.formateurFormation) }}
+				</div>
+			</div>
+		</div>
+		<div class="form-group text-center">
+			<button type="submit" class="btn btn-primary btn-block btn-lg">Créer</button>
+		</div>
+		{{ form_end(form) }}
+	</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+        <script src="{{ asset('assets/js/wickedpicker.js') }}"></script>
+<script>
+ $('.js-datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            maxViewMode: 2,
+            minViewMode: 1,
+            autoclose: true,
+            'language': 'fr',
+        });
+        document.querySelectorAll('input').forEach(function (input) {
+            input.removeAttribute('disabled');
+        });
+        document.querySelectorAll('select').forEach(function (select) {
+            select.removeAttribute('disabled');
+        });
+		document.querySelectorAll('button').forEach(function(button){
+			button.removeAttribute('disabled');
+		});
+</script>
+{% endblock %}

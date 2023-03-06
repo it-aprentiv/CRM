@@ -75,9 +75,9 @@ class ContactRepository extends ServiceEntityRepository
             // Si type de contact : 1 (Client) ou 2 (prospect)
             if ($filter->getIdType()) {
                 $contactTypeIds = $filter->getIdType();
-                
-                if ($filter->getIdType() instanceof ContactType) {
-                    $contactTypeIds = array($filter->getIdType()->getId());
+                $type = $filter->getIdType();
+                if ($type instanceof ContactType) {
+                    $contactTypeIds = array($type->getId());
                 }
                 
                 $qb->andWhere($qb->expr()->in('typ.id', $contactTypeIds));
@@ -270,8 +270,8 @@ class ContactRepository extends ServiceEntityRepository
             if ($filter->getIdType()) {
                 $contactTypeIds = $filter->getIdType();
                 
-                if ($filter->getIdType() instanceof ContactType) {
-                    $contactTypeIds = array($filter->getIdType()->getId());
+                if ($contactTypeIds instanceof ContactType) {
+                    $contactTypeIds = array($contactTypeIds->getId());
                 }
                 
                 $qb->andWhere($qb->expr()->in('typ.id', $contactTypeIds));
@@ -392,8 +392,8 @@ class ContactRepository extends ServiceEntityRepository
             if ($filter->getIdType()) {
                 $contactTypeIds = $filter->getIdType();
                 
-                if ($filter->getIdType() instanceof ContactType) {
-                    $contactTypeIds = array($filter->getIdType()->getId());
+                if ($$contactTypeIds instanceof ContactType) {
+                    $contactTypeIds = array($$contactTypeIds->getId());
                 }
                 
                 $qb->andWhere($qb->expr()->in('typ.id', $contactTypeIds));
@@ -517,8 +517,8 @@ class ContactRepository extends ServiceEntityRepository
             if ($filter->getIdType()) {
                 $contactTypeIds = $filter->getIdType();
                 
-                if ($filter->getIdType() instanceof ContactType) {
-                    $contactTypeIds = array($filter->getIdType()->getId());
+                if ($contactTypeIds instanceof ContactType) {
+                    $contactTypeIds = array($contactTypeIds->getId());
                 }
                 
                 $qb->andWhere($qb->expr()->in('typ.id', $contactTypeIds));

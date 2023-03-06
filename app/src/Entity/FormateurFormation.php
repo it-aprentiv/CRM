@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -302,6 +304,46 @@ class FormateurFormation
      * @ORM\Column(name="statut_formateur", type="string", length=300, nullable=false)
      */
     private $statutFormateur;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sessions::class, mappedBy="formateurFormation")
+     */
+    private $sessions;
+
+    public function __construct()
+    {
+        $this->sessions = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Sessions[]
+     */
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
+    }
+
+    public function addSession(Sessions $session): self
+    {
+        if (!$this->sessions->contains($session)) {
+            $this->sessions[] = $session;
+            $session->setFormateurFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSession(Sessions $session): self
+    {
+        if ($this->sessions->removeElement($session)) {
+            // set the owning side to null (unless already changed)
+            if ($session->getFormateurFormation() === $this) {
+                $session->setFormateurFormation(null);
+            }
+        }
+
+        return $this;
+    }
 
 
 }

@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\SessionsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SessionsRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\SessionsRepository::class)
  */
 class Sessions
 {
@@ -63,12 +64,20 @@ class Sessions
     private $date_fin;
 
     /**
-     * @var \Formateurs
-     * 
-     * @ORM\ManyToOne(targetEntity=Formateurs::class, inversedBy="sessions")
+     * @ORM\OneToMany(targetEntity=FormationDossier::class, mappedBy="session")
+     */
+    private $formationDossiers;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Contact::class, inversedBy="sessions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $formateur;
+    private $formateurFormation;
+
+    public function __construct()
+    {
+        $this->formationDossiers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -155,6 +164,48 @@ class Sessions
     public function setDateFin(\DateTimeInterface $date_fin): self
     {
         $this->date_fin = $date_fin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FormationDossier[]
+     */
+    public function getFormationDossiers(): Collection
+    {
+        return $this->formationDossiers;
+    }
+
+    public function addFormationDossier(FormationDossier $formationDossier): self
+    {
+        if (!$this->formationDossiers->contains($formationDossier)) {
+            $this->formationDossiers[] = $formationDossier;
+            $formationDossier->setSession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormationDossier(FormationDossier $formationDossier): self
+    {
+        if ($this->formationDossiers->removeElement($formationDossier)) {
+            // set the owning side to null (unless already changed)
+            if ($formationDossier->getSession() === $this) {
+                $formationDossier->setSession(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFormateurFormation(): ?Contact
+    {
+        return $this->formateurFormation;
+    }
+
+    public function setFormateurFormation(?Contact $formateurFormation): self
+    {
+        $this->formateurFormation = $formateurFormation;
 
         return $this;
     }
