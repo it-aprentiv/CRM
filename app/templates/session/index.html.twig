@@ -9,23 +9,26 @@
             <li class="breadcrumb-item active"><a href="{{ path('session') }}">Sessions</a></li>
         </ol>
     </nav>
-    <div class="container">
-        <table class="table table-striped">
-            <thead>
-                <tr>
+           <table class="table table-sm table-striped">
+            <thead >
+                <tr class="bg-info text-light">
                     <th scope="col">Nom</th>
+                    <td scope="col">Date de début</td>
+                    <td scope="col">Date de fin</td>
                     <th scope="col">Formateur</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for session in pagination %}
-                    <tr>
+                    <tr data-session-id="{{ session.id }}" data-href="{{ path('session_edit', {'id': session.id}) }}">
                         <td>{{ session.name }}</td>
+                        <td>{{ session.dateDebut|date('d/m/Y') }}</td>
+                        <td>{{ session.dateFin|date('d/m/Y') }}</td>
                         <td>{{ session.formateurFormation.nom }}</td>
                         <td>
-                            <a href="javascript:void(0)" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                            <a href="javascript:void(0)" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                            <a href="{{ path('session_edit', {'id': session.id}) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                            <a href="{{ path('session_delete', {'id': session.id}) }}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -35,11 +38,10 @@
                             <td colspan="2" class="text-align-middle pt-3">
                                 <strong>Total : </strong> {{ pagination.getTotalItemCount }}
                             </td>
-                            <td colspan="2" class="text-align-middle pt-3">
+                            <td colspan="3" class="text-align-middle pt-3">
                                 {{ knp_pagination_render(pagination) }}
                             </td>
                         </tr>
                     </tfoot>
                         </table>
-</div>
 {% endblock %}

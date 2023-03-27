@@ -609,7 +609,7 @@ class ContactController extends BaseController
     {
         $this->denyAccessUnlessGranted('edit', Menu::MENU_CLIENT_PROSPECT);
         try {
-            $delete = $contactmanager->deletecontact($id);
+            $delete = $contactmanager->deletecontact($id, $this->security->getUser()->getIdutilisateur());
             if ($delete) {
                 return new JsonResponse(
                     array(

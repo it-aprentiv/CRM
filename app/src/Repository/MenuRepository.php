@@ -90,4 +90,9 @@ class MenuRepository extends ServiceEntityRepository {
         return $qb->getQuery()->getResult();
     }
 
+    public function countMenus(){
+        $qb = $this->createQueryBuilder('menu');
+        $qb->select('count(menu.idmenu) as nbMenus');
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }

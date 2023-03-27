@@ -22,7 +22,7 @@ class SessionFormType extends AbstractType
                 'label' => 'Nom de la session',
                 'required' => true
             ])
-            ->add('cout_formateur',NumberType::class,[
+            ->add('cout_formateur',TextType::class,[
                 'label' => 'Coût BSPP',
                 'required' => true,
                 'attr' =>[
@@ -30,9 +30,8 @@ class SessionFormType extends AbstractType
                     'min' => 0,
                     'step' => 0.01,
                 ],
-                'data' => 0,
             ])
-            ->add('cout_bspp',NumberType::class,[
+            ->add('cout_bspp',TextType::class,[
                 'label' => 'Coût BSPP',
                 'required' => true,
                 'attr' =>[
@@ -40,9 +39,8 @@ class SessionFormType extends AbstractType
                     'min' => 0,
                     'step' => 0.01,
                 ],
-                'data' => 0,
             ])
-            ->add('cout_visite',NumberType::class,[
+            ->add('cout_visite',TextType::class,[
                 'label' => 'Coût BSPP',
                 'required' => true,
                 'attr' =>[
@@ -50,9 +48,8 @@ class SessionFormType extends AbstractType
                     'min' => 0,
                     'step' => 0.01,
                 ],
-                'data' => 0,
             ])
-            ->add('cout_jury',NumberType::class,[
+            ->add('cout_jury',TextType::class,[
                 'label' => 'Coût BSPP',
                 'required' => true,
                 'attr' =>[
@@ -60,7 +57,6 @@ class SessionFormType extends AbstractType
                     'min' => 0,
                     'step' => 0.01,
                 ],
-                'data' => 0,
             ])
             ->add('date_debut',DateType::class,[
                 'widget' => 'single_text',

@@ -23,6 +23,7 @@ use App\Entity\SocieteLiee;
 use App\Entity\Structure;
 use App\Entity\Telephone;
 use App\Entity\Url;
+use App\Entity\Utilisateur;
 use App\Service\WordService;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -854,79 +855,82 @@ class ContactManager
         }
     }
 
-    public function deletecontact($contact)
+    public function deletecontact($contact, int $userId = 0)
     {
         try{
             $oEntityManager = $this->entitymanager;
             $oContact = $oEntityManager->getRepository(Contact::class)->find($contact);
             if($oContact instanceof Contact){
 
-            $siteweb = $oEntityManager->getRepository(Url::class)->findBy(["idContact" => $oContact->getId()]);
-            foreach($siteweb as $site){
-                $site->setIdContact(null);
-                $oEntityManager->flush();
-            }
+            // $siteweb = $oEntityManager->getRepository(Url::class)->findBy(["idContact" => $oContact->getId()]);
+            // foreach($siteweb as $site){
+            //     $site->setIdContact(null);
+            //     $oEntityManager->flush();
+            // }
 
-            /*$facturesLiees = $oEntityManager->getRepository(Facture::class)->findBy(['idOpca' => $oContact]);
-            foreach ($facturesLiees as $facturesLiee) {
-                $facturesLiee->setIdOpca(null);
-                $oEntityManager->flush();
-            }
+            // /*$facturesLiees = $oEntityManager->getRepository(Facture::class)->findBy(['idOpca' => $oContact]);
+            // foreach ($facturesLiees as $facturesLiee) {
+            //     $facturesLiee->setIdOpca(null);
+            //     $oEntityManager->flush();
+            // }
 
-            $dossiers = $oEntityManager->getRepository(FormationDossier::class)->findBy(["idClient" => $oContact]);
-            foreach($dossiers as $dossier){
-                $dossier->setIdClient(null);
-                $oEntityManager->flush();
-            }*/
+            // $dossiers = $oEntityManager->getRepository(FormationDossier::class)->findBy(["idClient" => $oContact]);
+            // foreach($dossiers as $dossier){
+            //     $dossier->setIdClient(null);
+            //     $oEntityManager->flush();
+            // }*/
 
-            $mails = $oEntityManager->getRepository(Mail::class)->findBy(["idContact" => $oContact->getId()]);
-            foreach ($mails as $mail){
-                $mail->setIdContact(null);
-                $oEntityManager->flush();
-            }
+            // $mails = $oEntityManager->getRepository(Mail::class)->findBy(["idContact" => $oContact->getId()]);
+            // foreach ($mails as $mail){
+            //     $mail->setIdContact(null);
+            //     $oEntityManager->flush();
+            // }
 
-            $tel = $oEntityManager->getRepository(Telephone::class)->findBy(["idContact" => $oContact->getId()]);
-            foreach($tel as $telephone){
-                $telephone->setIdContact(null);
-                $oEntityManager->flush();
-            }
+            // $tel = $oEntityManager->getRepository(Telephone::class)->findBy(["idContact" => $oContact->getId()]);
+            // foreach($tel as $telephone){
+            //     $telephone->setIdContact(null);
+            //     $oEntityManager->flush();
+            // }
 
-            $adresses = $oEntityManager->getRepository(Adresse::class)->findBy(["idContact" => $oContact->getId()]);
-            foreach($adresses as $adress){
-                $adress->setIdContact(null);
-                $oEntityManager->flush();
-            }
+            // $adresses = $oEntityManager->getRepository(Adresse::class)->findBy(["idContact" => $oContact->getId()]);
+            // foreach($adresses as $adress){
+            //     $adress->setIdContact(null);
+            //     $oEntityManager->flush();
+            // }
 
-            $contacts = $oEntityManager->getRepository(Contact::class)->findBy(["contactLiee" => $oContact->getId()]);
-            foreach ($contacts as $cont){
-                $cont->setContactLiee(null);
-                $oEntityManager->flush();
-            }
+            // $contacts = $oEntityManager->getRepository(Contact::class)->findBy(["contactLiee" => $oContact->getId()]);
+            // foreach ($contacts as $cont){
+            //     $cont->setContactLiee(null);
+            //     $oEntityManager->flush();
+            // }
 
-            $contactsopca = $oEntityManager->getRepository(Contact::class)->findBy(["opca" => $oContact->getId()]);
-            foreach ($contactsopca as $cont){
-                $cont->setOpca(null);
-                $oEntityManager->flush();
-            }
+            // $contactsopca = $oEntityManager->getRepository(Contact::class)->findBy(["opca" => $oContact->getId()]);
+            // foreach ($contactsopca as $cont){
+            //     $cont->setOpca(null);
+            //     $oEntityManager->flush();
+            // }
 
-            $comments = $oEntityManager->getRepository(ContactNote::class)->findBy(["idTableContact" => $oContact->getId()]);
-            foreach($comments as $comment){
-                $comment->setIdTableContact(null);
-                $oEntityManager->flush();
-            }
+            // $comments = $oEntityManager->getRepository(ContactNote::class)->findBy(["idTableContact" => $oContact->getId()]);
+            // foreach($comments as $comment){
+            //     $comment->setIdTableContact(null);
+            //     $oEntityManager->flush();
+            // }
 
-            $societeliees = $oEntityManager->getRepository(SocieteLiee::class)->findBy(["idContact" => $oContact->getId()]);
-            foreach($societeliees as $societeliee){
-                $societeliee->setIdContact(null);
-                $oEntityManager->flush();
-            }
+            // $societeliees = $oEntityManager->getRepository(SocieteLiee::class)->findBy(["idContact" => $oContact->getId()]);
+            // foreach($societeliees as $societeliee){
+            //     $societeliee->setIdContact(null);
+            //     $oEntityManager->flush();
+            // }
 
             // update contact
+            if($userId == 29 && $oContact->getStatusClient() == "Classé définitif"){
+                $oEntityManager->remove($oContact);
+            }else{
             $oContact->setStatusClient("Classé définitif");
             $oEntityManager->persist($oContact);
-
-            $oEntityManager->flush();
-
+            }
+        
+             $oEntityManager->flush();
             return true;
         }else{
             return false;

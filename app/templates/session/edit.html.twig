@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SessionController!
+{% endblock %}
+
+{% block body %}
+		{{ form_start(form,{'method' : 'post', 'onsubmit': 'checkRequireField();' }) }}
+	<nav class="sticky-top" aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{ path('home.index') }}">
+					<i class="fas fa-home"></i>
+				</a>
+			</li>
+			<li class="breadcrumb-item active">
+				<a href="{{ path('session') }}">Sessions</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">Edition</li>
+			<div class="btn-group mr-2 no-disabled div-left" role="group" aria-label="">
+				<button type="button" id="editthis" class="btn btn-primary btn-block">
+				<i class="fas fa-edit"></i>Modifier
+				</button>
+			</div>
+			<div id="saveedit" class="btn-group mr-2 d-none" role="group" aria-label="">
+				<button type="submit" class="btn btn-success btn-block" id="SaveBtn"> <i class="fa fa-bookmark"></i> Enregistrer</button>
+			</div>
+			<div id="canceledit" class="btn-group mr-2 d-none" role="group" aria-label="">
+				<button type="submit" class="btn btn-danger btn-block" id=""><i class="fas fa-ban"></i> Annuler</button>
+			</div>
+		</ol>
+	</nav>		 <h2 class="text-center">Session {{ form.name.vars.value }}</h2>
+
+		 <div class="row">				
+
+			<div class="col-md-8">
+			    <table class="table table-bordered">
+					<thead>
+						<th>Dossier N°</th>
+						<th>Client</th>
+						<th>Nombre de stagiaires</th>
+						<th>Montant signé (€)</th>
+						<th>Montant accordé (€)</th>
+						<th>Statut</th>
+					</thead>
+					<tbody>
+						{% for dossier in dossiers %}
+							<tr data-href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {'id': dossier.id}) }}">
+								<td><a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {'id': dossier.id}) }}">{{ dossier.ref }}</a></td>
+								<td>{{ dossier.idClient.nomStr }}</td>
+								<td>{{ dossier.stagiaires|length }}</td>
+								<td>{{ dossier.mntDemande |number_format(2, ',', ' ') }}</td>
+    							<td>{{ dossier.mntAccorde |number_format(2, ',', ' ') }}</td>
+								<td>{{ dossier.idStatut.statut}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+				<div class="col-md-4">
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td>Total stagiaires</td>
+								<td>{{ numberData.totalStagiaires|length }}</td>
+							</tr>
+							<tr>
+								<td>Total montant signé</td>
+								<td>{{ numberData.totalMontantSigne |number_format(2, ',', ' ') }}</td>
+							</tr>
+							<tr>
+								<td>{{ form_label(form.cout_formateur, 'Coût formateur') }}</td>
+								<td>
+								{{ form_widget(form.cout_formateur, {'type': 'number', 'class': "sm"}) }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+		 <!--
+		 	<div class="col-md-12">
+				<div class="form-group">
+					{{ form_label(form.name, 'Nom de la session') }}
+					{{ form_widget(form.name) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.date_debut, 'Date de début') }}
+					{{ form_widget(form.date_debut) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.date_fin, 'Date de fin') }}
+					{{ form_widget(form.date_fin) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.cout_formateur, 'Coût formateur') }}
+					{{ form_widget(form.cout_formateur, {'type': 'number'}) }}
+				</div>
+				<div class="form-group">
+					{{ form_label(form.cout_bspp, 'Coût BSPP') }}
+					{{ form_widget(form.cout_bspp, {'type': 'number'}) }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					{{ form_label(form.cout_visite, 'Coût visite') }}
+					{{ form_widget(form.cout_visite, {'type': 'number'}) }}
+				</div>
+				<div class="form-group">
+					{{ form_label(form.cout_jury, 'Coût jury') }}
+					{{ form_widget(form.cout_jury, {'type': 'number'}) }}
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form-group">
+					{{ form_label(form.formateurFormation, 'Formateur') }}
+					{{ form_widget(form.formateurFormation) }}
+				</div>
+			</div>
+			-->
+		</div>
+{{ form_end(form) }}
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+        <script src="{{ asset('assets/js/wickedpicker.js') }}"></script>
+		<script>
+			 $('.js-datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            maxViewMode: 2,
+            minViewMode: 1,
+            autoclose: true,
+            'language': 'fr',
+        });
+		 $("#editthis").click(function(){
+				$("#editthis").addClass("d-none");
+document.querySelectorAll('input').forEach(function (input) {
+            input.removeAttribute('disabled');
+        });
+        document.querySelectorAll('select').forEach(function (select) {
+            select.removeAttribute('disabled');
+        });
+                $("#saveedit").removeClass("d-none");
+				$("#canceledit").removeClass("d-none");
+                $("#saveedit").find('button').prop("disabled", false);
+				$("#canceledit").find('button').prop("disabled", false);
+            })
+            $("#canceledit").click(function(){
+                document.querySelectorAll('input').forEach(function (input) {
+            input.setAttribute('disabled', 'disabled');
+        });
+        document.querySelectorAll('select').forEach(function (select) {
+            select.setAttribute('disabled', 'disabled');
+        });
+				$("#editthis").removeClass("d-none");
+                $("#saveedit").addClass("d-none");
+				$("#canceledit").addClass("d-none");
+                $("#saveedit").find('button').prop("disabled", true);
+				$("#canceledit").find('button').prop("disabled", true);
+                $("#ajcom").prop("disabled", true);
+            });
+		</script>
+{% endblock %}
