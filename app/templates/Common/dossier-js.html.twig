@@ -38,10 +38,10 @@
     var boutonremovefacturation = "<button type='button' class='removefacturationelement close' type='button'><span aria-hidden='true'>×</span></button>";
     var boutonremoveavoir = "<button type='button' class='removeavoirelement close' type='button'><span aria-hidden='true'>×</span></button>";
 
-    var d_heure_m = '09:00';
+    var d_heure_m = '09:30';
     var f_heure_m = '13:00';
     var d_heure_am = '14:00';
-    var f_heure_am = '17:00';
+    var f_heure_am = '17:30';
 
     $(document).ready(function () {
         // Gerer activation et desactivation des inputs
@@ -926,6 +926,68 @@
             }
 
         });
+
+                                        {% if dossier is defined and dossier.id is not null %}
+
+let inputSelect = document.getElementById('session_to_select');
+
+let sessionList = [];
+{% if dossier.session is not null %}
+
+{% endif %}
+function selectState(state) {
+    if (!state.id) {
+        console.log(state);
+        fetch('{{ path("Liste_Dossiers_Controller/removeDossierToSession", {id: dossier.id}) }}')
+        return state.text;
+    }
+          fetch('{{ path("Liste_Dossiers_Controller/addDossierToSession", {id: dossier.id, idSession: "idSession"}) }}'.replace('idSession', state.id))
+    var $state = $(
+        '<span>' + state.text + '</span>'
+    );
+    return $state;
+}
+
+$selectorSession = $("#session_to_select").select2({
+    placeholder: "Sélectionnez une session",
+    allowClear: true,
+    minimumInputLength: 3,
+    ajax:{
+        url: "{{ path('session_json') }}",
+        dataType: 'json',
+        delay: 250,
+        data: function(params){
+            return {
+                q: params.term
+            };
+        },
+        processResults: function(data){
+            return {
+                results: $.map(data, function (item) {
+                            return {
+                                text: item.title,
+                                id: item.id
+                            };
+                        }).filter(function (item) {
+                            return !sessionList.some(function (session) {
+                                return session.id == item.id;
+                            });
+                        })
+            };
+        },
+        cache: true
+    },
+    templateSelection: selectState
+
+});
+{% if dossier.session is not null %}
+let defaultSelectedOption = new Option("{{ dossier.session.name }}", "{{ dossier.session.id }}", true, true);
+$selectorSession.append(defaultSelectedOption).trigger('change');
+{% endif %}
+
+
+                                {% endif %}
+
 
         // Gerer les lieu de stage à afficher
         $('#btn-vivienne').click(function () {

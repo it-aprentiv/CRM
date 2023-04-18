@@ -25,7 +25,7 @@ Elle se déroulera au : {{ dossier ? dossier.lieu : '' }}
 <li>- Formation en présentielle      {{ checked[2] ? "&#9745;" :  "&#9744;" }}    Formation à distance           {{ checked[3] ? "&#9745;" :  "&#9744;" }}</li>
 <li>- Salle de cours : six stagiaires maximum, animée par un formateur ;</li>
 <li>- Cours de langue : Supports variés sous forme de CD audio, vidéo et ouvrages pédagogiques ; mises en situations authentiques et jeux de rôles</li>
-<li>- Stages bureautique : chaque stagiaire travaillant inpiduellement sur un micro-ordinateur est guidé par un support de cours ;</li>
+<li>- Stages bureautique : chaque stagiaire travaillant individuellement sur un micro-ordinateur est guidé par un support de cours ;</li>
 <li>- Les formateurs ont plusieurs années d’expérience dans les domaines qu’ils enseignent.</li>
 </ul>
 </li>
@@ -46,7 +46,7 @@ L’organisme de formation accueillera : <br/>
     </li>
     <li>
 <span style="font-family: Arial Black;font-size: 10px">COUT ET MODE DE REGLEMENT FORMATION :</span><br/>
-Le prix de l’action est fixé à :                                  € HT.<br/>
+Le prix de l’action est fixé à :                 {{ montant |number_format(2, ',', ' ')  }}            € HT.<br/>
 L’entreprise s’engage à verser la totalité du prix susmentionné selon les modalités de paiement suivantes, soit :<br/>
 -Par règlement de {{ opca | replace({'&' : '&amp;'}) }} à l’organisme de formation (subrogation).<br/>
 -Si l’organisme collecteur, à savoir {{ opca | replace({'&' : '&amp;'}) }} règle la partie prise en charge à l’entreprise, le contractant en reversera la totalité en fin de stage à l’organisme de formation.<br/>

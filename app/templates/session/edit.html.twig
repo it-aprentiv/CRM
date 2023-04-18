@@ -2,9 +2,14 @@
 
 {% block title %}Hello SessionController!
 {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
 
 {% block body %}
-		{{ form_start(form,{'method' : 'post', 'onsubmit': 'checkRequireField();' }) }}
+	{{ form_start(form,{'method' : 'post', 'onsubmit': 'checkRequireField();' }) }}
 	<nav class="sticky-top" aria-label="breadcrumb">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">
@@ -18,152 +23,250 @@
 			<li class="breadcrumb-item active" aria-current="page">Edition</li>
 			<div class="btn-group mr-2 no-disabled div-left" role="group" aria-label="">
 				<button type="button" id="editthis" class="btn btn-primary btn-block">
-				<i class="fas fa-edit"></i>Modifier
+					<i class="fas fa-edit"></i>Modifier
 				</button>
 			</div>
 			<div id="saveedit" class="btn-group mr-2 d-none" role="group" aria-label="">
-				<button type="submit" class="btn btn-success btn-block" id="SaveBtn"> <i class="fa fa-bookmark"></i> Enregistrer</button>
+				<button type="submit" class="btn btn-success btn-block" id="SaveBtn">
+					<i class="fa fa-bookmark"></i>
+					Enregistrer</button>
 			</div>
 			<div id="canceledit" class="btn-group mr-2 d-none" role="group" aria-label="">
-				<button type="submit" class="btn btn-danger btn-block" id=""><i class="fas fa-ban"></i> Annuler</button>
+				<button type="submit" class="btn btn-danger btn-block" id="">
+					<i class="fas fa-ban"></i>
+					Annuler</button>
 			</div>
 		</ol>
-	</nav>		 <h2 class="text-center">Session {{ form.name.vars.value }}</h2>
+	</nav>
+	<h2 class="text-center">Session
+		{{ form.name.vars.value }}</h2>
 
-		 <div class="row">				
+	<div class="row">
 
-			<div class="col-md-8">
-			    <table class="table table-bordered">
-					<thead>
-						<th>Dossier N°</th>
-						<th>Client</th>
-						<th>Nombre de stagiaires</th>
-						<th>Montant signé (€)</th>
-						<th>Montant accordé (€)</th>
-						<th>Statut</th>
-					</thead>
-					<tbody>
-						{% for dossier in dossiers %}
-							<tr data-href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {'id': dossier.id}) }}">
-								<td><a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {'id': dossier.id}) }}">{{ dossier.ref }}</a></td>
+		<div class="col-md-8">
+			<table class="table table-bordered">
+				<thead>
+					<th>Dossier N°</th>
+					<th>Client</th>
+					<th>Nombre de stagiaires</th>
+					<th>Montant signé (€)</th>
+					<th>Montant accordé (€)</th>
+					<th>Statut</th>
+				</thead>
+				<tbody>
+					{% for dossier in dossiers %}
+						<tr data-href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {'id': dossier.id}) }}">
+								<td>
+									<a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {'id': dossier.id}) }}">{{ dossier.ref }}</a>
+								</td>
 								<td>{{ dossier.idClient.nomStr }}</td>
 								<td>{{ dossier.stagiaires|length }}</td>
 								<td>{{ dossier.mntDemande |number_format(2, ',', ' ') }}</td>
-    							<td>{{ dossier.mntAccorde |number_format(2, ',', ' ') }}</td>
-								<td>{{ dossier.idStatut.statut}}</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
-				<div class="col-md-4">
-					<table class="table table-bordered">
-						<tbody>
-							<tr>
-								<td>Total stagiaires</td>
-								<td>{{ numberData.totalStagiaires|length }}</td>
-							</tr>
-							<tr>
-								<td>Total montant signé</td>
-								<td>{{ numberData.totalMontantSigne |number_format(2, ',', ' ') }}</td>
-							</tr>
-							<tr>
-								<td>{{ form_label(form.cout_formateur, 'Coût formateur') }}</td>
-								<td>
-								{{ form_widget(form.cout_formateur, {'type': 'number', 'class': "sm"}) }}
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				
-		 <!--
-		 	<div class="col-md-12">
-				<div class="form-group">
-					{{ form_label(form.name, 'Nom de la session') }}
-					{{ form_widget(form.name) }}
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="form-group">
-					{{ form_label(form.date_debut, 'Date de début') }}
-					{{ form_widget(form.date_debut) }}
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="form-group">
-					{{ form_label(form.date_fin, 'Date de fin') }}
-					{{ form_widget(form.date_fin) }}
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="form-group">
-					{{ form_label(form.cout_formateur, 'Coût formateur') }}
-					{{ form_widget(form.cout_formateur, {'type': 'number'}) }}
-				</div>
-				<div class="form-group">
-					{{ form_label(form.cout_bspp, 'Coût BSPP') }}
-					{{ form_widget(form.cout_bspp, {'type': 'number'}) }}
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="form-group">
-					{{ form_label(form.cout_visite, 'Coût visite') }}
-					{{ form_widget(form.cout_visite, {'type': 'number'}) }}
-				</div>
-				<div class="form-group">
-					{{ form_label(form.cout_jury, 'Coût jury') }}
-					{{ form_widget(form.cout_jury, {'type': 'number'}) }}
-				</div>
-			</div>
-			<div class="col-md-12">
-				<div class="form-group">
-					{{ form_label(form.formateurFormation, 'Formateur') }}
-					{{ form_widget(form.formateurFormation) }}
-				</div>
-			</div>
-			-->
+								<td>{{ dossier.mntAccorde |number_format(2, ',', ' ') }}</td>
+								<td>{{ dossier.idStatut.statut}}</td>							
+						</tr>
+						<tr>
+							<td colspan="6"><details>
+								<summary>Stagiaires</summary>
+								<table class="table table-bordered">
+									<thead>
+										<th>Genre</th>
+										<th>Nom</th>
+										<th>Prénom</th>
+										<th>Email</th>
+										<th>Numéro de téléphone</th>
+									</thead>
+									<tbody>
+									{% for stagiaire in stagiaires[dossier.id] %}
+										<tr>
+											<td>{{ stagiaire.idCivilite == 1 ? 'Mme' : 'M' }}</td>
+											<td>{{ stagiaire.nom }}</td>
+											<td>{{ stagiaire.prenom }}</td>
+											<td>{{ stagiaire.email }}</td>
+											<td>{{ stagiaire.tel }}</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</details></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
-{{ form_end(form) }}
-
+		<div class="col-md-4">
+			<table class="table table-bordered">
+				<tbody>
+					<tr>
+						<td colspan="2">
+							<strong>Total montant signé</strong>
+						</td>
+						<td colspan="2">{{ numberData.totalMontantSigne |number_format(2, ',', ' ') }}</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>Total stagiaires</strong>
+						</td>
+						<td>{{ numberData.totalStagiaires }}/12</td>
+						<td>
+							<strong>Revenue total</strong>
+						</td>
+						<td>
+							{% if total < 0 %}
+								<span class="text-danger">{{ total |number_format(2, ',', ' ') }}</span>
+							{% else %}
+								<span class="text-success">
+									{{ total |number_format(2, ',', ' ') }}</span>
+							{% endif %}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>{{ form_label(form.cout_formateur, 'Coût formateur') }}</strong>
+						</td>
+						<td>
+							{{ form_widget(form.cout_formateur, {'type': 'number', 'class': "sm"}) }}
+						</td>
+						<td>
+							<strong>{{ form_label(form.cout_bspp, 'Coût BSPP') }}</strong>
+						</td>
+						<td>
+							{{ form_widget(form.cout_bspp, {'type': 'number'}) }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<strong>{{ form_label(form.cout_visite, 'Coût visite') }}</strong>
+						</td>
+						<td>
+							{{ form_widget(form.cout_visite, {'type': 'number'}) }}
+						</td>
+						<td>
+							<strong>{{ form_label(form.cout_jury, 'Coût jury') }}</strong>
+						</td>
+						<td>
+							{{ form_widget(form.cout_jury, {'type': 'number', 'class': "sm"}) }}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<fieldset class="mt-3">
+		<legend>Informations de la session</legend>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+							{{ form_label(form.name, 'Nom de la session') }}
+							{{ form_widget(form.name) }}
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							{{ form_label(form.date_debut, 'Date de début') }}
+							{{ form_widget(form.date_debut) }}
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							{{ form_label(form.date_fin, 'Date de fin') }}
+							{{ form_widget(form.date_fin) }}
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							{{ form_label(form.formateurFormation, 'Formateur') }}
+							{{ form_widget(form.formateurFormation) }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	{{ form_end(form) }}
+<fieldset class="mt-3">
+		<legend>Actions de la session</legend>
+		<button class="btn btn-primary no-disabled btn-lg" id="Conventions">Générer les conventions</button>
+				<button class="btn btn-primary no-disabled btn-lg" id="convocations">Générer les Convocations</button>
+		</fieldset>
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
-        <script src="{{ asset('assets/js/wickedpicker.js') }}"></script>
-		<script>
-			 $('.js-datepicker').datepicker({
-            format: "dd/mm/yyyy",
-            maxViewMode: 2,
-            minViewMode: 1,
-            autoclose: true,
-            'language': 'fr',
-        });
-		 $("#editthis").click(function(){
-				$("#editthis").addClass("d-none");
-document.querySelectorAll('input').forEach(function (input) {
-            input.removeAttribute('disabled');
-        });
-        document.querySelectorAll('select').forEach(function (select) {
-            select.removeAttribute('disabled');
-        });
-                $("#saveedit").removeClass("d-none");
-				$("#canceledit").removeClass("d-none");
-                $("#saveedit").find('button').prop("disabled", false);
-				$("#canceledit").find('button').prop("disabled", false);
-            })
-            $("#canceledit").click(function(){
-                document.querySelectorAll('input').forEach(function (input) {
-            input.setAttribute('disabled', 'disabled');
-        });
-        document.querySelectorAll('select').forEach(function (select) {
-            select.setAttribute('disabled', 'disabled');
-        });
-				$("#editthis").removeClass("d-none");
-                $("#saveedit").addClass("d-none");
-				$("#canceledit").addClass("d-none");
-                $("#saveedit").find('button').prop("disabled", true);
-				$("#canceledit").find('button').prop("disabled", true);
-                $("#ajcom").prop("disabled", true);
+	{{ parent() }}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script>
+		$(".js-datepicker").each(function () {
+            $(this).datepicker({
+                'format': 'dd/mm/yyyy',
+                'autoclose': true,
+                'language': 'fr'
             });
-		</script>
+        });
+
+document.querySelector("#Conventions").addEventListener("click", function () { 
+	var temporaryDownloadLink = document.createElement("a");    
+	temporaryDownloadLink.style.display = 'none';    
+	document.body.appendChild( temporaryDownloadLink );
+						{% for dossier in dossiers %}
+        temporaryDownloadLink.setAttribute( 'href', '{{ path("client_prospect_printdocument", { id : dossier.idClient.id, type: 2, did: dossier.id }) }}' );
+		temporaryDownloadLink.setAttribute( 'download', 'Convention {{ dossier.idClient.nom }} {{ dossier.idClient.prenom }}.docx' );
+        temporaryDownloadLink.click();
+
+	{% endfor %}    
+	document.body.removeChild( temporaryDownloadLink );
+
+});
+
+document.querySelector("#convocations").addEventListener("click", function () { 
+	var temporaryDownloadLink = document.createElement("a");    
+	temporaryDownloadLink.style.display = 'none';    
+	document.body.appendChild( temporaryDownloadLink );
+						{% for dossier in dossiers %}
+        temporaryDownloadLink.setAttribute( 'href', '{{ path("Formation_Dossier_ConvProform", {"id": dossier.id }) }}' );
+		temporaryDownloadLink.setAttribute( 'download', 'Convocation {{ dossier.idClient.nom }} {{ dossier.idClient.prenom }}.docx' );
+        temporaryDownloadLink.click();
+
+	{% endfor %}    
+	document.body.removeChild( temporaryDownloadLink );
+
+});
+document.querySelectorAll('.no-disabled').forEach(function (button) {
+button.removeAttribute('disabled');
+});
+
+$("#editthis").click(function () {
+	document.querySelectorAll('.no-disabled').forEach(function (button) {
+button.removeAttribute('disabled');
+});
+$("#editthis").addClass("d-none");
+document.querySelectorAll('input').forEach(function (input) {
+input.removeAttribute('disabled');
+});
+document.querySelectorAll('select').forEach(function (select) {
+select.removeAttribute('disabled');
+});
+$("#saveedit").removeClass("d-none");
+$("#canceledit").removeClass("d-none");
+$("#saveedit").find('button').prop("disabled", false);
+$("#canceledit").find('button').prop("disabled", false);
+});
+$("#canceledit").click(function () {
+	document.querySelectorAll('.no-disabled').forEach(function (button) {
+button.removeAttribute('disabled');
+});
+document.querySelectorAll('input').forEach(function (input) {
+input.setAttribute('disabled', 'disabled');
+});
+document.querySelectorAll('select').forEach(function (select) {
+select.setAttribute('disabled', 'disabled');
+});
+$("#editthis").removeClass("d-none");
+$("#saveedit").addClass("d-none");
+$("#canceledit").addClass("d-none");
+$("#saveedit").find('button').prop("disabled", true);
+$("#canceledit").find('button').prop("disabled", true);
+$("#ajcom").prop("disabled", true);
+});
+	</script>
 {% endblock %}

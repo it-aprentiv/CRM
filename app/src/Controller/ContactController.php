@@ -827,11 +827,11 @@ class ContactController extends BaseController
                     $aFormatedDatesStage = $formationDossierDateManager->formatFormationDates($aDatesStage);
                 }
 
-
                 $template = $this->renderView("Common\DocPrint\Contact\ConventionContent.html.twig", [
                     'opca' => $opca,
                     'dossier' => $dossier,
                     'stagiaires' => $stagiaires,
+                    "montant" => $dossier->getMntDemande(),
                     'checked' => $checkeds,
                     'formated_dates_stage' => $aFormatedDatesStage
                 ]);

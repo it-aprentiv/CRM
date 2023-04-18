@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Contact;
 use App\Entity\Sessions;
 use App\Repository\ContactRepository;
+use DateTime;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -12,9 +13,19 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Form\DataTransformer\DateTimeTransformer;
 
 class SessionFormType extends AbstractType
 {
+    private $datetimetransformer;
+
+    public function __construct()
+    {
+        $datetimetransformer = new DateTimeTransformer();
+        $datetimetransformer->setNullable(true);
+        $this->datetimetransformer = $datetimetransformer;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -64,7 +75,7 @@ class SessionFormType extends AbstractType
                 'attr'          => ['class' => 'js-datepicker text-center date', 'autocomplete' => 'off'],
                 'input' => 'datetime',
                 'format' => 'dd/MM/yyyy',
-                'label' => 'Date de fin',
+                'label' => 'Date de début',
                 'required' => true,
             ])
             ->add('date_fin',DateType::class,[
@@ -87,6 +98,11 @@ class SessionFormType extends AbstractType
                 },
             ])
         ;
+
+        $builder->get("date_debut")->addModelTransformer($this->datetimetransformer);
+        $builder->get("date_debut")->resetViewTransformers();
+        $builder->get("date_fin")->addModelTransformer($this->datetimetransformer);
+        $builder->get("date_fin")->resetViewTransformers();
     }
 
     public function configureOptions(OptionsResolver $resolver): void

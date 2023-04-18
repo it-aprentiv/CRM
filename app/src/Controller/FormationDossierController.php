@@ -24,6 +24,7 @@ use App\Entity\FormationDossierNote;
 use App\Entity\FormationDossierStagiaire;
 use App\Entity\FormationDossierStatut;
 use App\Entity\Mail;
+use App\Entity\Sessions;
 use App\Entity\Ville;
 use App\Form\DossierType;
 use App\Form\FormationDossierFilterType;
@@ -600,6 +601,49 @@ class FormationDossierController extends BaseController {
         
         return $this->render('dossier/create.html.twig', $this->viewParams);
     }
+
+     /**
+     * Ajouter à une session
+     *
+     * @Route("/dossier/{id}/session/{idSession}/add", name="Liste_Dossiers_Controller/addDossierToSession")
+     */
+
+     function addDossierToSession(
+        Request $request,
+        EntityManagerInterface $em,
+        $id,
+        $idSession
+    ) {
+        $dossier = $em->getRepository(FormationDossier::class)->find($id);
+        $session = $em->getRepository(Sessions::class)->find($idSession);
+        if($dossier instanceof FormationDossier){
+           $dossier->setSession($session);
+        $em->persist($dossier);
+        $em->flush();
+        return new JsonResponse(['success' => true]);
+        }
+        
+    }
+
+    /**
+     * Supprimer d'une session
+     * 
+     * @Route("/dossier/{id}/removeSession", name="Liste_Dossiers_Controller/removeDossierToSession")
+     */
+    function removeDossierToSession(
+        Request $request,
+        EntityManagerInterface $em,
+        $id)
+    {
+        $dossier = $em->getRepository(FormationDossier::class)->find($id);
+        if($dossier instanceof FormationDossier){
+           $dossier->setSession(null);
+        $em->persist($dossier);
+        $em->flush();
+        return new JsonResponse(['success' => true]);
+        }
+    }
+
 
     /**
      * Creation dossier

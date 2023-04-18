@@ -2,6 +2,11 @@
 
 {% block title %}Hello SessionController!
 {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+{% endblock %}
 
 {% block body %}
 	<nav class="sticky-top" aria-label="breadcrumb">
@@ -73,14 +78,14 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-        <script src="{{ asset('assets/js/wickedpicker.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script>
- $('.js-datepicker').datepicker({
-            format: "dd/mm/yyyy",
-            maxViewMode: 2,
-            minViewMode: 1,
-            autoclose: true,
-            'language': 'fr',
+ $(".js-datepicker").each(function () {
+            $(this).datepicker({
+                'format': 'dd/mm/yyyy',
+                'autoclose': true,
+                'language': 'fr'
+            });
         });
         document.querySelectorAll('input').forEach(function (input) {
             input.removeAttribute('disabled');

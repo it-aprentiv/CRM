@@ -47,4 +47,13 @@ class SessionsRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function searchBySessionName(string $sessionName)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.name LIKE :val')
+            ->setParameter('val', '%'.$sessionName.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -135,7 +135,7 @@ class FormationDossierStagiaire
     }
 
     /**
-     * @return int|null
+     * @return FormationDossier|null
      */
     public function getDossier()
     {
