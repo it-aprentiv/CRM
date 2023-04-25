@@ -1158,7 +1158,7 @@ class FormationDossierManager {
             {
                 $devisPapierDocTemplate->setValue("condition", $aParams['RecyclageSSIAP1']);
             }
-            elseif ($dossier->getNom() == "REMISE A NIVEAU SSIAP1")
+            elseif ($dossier->getNom() == "REMISE A NIVEAU SSIAP1" || $dossier->getNom() == "RAN SSIAP1")
             {
                 $devisPapierDocTemplate->setValue("condition", $aParams['ranSSIAP1']);
             }
@@ -1170,7 +1170,7 @@ class FormationDossierManager {
             {
                 $devisPapierDocTemplate->setValue("condition", $aParams['RecyclageSSIAP2']);
             }
-            elseif ($dossier->getNom() == "Remise à niveau SSIAP 2")
+            elseif ($dossier->getNom() == "Remise à niveau SSIAP 2" || $dossier->getNom() == "RAN SSIAP2")
             {
                 $devisPapierDocTemplate->setValue("condition", $aParams['ranSSIAP2']);
             }
@@ -1182,7 +1182,7 @@ class FormationDossierManager {
             {
                 $devisPapierDocTemplate->setValue("condition", $aParams['RecyclageSSIAP3']);
             }
-            elseif ($dossier->getNom() == "Remise à niveau SSIAP 3")
+            elseif ($dossier->getNom() == "Remise à niveau SSIAP 3" || $dossier->getNom() == "RAN SSIAP3")
             {
                 $devisPapierDocTemplate->setValue("condition", $aParams['ranSSIAP3']);
             }
