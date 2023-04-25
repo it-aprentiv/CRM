@@ -1787,14 +1787,14 @@ class FormationDossierController extends BaseController {
         $SST = "- Pièce d'identité <w:br/>- 1 photo";
         $MACSST = "- Pièce d'identité <w:br/>- 1 photo <w:br/>- Carte SST";
         $SSIAP1 = "- Pièce d'identité <w:br/>- 2 photos aux normes passeport <w:br/>- SST en cours de validité <w:br/>- Certificat médical conforme – de 3 mois.";
-        $RecyclageSSIAP1 = "- Pièce d'identité <w:br/>- Diplôme SSIAP1 et son dernier Recyclage ou équivalent <w:br/>- attestation employeur 1607h sur les 36 derniers mois <w:br/>- SST en cours de validité.";
+        $RecyclageSSIAP1 = "- Pièce d'identité <w:br/>- Diplôme SSIAP1 et son dernier Recyclage ou équivalent <w:br/>- attestation employeur 1607h sur les 36 derniers mois <w:br/>- SST en cours de validité.<w:br/>- Certificat médical conforme – de 3 mois.";
         $ranSSIAP1 = "- Pièce d'identité <w:br/>- Diplôme SSIAP1 et son dernier Recyclage ou équivalent <w:br/>- Certificat médical conforme – de 3 mois <w:br/>- SST en cours de validité.";
-        $SSIAP2 = "- Pièce d'identité <w:br/>- 2 photos aux normes passeport <w:br/>- Diplôme SSIAP1 et son dernier Recyclage <w:br/>- SST en cours de validité <w:br/>- Certificat médical conforme – de 3 mois.";
+        $SSIAP2 = "- Pièce d'identité <w:br/>- 2 photos aux normes passeport <w:br/>- Diplôme SSIAP1 et son dernier Recyclage <w:br/>- SST en cours de validité ";
         $RecyclageSSIAP2 = "Pièce d'identité <w:br/>- Diplôme SSIAP2 et son dernier Recyclage <w:br/>- SST en cours de validité <w:br/>- Attestation employeur 1607h sur les 36 derniers mois.";
         $ranSSIAP2 = "- Pièce d'identité <w:br/>- Diplôme SSIAP2 et son dernier Recyclage <w:br/>- SST en cours de validité <w:br/>- Certificat médical conforme – de 3 mois.";
         $SSIAP3 = "- Pièce d'identité <w:br/>- 2 photos aux normes passeport <w:br/>- Diplôme SSIAP2, son dernier Recyclage ou diplôme de niveau 4 délivré par éducation nationale <w:br/>- SST en cours de validité.";
         $RecyclageSSIAP3 = "Pièce d'identité <w:br/>- Diplôme SSIAP3, son dernier Recyclage <w:br/>- SST en cours de validité <w:br/>- Attestation employeur 1607h sur les 36 derniers mois.";
-        $ranSSIAP3 = "- Pièce d'identité <w:br/>- Diplôme SSIAP3, son dernier Recyclage <w:br/>- SST en cours de validité.";
+        $ranSSIAP3 = "- Pièce d'identité <w:br/>- Diplôme SSIAP3, son dernier Recyclage <w:br/>- SST en cours de validité.<w:br/>- Certificat médical conforme – de 3 mois.";
 
         //dd($SST);
         $aNbJoursEtHeures = $manager->calculNbJetHr($datestagecomplet);
