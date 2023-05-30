@@ -284,36 +284,36 @@ class FactureManager {
 
         if ($facture->getDest1() == "C") {
             $worksheet->getCell('E14')->setValue("Paris, le " . $todaylong);
-            $worksheet->getCell('B15')->setValue("Facture : " . $facture->getRef());
-            $worksheet->getCell('A20')->setValue("Stagiaire(s) :" . $nomstagiaire);
-            $worksheet->getCell('A21')->setValue("Session de formation : " . $nomdossier);
-            $worksheet->getCell('A22')->setValue("Dates :" . $dateduau);
-            $worksheet->getCell('A23')->setValue("Nb jour(s) :" . $res['nbJ']);
-            $worksheet->getCell('A24')->setValue("Nb heure(s) :" . $res['nbH']);
+            $worksheet->getCell('B17')->setValue("Facture : " . $facture->getRef());
+            $worksheet->getCell('A22')->setValue("Stagiaire(s) :" . $nomstagiaire);
+            $worksheet->getCell('A23')->setValue("Session de formation : " . $nomdossier);
+            $worksheet->getCell('A24')->setValue("Dates :" . $dateduau);
+            $worksheet->getCell('A25')->setValue("Nb jour(s) :" . $res['nbJ']);
+            $worksheet->getCell('A26')->setValue("Nb heure(s) :" . $res['nbH']);
             !$ndossopca ? $worksheet->getCell('A25')->setValue("") : $worksheet->getCell('A25')->setValue("Dossier n° : " . $ndossopca);
-            $worksheet->getCell('A26')->setValue("");
-            $worksheet->getCell('A27')->setValue("");
+            $worksheet->getCell('A28')->setValue("");
+            $worksheet->getCell('A29')->setValue("");
 
             $worksheet->getCell('G22')->setValue($datatotalfact['httalfact'] . " €");
             $worksheet->getCell('G29')->setValue($datatotalfact['httalfact'] . " €");
             $worksheet->getCell('G30')->setValue($datatotalfact['tvatotalfact'] . " €");
             $worksheet->getCell('G31')->setValue($datatotalfact['ttctotalfact'] . " €");
         } else {
-            $worksheet->getCell('E13')->setValue("Paris, le " . $todaylong);
-            $worksheet->getCell('B15')->setValue("FACTURE N° " . $facture->getRef());
-            $worksheet->getCell('A20')->setValue("Société :" . $contact->getNomStr());
-            $worksheet->getCell('A21')->setValue("Adhérent n° :" . $contact->getNoAdherent());
-            $worksheet->getCell('A22')->setValue("Stagiaire(s) :" . $nomstagiaire);
-            $worksheet->getCell('A23')->setValue("Session de formation : :" . $nomdossier);
-            $worksheet->getCell('A24')->setValue("Dates :" . $dateduau);
-            $worksheet->getCell('A25')->setValue("Nb jour(s) :" . $res['nbJ']);
-            $worksheet->getCell('A26')->setValue("Nb heure(s) :" . $res['nbH']);
-            $worksheet->getCell('A27')->setValue("Dossier n° :" . $ndossopca);
+            $worksheet->getCell('E14')->setValue("Paris, le " . $todaylong);
+            $worksheet->getCell('B16')->setValue("FACTURE N° " . $facture->getRef());
+            $worksheet->getCell('A21')->setValue("Société :" . $contact->getNomStr());
+            $worksheet->getCell('A22')->setValue("Adhérent n° :" . $contact->getNoAdherent());
+            $worksheet->getCell('A23')->setValue("Stagiaire(s) :" . $nomstagiaire);
+            $worksheet->getCell('A24')->setValue("Session de formation : :" . $nomdossier);
+            $worksheet->getCell('A25')->setValue("Dates :" . $dateduau);
+            $worksheet->getCell('A26')->setValue("Nb jour(s) :" . $res['nbJ']);
+            $worksheet->getCell('A27')->setValue("Nb heure(s) :" . $res['nbH']);
+            $worksheet->getCell('A28')->setValue("Dossier n° :" . $ndossopca);
 
-            $worksheet->getCell('G22')->setValue($datatotalfact['httalfact'] . " €");
-            $worksheet->getCell('G29')->setValue($datatotalfact['httalfact'] . " €");
-            $worksheet->getCell('G30')->setValue($datatotalfact['tvatotalfact'] . " €");
-            $worksheet->getCell('G31')->setValue($datatotalfact['ttctotalfact'] . " €");
+            $worksheet->getCell('G23')->setValue($datatotalfact['httalfact'] . " €");
+            $worksheet->getCell('G30')->setValue($datatotalfact['httalfact'] . " €");
+            $worksheet->getCell('G31')->setValue($datatotalfact['tvatotalfact'] . " €");
+            $worksheet->getCell('G32')->setValue($datatotalfact['ttctotalfact'] . " €");
         }
     }
 
