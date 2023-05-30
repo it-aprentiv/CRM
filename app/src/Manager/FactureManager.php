@@ -283,7 +283,7 @@ class FactureManager {
         $worksheet->getCell('E11')->setValue($aDataContact['cpcontact'] . " " . $aDataContact['nomville']);
 
         if ($facture->getDest1() == "C") {
-            $worksheet->getCell('E13')->setValue("Paris, le " . $todaylong);
+            $worksheet->getCell('E14')->setValue("Paris, le " . $todaylong);
             $worksheet->getCell('B15')->setValue("Facture : " . $facture->getRef());
             $worksheet->getCell('A20')->setValue("Stagiaire(s) :" . $nomstagiaire);
             $worksheet->getCell('A21')->setValue("Session de formation : " . $nomdossier);
