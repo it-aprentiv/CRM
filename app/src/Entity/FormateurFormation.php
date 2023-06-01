@@ -310,9 +310,15 @@ class FormateurFormation
      */
     private $sessions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ThematiquesFormations::class, mappedBy="formateur", orphanRemoval=true)
+     */
+    private $thematiquesFormations;
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
+        $this->thematiquesFormations = new ArrayCollection();
     }
 
     /**
@@ -339,6 +345,36 @@ class FormateurFormation
             // set the owning side to null (unless already changed)
             if ($session->getFormateurFormation() === $this) {
                 $session->setFormateurFormation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ThematiquesFormations[]
+     */
+    public function getThematiquesFormations(): Collection
+    {
+        return $this->thematiquesFormations;
+    }
+
+    public function addThematiquesFormation(ThematiquesFormations $thematiquesFormation): self
+    {
+        if (!$this->thematiquesFormations->contains($thematiquesFormation)) {
+            $this->thematiquesFormations[] = $thematiquesFormation;
+            $thematiquesFormation->setFormateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeThematiquesFormation(ThematiquesFormations $thematiquesFormation): self
+    {
+        if ($this->thematiquesFormations->removeElement($thematiquesFormation)) {
+            // set the owning side to null (unless already changed)
+            if ($thematiquesFormation->getFormateur() === $this) {
+                $thematiquesFormation->setFormateur(null);
             }
         }
 
