@@ -67,7 +67,7 @@ class NoteFilterType extends AbstractType
             ->add('rappelleur', EntityType::class, [
                 'class' => \App\Entity\Utilisateur::class,
                 'required' => false,
-                'placeholder' => "Responsable"
+                'placeholder' => "Responsable",
             ])
             // ajouté le 14/04 pour mettre en place le champ 'statut' pour filtrer la recherche par statut.
             ->add('actionStatut', EntityType::class,[

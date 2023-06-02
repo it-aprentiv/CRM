@@ -99,8 +99,7 @@ class NoteType extends AbstractType
                 'class' => Utilisateur::class,
                 'choice_label' => 'nomutilisateur',
                 'query_builder' => function (UtilisateurRepository $er) { 
-                         return $er->createQueryBuilder('u')
-                        ->orderBy('u.nomutilisateur', 'ASC');                                               
+                         return $er->getQueryCollaborateurList();                                             
                 }, 
                 'choice_attr' => function(Utilisateur $choice, $key, $value) {
                     if ($choice->getConnecter() == '0') {

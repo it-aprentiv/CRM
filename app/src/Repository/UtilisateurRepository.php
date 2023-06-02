@@ -96,5 +96,12 @@ class UtilisateurRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getQueryCollaborateurList(){
+        $qb = $this->createQueryBuilder('u');
+        $qb->leftJoin("App\\Entity\\Collaborateur", "c", "WITH", "c.idUser = u.idutilisateur")
+            ->where("c.statut = 1");
+        return $qb->orderBy('c.nomPrenom', 'ASC');
+    }
     
 }

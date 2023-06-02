@@ -167,12 +167,12 @@ class Lead
         return $this;
     }
 
-    public function getCivilite(): ?int
+    public function getCivilite(): ?string
     {
         return $this->civilite;
     }
 
-    public function setCivilite(int $civilite): self
+    public function setCivilite(string $civilite): self
     {
         $this->civilite = $civilite;
 

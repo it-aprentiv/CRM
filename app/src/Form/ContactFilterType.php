@@ -57,7 +57,7 @@ class ContactFilterType extends AbstractType
                 'class' => Collaborateur::class,
                 'choice_label' => 'nom_prenom',
                 'query_builder' => function (CollaborateurRepository $c) {
-                    return $c->findAllCollaborateur();
+                    return $c->getQueryCollaborateurList();
                 },
             ])->add('statusClient', ChoiceType::class, [
                 'required' => false,
