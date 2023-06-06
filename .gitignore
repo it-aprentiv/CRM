@@ -44,4 +44,3 @@ app/var/cache/dev/profiler/index.csv
 logs/nginx/access.log
 app/var/log/dev.log
 app/build/*
-app/docs/*
