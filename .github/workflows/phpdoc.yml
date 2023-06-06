@@ -18,7 +18,7 @@ jobs:
 
       - name: git commit
         run: |
-          mv app/docs/ docs
+          mv app/docs/* docs
           git config user.name "GitHub Actions"
           git config user.email ""
           git add .
