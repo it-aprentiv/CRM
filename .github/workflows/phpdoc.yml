@@ -18,6 +18,8 @@ jobs:
 
       - name: git commit
         run: |
+          cd ..
+          mv app/docs docs
           git config user.name "GitHub Actions"
           git config user.email ""
           git add .
