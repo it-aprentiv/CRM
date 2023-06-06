@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ApiLeadController extends AbstractController
 {
+    private $viewParams = [];
     /**
      * @Route("/api/lead", name="api_lead")
      */

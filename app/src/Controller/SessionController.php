@@ -81,7 +81,7 @@ class SessionController extends BaseController
             foreach ($session->getFormationDossiers() as $dossier) {
                 $totalMontantSigne += $dossier->getMntAccorde();
             }
-            $total =  $totalMontantSigne - ($session->getCoutBspp() + $session->getCoutFormateur() + $session->getCoutFormateur() + $session->getCoutVisite());
+            $total =  $totalMontantSigne - ($session->getCoutBspp() + $session->getCoutFormateur() + $session->getCoutJury() + $session->getCoutVisite());
             $this->viewParams['total'] = $total;
             $this->viewParams['numberData'] = ["totalMontantSigne" => $totalMontantSigne, "totalStagiaires" => array_sum(array_map(function (Dossier $dossier) {
                 return count($dossier->getStagiaires()->toArray());

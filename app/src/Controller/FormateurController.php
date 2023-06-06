@@ -8,6 +8,7 @@ use App\Entity\ContactNote;
 use App\Entity\ContactType;
 use App\Entity\Filter\FormateurFilter;
 use App\Entity\FormateurCommentdisp;
+use App\Entity\FormateurFormation;
 use App\Entity\FormateurNote;
 use App\Entity\Mail;
 use App\Entity\Telephone;
@@ -156,7 +157,6 @@ class FormateurController extends BaseController
             $this->viewParams["adressesvilledata"][] = $adres->getIdVille();
         }
         $contactmanager->setContactSocData(array($contact));
-
         $formateurForm = $this->createForm(FormateurType::class, $contact, ['method' => 'POST', 'attr' => ['id' => 'dataformateur']]);
         $formateurForm->handleRequest($request);
         $formateurcommentdispo = $formateurCommentdispRepository->getCommentFormateur($contact->getId());
@@ -194,6 +194,7 @@ class FormateurController extends BaseController
 
         $this->viewParams['commentaire_dispo'] = $form->createView();
         $this->viewParams['formateur_form'] = $formateurForm->createView();
+        dd($contact->getSessions());
         return $this->render('formateur/edit.html.twig', $this->viewParams);
     }
 

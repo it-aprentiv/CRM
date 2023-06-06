@@ -67,12 +67,12 @@ class Sessions
      * @ORM\OneToMany(targetEntity=FormationDossier::class, mappedBy="session")
      */
     private $formationDossiers;
-
     /**
      * @ORM\ManyToOne(targetEntity=Contact::class, inversedBy="sessions")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="formateur_formation_id", referencedColumnName="id")
      */
-    private $formateurFormation;
+    private $contact;
+
 
     public function __construct()
     {
@@ -200,12 +200,12 @@ class Sessions
 
     public function getFormateurFormation(): ?Contact
     {
-        return $this->formateurFormation;
+        return $this->contact;
     }
 
     public function setFormateurFormation(?Contact $formateurFormation): self
     {
-        $this->formateurFormation = $formateurFormation;
+        $this->contact = $formateurFormation;
 
         return $this;
     }

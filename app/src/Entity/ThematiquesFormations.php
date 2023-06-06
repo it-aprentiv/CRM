@@ -28,10 +28,10 @@ class ThematiquesFormations
     private $tarif;
 
     /**
-     * @ORM\ManyToOne(targetEntity=FormateurFormation::class, inversedBy="thematiquesFormations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Contact::class, inversedBy="thematiquesFormations")
+     * @ORM\JoinColumn(name="formateur_id", referencedColumnName="id")
      */
-    private $formateur;
+    private $formatteur;
 
     public function getId(): ?int
     {
@@ -62,15 +62,16 @@ class ThematiquesFormations
         return $this;
     }
 
-    public function getFormateur(): ?FormateurFormation
+    public function getFormatteur(): ?Contact
     {
-        return $this->formateur;
+        return $this->formatteur;
     }
 
-    public function setFormateur(?FormateurFormation $formateur): self
+    public function setFormatteur(?Contact $formatteur): self
     {
-        $this->formateur = $formateur;
+        $this->formatteur = $formatteur;
 
         return $this;
     }
+
 }

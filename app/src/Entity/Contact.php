@@ -740,6 +740,16 @@ class Contact {
      */
     private $statusClient;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Sessions::class, mappedBy="contact", orphanRemoval=true)
+     */
+    private $sessions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ThematiquesFormations::class, mappedBy="formatteur")
+     */
+    private $thematiquesFormations;
+
     public function __construct()
     {
         $this->contactsoc = new ArrayCollection();
@@ -756,6 +766,8 @@ class Contact {
         $this->formationDossierStagiaires = new ArrayCollection();
         $this->formateurcommentaires = new ArrayCollection();
         $this->opcas = new ArrayCollection();
+        $this->sessions = new ArrayCollection();
+        $this->thematiquesFormations = new ArrayCollection();
     }
     public function __toString()
     {
@@ -2104,15 +2116,15 @@ class Contact {
 
     public function addFormationDossierStagiaire(FormationDossierStagiaire $formationDossier) :self
     {
-        $formationDossier->setIdStagiaire($this);
-        $this->formationDossiers[] = $formationDossier;
+        $formationDossier->setStagiaire($this);
+        $this->formationDossierStagiaires[] = $formationDossier;
 
         return $this;
     }
 
     public function removeFormationDossierStagiaire(FormationDossierStagiaire $formationDossier) {
 
-        $this->formationDossiers->removeElement($formationDossier);
+        $this->formationDossierStagiaires->removeElement($formationDossier);
     }
 
     public function addOpcas(Contact $contactOpca) :self{
@@ -2203,5 +2215,66 @@ class Contact {
 
         return $this;
     }
+
+    /**
+     * @return Collection|Sessions[]
+     */
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
+    }
+
+    public function addSession(Sessions $session): self
+    {
+        if (!$this->sessions->contains($session)) {
+            $this->sessions[] = $session;
+            $session->setFormateurFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSession(Sessions $session): self
+    {
+        if ($this->sessions->removeElement($session)) {
+            // set the owning side to null (unless already changed)
+            if ($session->getFormateurFormation() === $this) {
+                $session->setFormateurFormation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ThematiquesFormations[]
+     */
+    public function getThematiquesFormations(): Collection
+    {
+        return $this->thematiquesFormations;
+    }
+
+    public function addThematiquesFormation(ThematiquesFormations $thematiquesFormation): self
+    {
+        if (!$this->thematiquesFormations->contains($thematiquesFormation)) {
+            $this->thematiquesFormations[] = $thematiquesFormation;
+            $thematiquesFormation->setFormatteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeThematiquesFormation(ThematiquesFormations $thematiquesFormation): self
+    {
+        if ($this->thematiquesFormations->removeElement($thematiquesFormation)) {
+            // set the owning side to null (unless already changed)
+            if ($thematiquesFormation->getFormatteur() === $this) {
+                $thematiquesFormation->setFormatteur(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
 
