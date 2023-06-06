@@ -96,6 +96,8 @@ class ApiLeadController extends AbstractController
     }
 
     /**
+     * Route prévu pour la tache cron des mails (envoie de mail toute les 2 semaines)
+     * 
      * @Route("/cron/mailer", name="api_lead_show")
      */
     public function mailer(Request $request, EntityManagerInterface $em, \Swift_Mailer $mailer)
