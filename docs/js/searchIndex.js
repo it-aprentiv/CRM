@@ -543,7 +543,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\App\\Controller\\ApiLeadController\u003A\u003Amailer\u0028\u0029",
             "name": "mailer",
-            "summary": "",
+            "summary": "Route\u0020pr\u00E9vu\u0020pour\u0020la\u0020tache\u0020cron\u0020des\u0020mails\u0020\u0028envoie\u0020de\u0020mail\u0020toute\u0020les\u00202\u0020semaines\u0029",
             "url": "classes/App-Controller-ApiLeadController.html#method_mailer"
         },                {
             "fqsen": "\\App\\Controller\\ApiLeadController\u003A\u003A\u0024viewParams",
