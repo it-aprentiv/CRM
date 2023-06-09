@@ -3,9 +3,17 @@
 {% block title %}Hello SessionController!
 {% endblock %}
 {% block stylesheets %}
-    {{ parent() }}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+	{{ parent() }}
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+	<style type="text/css">
+		#add_stagiaire {
+			display: none;
+		}
+		.delete-stagiaire {
+			display: none;
+		}
+	</style>
 {% endblock %}
 
 {% block body %}
@@ -56,39 +64,23 @@
 				<tbody>
 					{% for dossier in dossiers %}
 						<tr data-href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {'id': dossier.id}) }}">
-								<td>
-									<a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {'id': dossier.id}) }}">{{ dossier.ref }}</a>
-								</td>
-								<td>{{ dossier.idClient.nomStr }}</td>
-								<td>{{ dossier.stagiaires|length }}</td>
-								<td>{{ dossier.mntDemande |number_format(2, ',', ' ') }}</td>
-								<td>{{ dossier.mntAccorde |number_format(2, ',', ' ') }}</td>
-								<td>{{ dossier.idStatut.statut}}</td>							
+							<td>
+								<a href="{{ path('Liste_Dossiers_Controller/visualiserDossier', {'id': dossier.id}) }}">{{ dossier.ref }}</a>
+							</td>
+							<td>{{ dossier.idClient.nomStr }}</td>
+							<td>{{ dossier.stagiaires|length }}</td>
+							<td>{{ dossier.mntDemande |number_format(2, ',', ' ') }}</td>
+							<td>{{ dossier.mntAccorde |number_format(2, ',', ' ') }}</td>
+							<td>{{ dossier.idStatut.statut}}</td>
 						</tr>
 						<tr>
-							<td colspan="6"><details>
-								<summary>Stagiaires</summary>
-								<table class="table table-bordered">
-									<thead>
-										<th>Genre</th>
-										<th>Nom</th>
-										<th>Prénom</th>
-										<th>Email</th>
-										<th>Numéro de téléphone</th>
-									</thead>
-									<tbody>
-									{% for stagiaire in stagiaires[dossier.id] %}
-										<tr>
-											<td>{{ stagiaire.idCivilite == 1 ? 'Mme' : 'M' }}</td>
-											<td>{{ stagiaire.nom }}</td>
-											<td>{{ stagiaire.prenom }}</td>
-											<td>{{ stagiaire.email }}</td>
-											<td>{{ stagiaire.tel }}</td>
-										</tr>
-									{% endfor %}
-									</tbody>
-								</table>
-							</details></td>
+							<td colspan="6">
+								<details>
+									<summary>Stagiaires</summary>
+									{%  set param = constant('\\App\\Constants\\ParamDossierStagiaire::FORMATION_DOSSIER_STAGIAIRE') %}
+									{% include 'Common/stagiaire-bloc.html.twig' with { prototype: doc_form[dossier.id].stagiaires.vars.prototype, stagiaires: doc_form[dossier.id].stagiaires, data: dataComplementaire[dossier.id] is defined ? dataComplementaire[dossier.id] : null , param_dossier_stagiaire: param } %}
+								</details>
+							</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -186,49 +178,37 @@
 		</div>
 	</fieldset>
 	{{ form_end(form) }}
-<fieldset class="mt-3">
+	<fieldset class="mt-3">
 		<legend>Actions de la session</legend>
 		<button class="btn btn-primary no-disabled btn-lg" id="Conventions">Générer les conventions</button>
-				<button class="btn btn-primary no-disabled btn-lg" id="convocations">Générer les Convocations</button>
-		</fieldset>
+		<button class="btn btn-primary no-disabled btn-lg" id="convocations">Générer les Convocations</button>
+	</fieldset>
 {% endblock %}
 {% block javascripts %}
 	{{ parent() }}
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 	<script>
 		$(".js-datepicker").each(function () {
-            $(this).datepicker({
-                'format': 'dd/mm/yyyy',
-                'autoclose': true,
-                'language': 'fr'
-            });
-        });
+$(this).datepicker({'format': 'dd/mm/yyyy', 'autoclose': true, 'language': 'fr',});
+});
 
-document.querySelector("#Conventions").addEventListener("click", function () { 
-	var temporaryDownloadLink = document.createElement("a");    
-	temporaryDownloadLink.style.display = 'none';    
-	document.body.appendChild( temporaryDownloadLink );
-						{% for dossier in dossiers %}
-        temporaryDownloadLink.setAttribute( 'href', '{{ path("client_prospect_printdocument", { id : dossier.idClient.id, type: 2, did: dossier.id }) }}' );
-		temporaryDownloadLink.setAttribute( 'download', 'Convention {{ dossier.idClient.nom }} {{ dossier.idClient.prenom }}.docx' );
-        temporaryDownloadLink.click();
-
-	{% endfor %}    
-	document.body.removeChild( temporaryDownloadLink );
+document.querySelector("#Conventions").addEventListener("click", function () {
+var temporaryDownloadLink = document.createElement("a");
+temporaryDownloadLink.style.display = 'none';
+document.body.appendChild(temporaryDownloadLink);{% for dossier in dossiers %}temporaryDownloadLink.setAttribute('href', '{{ path("client_prospect_printdocument", { id : dossier.idClient.id, type: 2, did: dossier.id }) }}');
+temporaryDownloadLink.setAttribute('download', 'Convention  {{ dossier.idClient.nom }}{{ dossier.idClient.prenom }}.docx');
+temporaryDownloadLink.click();{% endfor %}
+document.body.removeChild(temporaryDownloadLink);
 
 });
 
-document.querySelector("#convocations").addEventListener("click", function () { 
-	var temporaryDownloadLink = document.createElement("a");    
-	temporaryDownloadLink.style.display = 'none';    
-	document.body.appendChild( temporaryDownloadLink );
-						{% for dossier in dossiers %}
-        temporaryDownloadLink.setAttribute( 'href', '{{ path("Formation_Dossier_ConvProform", {"id": dossier.id }) }}' );
-		temporaryDownloadLink.setAttribute( 'download', 'Convocation {{ dossier.idClient.nom }} {{ dossier.idClient.prenom }}.docx' );
-        temporaryDownloadLink.click();
-
-	{% endfor %}    
-	document.body.removeChild( temporaryDownloadLink );
+document.querySelector("#convocations").addEventListener("click", function () {
+var temporaryDownloadLink = document.createElement("a");
+temporaryDownloadLink.style.display = 'none';
+document.body.appendChild(temporaryDownloadLink);{% for dossier in dossiers %}temporaryDownloadLink.setAttribute('href', '{{ path("Formation_Dossier_ConvProform", {"id": dossier.id }) }}');
+temporaryDownloadLink.setAttribute('download', 'Convocation  {{ dossier.idClient.nom }}{{ dossier.idClient.prenom }}.docx');
+temporaryDownloadLink.click();{% endfor %}
+document.body.removeChild(temporaryDownloadLink);
 
 });
 document.querySelectorAll('.no-disabled').forEach(function (button) {
@@ -236,7 +216,7 @@ button.removeAttribute('disabled');
 });
 
 $("#editthis").click(function () {
-	document.querySelectorAll('.no-disabled').forEach(function (button) {
+document.querySelectorAll('.no-disabled').forEach(function (button) {
 button.removeAttribute('disabled');
 });
 $("#editthis").addClass("d-none");
@@ -252,7 +232,7 @@ $("#saveedit").find('button').prop("disabled", false);
 $("#canceledit").find('button').prop("disabled", false);
 });
 $("#canceledit").click(function () {
-	document.querySelectorAll('.no-disabled').forEach(function (button) {
+document.querySelectorAll('.no-disabled').forEach(function (button) {
 button.removeAttribute('disabled');
 });
 document.querySelectorAll('input').forEach(function (input) {

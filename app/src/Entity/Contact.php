@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NoteRepository;
+use App\Repository\SessionsRepository;
 
 /**
  * 1Contact
@@ -2222,6 +2223,13 @@ class Contact {
     public function getSessions(): Collection
     {
         return $this->sessions;
+    }
+
+    public function setSessions($sessions): self
+    {
+        $this->sessions = new ArrayCollection($sessions);
+
+        return $this;
     }
 
     public function addSession(Sessions $session): self

@@ -10,8 +10,14 @@ use App\Form\SessionFormType;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Sessions;
 use App\Entity\FormationDossier as Dossier;
+use App\Entity\FormationDossierDate;
 use App\Entity\FormationDossierStagiaire;
+use App\Entity\Mail;
+use App\Form\DossierType;
+use App\Manager\FormationDossierDateManager;
+use App\Repository\FormationDossierDateRepository;
 use App\Repository\SessionsRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SessionController extends BaseController
@@ -58,8 +64,28 @@ class SessionController extends BaseController
     /**
      * @Route("/session/edit/{id}", name="session_edit")
      */
-    public function edit(Request $request, $id): Response
-    {
+    public function edit(
+        Request $request,
+        $id,
+        FormationDossierDateManager $formationDossierDateManager,
+        FormationDossierDateRepository $formationDossierDateRepository
+    ): Response {
+
+        $mois = [
+            "Janvier",
+            "Février",
+            "Mars",
+            "Avril",
+            "Mai",
+            "Juin",
+            "Juillet",
+            "Août",
+            "Septembre",
+            "Octobre",
+            "Novembre",
+            "Décembre",
+        ];
+
         $session = $this->getDoctrine()
             ->getRepository(Sessions::class)
             ->find($id);
@@ -91,19 +117,84 @@ class SessionController extends BaseController
                 return $dossier->getStagiaires()->toArray();
             }, $session->getFormationDossiers()->toArray());
             $stagiaires = [];
+            $docform = [];
+            $dataComplementaire = [];
+
             /**
              * @var FormationDossierStagiaire[] $s
              */
             foreach ($stagiaire as $s) {
                 $dossier = $s[0]->getDossier();
+                $oFormationDate = $this->em->getRepository(FormationDossierDate::class)->findOneBy(['idDossier' => $dossier->getId()]);
+                $aFormationDates = "";
+                $aFormationDates = $formationDossierDateRepository->getDossierDate($id);
+
+                $aFormatedFormationDates = $formationDossierDateManager->formatFormationDates($aFormationDates);
+                $moisTemp = $dossier->getDateEnvoi();
+                $signature = $mois[$moisTemp->format('m') - 1];
+                $docFormTemp = $this->createForm(DossierType::class, $dossier, [
+                    'signature' => $signature, 'attr' =>
+                    [
+                        'editform' => $dossier->getIdCommercial(),
+                    ],
+                    'facturation.legal_mode' => $this->getParameter('facturation.legal_mode'),
+                    'formated_formation_dates' => $aFormatedFormationDates
+                ]);
+
                 $stagiaires[$dossier->getId()] = [];
-                foreach ($s as $st) {
-                    $stagiaires[$dossier->getId()][] = $this->em->getRepository(Contact::class)->find($st->getStagiaire()->getId());
+                foreach ($s as $st => $value) {
+                    $contactStagiare = $this->em->getRepository(Contact::class)->find($value->getStagiaire()->getId());
+
+                    // for each stagiaire we look also at the mail and phone number to see if they are not empty
+                    $oMail = $this->em->getRepository(Mail::class)->findOneBy(['idContact' => $value->getStagiaire()->getId()]) ?? new Mail();
+                    if ($oMail instanceof Mail) {
+                        if ($contactStagiare instanceof Contact) {
+                            $contactStagiare->setEmail($oMail->getMail());
+                        }                    
+                        $dataComplementaire[$dossier->getId()][$st]['email'] = $oMail->getMail();
+                    }
+                    $stagiaires[$dossier->getId()][] = $contactStagiare;
+                }
+                $docFormTemp->get('stagiaires')->setData($stagiaires[$dossier->getId()]);
+                $docFormTemp->handleRequest($request);
+                if($docFormTemp->isSubmitted() && $docFormTemp->isValid()) {
+                    dd($docFormTemp->getData());
+                $dataStagiaires = $docFormTemp->get('stagiaires')->getData();
+                $oType = $this->em->getRepository(ContactType::class)->find(5);
+                foreach ($dataStagiaires as $stagiaire) {
+                if (is_object($stagiaire) && $stagiaire->getNom() != '' && $stagiaire->getPrenom() != '') {
+                    $email = $stagiaire->getEmail();
+                    // tester si c'est pour update ou pour insert
+                    $stagiaireId = $stagiaire->getId();
+                    if ($stagiaireId) {
+                        $FDstagiaire = $this->em->getRepository(FormationDossierStagiaire::class)->findOneBy(
+                            ['dossier' => $dossier, 'stagiaire' => $stagiaire]
+                        );
+                    } else {
+                        $FDstagiaire = new FormationDossierStagiaire();
+                    }
+                    $stagiaire->setIdType($oType);
+                    $FDstagiaire->setStagiaire($stagiaire);
+                    $dossier->addStagiaire($FDstagiaire);
+                    $stagiaire->setStructure($dossier->getIdStructure());
+
+                    if ($email) {
+                        $Mail = new Mail();
+                        $Mail->setMail($email);
+                        $Mail->setIdContact($stagiaire);
+                        $Mail->setIdTypeMail(1);
+                        $this->em->persist($Mail);
+                    }
+                    $this->em->persist($stagiaire);
                 }
             }
-
+            }
+                $docform[$dossier->getId()] = $docFormTemp->createView();
+            }
 
             $this->viewParams['stagiaires'] = $stagiaires;
+            $this->viewParams['doc_form'] = $docform;
+            $this->viewParams['dataComplementaire'] = $dataComplementaire;
             return $this->render('session/edit.html.twig', $this->viewParams);
         }
         $this->addFlash('error', 'La session n\'existe pas');

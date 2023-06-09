@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Contact;
 use App\Entity\Sessions;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

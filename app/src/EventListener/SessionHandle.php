@@ -34,16 +34,7 @@ class SessionHandle
 
         if ($this->maxIdleTime > 0) {
 
-            $this->session->start();
-            $lapse = time() - $this->session->getMetadataBag()->getLastUsed();
-
-            if ($lapse > $this->maxIdleTime) {
-
-                $this->securityToken->setToken(null);
-                $this->session->getFlashBag()->add('warning', 'Votre session a expiré, veuillez vous reconnecter.');
-                // Change the route if you are not using FOSUserBundle.
-                $event->setResponse(new RedirectResponse($this->router->generate('app_login')));
-            }
+            return;
         }
     }
 

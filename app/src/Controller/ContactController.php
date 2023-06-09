@@ -50,6 +50,8 @@ use App\Entity\ContactType as ContactType1;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Form\ImportContactType;
 use App\Entity\ContactType as ContactTypeEntity;
+use App\Entity\Lead;
+use App\Entity\LeadNote;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManager;
 use phpDocumentor\Reflection\Types\Null_;
@@ -64,7 +66,7 @@ use Symfony\Component\Form\FormError;
  */
 class ContactController extends BaseController
 {
-    
+
 
     const TYPE_TELEPHONE = 1;
     const TYPE_FAX = 3;
@@ -105,31 +107,32 @@ class ContactController extends BaseController
         $pagination = $paginator->paginate($contactsQuery, $request->query->get('page', 1), 10);
         $contact_arrays = [];
         $this->viewParams["societeliedata"] = array();
-        foreach($pagination->getItems() as $contactH){
+        foreach ($pagination->getItems() as $contactH) {
             $contactCourantH = $this->em->getRepository(Contact::class)->find($contactH['contact_id']);
-            $contact_arrays[$contactH['contact_id']] = $this->createForm(ContactType::class, $contactCourantH,['attr' => 
-            [
-            'disabled' => true,
-            ],
-        ])->createView();
-        $societelie = $this->em->getRepository(SocieteLiee::class)->findOneBy(["idContact" => $contactCourantH->getId()]);
-        $sl = new ArrayCollection();
-        if (null != $societelie) {
-            $sl["__name__"] = $societelie;
-            $scl1 = $societelie->getIdSociete1() != null ? $this->em->find(Contact::class, $societelie->getIdSociete1()) : null;
-            $scl2 = $societelie->getIdSociete2() != null ? $this->em->find(Contact::class, $societelie->getIdSociete2()) : null;
-            $scl3 = $societelie->getIdSociete3() != null ? $this->em->find(Contact::class, $societelie->getIdSociete3()) : null;
-            $scl4 = $societelie->getIdSociete4() != null ? $this->em->find(Contact::class, $societelie->getIdSociete4()) : null;
-            $this->viewParams["societeliedata"][$contactCourantH->getId()] = array(
-                "societelie1" => $scl1 != null ? $scl1->getNomStr() : null,
-                "societelie2" => $scl2 != null ? $scl2->getNomStr() : null,
-                "societelie3" => $scl3 != null ? $scl3->getNomStr() : null,
-                "societelie4" => $scl4 != null ? $scl4->getNomStr() : null,
-                "societeId1" => $scl1 != null ? $scl1->getId() : null,
-                "societeId2" => $scl2 != null ? $scl2->getId() : null,
-                "societeId3" => $scl3 != null ? $scl3->getId() : null,
-                "societeId4" => $scl4 != null ? $scl4->getId() : null,
-            );
+            $contact_arrays[$contactH['contact_id']] = $this->createForm(ContactType::class, $contactCourantH, [
+                'attr' =>
+                [
+                    'disabled' => true,
+                ],
+            ])->createView();
+            $societelie = $this->em->getRepository(SocieteLiee::class)->findOneBy(["idContact" => $contactCourantH->getId()]);
+            $sl = new ArrayCollection();
+            if (null != $societelie) {
+                $sl["__name__"] = $societelie;
+                $scl1 = $societelie->getIdSociete1() != null ? $this->em->find(Contact::class, $societelie->getIdSociete1()) : null;
+                $scl2 = $societelie->getIdSociete2() != null ? $this->em->find(Contact::class, $societelie->getIdSociete2()) : null;
+                $scl3 = $societelie->getIdSociete3() != null ? $this->em->find(Contact::class, $societelie->getIdSociete3()) : null;
+                $scl4 = $societelie->getIdSociete4() != null ? $this->em->find(Contact::class, $societelie->getIdSociete4()) : null;
+                $this->viewParams["societeliedata"][$contactCourantH->getId()] = array(
+                    "societelie1" => $scl1 != null ? $scl1->getNomStr() : null,
+                    "societelie2" => $scl2 != null ? $scl2->getNomStr() : null,
+                    "societelie3" => $scl3 != null ? $scl3->getNomStr() : null,
+                    "societelie4" => $scl4 != null ? $scl4->getNomStr() : null,
+                    "societeId1" => $scl1 != null ? $scl1->getId() : null,
+                    "societeId2" => $scl2 != null ? $scl2->getId() : null,
+                    "societeId3" => $scl3 != null ? $scl3->getId() : null,
+                    "societeId4" => $scl4 != null ? $scl4->getId() : null,
+                );
             }
         }
 
@@ -147,36 +150,36 @@ class ContactController extends BaseController
             $this->viewParams['contact_forme'][$ctt["contact_id"]] = $contactForm->createView();
         }
 
-        $contactImport = $form->createNamed("contact_import",ImportType::class,null,["method" => "POST", "attr" => ["id" => "contactimport"]]);
+        $contactImport = $form->createNamed("contact_import", ImportType::class, null, ["method" => "POST", "attr" => ["id" => "contactimport"]]);
         $contactImport->handleRequest($request);
         $this->viewParams['contact_import'] = $contactImport->createView();
-        if($contactImport->isSubmitted() && $contactImport->isValid()){
+        if ($contactImport->isSubmitted() && $contactImport->isValid()) {
             $send = true;
             // Move the file to the storage directory
             $file = $contactImport->get('Importy')->getData();
-            $fileName = $_SERVER["DOCUMENT_ROOT"].'/DocPrint/import_directory/' . $file->getClientOriginalName();
-            return $this->redirectToRoute('contact_import',['fileName'=>$fileName]);
+            $fileName = $_SERVER["DOCUMENT_ROOT"] . '/DocPrint/import_directory/' . $file->getClientOriginalName();
+            return $this->redirectToRoute('contact_import', ['fileName' => $fileName]);
         }
 
         if (count($params) > 0) {
-        if ($send) {
-        } else {
-            $currentContact = array_values($params)[0];
-            $filteredContact = $this->em->getRepository(Contact::class)->find($currentContact["id"]);
-            $currentCommercial = $this->em->getRepository(Collaborateur::class)->find($currentContact["id_commercial"]);
-            if($currentCommercial){
-                $filteredContact->setIdCommercial($currentCommercial);
+            if ($send) {
+            } else {
+                $currentContact = array_values($params)[0];
+                $filteredContact = $this->em->getRepository(Contact::class)->find($currentContact["id"]);
+                $currentCommercial = $this->em->getRepository(Collaborateur::class)->find($currentContact["id_commercial"]);
+                if ($currentCommercial) {
+                    $filteredContact->setIdCommercial($currentCommercial);
+                }
+                $currentStructure = $this->em->getRepository(Structure::class)->find($currentContact["structure"]);
+                if ($currentStructure) {
+                    $filteredContact->setStructure($currentStructure);
+                }
+                $this->em->persist($filteredContact);
+                $this->em->flush();
+                $send = true;
+                return new JsonResponse(["message" => "Édité correctement", "code" => true]);
             }
-            $currentStructure = $this->em->getRepository(Structure::class)->find($currentContact["structure"]);
-            if($currentStructure){
-                $filteredContact->setStructure($currentStructure);
-            }
-            $this->em->persist($filteredContact);
-            $this->em->flush();
-            $send = true;
-            return new JsonResponse(["message" => "Édité correctement", "code" => true]);
         }
-    }   
         $this->viewParams['can_edit'] = $this->isGranted('edit', Menu::MENU_CLIENT_PROSPECT);
         $this->viewParams['can_view'] = $this->isGranted('view', Menu::MENU_CLIENT_PROSPECT);
         return $this->render('contact/index.html.twig', $this->viewParams);
@@ -187,107 +190,135 @@ class ContactController extends BaseController
      *
      * @Route("/contact/creation", name="Fiche_client_prospect_Controller/ajoutclient")
      */
-    public function create(Request $request, EntityManagerInterface $em, ContactManager $contactmanager, ContactRepository $contactRepository , ContactType $cct)
+    public function create(Request $request, EntityManagerInterface $em, ContactManager $contactmanager, ContactRepository $contactRepository, ContactType $cct)
     {
         $this->denyAccessUnlessGranted('edit', Menu::MENU_CLIENT_PROSPECT);
         $contact = new Contact();
         $adresse = new Adresse();
         $contact->addAdress($adresse);
+        $leadId = $request->query->get('lead_id');
 
+        if ($leadId) {
+            $lead = $em->getRepository(Lead::class)->find($leadId);
 
-        $nom = $request->query->get('nom');
-        $prenom = $request->query->get('prenom');
-        $tel = $request->query->get('tel');
-        $mail = $request->query->get('mail');
-        $idCivilite = $request->query->get('id_civilite');
-        $idCommercial = $request->query->get('id_commercial');
-        $idType = $request->query->get('id_type');
-        //$ville = $request->query->get('ville');
-        $societe = $request->query->get('societe');
-        $nomprenom = $request->query->get('nomprenom');
+            if ($lead instanceof Lead) {
+                $nom = $lead->getNom();
+                $prenom = $lead->getPrenom();
+                $tel = $lead->getTelephone();
+                $mail = $lead->getEmail();
+                $idCivilite = $lead->getCivilite();
+                $idCommercial = $lead->getCommercial();
+                $idType = $request->query->get('id_type');
+                //$ville = $request->query->get('ville');
+                $societe = $lead->getSociete();
+                $nomprenom = $nom . " " . $prenom;
+                $commentaires = $lead->getCommentaires();
 
-
-        if (!empty($nomprenom)) {
-            $contact->setNomStr($nomprenom);
-        }
-        /*if (!empty($ville)) {
+                if (!empty($nomprenom)) {
+                    $contact->setNomStr($nomprenom);
+                }
+                /*if (!empty($ville)) {
             $contact->setIdVille($ville);
             
         }*/
-        if (!empty($societe)) {
-            $contact->setNomStr($societe);
-        }
-        if (!empty($nom)) {
-            $contact->setNom($nom);
-        }
-        if (!empty($prenom)) {
-            $contact->setPrenom($prenom);
-        }
-        if (!empty($tel)) {
-            $contact->setTelephone($tel);
-        }
-        if (!empty($mail)) {
-            $contact->setEmail($mail);
-        }
-        if (!empty($idCivilite)) {
-            $contact->setIdCivilite($idCivilite);
-        }
-        if (!empty($idCommercial)) {
-            $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->find($idCommercial);
-            $contact->setIdCommercial($commercial);
-        } else {
+                if (!empty($societe)) {
+                    $contact->setNomStr($societe);
+                }
+                if (!empty($nom)) {
+                    $contact->setNom($nom);
+                }
+                if (!empty($prenom)) {
+                    $contact->setPrenom($prenom);
+                }
+                if (!empty($tel)) {
+                    $contact->setTelephone($tel);
+                }
+                if (!empty($mail)) {
+                    $contact->setEmail($mail);
+                }
+                if (!empty($idCivilite)) {
+                    $contact->setIdCivilite($idCivilite);
+                }
+
+                if (!empty($idCommercial)) {
+                    $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->find($idCommercial);
+                    $contact->setIdCommercial($commercial);
+                } else {
+                    $idUser = $this->security->getUser()->getIdutilisateur();
+                    $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->findBy(["idUser" => $idUser]);
+                    $contact->setIdCommercial($commercial[0]);
+                }
+
+
+                if (!empty($idType)) {
+                    $type = $em->getRepository(\App\Entity\ContactType::class)->find($idType);
+                    $contact->setIdType($type);
+                }
+
+                // fullfill contact commentaires
+                if (!empty($commentaires)) {
+                    /**
+                     * @var $commentaires ContactNote[]
+                     */
+                    array_map(function (LeadNote $commentaire) use ($contact) {
+                        $note = new ContactNote();
+                        $note->setTexteNote($commentaire->getTexteNote());
+                        $contact->addCommentaire($note);
+                    }, $commentaires->toArray());
+                }
+            }
+        }else{
             $idUser = $this->security->getUser()->getIdutilisateur();
             $commercial = $em->getRepository(\App\Entity\Collaborateur::class)->findBy(["idUser" => $idUser]);
-            $contact->setIdCommercial($commercial[0]);
+            $contact->setIdCommercial($commercial[0]); 
         }
 
-        if (!empty($idType)) {
-            $type = $em->getRepository(\App\Entity\ContactType::class)->find($idType);
-            $contact->setIdType($type);
-        }
-        
-        $contactForm = $this->createForm(ContactType::class, $contact, ['method' => 'GET']); 
+        $contactForm = $this->createForm(ContactType::class, $contact, ['method' => 'GET']);
         $contactHandle = $this->createForm(ContactType::class, $contact, ['method' => 'POST']);
-        if($request->request->get('contact')){
+        if ($request->request->get('contact')) {
             $contactForm->get("exist")->setData("true");
         }
+        if($contact->getCommentaires()){
+            $contactForm->get("commentaires")->setData($contact->getCommentaires());
+            $contactHandle->get("commentaires")->setData($contact->getCommentaires());
+        }
         $contactForm->handleRequest($request);
-        
+
         $numero =  $contactForm['Telephone']->getData();
         $this->viewParams['contactsExistants'] = false;
 
         if ($contactForm->isSubmitted() && !$request->query->get('exist')) {
-            
             $numero =  $contactForm['Telephone']->getData();
             $email = $contactForm['Email']->getData();
-            $contactsExistants = $em->getRepository(Mail::class)->findBy(['mail'=>$email]);
-            if($contactRepository->findOneBy(['numero' => $numero]) && !is_null($numero)) {
-                $contactsExistants = $contactRepository->findBy(['numero'=>$numero]);
-                if(count($contactsExistants) > 0){
+            $contactsExistants = $em->getRepository(Mail::class)->findBy(['mail' => $email]);
+            if ($contactRepository->findOneBy(['numero' => $numero]) && !is_null($numero)) {
+                $contactsExistants = $contactRepository->findBy(['numero' => $numero]);
+                if (count($contactsExistants) > 0) {
                     $this->addFlash('danger', "L'ajout a échoué car un contact avec le même numéro de téléphone existe déjà.<br /> Si vous pensez qu'il s'agit d'une erreur, veuillez cliquer sur le bouton 'ajouter quand même'.");
                     $request->query->set('exist', ['exist' => true]);
+                    if($leadId)
+                    $request->query->set('lead_id', ['lead_id' => $leadId]);
                     $dataToSend = $request->query->all(); // On récupère les données du formulaire                                              
-                    return $this->redirectToRoute('Fiche_client_prospect_Controller/ajoutclient',$dataToSend);
+                    return $this->redirectToRoute('Fiche_client_prospect_Controller/ajoutclient', $dataToSend);
                 }
                 //dd($emptylist);
-            }
-            elseif($em->getRepository(Mail::class)->findOneBy(['mail'=>$email]) && !is_null($email)){
-                $contactsExistants = $em->getRepository(Mail::class)->findBy(['mail'=>$email]);
+            } elseif ($em->getRepository(Mail::class)->findOneBy(['mail' => $email]) && !is_null($email)) {
+                $contactsExistants = $em->getRepository(Mail::class)->findBy(['mail' => $email]);
                 $contactList = "";
-                if(count($contactsExistants) > 0){
-                    foreach($contactsExistants as $contactCourant){
+                if (count($contactsExistants) > 0) {
+                    foreach ($contactsExistants as $contactCourant) {
                         $currentContactEntity = $contactRepository->find($contactCourant->getIdContact()->getId());
-                        $contactList .= "<li><a href='/contact/".$currentContactEntity->getId()."/edition' target='_blank' >".$currentContactEntity->getPrenom()." ".$currentContactEntity->getNom()."</a><br /></li>";    
-                    }                
-                $this->addFlash('danger', "<div class='ml-2'> L'ajout a échoué car un contact avec le même adresse email existe déjà.<br /> Si vous pensez qu'il s'agit d'une erreur, veuillez cliquer sur le bouton 'ajouter quand même'.</div><br /><ul>".$contactList."</ul>");
+                        $contactList .= "<li><a href='/contact/" . $currentContactEntity->getId() . "/edition' target='_blank' >" . $currentContactEntity->getPrenom() . " " . $currentContactEntity->getNom() . "</a><br /></li>";
+                    }
+                    $this->addFlash('danger', "<div class='ml-2'> L'ajout a échoué car un contact avec le même adresse email existe déjà.<br /> Si vous pensez qu'il s'agit d'une erreur, veuillez cliquer sur le bouton 'ajouter quand même'.</div><br /><ul>" . $contactList . "</ul>");
 
-                $request->query->set('exist', ['exist' => true]);
-                $dataToSend = $request->query->all();
-                return $this->redirectToRoute('Fiche_client_prospect_Controller/ajoutclient',$dataToSend);
+                    $request->query->set('exist', ['exist' => true]);
+                    if($leadId)
+                    $request->query->set('lead_id', ['lead_id' => $leadId]);
+                    $dataToSend = $request->query->all();
+                    return $this->redirectToRoute('Fiche_client_prospect_Controller/ajoutclient', $dataToSend);
                 }
-
-            }
-            else{
+            } else {
                 $contact->setIdSecteur($request->query->all()['contact']['idSecteur']);
                 $contact->setActiviteTns($request->query->all()['contact']['activiteTns']);
                 $contact->setNumero($numero);
@@ -336,21 +367,21 @@ class ContactController extends BaseController
             }
 
             $numero =  $contactForm['Telephone']->getData();
-            $this->viewParams['contact_existant_num'] = $contactRepository->findBy(['numero'=>$numero]);
-     }
-     if($request->query->get('exist')){ 
-        $contactHandle->setData($contactForm->getData());  
-     }
+            $this->viewParams['contact_existant_num'] = $contactRepository->findBy(['numero' => $numero]);
+        }
+        if ($request->query->get('exist')) {
+            $contactHandle->setData($contactForm->getData());
+        }
 
-     if($request->query->get('exist') && $contactForm->get("exist")->getData() == true){
-        $this->viewParams['contactsExistants'] = true;
+        if ($request->query->get('exist') && $contactForm->get("exist")->getData() == true) {
+            $this->viewParams['contactsExistants'] = true;
 
-        $contactHandle->handleRequest($request);
-        if($contactHandle->isSubmitted()){
-            
-            $numero =  $contactHandle['Telephone']->getData();
-            $email = $contactHandle['adresseEmail']->getData();
-            $contact->setIdSecteur($request->query->all()['contact']['idSecteur']);
+            $contactHandle->handleRequest($request);
+            if ($contactHandle->isSubmitted()) {
+
+                $numero =  $contactHandle['Telephone']->getData();
+                $email = $contactHandle['adresseEmail']->getData();
+                $contact->setIdSecteur($request->query->all()['contact']['idSecteur']);
                 $contact->setActiviteTns($request->query->all()['contact']['activiteTns']);
                 $contact->setNumero($numero);
                 if (!$contact->getCommercial()) {
@@ -396,14 +427,13 @@ class ContactController extends BaseController
 
                 return $this->redirectToRoute("Liste_Client_Prospect_Controller");
             }
-      
-     }
-        if($request->query->get('exist')){
+        }
+        if ($request->query->get('exist')) {
             $this->viewParams['contact_forme'] = $contactHandle->createView();
-        }else{
+        } else {
             $this->viewParams['contact_forme'] = $contactForm->createView();
         }
-        
+
 
         return $this->render('contact/create.html.twig', $this->viewParams);
     }
@@ -1032,44 +1062,40 @@ class ContactController extends BaseController
         $res['error'] = "The request is not ajax";
         return new JsonResponse($res);
     }
-   /**
-    * Une fonction qui permet d'importer un fichier excel pour créer des clients 
-    * Un algorithme est utilisé pour créer les clients
-    * Il regarde la première ligne du fichier excel et demande à l'utilisateur de choisir les colonnes qui correspondent aux champs du client
-    * @param Request $request
-    * @return Response
-    * @Route("/contact/import", name="contact_import")
-    */
+    /**
+     * Une fonction qui permet d'importer un fichier excel pour créer des clients 
+     * Un algorithme est utilisé pour créer les clients
+     * Il regarde la première ligne du fichier excel et demande à l'utilisateur de choisir les colonnes qui correspondent aux champs du client
+     * @param Request $request
+     * @return Response
+     * @Route("/contact/import", name="contact_import")
+     */
     public function import(Request $request, EntityManagerInterface $entityManager, VilleRepository $villeRepository)
     {
         ini_set('memory_limit', '1024M');
         $file = $request->files->get('file');
-        if(!$file)
-        {
-        }else{
+        if (!$file) {
+        } else {
             // handle the file
             // if the file is not an excel or csv file
-            if(!in_array($file->getClientOriginalExtension(), ['xls', 'xlsx', 'csv']))
-            {
+            if (!in_array($file->getClientOriginalExtension(), ['xls', 'xlsx', 'csv'])) {
                 return new Response('Fichier non importé car l\'extension n\'est pas valide, doit être xls, xlsx ou csv');
             }
             // if the$this->em->getRepository(SecteurActivite::class)->findOneBy(["secteur" => "Autres"])->getId() file is not readable
-            if(!$file->isReadable())
-            {
+            if (!$file->isReadable()) {
                 return new Response('Fichier non importé car il n\'est pas lisible');
             }
             // save the file to the directory
             $file->move(
-                $_SERVER["DOCUMENT_ROOT"].'/DocPrint/import_directory',
+                $_SERVER["DOCUMENT_ROOT"] . '/DocPrint/import_directory',
                 $file->getClientOriginalName()
             );
             return new Response('ok');
         }
-            // get the file path
-           if($request->query->get('fileName'))
-           {
+        // get the file path
+        if ($request->query->get('fileName')) {
             $filePath = $request->query->get('fileName');
-           // open the file
+            // open the file
             $fileHandle = fopen($filePath, 'r');
             // get the first line
             $firstLine = fgetcsv($fileHandle, 0, ',');
@@ -1077,48 +1103,41 @@ class ContactController extends BaseController
             $numberOfColumns = count($firstLine);
             // get the number of rows
             $numberOfRows = 0;
-            while(!feof($fileHandle))
-            {
+            while (!feof($fileHandle)) {
                 $row = fgetcsv($fileHandle, 0, ',');
-                if($row)
-                {
+                if ($row) {
                     $numberOfRows++;
                 }
             }
             // close the file
             fclose($fileHandle);
             // get the columns
-            
+
             // get the rows
             $columnNames = [];
-            for($i = 0; $i < $numberOfColumns; $i++)
-            {
+            for ($i = 0; $i < $numberOfColumns; $i++) {
                 $columnNames[$firstLine[$i]] = $firstLine[$i];
             }
-            
+
             $columnNames["Rien à afficher"] = "Rien à afficher";
-            
+
             $datas = [
                 'choices' => $columnNames,
                 'path' => $filePath,
             ];
             $form = $this->createForm(ImportContactType::class, $datas);
             $form->handleRequest($request);
-            if($form->isSubmitted() && $form->isValid())
-            {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
                 $path = $data['path'];
                 $fileHandle = fopen($path, 'r');
                 $rows = [];
                 $fileHandle = fopen($filePath, 'r');
-                for($i = 0; $i < $numberOfRows; $i++)
-                {
+                for ($i = 0; $i < $numberOfRows; $i++) {
                     $row = fgetcsv($fileHandle, 0, ',');
-                    if($row)
-                    {
+                    if ($row) {
                         $column = [];
-                        for($j = 0; $j < $numberOfColumns; $j++)
-                        {
+                        for ($j = 0; $j < $numberOfColumns; $j++) {
                             $column[$firstLine[$j]] = $row[$j];
                         }
                         $rows[] = $column;
@@ -1128,23 +1147,19 @@ class ContactController extends BaseController
                 fclose($fileHandle);
                 // make a loop for each row
                 $mappedDat = [];
-                foreach($data as $key => $value)
-                {
-                    if($key != 'path' && $key != 'choices')
-                    {
-                        if($value != "Rien à afficher")
-                        {
+                foreach ($data as $key => $value) {
+                    if ($key != 'path' && $key != 'choices') {
+                        if ($value != "Rien à afficher") {
                             $mappedDat[$key] = $value;
                         }
                     }
                 }
-                    $commercial = $this->em->getRepository(Collaborateur::class)->find(6);
-                    $structure = $this->getDoctrine()->getRepository(Structure::class)->find(1);
-                    $contactType = $this->getDoctrine()->getRepository(ContactTypeEntity::class)->find(2);
+                $commercial = $this->em->getRepository(Collaborateur::class)->find(6);
+                $structure = $this->getDoctrine()->getRepository(Structure::class)->find(1);
+                $contactType = $this->getDoctrine()->getRepository(ContactTypeEntity::class)->find(2);
                 $contacts = [];
-                foreach($rows as $row)
-                {
-                   // if(!empty($row[$mappedDat['nomContact']]) && !empty($row[$mappedDat['prenomContact']]) && !empty($row[$mappedDat['nomSociete']])){
+                foreach ($rows as $row) {
+                    // if(!empty($row[$mappedDat['nomContact']]) && !empty($row[$mappedDat['prenomContact']]) && !empty($row[$mappedDat['nomSociete']])){
                     $client = new Contact();
                     $client->setNom($row[$mappedDat['nomContact']]);
                     $client->setPrenom($row[$mappedDat['prenomContact']]);
@@ -1155,38 +1170,36 @@ class ContactController extends BaseController
                     //ajout de date d'importation
                     $date = new \DateTime();
                     $client->setDateAdd($date);
-                    if(!empty($row[$mappedDat["noSiret"]])){
+                    if (!empty($row[$mappedDat["noSiret"]])) {
                         $client->setNoSiret($row[$mappedDat["noSiret"]]);
                     }
                     //on 
-                    if(!empty($row[$mappedDat['noNaf']])){
-                        $client->setNoNaf(str_replace('.','',$row[$mappedDat['noNaf']]));
+                    if (!empty($row[$mappedDat['noNaf']])) {
+                        $client->setNoNaf(str_replace('.', '', $row[$mappedDat['noNaf']]));
                     }
                     /*if(!empty($row[$mappedDat['sexe']])){
                         $client->setSexe($row[$mappedDat['sexe']]);
                     }*/
-                    if(!empty($row[$mappedDat["effectif"]])){
+                    if (!empty($row[$mappedDat["effectif"]])) {
                         $client->setEffectif($row[$mappedDat["effectif"]]);
                     }
-                    if(!empty($row[$mappedDat["qualite"]])){
+                    if (!empty($row[$mappedDat["qualite"]])) {
                         $client->setQualite($row[$mappedDat["qualite"]]);
                     }
-                    if(!empty($row[$mappedDat["ville"]])){
-
- 
+                    if (!empty($row[$mappedDat["ville"]])) {
                     }
-                    
-                    if(!empty($row[$mappedDat["codePostal"]])){
+
+                    if (!empty($row[$mappedDat["codePostal"]])) {
                         $adresse = new Adresse;
                         //regex pour corriger le bug de 1er ligne du cp
-                        $adresse->setCodePostal(preg_replace("/[^0-9]/", "",$row[$mappedDat["codePostal"]]));
+                        $adresse->setCodePostal(preg_replace("/[^0-9]/", "", $row[$mappedDat["codePostal"]]));
                         $adresse->setAdresse($row[$mappedDat["adresse"]]);
                         $ville2 = $this->getDoctrine()->getRepository(Ville::class)
-                        ->findOneBy(['nomVille' => $row[$mappedDat['ville']]]);
-                        if(!is_null($ville2)){
+                            ->findOneBy(['nomVille' => $row[$mappedDat['ville']]]);
+                        if (!is_null($ville2)) {
                             $adresse->setIdVille($ville2->getId());
-                        }else {
-                            $ville = new Ville ;
+                        } else {
+                            $ville = new Ville;
                             $ville->setNomVille($row[$mappedDat['ville']]);
                             $ville->setIdUserAdd(29);
                             $ville->setDateAdd(new \DateTime());
@@ -1197,28 +1210,26 @@ class ContactController extends BaseController
                         }
                         $client->addAdress($adresse);
                     }
-                    
-                    if(!empty($row[$mappedDat["siteWeb"]])){
+
+                    if (!empty($row[$mappedDat["siteWeb"]])) {
                         $note = new ContactNote();
                         $note->setTexteNote($row[$mappedDat["siteWeb"]]);
                         $client->addCommentaire($note);
-
                     }
-                    if(!empty($row[$mappedDat['noNaf']])){
-                        $client->setNoNaf(str_replace('.','',$row[$mappedDat['noNaf']]));
+                    if (!empty($row[$mappedDat['noNaf']])) {
+                        $client->setNoNaf(str_replace('.', '', $row[$mappedDat['noNaf']]));
                     }
                     array_push($contacts, $client);
-
                 }
-                foreach($contacts as $contact){
+                foreach ($contacts as $contact) {
                     $this->em->persist($contact);
-                }                    
+                }
                 $this->em->flush();
                 return $this->redirectToRoute('Liste_Client_Prospect_Controller');
             }
 
             $this->viewParams['form'] = $form->createView();
-        return $this->render('contact/import.html.twig', $this->viewParams);
-        }//else return $this->redirectToRoute('Liste_Client_Prospect_Controller');
+            return $this->render('contact/import.html.twig', $this->viewParams);
+        } //else return $this->redirectToRoute('Liste_Client_Prospect_Controller');
     }
 }

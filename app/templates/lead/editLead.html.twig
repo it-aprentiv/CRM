@@ -203,11 +203,11 @@
 			<div class="btn-toolbar justify-content-md-center" role="toolbar" aria-label="Toolbar with button groups">
 				<div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
 					{% if form.societe.vars.value == null %}
-						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 2, nom:form.nom.vars.value, prenom:form.prenom.vars.value, tel:form.telephone.vars.value, mail:form.email.vars.value, id_civilite:form.civilite.vars.value, id_commercial:form.commercial.vars.value, nomprenom:NomPrenom}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutClient()">
+						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 2, 'lead_id': lead.id}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutClient()">
 							Ajouter Client
 						</a>
 					{% else %}
-						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 2, nom:form.nom.vars.value, prenom:form.prenom.vars.value, tel:form.telephone.vars.value, mail:form.email.vars.value, id_civilite:form.civilite.vars.value, id_commercial:form.commercial.vars.value, societe:form.societe.vars.value}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutClient()">
+						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 2, 'lead_id': lead.id}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutClient()">
 							Ajouter Client
 						</a>
 					{% endif %}
@@ -215,11 +215,11 @@
 
 				<div class="btn-group mr-2 list-filter" role="group" aria-label="Third group">
 					{% if form.societe.vars.value == null %}
-						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 1, nom:form.nom.vars.value, prenom:form.prenom.vars.value, tel:form.telephone.vars.value, mail:form.email.vars.value, id_civilite:form.civilite.vars.value, id_commercial:form.commercial.vars.value, nomprenom:NomPrenom}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutProspect()">
+						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 1, 'lead_id': lead.id}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutProspect()">
 							Ajouter Prospect
 						</a>
 					{% else %}
-						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 1, nom:form.nom.vars.value, prenom:form.prenom.vars.value, tel:form.telephone.vars.value, mail:form.email.vars.value, id_civilite:form.civilite.vars.value, id_commercial:form.commercial.vars.value, societe:form.societe.vars.value}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutProspect()">
+						<a href="{{ path('Fiche_client_prospect_Controller/ajoutclient', {'id_type': 1, 'lead_id': lead.id}) }}" , target="_blank" class="btn btn-primary btn-md btn-block" onclick="statutProspect()">
 							Ajouter Prospect
 						</a>
 					{% endif %}

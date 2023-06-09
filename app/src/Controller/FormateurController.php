@@ -11,6 +11,7 @@ use App\Entity\FormateurCommentdisp;
 use App\Entity\FormateurFormation;
 use App\Entity\FormateurNote;
 use App\Entity\Mail;
+use App\Entity\Sessions;
 use App\Entity\Telephone;
 use App\Entity\Url;
 use App\Form\FormateurCommentdispType;
@@ -156,6 +157,11 @@ class FormateurController extends BaseController
         {
             $this->viewParams["adressesvilledata"][] = $adres->getIdVille();
         }
+
+        // load sessions of formateur
+        $formateurFormations = $em->getRepository(Sessions::class)->findBy(['contact' => $contact->getId()]);
+        // push sessions to formateur
+        $contact->setSessions($formateurFormations);
         $contactmanager->setContactSocData(array($contact));
         $formateurForm = $this->createForm(FormateurType::class, $contact, ['method' => 'POST', 'attr' => ['id' => 'dataformateur']]);
         $formateurForm->handleRequest($request);
@@ -192,9 +198,11 @@ class FormateurController extends BaseController
             $this->addFlash('success','Formateur modifié avec succès.');
         }
 
+
+
         $this->viewParams['commentaire_dispo'] = $form->createView();
         $this->viewParams['formateur_form'] = $formateurForm->createView();
-        dd($contact->getSessions());
+        dd($contact);
         return $this->render('formateur/edit.html.twig', $this->viewParams);
     }
 
